@@ -12,6 +12,17 @@
 
 #include "strategy/StrategyController.h"
 #include "NTProvider.h"
+#include "CurtinCtre.h"
+#include "controllers/CurtinControllers.h"
+#include "Gearbox.h"
+#include "actuators/BinaryServo.h"
+#include "actuators/Compressor.h"
+#include "actuators/DoubleSolenoid.h"
+#include "actuators/VoltageController.h"
+#include "sensors/Encoder.h"
+#include "sensors/LimitSwitch.h"
+#include "sensors/NavX.h"
+#include "sensors/PressureSensor.h"
 
 #include "Toggle.h"
 
@@ -35,7 +46,32 @@ class Robot : public frc::TimedRobot, protected curtinfrc::StrategyController, p
 
   curtinfrc::Drivetrain *drivetrain;
 
-  bool enableFOC = false;
+  bool enableFOC = false; // not needed for driving unless REALLY REALLY required
  
-  curtinfrc::Toggle fallToggle;
+  curtinfrc::Toggle fallToggle; // this isn't needed unless elevator robot
+
+
+  // ----------- Motors -------------
+
+  // Drive System
+  curtinfrc::TalonSrx *DriveMotorLeftSRX, *DriveMotorRightSRX;
+  curtinfrc::VictorSpx *DriveMotorLeftSPX, *DriveMotorRightSPX;
+
+  // Subsystem 1
+  curtinfrc::TalonSrx *SubSystem1;
+
+  // Subsystem 2
+  curtinfrc::TalonSrx *Subsystem2;
+
+
+  // ----------Pneumatics--------------
+
+  // Compressor
+  curtinfrc::actuators::Compressor *compressor;
+
+  // Pnuematic 1
+  curtinfrc::actuators::DoubleSolenoid *Pneumatic1;
+
+  curtinfrc::actuators::DoubleSolenoid *Pneumatic2;
+
 };
