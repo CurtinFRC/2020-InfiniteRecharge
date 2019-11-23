@@ -14,7 +14,7 @@ using namespace curtinfrc;
 double lastTimestamp;
 
 void Robot::RobotInit() {
-  // When The Robot Is initialised. Startup sequence
+  // when the robot is initilized
 }
 
 
@@ -26,14 +26,13 @@ void Robot::DisabledInit() {
   InterruptAll(true);
 }
 
-void Robot::AutonomousInit() {
-  // Schedule(std::make_shared<PathfinderMPStrategy>(*drivetrain, robotmap.drivetrain.gainsPathfinder, "5333", "d2_bM"));
-}
+void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() {
-}
+  // when enabled. this code runs
+} 
 
 void Robot::TestInit() {}
 void Robot::TestPeriodic() {}
