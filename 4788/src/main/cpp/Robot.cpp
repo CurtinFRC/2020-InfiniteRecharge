@@ -1,4 +1,6 @@
 #include "Robot.h"
+#include "ControlMap.h"
+#include "DriveSystem.h"
 
 #include "strategy/MPStrategy.h"
 
@@ -16,9 +18,13 @@ double lastTimestamp;
 
 void Robot::RobotInit() {
   // when the robot is initilized
+  ControlMap(ControlMap::Controller1Port, ControlMap::Controller2Port);
 
+  DriveSystem(ControlMap::SRXportL, ControlMap::SRXportR, ControlMap::SPXportL, ControlMap::SPXportR);
   //compressor = new curtinfrc::actuators::DoubleSolenoid;
   
+
+  std::cout << "Robot SetUp Complete" << std::endl;
 }
 
 

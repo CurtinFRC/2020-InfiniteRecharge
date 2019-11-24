@@ -53,10 +53,6 @@ class Robot : public frc::TimedRobot, protected curtinfrc::StrategyController, p
 
   // ----------- Motors -------------
 
-  // Drive System
-  curtinfrc::TalonSrx *DriveMotorLeftSRX, *DriveMotorRightSRX;
-  curtinfrc::VictorSpx *DriveMotorLeftSPX, *DriveMotorRightSPX;
-
   // Subsystem 1
   curtinfrc::TalonSrx *SubSystem1;
 
@@ -65,13 +61,6 @@ class Robot : public frc::TimedRobot, protected curtinfrc::StrategyController, p
 
 
   // ----------Pneumatics--------------
-
   // Compressor
   curtinfrc::actuators::Compressor *compressor;
-
-  // Pnuematic 1
-  curtinfrc::actuators::DoubleSolenoid *Pneumatic1;
-
-  curtinfrc::actuators::DoubleSolenoid *Pneumatic2;
-
 };
