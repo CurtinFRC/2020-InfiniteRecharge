@@ -13,9 +13,16 @@ void DefinePorts() {
   CtrlMp.XboxController2Port = 1;
 
   // Drive Left
-  CtrlMp.SRXportL = 1;
-  CtrlMp.SPXportL = 2;
+  CtrlMp.DriveSRXportL = 1;
+  CtrlMp.DriveSPXportL = 2;
   // Drive Right
-  CtrlMp.SRXportR = 3;
-  CtrlMp.SPXportR = 4;
+  CtrlMp.DriveSRXportR = 3;
+  CtrlMp.DriveSPXportR = 4;
+
+  // Subsystem1
+  CtrlMp.Sub1SRXport1 = 5;
+  CtrlMp.Sub1SRXport2 = 6;
+
+  // Subsystem2
+  CtrlMp.Sub2SPXport1 = 7;
 }

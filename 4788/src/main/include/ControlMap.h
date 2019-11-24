@@ -12,7 +12,13 @@ struct ControlMap {
 	int XboxController1Port, XboxController2Port;
 
 	// Drive System
-	int SRXportL, SRXportR, SPXportL, SPXportR;
+	int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
+
+	// SubSystem1
+	int Sub1SRXport1, Sub1SRXport2;
+
+	// SubSystem2
+	int Sub2SPXport1;
 
 	// ------------------Instances------------------
 
