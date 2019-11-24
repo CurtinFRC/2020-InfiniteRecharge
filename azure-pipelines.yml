@@ -5,7 +5,8 @@
 # I added a few more test cases. I don't expect all of them to be there during build season
 # just testing what works and what doesn't.
 
-#trigger:
+# we don't need a trigger. because we want it to trigger for every branch
+#trigger: 
 #- master
 
 resources:
