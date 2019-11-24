@@ -5,6 +5,9 @@
 # I added a few more test cases. I don't expect all of them to be there during build season
 # just testing what works and what doesn't.
 
+#trigger:
+#- master
+
 resources:
   containers:
   - container: linux_jaci #Jaci's Linux, from (https://github.com/JacisNonsense/azure-native-linux)
