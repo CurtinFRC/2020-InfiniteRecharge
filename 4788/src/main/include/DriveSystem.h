@@ -2,7 +2,7 @@
 
 #include "Robot.h"
 
-class DriveSystem : public frc::TimedRobot, protected curtinfrc::StrategyController, protected curtinfrc::NTProvider {
+class DriveSystem {
   public:
 
   /* 

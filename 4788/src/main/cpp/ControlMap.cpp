@@ -1,33 +1,28 @@
-#include "Robot.h"
 #include "ControlMap.h"
 
 using namespace frc;
 using namespace curtinfrc;
 
 // This is where you define which ports are used for your motors, pneumatics ect...
+
 // -------------Defined Ports-------------------
+void DefinePorts() {
+  ControlMap CtrlMp;
+  // Controllers
+  CtrlMp.XboxController1Port = 0;
+  CtrlMp.XboxController2Port = 1;
 
-// Controllers
-const int ControlMap::Controller1Port = 0;
-const int ControlMap::Controller2Port = 1;
+  // Drive Left
+  CtrlMp.DriveSRXportL = 1;
+  CtrlMp.DriveSPXportL = 2;
+  // Drive Right
+  CtrlMp.DriveSRXportR = 3;
+  CtrlMp.DriveSPXportR = 4;
 
-// Drive Left
-const int ControlMap::SRXportL = 1;
-const int ControlMap::SPXportL = 2;
-// Drive Right
-const int ControlMap::SRXportR = 3;
-const int ControlMap::SPXportR = 4;
+  // Subsystem1
+  CtrlMp.Sub1SRXport1 = 5;
+  CtrlMp.Sub1SRXport2 = 6;
 
-
-
-// -------------Function Control----------------
-
-ControlMap::ControlMap(int ControllerPort1_, int ControllerPort2_) {
-
-  // Switch below around to use different controllers
-  xbox1 = new XboxController(ControllerPort1_);
-  xbox2 = new XboxController(ControllerPort2_);
-
-  // joy1 = new Joystick(ControllerPort1_);
-  // joy2 = new Joystick(ControllerPort2_);
+  // Subsystem2
+  CtrlMp.Sub2SPXport1 = 7;
 }

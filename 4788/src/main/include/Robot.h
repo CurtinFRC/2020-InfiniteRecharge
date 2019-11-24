@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include <frc/Timer.h>
 #include <frc/TimedRobot.h>
 #include <frc/SpeedControllerGroup.h>
@@ -44,20 +46,8 @@ class Robot : public frc::TimedRobot, protected curtinfrc::StrategyController, p
   void TestInit() override;
   void TestPeriodic() override;
 
-  curtinfrc::Drivetrain *drivetrain;
-
   bool enableFOC = false; // not needed for driving unless REALLY REALLY required
- 
   curtinfrc::Toggle fallToggle; // this isn't needed unless elevator robot
-
-
-  // ----------- Motors -------------
-
-  // Subsystem 1
-  curtinfrc::TalonSrx *SubSystem1;
-
-  // Subsystem 2
-  curtinfrc::TalonSrx *Subsystem2;
 
 
   // ----------Pneumatics--------------
