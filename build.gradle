@@ -1,0 +1,39 @@
+// GradleRIO plugin is defined in buildSrc!
+plugins {
+  id 'org.ysb33r.doxygen' version '0.5' apply false
+}
+
+// For Azure
+allprojects {
+  plugins.withType(edu.wpi.first.toolchain.roborio.RoboRioToolchainPlugin).whenPluginAdded {
+    if (project.hasProperty('no-roborio'))
+      toolchainsPlugin.getByName('roboRio').optional = true
+  }
+
+  plugins.withType(NativeComponentPlugin).whenPluginAdded {
+    project.model {
+      binaries {
+        all {
+          if (it instanceof NativeBinarySpec) {
+            if (project.hasProperty('no-desktop') && targetPlatform.name == edu.wpi.first.toolchain.NativePlatforms.desktop) {
+              it.buildable = false
+            }
+            if (project.hasProperty('no-roborio') && targetPlatform.name == edu.wpi.first.toolchain.NativePlatforms.roborio) {
+              it.buildable = false
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Put buildDir all in the same place - that means all projects can use the same tmp/expandedArchives folder, 
+// instead of extracting the same libs over and over again.
+subprojects {
+  project.buildDir = rootProject.buildDir
+}
+
+wrapper {
+  gradleVersion = '5.0'
+}
