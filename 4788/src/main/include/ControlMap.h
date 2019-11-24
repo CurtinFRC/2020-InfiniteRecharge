@@ -2,27 +2,27 @@
 
 #include "Robot.h"
 
-class ControlMap : public frc::TimedRobot, protected curtinfrc::StrategyController, protected curtinfrc::NTProvider {
-  public:
+#ifndef CONTROLMAP_H
+#define CONTROLMAP_H
+
+struct ControlMap {
+	// ----------------Defined Ports----------------
 
 	// Controllers
-	frc::XboxController *xbox1;
-	frc::XboxController *xbox2;
-	frc::Joystick *joy1;
-	frc::Joystick *joy2;
-
-
-	// -------------Defined Ports-------------------
-	
-	// Controllers
-	static const int Controller1Port, Controller2Port;
+	int XboxController1Port, XboxController2Port;
 
 	// Drive System
-	static const int SRXportL, SRXportR, SPXportL, SPXportR;
+	int SRXportL, SRXportR, SPXportL, SPXportR;
 
-
-	// -------------Function Definement----------------
+	// ------------------Instances------------------
 
 	// Controllers
-	ControlMap(int ControllerPort1_, int ControllerPort2_);
+	frc::XboxController xbox1{ XboxController1Port };
+	frc::XboxController xbox2{ XboxController2Port };
+	//frc::Joystick joy1{ JoyController1Port };
+	//frc::Joystick joy2{ JoyController2Port };
 };
+
+void DefinePorts();
+
+#endif

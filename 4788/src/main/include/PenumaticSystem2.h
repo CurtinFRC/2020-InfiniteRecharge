@@ -2,7 +2,7 @@
 
 #include "Robot.h"
 
-class PneumaticSystem1 {
+class PneumaticSystem2 {
   public:
 
 	// -------------Pneumatic Definement----------------

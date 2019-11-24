@@ -1,5 +1,5 @@
-#include "Robot.h"
 #include "ControlMap.h"
+#include "Robot.h"
 #include "DriveSystem.h"
 
 #include "strategy/MPStrategy.h"
@@ -11,18 +11,19 @@
 
 #include <frc/DriverStation.h>
 
+// Note: If you try zero an encoder but the Motor controller is disconnected or doesn't exist
+// The code will build, but it will not run on the robot. 
+
 using namespace frc;
 using namespace curtinfrc;
 
 double lastTimestamp;
 
 void Robot::RobotInit() {
-  // when the robot is initilized
-  ControlMap(ControlMap::Controller1Port, ControlMap::Controller2Port);
-
-  DriveSystem(ControlMap::SRXportL, ControlMap::SRXportR, ControlMap::SPXportL, ControlMap::SPXportR);
+  ControlMap CtrlMp;
+  DefinePorts();
+  DriveSystem(CtrlMp.SRXportL, CtrlMp.SRXportR, CtrlMp.SPXportL, CtrlMp.SPXportR);
   //compressor = new curtinfrc::actuators::DoubleSolenoid;
-  
 
   std::cout << "Robot SetUp Complete" << std::endl;
 }
