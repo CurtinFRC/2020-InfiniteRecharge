@@ -32,7 +32,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: ':4788:build'
+      tasks: 'clean build'
       options: '-Pno-roborio'
 
 - job: macOS
