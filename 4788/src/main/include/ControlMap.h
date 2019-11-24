@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Robot.h"
+#include "GeneralLibs/GeneralLibs.h"
+
 
 #ifndef CONTROLMAP_H
 #define CONTROLMAP_H

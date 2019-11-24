@@ -1,5 +1,6 @@
 #include "SubSystem2.h"
 #include "ControlMap.h"
+#include "Robot.h"
 
 // This Subsystem will be an intake system with 1 motor.
 // intakes don't need encoders because it's constant movement 

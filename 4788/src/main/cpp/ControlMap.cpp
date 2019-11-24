@@ -1,4 +1,5 @@
 #include "ControlMap.h"
+#include "Robot.h"
 
 using namespace frc;
 using namespace curtinfrc;

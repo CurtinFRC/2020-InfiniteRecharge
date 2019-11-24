@@ -29,6 +29,11 @@
 #include "Toggle.h"
 
 #include "Drivetrain.h"
+#include "DriveSystem.h"
+#include "SubSystem1.h"
+#include "SubSystem2.h"
+#include "PenumaticSystem1.h"
+#include "PenumaticSystem2.h"
 
 class Robot : public frc::TimedRobot, protected curtinfrc::StrategyController, protected curtinfrc::NTProvider {
  public:
@@ -46,9 +51,14 @@ class Robot : public frc::TimedRobot, protected curtinfrc::StrategyController, p
   void TestInit() override;
   void TestPeriodic() override;
 
+  // Definements
+
   bool enableFOC = false; // not needed for driving unless REALLY REALLY required
   curtinfrc::Toggle fallToggle; // this isn't needed unless elevator robot
 
+  DriveSystem *driveSystem;
+  SubSystem1 *subSystem1;
+  SubSystem2 *subSystem2;
 
   // ----------Pneumatics--------------
   // Compressor

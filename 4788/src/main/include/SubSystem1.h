@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Robot.h"
+#include "GeneralLibs/GeneralLibs.h"
 
 class SubSystem1 {
   public:
@@ -10,4 +10,5 @@ class SubSystem1 {
 
   // -------------Function Definement----------------
   SubSystem1(int SRX1_, int SRX2_);
+  void zeroEncoder();
 };
