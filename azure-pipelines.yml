@@ -34,21 +34,21 @@ jobs:
       tasks: ':4788:build'
       options: '-Pno-roborio'
 
-- job: linuxLatest_teamcode_Build
-  pool:
-    vmImage: 'ubuntu-latest'
+- job: linux16_teamcode_build
+  pool: 
+    vmImage: 'Ubuntu-16.04'
+  container: linux
   steps:
+  - script: sudo apt-get install -y libusb-1.0-0-dev
   - task: Gradle@2
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
       gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
+      publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: ':4788:build'
+      options: '-Pno-roborio'
 
 - job: macOS_teamcode_Build
   pool:
@@ -79,22 +79,6 @@ jobs:
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
       options: '-Pno-roborio'
-
-- job: linuxLatest_full_build
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean build'
 
 - job: macOS_full_build
   pool:
