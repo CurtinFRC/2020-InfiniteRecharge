@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Robot.h"
+#include "GeneralLibs/GeneralLibs.h"
 
 class DriveSystem {
   public:
@@ -19,4 +19,6 @@ class DriveSystem {
 
   // -------------Function Definement----------------
   DriveSystem(int SRXportL_, int SRXportR_, int SPXportL_, int SPXportR_);
+  void zeroEncoder();
+  void DriveControl();
 };

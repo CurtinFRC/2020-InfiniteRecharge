@@ -48,13 +48,22 @@ void Robot::DisabledInit() {
   InterruptAll(true);
 }
 
-void Robot::AutonomousInit() {}
+void Robot::AutonomousInit() {
+  driveSystem->zeroEncoder();
+  subSystem1->zeroEncoder();
+}
 void Robot::AutonomousPeriodic() {}
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
+  driveSystem->zeroEncoder();
+  subSystem1->zeroEncoder();
+}
 void Robot::TeleopPeriodic() {
   // when enabled. this code runs
 } 
 
-void Robot::TestInit() {}
+void Robot::TestInit() {
+  driveSystem->zeroEncoder();
+  subSystem1->zeroEncoder();
+}
 void Robot::TestPeriodic() {}
