@@ -1,4 +1,5 @@
 #include "Robot.h"
+
 #include "strategy/MPStrategy.h"
 
 #include <math.h>
@@ -15,6 +16,9 @@ double lastTimestamp;
 
 void Robot::RobotInit() {
   // when the robot is initilized
+
+  //compressor = new curtinfrc::actuators::DoubleSolenoid;
+  
 }
 
 
