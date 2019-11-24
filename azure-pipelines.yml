@@ -5,7 +5,8 @@
 # I added a few more test cases. I don't expect all of them to be there during build season
 # just testing what works and what doesn't.
 
-#trigger:
+# we don't need a trigger. because we want it to trigger for every branch
+#trigger: 
 #- master
 
 resources:
@@ -19,7 +20,7 @@ resources:
 
 jobs:
 
-- job: windows_teamcode_Build
+- job: windows_VS2017_Win2016
   pool:
     vmImage: 'VS2017-Win2016'
   steps:
@@ -34,55 +35,7 @@ jobs:
       tasks: ':4788:build'
       options: '-Pno-roborio'
 
-- job: linux16_teamcode_build
-  pool: 
-    vmImage: 'Ubuntu-16.04'
-  container: linux
-  steps:
-  - script: sudo apt-get install -y libusb-1.0-0-dev
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: ':4788:build'
-
-- job: macOS_teamcode_Build
-  pool:
-    vmImage: 'macOS-10.13'
-  steps:
-  - template: azure-init.yml
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      publishJUnitResults: false
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: ':4788:build'
-      options: '-Pno-roborio'
-
-- job: windows_full_build
-  pool:
-    vmImage: 'VS2017-Win2016'
-  steps:
-  - template: azure-init.yml
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      publishJUnitResults: false
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean build'
-      options: '-Pno-roborio'
-
-- job: macOS_full_build
+- job: macOS
   pool:
     vmImage: 'macOS-10.13'
   steps:
@@ -97,10 +50,10 @@ jobs:
       tasks: 'clean build'
       options: '-Pno-roborio'
 
-- job: linux16_full_build
+- job: linux16
   pool: 
     vmImage: 'Ubuntu-16.04'
-  container: linux
+  container: linux_jaci
   steps:
   - script: sudo apt-get install -y libusb-1.0-0-dev
   - task: Gradle@2
@@ -113,7 +66,7 @@ jobs:
       tasks: 'clean build'
       options: '-Pno-roborio'
 
-- job: roborio_linux16_full_build
+- job: roborio_linux16
   pool: 
     vmImage: 'Ubuntu-16.04'
   container: wpilib2019
@@ -146,7 +99,7 @@ jobs:
 - job: tinkerboard_vision_linux16
   pool:
     vmImage: 'Ubuntu-16.04'
-  container: linux
+  container: linux_jaci
   steps:
   - task: Gradle@2
     inputs:
@@ -164,31 +117,10 @@ jobs:
       tasks: 'clean :vision:build'
       options: '-Pno-roborio -Pno-desktop -xcheck'
 
-- job: tinkerboard_vision_linuxLatest
-  pool:
-    vmImage: 'ubuntu-lastest'
-  container: linux
-  steps:
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      tasks: ':vision:installTinkerboardToolchain'
-      options: '-Pno-roborio -Pno-desktop --scan --stacktrace'
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      publishJUnitResults: false
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean :vision:build'
-      options: '-Pno-roborio -Pno-desktop -xcheck'
-
-- job: doxygen
+- job: doxygen_linux16
   pool:
     vmImage: 'Ubuntu-16.04'
-  container: linux
+  container: linux_jaci
   steps:
   - task: Gradle@2
     inputs:
