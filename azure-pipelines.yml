@@ -37,7 +37,7 @@ jobs:
 - job: linux16_teamcode_build
   pool: 
     vmImage: 'Ubuntu-16.04'
-  container: linux
+  container: linux_jaci
   steps:
   - script: sudo apt-get install -y libusb-1.0-0-dev
   - task: Gradle@2
@@ -98,7 +98,7 @@ jobs:
 - job: linux16_full_build
   pool: 
     vmImage: 'Ubuntu-16.04'
-  container: linux
+  container: linux_jaci
   steps:
   - script: sudo apt-get install -y libusb-1.0-0-dev
   - task: Gradle@2
@@ -144,7 +144,7 @@ jobs:
 - job: tinkerboard_vision_linux16
   pool:
     vmImage: 'Ubuntu-16.04'
-  container: linux
+  container: linux_jaci
   steps:
   - task: Gradle@2
     inputs:
@@ -165,7 +165,7 @@ jobs:
 - job: doxygen
   pool:
     vmImage: 'Ubuntu-16.04'
-  container: linux
+  container: linux_jaci
   steps:
   - task: Gradle@2
     inputs:
