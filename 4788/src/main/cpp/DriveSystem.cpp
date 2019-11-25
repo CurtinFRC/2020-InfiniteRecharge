@@ -17,6 +17,7 @@ DriveSystem::DriveSystem(int SRXportL_, int SRXportR_, int SPXportL_, int SPXpor
   DriveMotorRsrx->SetInverted(false);
   DriveMotorRspx->SetInverted(false);
 
+  DriveSystem::zeroEncoder();
 }
 
 void DriveSystem::zeroEncoder() {

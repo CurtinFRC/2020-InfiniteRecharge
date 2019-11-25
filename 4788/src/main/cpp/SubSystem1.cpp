@@ -12,10 +12,10 @@ SubSystem1::SubSystem1(int SRX1_, int SRX2_) {
   MotorSRX2 = new curtinfrc::TalonSrx(SRX2_);
 
   // Zero Encoders (Only SRX's Have encoders)
-  MotorSRX1->ZeroEncoder();
-  MotorSRX2->ZeroEncoder();
+  SubSystem1::zeroEncoder();
 }
 
 void SubSystem1::zeroEncoder() {
-
+  MotorSRX1->ZeroEncoder();
+  MotorSRX2->ZeroEncoder();
 }
