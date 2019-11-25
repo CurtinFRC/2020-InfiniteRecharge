@@ -1,15 +1,5 @@
 #include "Robot.h"
 
-// Common Files
-#include "strategy/MPStrategy.h"
-
-#include <math.h>
-#include <iostream>
-
-// FRC Files
-#include <cameraserver/CameraServer.h>
-#include <frc/DriverStation.h> 
-
 // Robot.cpp is our main entrypoint
 
 // Note: If you try zero an encoder but the Motor controller is disconnected or doesn't exist
@@ -21,9 +11,8 @@ using namespace curtinfrc;
 double lastTimestamp;
 
 void Robot::RobotInit() {
-  DefinePorts();
-  DriveSystem(controlMap->DriveSRXportL, controlMap->DriveSRXportR, controlMap->DriveSPXportL, controlMap->DriveSPXportR);
-  SubSystem1(controlMap->Sub1SRXport1, controlMap->Sub1SRXport2);
+  DriveSystem();
+  SubSystem1(*robotMap);
   SubSystem2(controlMap->Sub2SPXport1);
   //compressor = new curtinfrc::actuators::DoubleSolenoid;
 

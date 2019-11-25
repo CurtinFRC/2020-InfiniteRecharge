@@ -2,18 +2,19 @@
 
 #include "GeneralLibs/GeneralLibs.h"
 #include "ControlMap.h"
+#include "RobotMap.h"
 
 class SubSystem1 {
   public:
 
-  // ----------------Instances--------------------
-  ControlMap *controlMap;
+    // ----------------Instances--------------------
+    ControlMap *controlMap;
 
-	// -------------Motor Definement----------------
-  curtinfrc::TalonSrx *MotorSRX1, *MotorSRX2;
-
-  // -------------Function Definement----------------
-  SubSystem1(int SRX1_, int SRX2_);
-  void zeroEncoder();
-  void SubSystem1Control();
+    // -------------Function Definement----------------
+    SubSystem1(RobotMap &robotMap);
+    void zeroEncoder();
+    void SubSystem1Control();
+    
+  private:
+    RobotMap *_robotmap;
 };

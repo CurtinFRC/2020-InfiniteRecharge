@@ -2,6 +2,7 @@
 
 #include "GeneralLibs/GeneralLibs.h"
 #include "ControlMap.h"
+#include "RobotMap.h"
 
 class SubSystem2 {
   public:
