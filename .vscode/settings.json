@@ -2,6 +2,8 @@
   "C_Cpp.default.configurationProvider": "vscode-wpilib",
   "java.configuration.updateBuildConfiguration": "interactive",
   "files.associations": {
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "ios": "cpp",
+    "xiosbase": "cpp"
   }
 }

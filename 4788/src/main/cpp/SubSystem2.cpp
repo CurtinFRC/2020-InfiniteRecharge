@@ -12,3 +12,13 @@ SubSystem2::SubSystem2(int SPX1_) {
   // Initialise Motors
   MotorSPX1 = new curtinfrc::VictorSpx(SPX1_);
 }
+
+void SubSystem2::SubSystem2Control() {
+  if (controlMap->SubSystem2Intake) {
+    MotorSPX1->Set(1);
+  } else if (controlMap->SubSystem2Outtake) {
+    MotorSPX1->Set(-1);
+  } else {
+    MotorSPX1->Set(0);
+  }
+}

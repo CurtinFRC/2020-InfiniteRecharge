@@ -21,11 +21,10 @@ using namespace curtinfrc;
 double lastTimestamp;
 
 void Robot::RobotInit() {
-  ControlMap CtrlMp;
   DefinePorts();
-  DriveSystem(CtrlMp.DriveSRXportL, CtrlMp.DriveSRXportR, CtrlMp.DriveSPXportL, CtrlMp.DriveSPXportR);
-  SubSystem1(CtrlMp.Sub1SRXport1, CtrlMp.Sub1SRXport2);
-  SubSystem2(CtrlMp.Sub2SPXport1);
+  DriveSystem(controlMap->DriveSRXportL, controlMap->DriveSRXportR, controlMap->DriveSPXportL, controlMap->DriveSPXportR);
+  SubSystem1(controlMap->Sub1SRXport1, controlMap->Sub1SRXport2);
+  SubSystem2(controlMap->Sub2SPXport1);
   //compressor = new curtinfrc::actuators::DoubleSolenoid;
 
   std::cout << "Robot SetUp Complete" << std::endl;
@@ -51,7 +50,9 @@ void Robot::TeleopInit() {
   subSystem1->zeroEncoder();
 }
 void Robot::TeleopPeriodic() {
-  // when enabled. this code runs
+  driveSystem->DriveControl();
+  subSystem1->SubSystem1Control();
+  subSystem2->SubSystem2Control();
 } 
 
 void Robot::TestInit() {

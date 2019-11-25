@@ -10,6 +10,7 @@ SubSystem1::SubSystem1(int SRX1_, int SRX2_) {
   // Initialise Motors
   MotorSRX1 = new curtinfrc::TalonSrx(SRX1_);
   MotorSRX2 = new curtinfrc::TalonSrx(SRX2_);
+  MotorSRX2->SetInverted(true);
 
   // Zero Encoders (Only SRX's Have encoders)
   SubSystem1::zeroEncoder();
@@ -18,4 +19,17 @@ SubSystem1::SubSystem1(int SRX1_, int SRX2_) {
 void SubSystem1::zeroEncoder() {
   MotorSRX1->ZeroEncoder();
   MotorSRX2->ZeroEncoder();
+}
+
+void SubSystem1::SubSystem1Control() {
+  if (controlMap->SubSystem1Up) {
+    MotorSRX1->Set(0.3);
+    MotorSRX2->Set(0.3);
+  } else if (controlMap->SubSystem1Down) {
+    MotorSRX1->Set(-0.3);
+    MotorSRX2->Set(-0.3);
+  } else {
+    MotorSRX1->Set(0);
+    MotorSRX2->Set(0);
+  }
 }
