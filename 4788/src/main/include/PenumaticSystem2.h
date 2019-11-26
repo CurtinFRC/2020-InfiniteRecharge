@@ -10,8 +10,8 @@ class PneumaticSystem2 {
   ControlMap *controlMap;
 
 	// -------------Pneumatic Definement----------------
-  curtinfrc::actuators::DoubleSolenoid *Pneumatic1;
-  curtinfrc::actuators::DoubleSolenoid *Pneumatic2;
+  wml::actuators::DoubleSolenoid *Pneumatic1;
+  wml::actuators::DoubleSolenoid *Pneumatic2;
 
   // -------------Function Definement----------------
   

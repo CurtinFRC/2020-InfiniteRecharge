@@ -19,8 +19,8 @@
 
 #include "strategy/StrategyController.h"
 #include "NTProvider.h"
-#include "CurtinCtre.h"
-#include "controllers/CurtinControllers.h"
+#include "WMLCtre.h"
+#include "controllers/Controllers.h"
 #include "Gearbox.h"
 #include "actuators/BinaryServo.h"
 #include "actuators/Compressor.h"

@@ -1,29 +1,50 @@
+#pragma once
+
 #include "GeneralLibs/GeneralLibs.h"
-#include "ControlMap.h"
+
+#include "SubSystem1.h"
 
 struct RobotMap {
   #if __CONTROLMAP__USING_JOYSTICK__
 
-  curtinfrc::controllers::Joystick joy1{ ControlMap::JoyController1Port };
-  curtinfrc::controllers::Joystick joy2{ ControlMap::JoyController2Port };
+  wml::controllers::Joystick joy1{ ControlMap::JoyController1Port };
+  wml::controllers::Joystick joy2{ ControlMap::JoyController2Port };
 
   #else
 
-  curtinfrc::controllers::XboxController xbox1{ ControlMap::XboxController1Port };
-  curtinfrc::controllers::XboxController xbox2{ ControlMap::XboxController2Port };
+  wml::controllers::XboxController xbox1{ ControlMap::XboxController1Port };
+  wml::controllers::XboxController xbox2{ ControlMap::XboxController2Port };
 
   #endif
 
   // Drive System
-  curtinfrc::TalonSrx DriveMotorLsrx{ ControlMap::DriveSRXportL };
-  curtinfrc::TalonSrx DriveMotorRsrx{ ControlMap::DriveSRXportR };
-  curtinfrc::VictorSpx DriveMotorLspx{ ControlMap::DriveSPXportL};
-  curtinfrc::VictorSpx DriveMotorRspx{ ControlMap::DriveSPXportR};
+  struct DriveSystem {
+    wml::TalonSrx Lsrx{ ControlMap::DriveSRXportL };
+    wml::TalonSrx Rsrx{ ControlMap::DriveSRXportR };
+    wml::VictorSpx Lspx{ ControlMap::DriveSPXportL };
+    wml::VictorSpx Rspx{ ControlMap::DriveSPXportR };
+
+    // @TODO: Add encoders to drivetrain gearboxes
+
+    wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Lsrx, Lspx)), nullptr };
+    wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Rsrx, Rspx)), nullptr };
+
+    wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
+    wml::Drivetrain drivetrain{ driveTrainConfig };
+  };
 
   // Subsystem1
-  curtinfrc::TalonSrx SubSystem1SRX1{ ControlMap::Sub1SRXport1 };
-  curtinfrc::TalonSrx SubSystem1SRX2{ ControlMap::Sub1SRXport2 };
+  struct Subsystem1 {
+    wml::TalonSrx SRX1{ ControlMap::Sub1SRXport1 };
+    wml::TalonSrx SRX2{ ControlMap::Sub1SRXport2 };
+    
+    wml::sensors::DigitalEncoder encoder{ 4, 5, 1024 };
+    wml::Gearbox gearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(SRX1, SRX2)), &encoder };
+    SubSystem1Config subSystem1Config{ gearbox };
+  };
 
-  // Subsystem2
-  curtinfrc::VictorSpx SubSystem2SPX{ ControlMap::Sub2SPXport1 };
+  // // Subsystem2
+  // struct Subsystem2 {
+  //   wml::VictorSpx SPX{ ControlMap::Sub2SPXport1 };
+  // };
 };

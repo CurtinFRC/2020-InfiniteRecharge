@@ -1,50 +1,85 @@
 #include "SubSystem1.h"
-#include "ControlMap.h"
-#include "Robot.h"
 
-// This SubSystem will just be an assumed pendulum movement with 2 motors
-// similar to 5663's KillSwitch Bucket Intake
+#include <iostream>
+#include <cmath>
 
-SubSystem1::SubSystem1(RobotMap &robotMap) {
+// public
 
-  // Initialise Motors
-  
-  robotMap.SubSystem1SRX1.SetInverted(true);
+std::string SubSystem1::GetStateString() {
+  switch (GetState()) {
+   case SubSystem1State::kStationary:
+    return "kStationary";
+    
+   case SubSystem1State::kMoving:
+    return "kMoving";
+    
+   case SubSystem1State::kManual:
+    return "kManual";
+  }
 
-  // Zero Encoders (Only SRX's Have encoders)
-  SubSystem1::zeroEncoder();
+  return "<state error>";
 }
 
-void SubSystem1::zeroEncoder() {
-  _robotmap->SubSystem1SRX1.ZeroEncoder();
-  _robotmap->SubSystem1SRX2.ZeroEncoder();
+
+void SubSystem1::SetManual(double power) {
+  SetState(SubSystem1State::kManual);
+  _controller.SetSetpoint(power);
 }
 
-void SubSystem1::SubSystem1Control() {
+void SubSystem1::SetSetpoint(double setpoint) {
+  SetState(SubSystem1State::kMoving);
+  _controller.SetSetpoint(setpoint);
+}
 
-  #if __CONTROLMAP__USING_JOYSTICK__
+void SubSystem1::SetHold() {
+  SetState(SubSystem1State::kStationary);
+  _controller.SetSetpoint(GetCurrentPosition() + 0.1);
+}
 
-    if (_robotmap->joy1.GetButton(ControlMap::SubSystem1Up)) {
-      _robotmap->SubSystem1SRX1.Set(0.3);
-      _robotmap->SubSystem1SRX2.Set(0.3);
-    } else if (_robotmap->joy1.GetButton(controlMap->SubSystem1Down)) {
-      _robotmap->SubSystem1SRX1.Set(-0.3);
-      _robotmap->SubSystem1SRX2.Set(-0.3);
-    } else {
-      _robotmap->SubSystem1SRX1.Set(0);
-      _robotmap->SubSystem1SRX2.Set(0);
-    }
-  #else
-    if (_robotmap->xbox1.GetButton(ControlMap::SubSystem1Up)) {
-      _robotmap->SubSystem1SRX1.Set(0.3);
-      _robotmap->SubSystem1SRX2.Set(0.3);
-    } else if (_robotmap->xbox1.GetButton(ControlMap::SubSystem1Down)) {
-      _robotmap->SubSystem1SRX1.Set(-0.3);
-      _robotmap->SubSystem1SRX2.Set(-0.3);
-    } else {
-      _robotmap->SubSystem1SRX1.Set(0);
-      _robotmap->SubSystem1SRX2.Set(0);
-    }
+
+double SubSystem1::GetSetpoint() {
+  return _controller.GetSetpoint();
+}
+
+double SubSystem1::GetCurrentPosition() {
+  return _config.gearbox.encoder->GetEncoderRotations();
+}
+
+SubSystem1Config &SubSystem1::GetConfig() {
+  return _config;
+}
+
+// virtual
+
+void SubSystem1::OnStatePeriodic(SubSystem1State state, double dt) {
+  double voltage = 0;
   
-  #endif
+  switch (state) {
+   case SubSystem1State::kManual:
+    voltage = _controller.GetSetpoint();
+    break;
+
+   case SubSystem1State::kMoving:
+    if (_controller.IsDone()) SetHold(); // Good enough EPS for now
+   case SubSystem1State::kStationary:
+    voltage = _controller.Calculate(GetCurrentPosition(), dt);
+    break;
+  }
+
+  // Limiters
+  // if (_config.limitSensorTop != nullptr)
+  //   if (voltage > 0)
+  //     if (_config.limitSensorTop->Get())
+  //       voltage = 0;
+
+  // if (_config.limitSensorBottom != nullptr)
+  //   if (voltage < 0)
+  //     if (_config.limitSensorBottom->Get()) {
+  //       voltage = 0;
+  //       GetConfig().spool.encoder->ZeroEncoder();
+  //     }
+
+  voltage = std::min(12.0, std::max(-12.0, voltage)) * 0.7;
+  voltage = _current_filter.Get(voltage);
+  GetConfig().gearbox.transmission->SetVoltage(voltage);
 }

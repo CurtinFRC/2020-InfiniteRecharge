@@ -1,19 +1,21 @@
-#pragma once
+// #pragma once
 
-#include "GeneralLibs/GeneralLibs.h"
-#include "ControlMap.h"
-#include "RobotMap.h"
+// #include "GeneralLibs/GeneralLibs.h"
+// #include "ControlMap.h"
+// #include "RobotMap.h"
 
-class SubSystem2 {
-  public:
+// class SubSystem2 {
+//   public:
+//   SubSystem2(RobotMap *robotmap);
 
-  // ----------------Instances--------------------
-  ControlMap *controlMap;
+//   // ----------------Instances--------------------
+//   ControlMap *controlMap;
 
-	// -------------Motor Definement----------------
-  curtinfrc::VictorSpx *MotorSPX1;
+//   // ------------- Method Declaration ----------------
 
-  // -------------Function Definement----------------
-  SubSystem2(int SPX1_);
-  void SubSystem2Control();
-};
+//   void SubSystem2Control();
+
+//   private:
+//   RobotMap _robotmap;
+
+// };

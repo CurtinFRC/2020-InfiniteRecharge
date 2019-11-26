@@ -2,12 +2,12 @@
 #include "Robot.h"
 #include "RobotMap.h"
 
-#include "controllers/CurtinControllers.h"
+#include "controllers/Controllers.h"
 
 using hand = frc::XboxController::JoystickHand;
 
 using namespace frc;
-using namespace curtinfrc;
+using namespace wml;
 
 // This is where you define which ports are used for your motors, pneumatics ect...
 
@@ -56,10 +56,10 @@ const int ControlMap::Sub2SPXport1 = 7;
   const int ControlMap::SubSystem2Outtake = 4;
 #else 
   // SubSystem1
-  const int ControlMap::SubSystem1Up = curtinfrc::controllers::XboxController::kY;
-  const int ControlMap::SubSystem1Down = curtinfrc::controllers::XboxController::kB;              
+  const int ControlMap::SubSystem1Up = wml::controllers::XboxController::kY;
+  const int ControlMap::SubSystem1Down = wml::controllers::XboxController::kB;              
 
   // SubSystem2
-  const int ControlMap::SubSystem2Intake = curtinfrc::controllers::XboxController::kA;
-  const int ControlMap::SubSystem2Outtake = curtinfrc::controllers::XboxController::kX;
+  const int ControlMap::SubSystem2Intake = wml::controllers::XboxController::kA;
+  const int ControlMap::SubSystem2Outtake = wml::controllers::XboxController::kX;
 #endif

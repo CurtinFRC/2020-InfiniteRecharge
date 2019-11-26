@@ -15,8 +15,8 @@
 #include "strategy/StrategyController.h"
 #include "strategy/MPStrategy.h"
 #include "NTProvider.h"
-#include "CurtinCtre.h"
-#include "controllers/CurtinControllers.h"
+#include "WMLCtre.h"
+#include "controllers/Controllers.h"
 #include "Gearbox.h"
 #include "actuators/BinaryServo.h"
 #include "actuators/Compressor.h"
@@ -38,11 +38,11 @@
 #include "Drivetrain.h"
 #include "DriveSystem.h"
 #include "SubSystem1.h"
-#include "SubSystem2.h"
-#include "PenumaticSystem1.h"
-#include "PenumaticSystem2.h"
+// #include "SubSystem2.h"
+// #include "PenumaticSystem1.h"
+// #include "PenumaticSystem2.h"
 
-class Robot : public frc::TimedRobot, protected curtinfrc::StrategyController, protected curtinfrc::NTProvider {
+class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider {
  public:
   void RobotInit() override;
   void RobotPeriodic() override;
@@ -58,21 +58,16 @@ class Robot : public frc::TimedRobot, protected curtinfrc::StrategyController, p
   void TestInit() override;
   void TestPeriodic() override;
 
-  // Definements
-
-  bool enableFOC = false; // not needed for driving unless REALLY REALLY required
-  curtinfrc::Toggle fallToggle; // this isn't needed unless elevator robotS
 
   // ----------Pneumatics--------------
   // Compressor
-  curtinfrc::actuators::Compressor *compressor;
+  wml::actuators::Compressor *compressor;
   private:
     // Instances
-    RobotMap *robotMap;
-    ControlMap *controlMap;
-    DriveSystem *driveSystem;
+    RobotMap robotMap;
+
     SubSystem1 *subSystem1;
-    SubSystem2 *subSystem2;
-    PneumaticSystem1 *pneumaticSystem1;
-    PneumaticSystem2 *pneumaticSystem2;
+    // SubSystem2 *subSystem2;
+    // PneumaticSystem1 *pneumaticSystem1;
+    // PneumaticSystem2 *pneumaticSystem2;
 };

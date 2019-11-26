@@ -1,24 +1,25 @@
-#pragma once
+// #pragma once
 
-#include "GeneralLibs/GeneralLibs.h"
-#include "ControlMap.h"
-#include "RobotMap.h"
+// #include "Gearbox.h"
 
-class DriveSystem {
-  public:
+// #include "GeneralLibs/GeneralLibs.h"
+// #include "ControlMap.h"
+// #include "RobotMap.h"
 
-	// -------------Drive Definement----------------
-  curtinfrc::Gearbox *left_Gearbox, *right_Gearbox;
-  curtinfrc::Drivetrain *drivetrain;
-  double left_speed;
-  double right_speed;
-  double turn_speed;
+// class DriveSystem {
+//  public:
+//   DriveSystem(RobotMap *robotMap); 
 
-  // -------------Function Definement----------------
-  DriveSystem(); 
-  void zeroEncoder();
-  void DriveControl();
+//   // ------------- Method Declaration ----------------
+//   void ZeroEncoder();
+//   void DriveControl();
 
- private:
-  RobotMap *_robotmap;
-};
+//  private:
+//   wml::Gearbox *_left_Gearbox, *_right_Gearbox;
+//   wml::Drivetrain *_drivetrain;
+
+// 	// -------------Drive Definement----------------
+//   double left_speed;
+//   double right_speed;
+//   double turn_speed;
+// };
