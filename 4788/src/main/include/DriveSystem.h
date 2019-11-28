@@ -1,25 +1,46 @@
-// #pragma once
+#pragma once
 
-// #include "Gearbox.h"
+#include <string>
 
-// #include "GeneralLibs/GeneralLibs.h"
-// #include "ControlMap.h"
-// #include "RobotMap.h"
+#include "devices/StateDevice.h"
+#include "Gearbox.h"
+#include "control/PIDController.h"
+#include "strategy/StrategySystem.h"
+#include "control/MotorFilters.h"
 
-// class DriveSystem {
-//  public:
-//   DriveSystem(RobotMap *robotMap); 
+#include "Usage.h"
 
-//   // ------------- Method Declaration ----------------
-//   void ZeroEncoder();
-//   void DriveControl();
+struct DriveSystemConfig {
+  wml::Gearbox &gearbox;
+  wml::Drivetrain &drivetrain;
 
-//  private:
-//   wml::Gearbox *_left_Gearbox, *_right_Gearbox;
-//   wml::Drivetrain *_drivetrain;
+  std::string name = "<DriveSystem>";
+};
 
-// 	// -------------Drive Definement----------------
-//   double left_speed;
-//   double right_speed;
-//   double turn_speed;
-// };
+enum class DriveSystemState { kStationary = 0, kMoving, kManual };
+
+class DriveSystem : public wml::devices::StateDevice<DriveSystemState>, public wml::StrategySystem {
+  public:
+  DriveSystem(DriveSystemConfig config, wml::control::PIDGains gain) : StateDevice(config.name), _config(config), _gain(gain), _controller(gain), _current_filter(-80.0, 120.0, config.gearbox) {};
+
+  virtual std::string GetStateString() final;
+
+  void SetManual(double power);
+  void SetHold();
+
+  double GetCurrentPosition();
+
+  DriveSystemConfig &GetConfig();
+  
+  protected:
+  virtual void OnStatePeriodic(DriveSystemState state, double dt) override;
+
+  private:
+  DriveSystemConfig _config;
+
+  wml::control::PIDGains _gain;
+  wml::control::PIDController _controller;
+  wml::control::CurrentFFFilter _current_filter;
+
+  wml::Usage<DriveSystemConfig>::Scoped _usage{&_config};
+};
