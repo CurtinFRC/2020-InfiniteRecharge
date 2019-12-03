@@ -36,9 +36,22 @@ const int ControlMap::Sub1SRXport2 = 6;
 // Subsystem2
 const int ControlMap::Sub2SPXport1 = 7;
 
+
+
+// -------------Defined Speed---------------------
+
+// Subsystem1
+const double ControlMap::SubSystem1Speed = 0.3;
+
+// Subsystem2
+const double ControlMap::SubSystem2IdleSpeed = 0.1;
+const double ControlMap::SubSystem2Speed = 0.9;
+
+
+
 // -------------Defined Buttons-------------------
 
-  // Drivecar vroom vroom
+// Drivecar vroom vroom
 #if __CONTROLMAP__USING_JOYSTICK__
   const tAxis ControlMap::DrivetrainForward{ 1, Joystick::kYAxis };
   const tAxis ControlMap::DrivetrainTurn{ 1, Joystick::kZAxis };

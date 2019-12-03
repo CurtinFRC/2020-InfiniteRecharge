@@ -1,8 +1,9 @@
 #pragma once
 
-#include "GeneralLibs/GeneralLibs.h"
+// #include "GeneralLibs/GeneralLibs.h"
 
 #include "SubSystem1.h"
+#include "SubSystem2.h"
 
 struct RobotMap {
   #if __CONTROLMAP__USING_JOYSTICK__
@@ -46,8 +47,9 @@ struct RobotMap {
     SubSystem1Config subSystem1Config{ gearbox };
   };
 
-  // // Subsystem2
-  // struct Subsystem2 {
-  //   wml::VictorSpx SPX{ ControlMap::Sub2SPXport1 };
-  // };
+  // Subsystem2
+  struct Subsystem2 {
+    wml::VictorSpx SPX{ ControlMap::Sub2SPXport1 };
+  };
+
 };

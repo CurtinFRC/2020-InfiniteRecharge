@@ -1,6 +1,5 @@
 #pragma once
 
-// #include "GeneralLibs/GeneralLibs.h"
 #include "controllers/Controllers.h"
 
 #define __CONTROLMAP__USING_JOYSTICK__ true
@@ -23,6 +22,20 @@ struct ControlMap {
 
 	// SubSystem2
 	static const int Sub2SPXport1;
+
+
+
+	// -------------Defined Speed---------------------
+
+	// SubSystem1
+	static const double SubSystem1Speed;
+
+	// SubSystem2
+	static const double SubSystem2IdleSpeed;
+	static const double SubSystem2Speed;
+
+
+
 
 	// ---------------Defined Buttons---------------
 	// DriveCar vroom vroom

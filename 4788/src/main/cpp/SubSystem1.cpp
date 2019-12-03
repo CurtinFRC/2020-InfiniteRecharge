@@ -3,6 +3,11 @@
 #include <iostream>
 #include <cmath>
 
+#include "ControlMap.h"
+
+using namespace wml;
+using namespace wml::controllers;
+
 // public
 
 std::string SubSystem1::GetStateString() {
@@ -66,20 +71,33 @@ void SubSystem1::OnStatePeriodic(SubSystem1State state, double dt) {
     break;
   }
 
-  // Limiters
-  // if (_config.limitSensorTop != nullptr)
-  //   if (voltage > 0)
-  //     if (_config.limitSensorTop->Get())
-  //       voltage = 0;
+  if (_config.upperLimitSensor != nullptr)
+    if (voltage > 0)
+      if (_config.upperLimitSensor->Get())
+        voltage = 0;
 
-  // if (_config.limitSensorBottom != nullptr)
-  //   if (voltage < 0)
-  //     if (_config.limitSensorBottom->Get()) {
-  //       voltage = 0;
-  //       GetConfig().spool.encoder->ZeroEncoder();
-  //     }
+  if (_config.lowerLimitSensor != nullptr)
+    if (voltage < 0)
+      if (_config.lowerLimitSensor->Get())
+        voltage = 0;
 
   voltage = std::min(12.0, std::max(-12.0, voltage)) * 0.7;
   voltage = _current_filter.Get(voltage);
-  GetConfig().gearbox.transmission->SetVoltage(voltage);
+  _config.gearbox.transmission->SetVoltage(voltage);
 }
+
+SubSystem1ManualStrategy::SubSystem1ManualStrategy(std::string name, SubSystem1 &subsys1, SmartController &cont1, SmartController &cont2) : Strategy(name), _subsys1(subsys1), _cont1(cont1), _cont2(cont2) {
+  SetCanBeInterrupted(true);
+  SetCanBeReused(true);
+} 
+
+void SubSystem1ManualStrategy::OnUpdate(double dt) {
+  if (_cont1.Get(ControlMap::SubSystem1Up)) {
+    _subsys1.SetManual(ControlMap::SubSystem1Speed);
+  } else if (_cont1.Get(ControlMap::SubSystem1Down)) {
+    _subsys1.SetManual(-ControlMap::SubSystem1Speed);
+  } else {
+    _subsys1.SetHold();
+  }
+}
+
