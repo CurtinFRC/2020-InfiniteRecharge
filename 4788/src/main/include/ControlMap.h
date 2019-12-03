@@ -1,10 +1,9 @@
-#include "GeneralLibs/GeneralLibs.h"
+#pragma once
 
+// #include "GeneralLibs/GeneralLibs.h"
+#include "controllers/Controllers.h"
 
-#ifndef CONTROLMAP_H
-#define CONTROLMAP_H
-
-#define __CONTROLMAP__USING_JOYSTICK__ false
+#define __CONTROLMAP__USING_JOYSTICK__ true
 
 struct ControlMap {
 	// ----------------Defined Ports----------------
@@ -26,12 +25,18 @@ struct ControlMap {
 	static const int Sub2SPXport1;
 
 	// ---------------Defined Buttons---------------
+	// DriveCar vroom vroom
+	#if __CONTROLMAP__USING_JOYSTICK__
+	static const wml::controllers::tAxis DrivetrainForward, DrivetrainTurn;
+	#else
+	static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
+	#endif
+	static const wml::controllers::tButton ReverseDrivetrain;
+	
 	// SubSystem1
-	static const int SubSystem1Up, SubSystem1Down;
+	static const wml::controllers::tButton SubSystem1Up, SubSystem1Down;
 
 	// SubSystem2
-	static const int SubSystem2Intake, SubSystem2Outtake;
+	static const wml::controllers::tButton SubSystem2Intake, SubSystem2Outtake;
 };
 void DefinePorts();
-
-#endif

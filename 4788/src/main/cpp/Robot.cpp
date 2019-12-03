@@ -2,23 +2,24 @@
 
 // Robot.cpp is our main entrypoint
 
-// Note: If you try zero an encoder but the Motor controller is disconnected or doesn't exist
-// The code will build, but it will not run on the robot. 
-
 using namespace frc;
 using namespace wml;
 
 double lastTimestamp;
 
 void Robot::RobotInit() {
-  //robotMap.DriveSystem.LGearbox.transmission->SetInverted(true);
+  robotMap.driveSystem.LGearbox.transmission->SetInverted(true);
+  robotMap.driveSystem.RGearbox.transmission->SetInverted(false);
+  
+
+  drivetrain->StartLoop(100);
 
   std::cout << "Robot SetUp Complete" << std::endl;
 }
 
 
 void Robot::RobotPeriodic() {
-  // In periodic mode. Continuous looped code
+
 }
 
 void Robot::DisabledInit() {
@@ -29,14 +30,16 @@ void Robot::AutonomousInit() {
   //driveSystem->ZeroEncoder();
   //subSystem1->ZeroEncoder();
 }
-void Robot::AutonomousPeriodic() {}
+void Robot::AutonomousPeriodic() {
+}
 
 void Robot::TeleopInit() {
   //driveSystem->ZeroEncoder();
   //subSystem1->ZeroEncoder();
 }
 void Robot::TeleopPeriodic() {
-  //robotMap.DriveSystem.drivetrain.Set(1, -1);
+  robotMap.driveSystem.drivetrain.Set(1, -1);
+  
 
   // subSystem1->SubSystem1Control();
   // subSystem2->SubSystem2Control();

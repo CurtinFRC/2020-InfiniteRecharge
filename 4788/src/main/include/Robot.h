@@ -36,7 +36,6 @@
 #include "ControlMap.h"
 #include "RobotMap.h"
 #include "Drivetrain.h"
-#include "DriveSystem.h"
 #include "SubSystem1.h"
 
 
@@ -63,6 +62,7 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
   private:
     // Instances
     RobotMap robotMap;
+    wml::Drivetrain *drivetrain;
 
     SubSystem1 *subSystem1;
     // SubSystem2 *subSystem2;

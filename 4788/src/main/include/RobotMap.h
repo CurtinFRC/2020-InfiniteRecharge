@@ -31,7 +31,10 @@ struct RobotMap {
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
     wml::Drivetrain drivetrain{ driveTrainConfig };
+    wml::control::PIDGains gainsVelocity{ "Drivetrain Velocity", 1 };
   };
+
+  DriveSystem driveSystem;
 
   // Subsystem1
   struct Subsystem1 {

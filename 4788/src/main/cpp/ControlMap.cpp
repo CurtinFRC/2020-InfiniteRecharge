@@ -1,13 +1,10 @@
 #include "ControlMap.h"
-#include "Robot.h"
-#include "RobotMap.h"
-
-#include "controllers/Controllers.h"
 
 using hand = frc::XboxController::JoystickHand;
 
-using namespace frc;
+// using namespace frc;
 using namespace wml;
+using namespace wml::controllers;
 
 // This is where you define which ports are used for your motors, pneumatics ect...
 
@@ -15,16 +12,11 @@ using namespace wml;
 
 // Controllers
 #if __CONTROLMAP__USING_JOYSTICK__
-
-const int ControlMap::JoyController1Port = 1;
-const int ControlMap::JoyController2Port = 2;
-
-
+  const int ControlMap::JoyController1Port = 1;
+  const int ControlMap::JoyController2Port = 2;
 #else
-
-const int ControlMap::XboxController1Port = 0;
-const int ControlMap::XboxController2Port = 1;
-
+  const int ControlMap::XboxController1Port = 0;
+  const int ControlMap::XboxController2Port = 1;
 #endif
 
 const double ControlMap::joyDeadzone = 0.05;
@@ -46,20 +38,32 @@ const int ControlMap::Sub2SPXport1 = 7;
 
 // -------------Defined Buttons-------------------
 
+  // Drivecar vroom vroom
+#if __CONTROLMAP__USING_JOYSTICK__
+  const tAxis ControlMap::DrivetrainForward{ 1, Joystick::kYAxis };
+  const tAxis ControlMap::DrivetrainTurn{ 1, Joystick::kZAxis };
+  const tButton ControlMap::ReverseDrivetrain{ 1, 2 };
+#else
+  const tAxis ControlMap::DrivetrainLeft{ 1, XboxController::kLeftYAxis };
+  const tAxis ControlMap::DrivetrainRight{ 1, XboxController::kRightYAxis };
+  const tButton ControlMap::ReverseDrivetrain{ 1, XboxController::kStart };
+#endif
+
+
 #if __CONTROLMAP__USING_JOYSTICK__
   // SubSystem1
-  const int ControlMap::SubSystem1Up = 5;
-  const int ControlMap::SubSystem1Down = 6;
+  const tButton ControlMap::SubSystem1Up{ 1, 5 };
+  const tButton ControlMap::SubSystem1Down{ 1, 6 };
 
   // SubSystem2
-  const int ControlMap::SubSystem2Intake = 3;
-  const int ControlMap::SubSystem2Outtake = 4;
+  const tButton ControlMap::SubSystem2Intake{ 1, 3 };
+  const tButton ControlMap::SubSystem2Outtake{ 1, 4 };
 #else 
   // SubSystem1
-  const int ControlMap::SubSystem1Up = wml::controllers::XboxController::kY;
-  const int ControlMap::SubSystem1Down = wml::controllers::XboxController::kB;              
+  const tButton ControlMap::SubSystem1Up{ 1, XboxController::kY };
+  const tButton ControlMap::SubSystem1Down{ 1, XboxController::kB };
 
   // SubSystem2
-  const int ControlMap::SubSystem2Intake = wml::controllers::XboxController::kA;
-  const int ControlMap::SubSystem2Outtake = wml::controllers::XboxController::kX;
+  const tButton ControlMap::SubSystem2Intake{ 1, XboxController::kA };
+  const tButton ControlMap::SubSystem2Outtake{ 1, XboxController::kX };
 #endif
