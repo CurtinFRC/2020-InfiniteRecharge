@@ -23,6 +23,10 @@ struct ControlMap {
 	// SubSystem2
 	static const int Sub2SPXport1;
 
+	// Control System
+	static const int CompressorPort;
+	static const int PressureSensorPort;
+
 
 
 	// -------------Defined Speed---------------------

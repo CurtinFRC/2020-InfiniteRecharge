@@ -37,8 +37,8 @@ struct RobotMap {
 
   DriveSystem driveSystem;
 
-  // Subsystem1
-  struct Subsystem1 {
+  // SubSystem1
+  struct SubSystem1 {
     wml::TalonSrx SRX1{ ControlMap::Sub1SRXport1 };
     wml::TalonSrx SRX2{ ControlMap::Sub1SRXport2 };
     
@@ -47,9 +47,23 @@ struct RobotMap {
     SubSystem1Config subSystem1Config{ gearbox };
   };
 
-  // Subsystem2
-  struct Subsystem2 {
+  SubSystem1 subSystem1;
+
+  // SubSystem2
+  struct SubSystem2 {
     wml::VictorSpx SPX{ ControlMap::Sub2SPXport1 };
   };
+
+  SubSystem2 subSystem2;
+
+  // ControlSystem
+  struct ControlSystem {
+    wml::actuators::Compressor compressor{ ControlMap::CompressorPort };
+    wml::sensors::PressureSensor pressorSensor{ ControlMap::PressureSensorPort };
+  };
+
+  ControlSystem controlSystem;
+
+  
 
 };

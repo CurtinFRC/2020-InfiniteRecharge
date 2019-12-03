@@ -36,6 +36,10 @@ const int ControlMap::Sub1SRXport2 = 6;
 // Subsystem2
 const int ControlMap::Sub2SPXport1 = 7;
 
+// Control System
+const int ControlMap::CompressorPort = 1;
+const int ControlMap::PressureSensorPort = 0;
+
 
 
 // -------------Defined Speed---------------------

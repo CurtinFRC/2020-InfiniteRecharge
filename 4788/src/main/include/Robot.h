@@ -65,7 +65,5 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     wml::Drivetrain *drivetrain;
 
     SubSystem1 *subSystem1;
-    // SubSystem2 *subSystem2;
-    // PneumaticSystem1 *pneumaticSystem1;
-    // PneumaticSystem2 *pneumaticSystem2;
+    SubSystem2 *subSystem2;
 };

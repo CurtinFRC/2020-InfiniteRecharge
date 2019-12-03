@@ -8,71 +8,48 @@ using namespace wml;
 double lastTimestamp;
 
 void Robot::RobotInit() {
+  lastTimestamp = Timer::GetFPGATimestamp();
+  
   robotMap.driveSystem.LGearbox.transmission->SetInverted(true);
   robotMap.driveSystem.RGearbox.transmission->SetInverted(false);
-  
 
   drivetrain->StartLoop(100);
+
+  StrategyController::Register(drivetrain);
+  StrategyController::Register(subSystem1);
+  StrategyController::Register(subSystem2);
+
+  // For ShuffleBoard
+  NTProvider::Register(drivetrain);
+  NTProvider::Register(subSystem1);
+  NTProvider::Register(subSystem2);
+  NTProvider::Register(&robotMap.controlSystem.pressorSensor);
 
   std::cout << "Robot SetUp Complete" << std::endl;
 }
 
-
 void Robot::RobotPeriodic() {
+  double dt = Timer::GetFPGATimestamp() - lastTimestamp;
+  lastTimestamp = Timer::GetFPGATimestamp();
 
+  // long and complicated way of saying on
+  robotMap.controlSystem.compressor.SetTarget(actuators::BinaryActuatorState::kForward);
+  
+  StrategyController::Update(dt);
+  NTProvider::Update();
 }
 
 void Robot::DisabledInit() {
   InterruptAll(true);
 }
 
-void Robot::AutonomousInit() {
-  //driveSystem->ZeroEncoder();
-  //subSystem1->ZeroEncoder();
-}
-void Robot::AutonomousPeriodic() {
-}
+void Robot::AutonomousInit() {}
+void Robot::AutonomousPeriodic() {}
 
-void Robot::TeleopInit() {
-  //driveSystem->ZeroEncoder();
-  //subSystem1->ZeroEncoder();
-}
+void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() {
-  robotMap.driveSystem.drivetrain.Set(1, -1);
-  
 
-  // subSystem1->SubSystem1Control();
-  // subSystem2->SubSystem2Control();
-
-  // #if __CONTROLMAP__USING_JOYSTICK__
-
-  //   if (_robotmap->joy1.GetButton(ControlMap::SubSystem1Up)) {
-  //     _robotmap->SubSystem1SRX1.Set(0.3);
-  //     _robotmap->SubSystem1SRX2.Set(0.3);
-  //   } else if (_robotmap->joy1.GetButton(controlMap->SubSystem1Down)) {
-  //     _robotmap->SubSystem1SRX1.Set(-0.3);
-  //     _robotmap->SubSystem1SRX2.Set(-0.3);
-  //   } else {
-  //     _robotmap->SubSystem1SRX1.Set(0);
-  //     _robotmap->SubSystem1SRX2.Set(0);
-  //   }
-  // #else
-  //   if (_robotmap->xbox1.GetButton(ControlMap::SubSystem1Up)) {
-  //     _robotmap->SubSystem1SRX1.Set(0.3);
-  //     _robotmap->SubSystem1SRX2.Set(0.3);
-  //   } else if (_robotmap->xbox1.GetButton(ControlMap::SubSystem1Down)) {
-  //     _robotmap->SubSystem1SRX1.Set(-0.3);
-  //     _robotmap->SubSystem1SRX2.Set(-0.3);
-  //   } else {
-  //     _robotmap->SubSystem1SRX1.Set(0);
-  //     _robotmap->SubSystem1SRX2.Set(0);
-  //   }
-  
-  // #endif
 } 
 
-void Robot::TestInit() {
-  //driveSystem->ZeroEncoder();
-  //subSystem1->ZeroEncoder();
-}
+void Robot::TestInit() {}
 void Robot::TestPeriodic() {}
