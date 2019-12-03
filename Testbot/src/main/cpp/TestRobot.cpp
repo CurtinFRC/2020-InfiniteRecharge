@@ -6,7 +6,7 @@
 #include <iostream>
 
 using namespace frc;
-using namespace curtinfrc;
+using namespace wml;
 
 void Robot::RobotInit() {
   xbox = new wml::controllers::XboxController(0);
