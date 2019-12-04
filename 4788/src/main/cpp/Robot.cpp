@@ -36,7 +36,7 @@ void Robot::RobotPeriodic() {
   
   StrategyController::Update(dt);
   NTProvider::Update();
-  robotMap.controlSystem.compressor.Update(dt)
+  robotMap.controlSystem.compressor.Update(dt);
 }
 
 void Robot::DisabledInit() {
