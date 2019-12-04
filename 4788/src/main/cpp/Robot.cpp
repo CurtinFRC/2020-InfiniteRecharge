@@ -25,18 +25,18 @@ void Robot::RobotInit() {
   NTProvider::Register(subSystem2);
   NTProvider::Register(&robotMap.controlSystem.pressorSensor);
 
+  // long and complicated way of saying on
+  robotMap.controlSystem.compressor.SetTarget(actuators::BinaryActuatorState::kForward);
   std::cout << "Robot SetUp Complete" << std::endl;
 }
 
 void Robot::RobotPeriodic() {
   double dt = Timer::GetFPGATimestamp() - lastTimestamp;
   lastTimestamp = Timer::GetFPGATimestamp();
-
-  // long and complicated way of saying on
-  robotMap.controlSystem.compressor.SetTarget(actuators::BinaryActuatorState::kForward);
   
   StrategyController::Update(dt);
   NTProvider::Update();
+  robotMap.controlSystem.compressor.Update(dt)
 }
 
 void Robot::DisabledInit() {
@@ -47,9 +47,7 @@ void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {}
-void Robot::TeleopPeriodic() {
-
-} 
+void Robot::TeleopPeriodic() {} 
 
 void Robot::TestInit() {}
 void Robot::TestPeriodic() {}
