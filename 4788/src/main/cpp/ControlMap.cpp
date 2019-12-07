@@ -11,7 +11,7 @@ using namespace wml::controllers;
 // -------------Defined Ports-------------------
 
 // Controllers
-#if __CONTROLMAP__USING_JOYSTICK__
+#if __CONTROLMAP__USING_JOYSTICK__ // If you have set this to true (in ControlMap.h) It will use Joysticks rather than Xbox.
   const int ControlMap::JoyController1Port = 1;
   const int ControlMap::JoyController2Port = 2;
 #else

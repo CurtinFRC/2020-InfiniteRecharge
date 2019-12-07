@@ -1,3 +1,4 @@
 [submodule "wml"]
 	path = wml
-	url = https://github.com/wml-frc/WML
+	url = https://github.com/CJBuchel/WML
+	branch = VisionLibs

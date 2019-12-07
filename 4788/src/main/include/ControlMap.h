@@ -42,7 +42,6 @@ struct ControlMap {
 
 
 	// ---------------Defined Buttons---------------
-	// DriveCar vroom vroom
 	#if __CONTROLMAP__USING_JOYSTICK__
 	static const wml::controllers::tAxis DrivetrainForward, DrivetrainTurn;
 	#else
