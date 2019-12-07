@@ -19,10 +19,9 @@ void curtin_frc_vision::run() {
 	while (true) {
 		if (vision.Camera.cam.sink.GrabFrame(Image) !=0) {
 			TrackingImage = vision.RetroTrack(Image, 2, 2);
-			if (vision.TrackingViewable) {
-				cv::imshow("Origin Image", Image);
-      	cv::imshow("Green Track Image", TrackingImage);
-			}
+
+			cv::imshow("Origin Image", Image);
+			cv::imshow("Green Track Image", TrackingImage);
 		} else{
 			std::cout << "Error Getting Image" << std::endl;
 		}
