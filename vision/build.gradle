@@ -1,1 +1,1 @@
-apply from: rootProject.file('vision.gradle')
+apply from: rootProject.file('wml/src/vision/vision.gradle')
