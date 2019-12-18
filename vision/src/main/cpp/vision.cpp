@@ -18,5 +18,8 @@ void func(int *x) {
 }
 
 void curtin_frc_vision::run() {
-	
+	int prtNumber = 1;
+
+	func(&prtNumber);
+	std::cout << &prtNumber;
 }
