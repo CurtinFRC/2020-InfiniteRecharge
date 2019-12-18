@@ -26,6 +26,7 @@ jobs:
   steps:
   - template: azure-init.yml
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -42,6 +43,7 @@ jobs:
   steps:
   - template: azure-init.yml
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -59,6 +61,7 @@ jobs:
   steps:
   - script: sudo apt-get install -y libusb-1.0-0-dev
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -75,6 +78,7 @@ jobs:
   container: wpilib2019
   steps:
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -91,6 +95,7 @@ jobs:
   container: raspbian
   steps:
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -107,6 +112,7 @@ jobs:
   container: linux_jaci
   steps:
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -129,6 +135,7 @@ jobs:
   container: linux_jaci
   steps:
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
