@@ -18,8 +18,22 @@ void func(int *x) {
 }
 
 void curtin_frc_vision::run() {
+	vision.SetupVision(&Image, 1, 60, ResHeight, ResWidth, 30, "Test", true);
+
+	while (true)	{
+		if (vision.Camera.cam.sink.GrabFrame(Image) !=0) {
+			TrackingImage = vision.RetroTrack(Image, 2, 2);
+
+			cv::imshow("Origin Image", Image);
+			cv::imshow("Green Track Image", TrackingImage);
+		} else{
+			std::cout << "Error Getting Image" << std::endl;
+		}
+		cv::waitKey(30);
+	}
+	
 	int prtNumber = 1;
 
 	func(&prtNumber);
-	std::cout << &prtNumber;
+	std::cout << prtNumber << std::endl;
 }
