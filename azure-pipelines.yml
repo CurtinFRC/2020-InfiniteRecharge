@@ -87,7 +87,7 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
-      options: '-Pno-desktop -xcheck -x:vision:build'
+      options: '-Pno-desktop -xcheck -x:4788:src:coprocessor:build'
 
 - job: pi_vision_linux16
   pool: 
@@ -117,7 +117,7 @@ jobs:
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
-      tasks: ':vision:installTinkerboardToolchain'
+      tasks: ':4788:src:coprocessor:installTinkerboardToolchain'
       options: '-Pno-roborio -Pno-desktop --scan --stacktrace'
   - task: Gradle@2
     inputs:
