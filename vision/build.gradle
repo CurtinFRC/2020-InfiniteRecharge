@@ -1,1 +1,0 @@
-apply from: rootProject.file('wml/src/vision/vision.gradle')
