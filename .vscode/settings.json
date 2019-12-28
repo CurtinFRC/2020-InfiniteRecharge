@@ -80,7 +80,11 @@
     "xtr1common": "cpp",
     "xtree": "cpp",
     "xutility": "cpp",
-    "resumable": "cpp"
+    "resumable": "cpp",
+    "*.tcc": "cpp",
+    "cwctype": "cpp",
+    "memory_resource": "cpp",
+    "cinttypes": "cpp"
   },
   "C_Cpp.configurationWarnings": "Disabled"
 }

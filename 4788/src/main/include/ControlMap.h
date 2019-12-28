@@ -2,7 +2,7 @@
 
 #include "controllers/Controllers.h"
 
-#define __CONTROLMAP__USING_JOYSTICK__ true
+#define __CONTROLMAP__USING_JOYSTICK__ false
 
 struct ControlMap {
 	// ----------------Defined Ports----------------
