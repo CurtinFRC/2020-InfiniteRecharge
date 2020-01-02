@@ -17,6 +17,8 @@ void Robot::RobotInit() {
   dt = frc::Timer::GetFPGATimestamp() - lastTimestamp;
   lastTimestamp = frc::Timer::GetFPGATimestamp();
   // use the provided timers to calculate the time since the last cycle was run
+  
+  NTProvider::Register(&pressureSensor);  // Register the pressure sensor as a sensor to be logged to NetworkTables
 
   // controllers
   xbox = new frc::XboxController(0);
@@ -27,7 +29,6 @@ void Robot::RobotInit() {
 
   leftMotor[0]->SetInverted(true);
   rightMotor[0]->SetInverted(false);
-
 
   // Hammer
   hammer[0] = new frc::Spark(2);
