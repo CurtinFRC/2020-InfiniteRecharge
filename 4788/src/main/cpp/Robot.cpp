@@ -2,52 +2,66 @@
 
 // Robot.cpp is our main entrypoint
 
-using namespace frc;
-using namespace wml;
+using hand = frc::XboxController::JoystickHand;
 
 double lastTimestamp;
 
+double leftSpeed;
+double rightSpeed;
+
+wml::TalonSrx *left1;
+wml::VictorSpx *left2;
+wml::TalonSrx *right1;
+wml::VictorSpx *right2;
+
+
+
 void Robot::RobotInit() {
-  lastTimestamp = Timer::GetFPGATimestamp();
-  
-  robotMap.driveSystem.LGearbox.transmission->SetInverted(true);
-  robotMap.driveSystem.RGearbox.transmission->SetInverted(false);
+  xbox = new frc::XboxController(0);
 
-  drivetrain->StartLoop(100);
+  left1 = new wml::TalonSrx(3);
+  left2 = new wml::VictorSpx(4);
+  right1 = new wml::TalonSrx(1);
+  right2 = new wml::VictorSpx(2);
 
-  StrategyController::Register(drivetrain);
-  StrategyController::Register(subSystem1);
-  StrategyController::Register(subSystem2);
 
-  // For ShuffleBoard
-  NTProvider::Register(drivetrain);
-  NTProvider::Register(subSystem1);
-  NTProvider::Register(subSystem2);
-  NTProvider::Register(&robotMap.controlSystem.pressorSensor);
+  left1->SetInverted(true);
+  left2->SetInverted(true);
 
-  // long and complicated way of saying on
-  robotMap.controlSystem.compressor.SetTarget(actuators::BinaryActuatorState::kForward);
-  std::cout << "Robot SetUp Complete" << std::endl;
+
+
+  // leftMotor[0] = new frc::Spark(0);
+  // leftMotor[0]->SetInverted(true);
+
+  // rightMotor[0] = new frc::Spark(1);
+  // rightMotor[0]->SetInverted(false);
 }
 
-void Robot::RobotPeriodic() {
-  double dt = Timer::GetFPGATimestamp() - lastTimestamp;
-  lastTimestamp = Timer::GetFPGATimestamp();
-  
-  StrategyController::Update(dt);
-  NTProvider::Update();
-  robotMap.controlSystem.compressor.Update(dt);
-}
+void Robot::RobotPeriodic() {}
 
-void Robot::DisabledInit() {
-  InterruptAll(true);
-}
+void Robot::DisabledInit() {}
 
 void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {}
-void Robot::TeleopPeriodic() {} 
+void Robot::TeleopPeriodic() {
+  // leftMotor[0]->Set(xbox->kLeftYAxis);
+  // rightMotor[0]->Set(xbox->kRightYAxis);
+  if (xbox->GetAButton()) {
+    leftSpeed = xbox->GetY(hand::kLeftHand);
+    rightSpeed = xbox->GetY(hand::kRightHand);
+  } else {
+    leftSpeed = 0;
+    rightSpeed = 0;
+  }
+
+  left1->Set(leftSpeed);
+  left2->Set(leftSpeed);
+
+  right1->Set(rightSpeed);
+  right2->Set(rightSpeed);
+} 
 
 void Robot::TestInit() {}
 void Robot::TestPeriodic() {}

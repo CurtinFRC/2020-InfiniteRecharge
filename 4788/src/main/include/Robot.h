@@ -32,12 +32,6 @@
 
 #include "Toggle.h"
 
-// Local Files
-#include "ControlMap.h"
-#include "RobotMap.h"
-#include "Drivetrain.h"
-#include "SubSystem1.h"
-
 
 class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider {
  public:
@@ -59,11 +53,8 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
   // ----------Pneumatics--------------
   // Compressor
   wml::actuators::Compressor *compressor;
-  private:
-    // Instances
-    RobotMap robotMap;
-    wml::Drivetrain *drivetrain;
+  frc::XboxController *xbox;
 
-    SubSystem1 *subSystem1;
-    SubSystem2 *subSystem2;
+  frc::Spark *leftMotor[1];
+  frc::Spark *rightMotor[1];
 };
