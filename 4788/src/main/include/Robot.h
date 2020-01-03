@@ -55,9 +55,7 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
   // Drivebase
   frc::Spark *leftMotor[1];
   frc::Spark *rightMotor[1];
-
-  // Hammer
-  frc::Spark *hammer[1];
+  wml::TalonSrx *hammer;
 
   // Pneumatics. For a reason i don't know yet
 

@@ -9,12 +9,14 @@ double lastTimestamp;
 // Variables to store our wanted speed for each side
 double leftSpeed;
 double rightSpeed;
+double hammerSpeed;
 
 double dt; //dt stands for delta time
 
 void Robot::RobotInit() {
 
   dt = frc::Timer::GetFPGATimestamp() - lastTimestamp;
+  
   lastTimestamp = frc::Timer::GetFPGATimestamp();
   // use the provided timers to calculate the time since the last cycle was run
   
@@ -26,12 +28,11 @@ void Robot::RobotInit() {
   // Drivebase
   leftMotor[0] = new frc::Spark(0);
   rightMotor[0] = new frc::Spark(1);
+  hammer = new wml::TalonSrx(2);
 
   leftMotor[0]->SetInverted(true);
   rightMotor[0]->SetInverted(false);
-
-  // Hammer
-  hammer[0] = new frc::Spark(2);
+  
 
 }
 
@@ -54,20 +55,22 @@ void Robot::TeleopPeriodic() {
 
   // Drivebase
   leftSpeed = xbox->GetY(hand::kLeftHand);
-  leftSpeed = xbox->GetY(hand::kRightHand);
+  rightSpeed = xbox->GetY(hand::kRightHand);
+
+
 
   leftMotor[0]->Set(leftSpeed);
   rightMotor[0]->Set(rightSpeed);
 
-  // Hammer
-  if (xbox->GetAButton()) {
-    hammer[0]->Set(0.5);
-  } else if (xbox->GetBButton()) {
-    hammer[0]->Set(-0.5);
-  } else {
-    hammer[0]->Set(0);
-  }
 
+  // Hammer
+  hammerSpeed = xbox->GetTriggerAxis(hand::kRightHand);
+  if(hammerSpeed >= 0.1)  {
+    hammer->Set(hammerSpeed);
+  }
+  else{
+    hammer->Set(0);
+  }
   // Pneumatics
   if (xbox->GetXButton()) {
     solenoid.SetTarget(wml::actuators::BinaryActuatorState::kForward);
@@ -83,6 +86,10 @@ void Robot::TeleopPeriodic() {
   if (solenoid.IsDone()) solenoid.Stop();
 
   NTProvider::Update();     // Updates values sent to NetworkTables
+
+  //if(xbox ->GetTriggerAxis(hand::kRightHand)){
+  //hammer.set(50);
+  //}
 } 
 
 void Robot::TestInit() {}
