@@ -1,2 +1,2 @@
 # 2020CodeBase
-Code Base For 2020, testing different styles and libraries from 2019. And creating a base line for the 2020 FRC Game (Infinite Recharge)
+### Code: [![Build Status](https://dev.azure.com/ConnorBuchel0890/CurtinFRC/_apis/build/status/CJBuchel.2020CodeBase?branchName=master)](https://dev.azure.com/ConnorBuchel0890/CurtinFRC/_build/latest?definitionId=8&branchName=master)
