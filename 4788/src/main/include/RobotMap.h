@@ -1,6 +1,17 @@
 #pragma once
 
 #include "ControlMap.h"
+#include "devices/StateDevice.h"
+#include "control/PIDController.h"
+#include "strategy/StrategySystem.h"
+#include "control/MotorFilters.h"
+#include "Gearbox.h"
+#include "strategy/Strategy.h"
+#include "controllers/Controllers.h"
+#include "sensors/BinarySensor.h"
+
+#include "Usage.h"
+
 
 struct RobotMap {
   
@@ -27,13 +38,17 @@ struct RobotMap {
 
     // @TODO: Add encoders to drivetrain gearboxes
 
-    wml::Gearbox LGearBox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Lsrx, Lspx)), nullptr };
+    wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Lsrx, Lspx)), nullptr };
     wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Rsrx, Rspx)), nullptr };
 
-    wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearBox };
+    wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
     wml::Drivetrain drivetrain{ driveTrainConfig };
     wml::control::PIDGains gainsVelocity{ "Drivetrain Velocity", 1 };
   };
   DriveSystem driveSystem;
 
+  struct ControlSystem {
+    wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
+    wml::actuators::Compressor compressor{ ControlMap::CompressorPort }; 
+  };
 };

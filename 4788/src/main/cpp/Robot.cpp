@@ -1,6 +1,26 @@
 #include "Robot.h"
 
-void Robot::RobotInit() {}
+using namespace frc;
+using namespace wml;
+
+double lastTimestamp;
+
+void Robot::RobotInit() {
+  lastTimestamp = Timer::GetFPGATimestamp();
+
+  // Inverts one side of our drivetrain
+  robotMap.driveSystem.LGearbox.transmission->SetInverted(true);
+  robotMap.driveSystem.RGearbox.transmission->SetInverted(false);
+
+  drivetrain->StartLoop(100); // WML Drivetrain
+
+
+  // Registering our systems to be called
+  StrategyController::Register(drivetrain);
+
+  // Registering Systems to Network Tables
+  NTProvider::Register(drivetrain);
+}
 
 void Robot::RobotPeriodic() {}
 

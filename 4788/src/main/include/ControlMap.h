@@ -2,7 +2,7 @@
 
 #include "controllers/Controllers.h"
 
-#define __CONTROLMAP_USING_JOYSTICK__ true
+#define __CONTROLMAP_USING_JOYSTICK__ false
 
 struct ControlMap {
   // ---------------- Defined Ports ------------------
@@ -17,6 +17,10 @@ struct ControlMap {
 
   // Drive System
   static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
+
+  // Control System
+  static const int PressureSensorPort;
+  static const int CompressorPort;
 
 
   // --------------- Defined Buttons -----------------

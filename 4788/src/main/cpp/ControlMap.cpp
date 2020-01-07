@@ -6,6 +6,7 @@ using hand = frc::XboxController::JoystickHand; // Only for FRC controllers
 using namespace wml;
 using namespace wml::controllers;
 
+
 // -------------Defined Ports-------------------
 
 // Controllers
@@ -28,6 +29,10 @@ const int ControlMap::DriveSPXportL = 1;
 // Drive Right
 const int ControlMap::DriveSRXportR = 2;
 const int ControlMap::DriveSPXportR = 3;
+
+// Control System
+const int ControlMap::PressureSensorPort = 0;
+const int ControlMap::CompressorPort = 1;
 
 
 
