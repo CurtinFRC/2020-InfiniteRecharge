@@ -21,8 +21,8 @@ void curtin_frc_vision::run() {
 	vision.Processing.visionHullGeneration.BoundingBox(&TrackingImage, &ProcessingOutput, &cx, &cy);
 	while (true) {
 		if (vision.Camera.cam.sink.GrabFrame(Image) != 0) {
-			//vision.Output.Display("Origin Image", &Image);
-			//vision.Output.Display("Green Filtered Image", &TrackingImage);
+			vision.Output.Display("Origin Image", &Image);
+			vision.Output.Display("Green Filtered Image", &TrackingImage);
 			vision.Output.Display("Contour Detection", &ProcessingOutput);
 		}
 	}
