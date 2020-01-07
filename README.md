@@ -30,8 +30,11 @@ This is the team code. The code in these projects should be _very minimal_, sinc
 4788 both depend on `wml`.
 
 
-## [WML](wml)
+## [WML](https://github.com/wml-frc/WML)
 WML is the library for robot code on the RoboRio, designed to simplify FRC programming, and give usefull functions to use. Effectively replacing the normal frc:: with wml::
+
+## [CJ-Vision](https://github.com/wml-frc/CJ-Vision)
+CJ-Vision is the pre-threaded library used to power our vision tracking with nifty functions used often in frc vision tracking.
 
 ## [Vision](4788/src/coprocessor/)
 Vision is the code that gets put on our vision system for the competition. Vision doesn't get deployed to the RoboRIO, but instead to a Raspberry Pi or Asus Tinkerboard.
