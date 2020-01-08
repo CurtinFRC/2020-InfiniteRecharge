@@ -35,35 +35,27 @@
 // Local Files
 #include "ControlMap.h"
 #include "RobotMap.h"
-#include "Drivetrain.h"
-#include "SubSystem1.h"
+#include "DriveSystem.h"
 
 
 class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider {
- public:
-  void RobotInit() override;
-  void RobotPeriodic() override;
+  public:
+    void RobotInit() override;
+    void RobotPeriodic() override;
 
-  void DisabledInit() override;
+    void DisabledInit() override;
 
-  void AutonomousInit() override;
-  void AutonomousPeriodic() override;
+    void AutonomousInit() override;
+    void AutonomousPeriodic() override;
 
-  void TeleopInit() override;
-  void TeleopPeriodic() override;
+    void TeleopInit() override;
+    void TeleopPeriodic() override;
 
-  void TestInit() override;
-  void TestPeriodic() override;
+    void TestInit() override;
+    void TestPeriodic() override;
 
-
-  // ----------Pneumatics--------------
-  // Compressor
-  wml::actuators::Compressor *compressor;
   private:
     // Instances
     RobotMap robotMap;
     wml::Drivetrain *drivetrain;
-
-    SubSystem1 *subSystem1;
-    SubSystem2 *subSystem2;
 };

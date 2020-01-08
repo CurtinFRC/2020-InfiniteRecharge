@@ -2,58 +2,37 @@
 
 #include "controllers/Controllers.h"
 
-#define __CONTROLMAP__USING_JOYSTICK__ true
+#define __CONTROLMAP_USING_JOYSTICK__ false
 
 struct ControlMap {
-	// ----------------Defined Ports----------------
+  // ---------------- Defined Ports ------------------
 
-	// Controllers
-	static const int XboxController1Port, XboxController2Port;
-	static const int JoyController1Port, JoyController2Port;
+  // Controllers
+  static const int XboxController1Port, XboxController2Port;
+  static const int JoyController1Port, JoyController2Port;
 
-	static const double joyDeadzone;
-	static const double xboxDeadzone;
+  static const double joyDeadzone;
+  static const double xboxDeadzone;
+  static const double triggerDeadzone;
 
-	// Drive System
-	static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
+  // Drive System
+  static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
 
-	// SubSystem1
-	static const int Sub1SRXport1, Sub1SRXport2;
-
-	// SubSystem2
-	static const int Sub2SPXport1;
-
-	// Control System
-	static const int CompressorPort;
-	static const int PressureSensorPort;
+  // Control System
+  static const int PressureSensorPort;
+  static const int CompressorPort;
 
 
+  // --------------- Defined Buttons -----------------
 
-	// -------------Defined Speed---------------------
-
-	// SubSystem1
-	static const double SubSystem1Speed;
-
-	// SubSystem2
-	static const double SubSystem2IdleSpeed;
-	static const double SubSystem2Speed;
-
-
+  // Drivetrain
+  #if __CONTROLMAP_USING_JOYSTICK__
+  static const wml::controllers::tAxis DrivetrainForward, DrivetrainTurn;
+  #else
+  static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
+  #endif
+  static const wml::controllers::tButton ReverseDrivetrain;
 
 
-	// ---------------Defined Buttons---------------
-	// DriveCar vroom vroom
-	#if __CONTROLMAP__USING_JOYSTICK__
-	static const wml::controllers::tAxis DrivetrainForward, DrivetrainTurn;
-	#else
-	static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
-	#endif
-	static const wml::controllers::tButton ReverseDrivetrain;
-	
-	// SubSystem1
-	static const wml::controllers::tButton SubSystem1Up, SubSystem1Down;
-
-	// SubSystem2
-	static const wml::controllers::tButton SubSystem2Intake, SubSystem2Outtake;
 };
 void DefinePorts();

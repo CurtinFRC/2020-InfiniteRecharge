@@ -1,7 +1,5 @@
 #include "Robot.h"
 
-// Robot.cpp is our main entrypoint
-
 using namespace frc;
 using namespace wml;
 
@@ -9,35 +7,22 @@ double lastTimestamp;
 
 void Robot::RobotInit() {
   lastTimestamp = Timer::GetFPGATimestamp();
-  
+
+  // Inverts one side of our drivetrain
   robotMap.driveSystem.LGearbox.transmission->SetInverted(true);
   robotMap.driveSystem.RGearbox.transmission->SetInverted(false);
 
-  drivetrain->StartLoop(100);
+  drivetrain->StartLoop(100); // WML Drivetrain
 
+
+  // Registering our systems to be called
   StrategyController::Register(drivetrain);
-  StrategyController::Register(subSystem1);
-  StrategyController::Register(subSystem2);
 
-  // For ShuffleBoard
+  // Registering Systems to Network Tables
   NTProvider::Register(drivetrain);
-  NTProvider::Register(subSystem1);
-  NTProvider::Register(subSystem2);
-  NTProvider::Register(&robotMap.controlSystem.pressorSensor);
-
-  std::cout << "Robot SetUp Complete" << std::endl;
 }
 
-void Robot::RobotPeriodic() {
-  double dt = Timer::GetFPGATimestamp() - lastTimestamp;
-  lastTimestamp = Timer::GetFPGATimestamp();
-
-  // long and complicated way of saying on
-  robotMap.controlSystem.compressor.SetTarget(actuators::BinaryActuatorState::kForward);
-  
-  StrategyController::Update(dt);
-  NTProvider::Update();
-}
+void Robot::RobotPeriodic() {}
 
 void Robot::DisabledInit() {
   InterruptAll(true);
@@ -47,9 +32,7 @@ void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {}
-void Robot::TeleopPeriodic() {
-
-} 
+void Robot::TeleopPeriodic() {} 
 
 void Robot::TestInit() {}
 void Robot::TestPeriodic() {}

@@ -26,6 +26,7 @@ jobs:
   steps:
   - template: azure-init.yml
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -42,6 +43,7 @@ jobs:
   steps:
   - template: azure-init.yml
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -59,6 +61,7 @@ jobs:
   steps:
   - script: sudo apt-get install -y libusb-1.0-0-dev
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -75,6 +78,7 @@ jobs:
   container: wpilib2019
   steps:
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -83,7 +87,7 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
-      options: '-Pno-desktop -xcheck -x:vision:build'
+      options: '-Pno-desktop -xcheck -x:4788:src:coprocessor:build'
 
 - job: pi_vision_linux16
   pool: 
@@ -91,6 +95,7 @@ jobs:
   container: raspbian
   steps:
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -98,7 +103,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean :vision:build'
+      tasks: 'clean :4788:src:coprocessor:build'
       options: '-Pno-roborio -Pno-desktop -xcheck'
 
 - job: tinkerboard_vision_linux16
@@ -107,11 +112,12 @@ jobs:
   container: linux_jaci
   steps:
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
-      tasks: ':vision:installTinkerboardToolchain'
+      tasks: ':4788:src:coprocessor:installTinkerboardToolchain'
       options: '-Pno-roborio -Pno-desktop --scan --stacktrace'
   - task: Gradle@2
     inputs:
@@ -120,7 +126,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean :vision:build'
+      tasks: 'clean :4788:src:coprocessor:build'
       options: '-Pno-roborio -Pno-desktop -xcheck'
 
 - job: doxygen_linux16
@@ -129,6 +135,7 @@ jobs:
   container: linux_jaci
   steps:
   - script: git submodule update --init
+  - script: git submodule update
   - task: Gradle@2
     inputs:
       workingDirectory: ''

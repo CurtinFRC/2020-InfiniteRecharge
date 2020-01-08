@@ -1,13 +1,24 @@
 #pragma once
 
-// #include "GeneralLibs/GeneralLibs.h"
+#include "ControlMap.h"
+#include "devices/StateDevice.h"
+#include "control/PIDController.h"
+#include "strategy/StrategySystem.h"
+#include "control/MotorFilters.h"
+#include "Gearbox.h"
+#include "strategy/Strategy.h"
+#include "controllers/Controllers.h"
+#include "sensors/BinarySensor.h"
 
-#include "SubSystem1.h"
-#include "SubSystem2.h"
+#include "Usage.h"
+
 
 struct RobotMap {
-  #if __CONTROLMAP__USING_JOYSTICK__
+  
 
+  // Controllers
+  #if __CONTROLMAP_USING_JOYSTICK__
+  
   wml::controllers::Joystick joy1{ ControlMap::JoyController1Port };
   wml::controllers::Joystick joy2{ ControlMap::JoyController2Port };
 
@@ -34,36 +45,10 @@ struct RobotMap {
     wml::Drivetrain drivetrain{ driveTrainConfig };
     wml::control::PIDGains gainsVelocity{ "Drivetrain Velocity", 1 };
   };
-
   DriveSystem driveSystem;
 
-  // SubSystem1
-  struct SubSystem1 {
-    wml::TalonSrx SRX1{ ControlMap::Sub1SRXport1 };
-    wml::TalonSrx SRX2{ ControlMap::Sub1SRXport2 };
-    
-    wml::sensors::DigitalEncoder encoder{ 4, 5, 1024 };
-    wml::Gearbox gearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(SRX1, SRX2)), &encoder };
-    SubSystem1Config subSystem1Config{ gearbox };
-  };
-
-  SubSystem1 subSystem1;
-
-  // SubSystem2
-  struct SubSystem2 {
-    wml::VictorSpx SPX{ ControlMap::Sub2SPXport1 };
-  };
-
-  SubSystem2 subSystem2;
-
-  // ControlSystem
   struct ControlSystem {
-    wml::actuators::Compressor compressor{ ControlMap::CompressorPort };
-    wml::sensors::PressureSensor pressorSensor{ ControlMap::PressureSensorPort };
+    wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
+    wml::actuators::Compressor compressor{ ControlMap::CompressorPort }; 
   };
-
-  ControlSystem controlSystem;
-
-  
-
 };
