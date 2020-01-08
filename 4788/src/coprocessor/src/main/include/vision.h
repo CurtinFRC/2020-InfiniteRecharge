@@ -9,9 +9,8 @@
 class curtin_frc_vision {
  public:
   void run();
-
-  nt::NetworkTableEntry TargetX;
-  nt::NetworkTableEntry TargetY;
  private:
   CJ::VisionTracking vision;
+  nt::NetworkTableEntry TargetX;
+  nt::NetworkTableEntry TargetY;
 };

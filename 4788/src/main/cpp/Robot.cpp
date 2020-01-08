@@ -22,7 +22,9 @@ void Robot::RobotInit() {
   NTProvider::Register(drivetrain);
 }
 
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+  double dt = Timer::GetFPGATimestamp() - lastTimestamp;
+}
 
 void Robot::DisabledInit() {
   InterruptAll(true);

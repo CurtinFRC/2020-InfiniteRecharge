@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ControlMap.h"
 #include "devices/StateDevice.h"
 #include "control/PIDController.h"
 #include "strategy/StrategySystem.h"
@@ -25,11 +24,14 @@
 #include "sensors/LimitSwitch.h"
 #include "sensors/NavX.h"
 #include "sensors/PressureSensor.h"
-
+#include <networktables/NetworkTableInstance.h>
 #include "control/PIDController.h"
 #include "MotionProfiling.h"
 
 #include "Usage.h"
+
+// Local Files
+#include "ControlMap.h"
 
 
 struct RobotMap {
@@ -66,6 +68,7 @@ struct RobotMap {
   };
   DriveSystem driveSystem;
 
+
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
     wml::actuators::Compressor compressor{ ControlMap::CompressorPort }; 
@@ -74,4 +77,5 @@ struct RobotMap {
 
     nt::NetworkTableEntry TargetX = table->GetEntry("Target_X"), TargetY = table->GetEntry("Target_Y");
   };
+  ControlSystem controlSystem;
 };
