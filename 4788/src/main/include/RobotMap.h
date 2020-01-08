@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ControlMap.h"
 #include "devices/StateDevice.h"
 #include "control/PIDController.h"
 #include "strategy/StrategySystem.h"
@@ -10,7 +9,29 @@
 #include "controllers/Controllers.h"
 #include "sensors/BinarySensor.h"
 
+#include <frc/SpeedControllerGroup.h>
+#include <frc/Spark.h>
+#include <frc/PowerDistributionPanel.h>
+
+#include "WMLCtre.h"
+#include "controllers/Controllers.h"
+#include "Gearbox.h"
+#include "actuators/BinaryServo.h"
+#include "actuators/Compressor.h"
+#include "actuators/DoubleSolenoid.h"
+#include "actuators/VoltageController.h"
+#include "sensors/Encoder.h"
+#include "sensors/LimitSwitch.h"
+#include "sensors/NavX.h"
+#include "sensors/PressureSensor.h"
+#include <networktables/NetworkTableInstance.h>
+#include "control/PIDController.h"
+#include "MotionProfiling.h"
+
 #include "Usage.h"
+
+// Local Files
+#include "ControlMap.h"
 
 
 struct RobotMap {
@@ -47,8 +68,14 @@ struct RobotMap {
   };
   DriveSystem driveSystem;
 
+
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
     wml::actuators::Compressor compressor{ ControlMap::CompressorPort }; 
+    std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
+    std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
+
+    nt::NetworkTableEntry TargetX = table->GetEntry("Target_X"), TargetY = table->GetEntry("Target_Y");
   };
+  ControlSystem controlSystem;
 };

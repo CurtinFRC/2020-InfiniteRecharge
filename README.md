@@ -25,13 +25,16 @@ You can run vision on your local computer without needing a Raspberry Pi or Tink
 # Projects
 
 ## [4788](4788)
-This is the team code. The code in these projects should be _very minimal_, since most will be put into `common`. This code should only initialize the layout / configuration of the robot and hand off most control to `commonRobot`. This allows us to share code between the two teams.
+This is our main team code that is placed on the roborio. The code in these projects should be _simplified_, since most of the code is derived via `wml`. The code should be neat and basically one large calling system to `wml` functions.
 
-4788 both depend on `wml`.
+Because of this 4788 depends on `wml`.
 
 
-## [WML](wml)
+## [WML](https://github.com/wml-frc/WML)
 WML is the library for robot code on the RoboRio, designed to simplify FRC programming, and give usefull functions to use. Effectively replacing the normal frc:: with wml::
+
+## [CJ-Vision](https://github.com/wml-frc/CJ-Vision)
+CJ-Vision is the pre-threaded library used to power our vision tracking with nifty functions used often in frc vision tracking.
 
 ## [Vision](4788/src/coprocessor/)
 Vision is the code that gets put on our vision system for the competition. Vision doesn't get deployed to the RoboRIO, but instead to a Raspberry Pi or Asus Tinkerboard.

@@ -33,6 +33,6 @@ struct ControlMap {
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
 
-
+  static const wml::controllers::tButton DriveToVisionTarget;
 };
 void DefinePorts();
