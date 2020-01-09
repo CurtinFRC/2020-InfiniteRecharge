@@ -28,7 +28,10 @@ class Robot : public frc::TimedRobot {
 
   wml::controllers::XboxController *xbox;
   
-  frc::Spark *leftMotors[1], *rightMotors[1];
+  //frc::Spark *leftMotors[1], *rightMotors[1];
+  wml::TalonSrx *RightSRX;
+  wml::VictorSpx *LeftSRX;
+  wml::VictorSpx *LeftSPX, *RightSPX;
   wml::Gearbox *left, *right;
   wml::Drivetrain *drivetrain;
 
