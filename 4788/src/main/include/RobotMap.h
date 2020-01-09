@@ -42,12 +42,12 @@ struct RobotMap {
   
   wml::controllers::Joystick joy1{ ControlMap::JoyController1Port };
   wml::controllers::Joystick joy2{ ControlMap::JoyController2Port };
-
+  wml::controllers::SmartControllerGroup contGroup{ joy1, joy2 };
   #else
 
   wml::controllers::XboxController xbox1{ ControlMap::XboxController1Port };
   wml::controllers::XboxController xbox2{ ControlMap::XboxController2Port };
-
+  wml::controllers::SmartControllerGroup contGroup{ xbox1, xbox2 };
   #endif
 
   // Drive System
@@ -72,9 +72,10 @@ struct RobotMap {
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
     wml::actuators::Compressor compressor{ ControlMap::CompressorPort }; 
+
+    // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
     std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-
     nt::NetworkTableEntry TargetX = table->GetEntry("Target_X"), TargetY = table->GetEntry("Target_Y");
   };
   ControlSystem controlSystem;
