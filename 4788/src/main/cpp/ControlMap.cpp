@@ -6,6 +6,8 @@ using hand = frc::XboxController::JoystickHand; // Only for FRC controllers
 using namespace wml;
 using namespace wml::controllers;
 
+void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {}
+
 
 // -------------Defined Ports-------------------
 

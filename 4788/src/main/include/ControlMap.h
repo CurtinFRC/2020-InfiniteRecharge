@@ -5,6 +5,7 @@
 #define __CONTROLMAP_USING_JOYSTICK__ false
 
 struct ControlMap {
+  static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup);
   // ---------------- Defined Ports ------------------
 
   // Controllers
@@ -35,4 +36,3 @@ struct ControlMap {
 
   static const wml::controllers::tButton DriveToVisionTarget;
 };
-void DefinePorts();

@@ -6,13 +6,21 @@ using namespace wml;
 double lastTimestamp;
 
 void Robot::RobotInit() {
+  // Get's last time stamp, used to calculate dt
   lastTimestamp = Timer::GetFPGATimestamp();
+
+  // Initializes The smart controllers assigned in robotmap
+  ControlMap::InitSmartControllerGroup(robotMap.contGroup);
+
+  // --------------------------Drivetrain--------------------------
 
   // Inverts one side of our drivetrain
   robotMap.driveSystem.LGearbox.transmission->SetInverted(true);
   robotMap.driveSystem.RGearbox.transmission->SetInverted(false);
 
-  drivetrain->StartLoop(100); // WML Drivetrain
+  // Initializes drivetrain
+  drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
+  drivetrain->StartLoop(100);
 
 
   // Registering our systems to be called
