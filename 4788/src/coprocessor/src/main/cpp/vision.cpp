@@ -18,18 +18,23 @@ void curtin_frc_vision::run() {
 
 	TargetX = table->GetEntry("Target_X");
 	TargetY = table->GetEntry("Target_Y");
+	ImageHeight = table->GetEntry("ImageHeight");
+	ImageWidth = table->GetEntry("ImageWidth");
 
 	vision.SetupVision(&Image, 0, 30, ResHeight, ResWidth, 100, "TestCam", true);
 	vision.CustomTrack(&TrackingImage, &Image, 30, 70, 50, 255, 100, 0, 0);
-	cv::waitKey(5000);
 	vision.Processing.visionHullGeneration.BoundingBox(&TrackingImage, &ProcessingOutput, &cx, &cy, 10);
 	while (true) {
 		if (vision.Camera.cam.sink.GrabFrame(Image) != 0) {
 
 			// Vision Outputing
+			#ifdef __DESKTOP__
 			vision.Output.Display("Origin Image", &Image);
 			vision.Output.Display("Green Filtered Image", &TrackingImage);
 			vision.Output.Display("Contour Detection", &ProcessingOutput);
+			#else 
+			vision.Camera.cam.output.PutFrame(ProcessingOutput);
+			#endif
 
 			//Calc offset
 			offsetX = cx-(ResWidth/2);
@@ -39,6 +44,8 @@ void curtin_frc_vision::run() {
 			// Sending Values to nt
 			TargetX.SetDouble(offsetX);
 			TargetY.SetDouble(offsetY);
+			ImageHeight.SetDouble(ResHeight);
+			ImageWidth.SetDouble(ResWidth);
 		}
 	}
 }
