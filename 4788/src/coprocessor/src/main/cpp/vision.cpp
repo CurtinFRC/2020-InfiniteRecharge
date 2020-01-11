@@ -19,10 +19,10 @@ void curtin_frc_vision::run() {
 	TargetX = table->GetEntry("Target_X");
 	TargetY = table->GetEntry("Target_Y");
 
-	vision.SetupVision(&Image, 1, 60, ResHeight, ResWidth, 100, "TestCam", true);
+	vision.SetupVision(&Image, 0, 30, ResHeight, ResWidth, 100, "TestCam", true);
 	vision.CustomTrack(&TrackingImage, &Image, 30, 70, 50, 255, 100, 0, 0);
-	while (vision.Camera.cam.sink.GrabFrame(Image) == 0) {}
-	vision.Processing.visionHullGeneration.BoundingBox(&TrackingImage, &ProcessingOutput, &cx, &cy);
+	cv::waitKey(5000);
+	vision.Processing.visionHullGeneration.BoundingBox(&TrackingImage, &ProcessingOutput, &cx, &cy, 10);
 	while (true) {
 		if (vision.Camera.cam.sink.GrabFrame(Image) != 0) {
 
