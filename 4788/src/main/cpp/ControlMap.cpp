@@ -49,7 +49,6 @@ const int ControlMap::CompressorPort = 1;
   const tAxis ControlMap::DrivetrainLeft{ 1, XboxController::kLeftYAxis };
   const tAxis ControlMap::DrivetrainRight{ 1, XboxController::kRightYAxis };
   const tButton ControlMap::ReverseDrivetrain{ 1, XboxController::kStart };
-  const tButton ControlMap::DriveToVisionTarget{ 1, XboxController::kA };
 #endif
 
 // Sub Systems
