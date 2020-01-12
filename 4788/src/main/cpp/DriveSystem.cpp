@@ -1,12 +1,7 @@
 #include "DriveSystem.h"
-#include "RobotMap.h"
-
-#include <cmath>
 
 using namespace wml;
 using namespace wml::controllers;
-
-RobotMap::ControlSystem controlSystem;
 
 // Initializes & Defines groups for Manual Control
 DrivetrainManual::DrivetrainManual(std::string name, Drivetrain &drivetrain, SmartControllerGroup &contGroup) : Strategy(name), _drivetrain(drivetrain), _contGroup(contGroup) {

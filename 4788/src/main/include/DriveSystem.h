@@ -2,6 +2,7 @@
 
 #include "controllers/Controllers.h"
 #include "strategy/Strategy.h"
+#include "RobotMap.h"
 #include "Drivetrain.h"
 
 
