@@ -1,4 +1,4 @@
-#include "Intake.h"
+#include "Climber.h"
 #include "RobotMap.h"
 
 #include <cmath>
@@ -7,13 +7,13 @@ using namespace wml;
 using namespace wml::controllers;
 
 // Initializes & Defines groups for Manual/Teleop Control
-IntakeTeleop::IntakeTeleop(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
+ClimberTeleop::ClimberTeleop(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
 }
 
-// On Loop Update, this code runs (Just the Intake)
-void IntakeTeleop::OnUpdate(double dt) {
+// On Loop Update, this code runs (Just the Climber)
+void ClimberTeleop::OnUpdate(double dt) {
   //@TODO auto aim using values from CJ-Vision over nt
 }
 
@@ -23,12 +23,12 @@ void IntakeTeleop::OnUpdate(double dt) {
 
 
 // Initializes & Defines groups for Auto Control
-IntakeAuto::IntakeAuto(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
+ClimberAuto::ClimberAuto(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
 }
 
-// On Loop Update, this code runs (Just the Intake)
-void IntakeAuto::OnUpdate(double dt) {
+// On Loop Update, this code runs (Just the Climber)
+void ClimberAuto::OnUpdate(double dt) {
   //@TODO auto aim during autonomous. (still working on pathweaver)
 }
