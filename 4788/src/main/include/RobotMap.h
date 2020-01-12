@@ -20,6 +20,7 @@
 #include "actuators/Compressor.h"
 #include "actuators/DoubleSolenoid.h"
 #include "actuators/VoltageController.h"
+#include "Drivetrain.h"
 #include "sensors/Encoder.h"
 #include "sensors/LimitSwitch.h"
 #include "sensors/NavX.h"

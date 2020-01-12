@@ -13,4 +13,6 @@ class curtin_frc_vision {
   CJ::VisionTracking vision;
   nt::NetworkTableEntry TargetX;
   nt::NetworkTableEntry TargetY;
+  nt::NetworkTableEntry ImageHeight;
+  nt::NetworkTableEntry ImageWidth;
 };

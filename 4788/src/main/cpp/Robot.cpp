@@ -14,13 +14,17 @@ void Robot::RobotInit() {
 
   // --------------------------Drivetrain--------------------------
 
-  // Inverts one side of our drivetrain
-  robotMap.driveSystem.LGearbox.transmission->SetInverted(true);
-  robotMap.driveSystem.RGearbox.transmission->SetInverted(false);
-
   // Initializes drivetrain
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
+  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.contGroup));
   drivetrain->StartLoop(100);
+
+  // Inverts one side of our drivetrain
+  drivetrain->GetConfig().leftDrive.transmission->SetInverted(true);
+  drivetrain->GetConfig().rightDrive.transmission->SetInverted(false);
+
+  // ----------------------------Turret----------------------------
+  //@TODO
 
 
   // Registering our systems to be called
@@ -32,17 +36,24 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
   double dt = Timer::GetFPGATimestamp() - lastTimestamp;
+
+  StrategyController::Update(dt);
+  NTProvider::Update();
 }
 
 void Robot::DisabledInit() {
   InterruptAll(true);
 }
 
-void Robot::AutonomousInit() {}
+void Robot::AutonomousInit() {
+  Schedule(std::make_shared<DrivetrainAuto>(*drivetrain, wml::control::PIDGains{ "I am gains", 1, 0, 0 }));
+}
 void Robot::AutonomousPeriodic() {}
 
-void Robot::TeleopInit() {}
-void Robot::TeleopPeriodic() {} 
+void Robot::TeleopInit() { Schedule(drivetrain->GetDefaultStrategy(), true); }
+void Robot::TeleopPeriodic() {}
 
-void Robot::TestInit() {}
+void Robot::TestInit() {
+  Schedule(std::make_shared<DrivetrainTest>(*drivetrain, wml::control::PIDGains{ "I am gains 2: Elecis Booglsesoo", 1, 0, 0 }));
+}
 void Robot::TestPeriodic() {}
