@@ -58,7 +58,7 @@ struct RobotMap {
     wml::VictorSpx Lspx{ ControlMap::DriveSPXportL };
     wml::VictorSpx Rspx{ ControlMap::DriveSPXportR };
 
-    // @TODO: Add encoders to drivetrain gearboxes
+    // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
     wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Lsrx, Lspx)), nullptr };
     wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Rsrx, Rspx)), nullptr };

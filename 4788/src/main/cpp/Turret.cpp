@@ -6,8 +6,6 @@
 using namespace wml;
 using namespace wml::controllers;
 
-RobotMap::ControlSystem controlSystem;
-
 // Initializes & Defines groups for Manual/Teleop Control
 TurretTeleop::TurretTeleop(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
   SetCanBeInterrupted(true);

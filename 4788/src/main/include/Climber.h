@@ -3,9 +3,9 @@
 #include "controllers/Controllers.h"
 #include "strategy/Strategy.h"
 
-class IntakeTeleop : public wml::Strategy {
+class ClimberTeleop : public wml::Strategy {
   public:
-    IntakeTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+    ClimberTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
 
     void OnUpdate(double dt) override;
 
@@ -13,9 +13,9 @@ class IntakeTeleop : public wml::Strategy {
     wml::controllers::SmartControllerGroup &_contGroup;
 };
 
-class IntakeAuto : public wml::Strategy {
+class ClimberAuto : public wml::Strategy {
   public:
-    IntakeAuto(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+    ClimberAuto(std::string name, wml::controllers::SmartControllerGroup &contGroup);
 
     void OnUpdate(double dt) override;
 
@@ -23,9 +23,9 @@ class IntakeAuto : public wml::Strategy {
     wml::controllers::SmartControllerGroup &_contGroup;
 };
 
-class IntakeTest : public wml::Strategy {
+class ClimberTest : public wml::Strategy {
   public:
-    IntakeTest(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+    ClimberTest(std::string name, wml::controllers::SmartControllerGroup &contGroup);
 
     void OnUpdate(double dt) override;
 
