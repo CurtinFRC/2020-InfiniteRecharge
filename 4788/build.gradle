@@ -1,1 +1,3 @@
-apply from: rootProject.file('teams.gradle')
+version https://git-lfs.github.com/spec/v1
+oid sha256:d06fdf651bb463245f6bde6e16c283559252cde00232f195e036227f5bc73390
+size 44
