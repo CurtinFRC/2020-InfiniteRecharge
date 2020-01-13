@@ -1,34 +1,3 @@
-#pragma once
-
-#include "controllers/Controllers.h"
-#include "strategy/Strategy.h"
-
-class TurretTeleop : public wml::Strategy {
-  public:
-    TurretTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
-
-class TurretAuto : public wml::Strategy {
-  public:
-    TurretAuto(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-  
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
-
-class TurretTest : public wml::Strategy {
-  public: 
-    TurretTest(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
+version https://git-lfs.github.com/spec/v1
+oid sha256:44cbad97688d8cb4af11c4b10dcf05d730646a0b2877a99c58b65a262f79fd69
+size 622

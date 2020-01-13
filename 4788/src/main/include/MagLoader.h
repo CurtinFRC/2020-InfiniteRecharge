@@ -1,34 +1,3 @@
-#pragma once
-
-#include "controllers/Controllers.h"
-#include "strategy/Strategy.h"
-
-class MagLoaderTeleop : public wml::Strategy {
-  public:
-    MagLoaderTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
-
-class MagLoaderAuto : public wml::Strategy {
-  public:
-    MagLoaderAuto(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
-
-class MagLoaderTest : public wml::Strategy {
-  public:
-    MagLoaderTest(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
+version https://git-lfs.github.com/spec/v1
+oid sha256:76e7b6f85aef910eb74f8f2d6355b0b46040bf5bec595c367392b033539b41ae
+size 639
