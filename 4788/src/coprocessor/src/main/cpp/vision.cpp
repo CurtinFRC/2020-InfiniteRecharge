@@ -51,10 +51,11 @@ void curtin_frc_vision::run() {
 			// Sending Values to nt
 			visionTable->PutNumber("X Offset", offsetX);
 
-			// TargetX.SetDouble(offsetX);
+			TargetX.SetDouble(offsetX);
 			TargetY.SetDouble(offsetY);
 			ImageHeight.SetDouble(ResHeight);
 			ImageWidth.SetDouble(ResWidth);
+			visionTable->PutBoolean("Vision Active", true);
 		} else {
 			visionTable->PutBoolean("Vision Active", false);
 		}
