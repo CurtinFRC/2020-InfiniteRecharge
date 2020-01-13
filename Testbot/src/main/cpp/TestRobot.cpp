@@ -5,24 +5,18 @@
 #include <math.h>
 #include <iostream>
 
-using namespace frc;
-using namespace wml;
-
 void Robot::RobotInit() {
   xbox = new wml::controllers::XboxController(0);
-  
-  leftMotors[0] = new Spark(2);
-  leftMotors[0]->SetInverted(false);
-  left = new Gearbox{ new wml::actuators::MotorVoltageController(new SpeedControllerGroup(*leftMotors[0])), nullptr};
 
-  rightMotors[0] = new Spark(3);
-  rightMotors[0]->SetInverted(true);
-  right = new Gearbox{ new wml::actuators::MotorVoltageController(new SpeedControllerGroup(*rightMotors[0])), nullptr};
+  LeftSRX = new wml::VictorSpx(8);
+  LeftSPX = new wml::VictorSpx(3);
+  LeftSRX->SetInverted(true);
+  LeftSPX->SetInverted(true);
 
-  hatchEjector = new DoubleSolenoid(0, 1);
-
-  DrivetrainConfig drivetrainConfig{*left, *right};
-  drivetrain = new Drivetrain(drivetrainConfig);
+  RightSRX = new wml::TalonSrx(5);
+  RightSPX = new wml::VictorSpx(4);
+  RightSRX->SetInverted(false);
+  RightSPX->SetInverted(false);
 }
 
 void Robot::AutonomousInit() {}
@@ -30,22 +24,19 @@ void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() {
-  double leftSpeed = -xbox->GetAxis(1); // L Y axis
-  double rightSpeed = -xbox->GetAxis(5); // R Y axis
+  if (xbox->GetAxis(wml::controllers::XboxController::kLeftThrottle)) {
+    double speed = xbox->GetAxis(wml::controllers::XboxController::kLeftThrottle);
+    LeftSRX->Set(speed);
+    //LeftSPX->Set(1);
+    //RightSRX->Set(1);
+    //RightSPX->Set(1);
+  } else {
+    LeftSRX->Set(0);
+    LeftSPX->Set(0);
 
-  leftSpeed *= fabs(leftSpeed);
-  rightSpeed *= fabs(rightSpeed);
-
-  drivetrain->Set(leftSpeed, rightSpeed);
-
-  hatchEjector->Set(!xbox->GetButton(6) ? DoubleSolenoid::kForward : DoubleSolenoid::kReverse); // R bumper
-  // if (xbox->GetBumper(xbox->kRightHand)) {
-  //   solState++;
-  //   solState %= 2; //2;
-  //   hatchEjector->Set((bool)solState ? DoubleSolenoid::kForward : DoubleSolenoid::kReverse);
-  // }
-
-  // if (xbox->GetBumper(xbox->kLeftHand)) hatchEjector->Set(DoubleSolenoid::kReverse);
+    RightSRX->Set(0);
+    RightSPX->Set(0);
+  }
 }
 
 void Robot::TestInit() {}
