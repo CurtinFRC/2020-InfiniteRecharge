@@ -1,7 +1,3 @@
-
-# Azure has a gradle init file that doesn't work in Gradle 5.0, so we have to delete it.
-steps:
-- task: DeleteFiles@1
-  inputs:
-    sourceFolder: '/Users/vsts/.gradle/init.d/'
-    contents: 'log-gradle-version-plugin.gradle'
+version https://git-lfs.github.com/spec/v1
+oid sha256:8b4cf10bc5de8bb953a683c25da2deb2ab7a816800771825778081313515c8d0
+size 231

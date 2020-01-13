@@ -1,15 +1,3 @@
-#include "gtest/gtest.h"
-
-#include <frc/Timer.h>
-#include <frc/DriverStation.h>
-
-#include <iostream>
-
-int main(int argc, char** argv) {
-  // Fixes wpilibsuite#1550
-  frc::DriverStation::GetInstance();
-  frc::Wait(0.25);
-
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:c6db53c285f36cc907cae4213df9f082455e56239ecd3dd9c9edf7a7a8dd183f
+size 306

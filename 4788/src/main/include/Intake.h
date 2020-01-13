@@ -1,28 +1,3 @@
-#pragma once
-
-#include "controllers/Controllers.h"
-#include "strategy/Strategy.h"
-
-class IntakeTeleop : public wml::Strategy {
-  public:
-    IntakeTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
-
-class IntakeAuto : public wml::Strategy {
-  public:
-    IntakeAuto(std::string name);
-
-    void OnUpdate(double dt) override;
-};
-
-class IntakeTest : public wml::Strategy {
-  public:
-    IntakeTest(std::string name);
-
-    void OnUpdate(double dt) override;
-};
+version https://git-lfs.github.com/spec/v1
+oid sha256:17bab12e2817839559e20f38394e970f30f43b3d0a64a104aad8d1c7c0bd92d8
+size 621

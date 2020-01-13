@@ -1,13 +1,3 @@
-ChallengeResponseAuthentication no
-UsePAM yes
-
-AllowAgentForwarding yes
-AllowTcpForwarding yes
-X11Forwarding yes
-X11DisplayOffset 10
-X11UseLocalhost no
-PrintMotd no
-
-AcceptEnv LANG LC_*
-
-Subsystem	sftp	/usr/lib/openssh/sftp-server
+version https://git-lfs.github.com/spec/v1
+oid sha256:1087be641b907d9ee79f651fe8e1b60085d0d556a79a1558cd47afb7c93390b7
+size 244

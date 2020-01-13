@@ -1,20 +1,3 @@
-#include "vision.h"
-
-#include <iostream>
-
-#ifndef RUNNING_FRC_TESTS
-int main() {
-
-#ifdef __DESKTOP__
-  std::cout << "Running on Desktop - imshow enabled" << std::endl;
-#else
-  std::cout << "Running embedded - imshow disabled" << std::endl; // Imshow is only a windows functions. And tinkerboards/PI's are linux 
-#endif
-
-  std::cout << "Starting Vision Program" << std::endl;
-  curtin_frc_vision vision;
-  vision.run();
-  std::cout << "Vision Program Exited. Was that meant to happen?" << std::endl;
-  return -1;
-}
-#endif
+version https://git-lfs.github.com/spec/v1
+oid sha256:23afe2913e81c49558a69c5a8551fcc13d381ae92b4f9d9a0629652ae69bf6e4
+size 539

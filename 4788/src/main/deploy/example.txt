@@ -1,4 +1,3 @@
-Files placed in this directory will be deployed to the RoboRIO into the
-'deploy' directory in the home folder. Use the 'frc::GetFilePath' function from
-the 'frc/FileUtilities.h' header to get a proper path relative to the deploy
-directory.
+version https://git-lfs.github.com/spec/v1
+oid sha256:1314092a00f45cbfe16d33bd4e426a451549dda4a31590ff45e0233c1a14a088
+size 242

@@ -1,4 +1,3 @@
-X,Y,Tangent X,Tangent Y,Fixed Theta,Name
-1.7,3.0,1.0,0.0,true,d1
-4.706187928066614,3.063998214260723,1.283474388076412,-0.08149043733818528,true,
-5.5,1.8,-1.0,-1.65,true,aN
+version https://git-lfs.github.com/spec/v1
+oid sha256:ccba81b87747cd659798dacada5b3f98bab71d271152ae6152e133a49ab649eb
+size 177
