@@ -1,10 +1,13 @@
 #pragma once
 
+#include <vector>
+
 #include "controllers/Controllers.h"
 
 #define __CONTROLMAP_USING_JOYSTICK__ false
 
 struct ControlMap {
+  static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup);
   // ---------------- Defined Ports ------------------
 
   // Controllers
@@ -32,7 +35,4 @@ struct ControlMap {
   static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
-
-
 };
-void DefinePorts();
