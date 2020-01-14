@@ -17,6 +17,7 @@ IntakeTeleop::IntakeTeleop(std::string name, SmartControllerGroup &contGroup) : 
 
 // On Loop Update, this code runs (Just the Intake)
 void IntakeTeleop::OnUpdate(double dt) {
+  /*
   double InSpeed;
   if (_contGroup.Get(ControlMap::IntakeIn) > ControlMap::triggerDeadzone) {
     InSpeed = 1;
@@ -37,6 +38,7 @@ void IntakeTeleop::OnUpdate(double dt) {
   robotMap.intake.LintakeMotor.Set(OutSpeed);
   robotMap.intake.RintakeMotor.Set(OutSpeed);
   robotMap.intake.MintakeMotor.Set(OutSpeed);
+  */
 }
 
 // Initializes & Defines groups for Auto Control
