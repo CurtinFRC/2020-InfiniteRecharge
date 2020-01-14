@@ -43,8 +43,8 @@ struct ControlMap {
   static const wml::controllers::tButton ReverseDrivetrain;
 
   // Intake
-  static const wml::controllers::tAxis IntakeIn;
-  static const wml::controllers::tAxis IntakeOut;
+//  static const wml::controllers::tAxis IntakeIn;
+ // static const wml::controllers::tAxis IntakeOut;
 
   // Climber system 
   //static const wml::controllers::tButton UpMiddle;
