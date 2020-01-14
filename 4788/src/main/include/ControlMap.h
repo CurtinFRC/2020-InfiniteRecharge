@@ -21,6 +21,9 @@ struct ControlMap {
   // Drive System
   static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
 
+  // Turret
+  static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
+
   // Control System
   static const int PressureSensorPort;
   static const int CompressorPort;
@@ -35,4 +38,11 @@ struct ControlMap {
   static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
+
+  // Turret
+  static const wml::controllers::tAxis TurretAutoAim;
+  static const wml::controllers::tAxis TurretManualRotate;
+  static const wml::controllers::tAxis TurretManualAngle;
+  static const wml::controllers::tAxis TurretFlyWheelSpinUp;
+  static const wml::controllers::tButton TurretFire; // Might get rid of, if i automate Max speed of flywheel to fire.
 };

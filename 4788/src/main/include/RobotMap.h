@@ -69,6 +69,12 @@ struct RobotMap {
   };
   DriveSystem driveSystem;
 
+  struct Turret {
+    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
+    wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
+    wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
+  };
+  Turret turret;
 
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
@@ -77,7 +83,7 @@ struct RobotMap {
     // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
     std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-    nt::NetworkTableEntry TargetX = table->GetEntry("Target_X"), TargetY = table->GetEntry("Target_Y");
+    nt::NetworkTableEntry TargetX = table->GetEntry("Target_X"), TargetY = table->GetEntry("Target_Y"), ImageHeight = table->GetEntry("ImageHeight"), ImageWidth = table->GetEntry("ImageWidth");
   };
   ControlSystem controlSystem;
 };

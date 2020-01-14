@@ -32,6 +32,11 @@ const int ControlMap::DriveSPXportL = 1;
 const int ControlMap::DriveSRXportR = 2;
 const int ControlMap::DriveSPXportR = 3;
 
+// Turret
+const int ControlMap::TurretFlyWheelPort = 7;
+const int ControlMap::TurretAnglePort = 8;
+const int ControlMap::TurretRotationPort = 9;
+
 // Control System
 const int ControlMap::PressureSensorPort = 0;
 const int ControlMap::CompressorPort = 1;
@@ -51,9 +56,13 @@ const int ControlMap::CompressorPort = 1;
   const tButton ControlMap::ReverseDrivetrain{ 1, XboxController::kStart };
 #endif
 
-// Sub Systems
+// Turrent
 #if __CONTROLMAP_USING_JOYSTICK__
-
+  
 #else
-
+  const tAxis ControlMap::TurretAutoAim{ 2, XboxController::kLeftThrottle };
+  const tAxis ControlMap::TurretManualRotate{ 2, XboxController::kRightXAxis };
+  const tAxis ControlMap::TurretManualAngle{ 2, XboxController::kLeftYAxis };
+  const tAxis ControlMap::TurretFlyWheelSpinUp{ 2, XboxController::kRightThrottle };
+  const tButton ControlMap::TurretFire{ 2, XboxController::kA };
 #endif

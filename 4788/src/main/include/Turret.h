@@ -2,6 +2,7 @@
 
 #include "controllers/Controllers.h"
 #include "strategy/Strategy.h"
+#include "RobotMap.h"
 
 class TurretTeleop : public wml::Strategy {
   public:
@@ -11,24 +12,19 @@ class TurretTeleop : public wml::Strategy {
 
   private:
     wml::controllers::SmartControllerGroup &_contGroup;
+    RobotMap robotMap;
 };
 
 class TurretAuto : public wml::Strategy {
   public:
-    TurretAuto(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+    TurretAuto(std::string name);
 
     void OnUpdate(double dt) override;
-  
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
 };
 
 class TurretTest : public wml::Strategy {
   public: 
-    TurretTest(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+    TurretTest(std::string name);
 
     void OnUpdate(double dt) override;
-
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
 };
