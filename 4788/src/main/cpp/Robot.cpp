@@ -51,7 +51,9 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() { Schedule(drivetrain->GetDefaultStrategy(), true); }
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  
+}
 
 void Robot::TestInit() {
   Schedule(std::make_shared<DrivetrainTest>(*drivetrain, wml::control::PIDGains{ "I am gains 2: Elecis Booglsesoo", 1, 0, 0 }));

@@ -21,6 +21,9 @@ struct ControlMap {
   // Drive System
   static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
 
+  //Intake system 
+  static const int Lintake, Rintake, Mintake;
+
   // Control System
   static const int PressureSensorPort;
   static const int CompressorPort;
@@ -35,4 +38,8 @@ struct ControlMap {
   static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
+
+  // Intake
+  static const wml::controllers::tAxis IntakeIn;
+  static const wml::controllers::tAxis IntakeOut;
 };

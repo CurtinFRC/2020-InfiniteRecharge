@@ -32,9 +32,16 @@ const int ControlMap::DriveSPXportL = 1;
 const int ControlMap::DriveSRXportR = 2;
 const int ControlMap::DriveSPXportR = 3;
 
+//Intake system 
+
+const int ControlMap::Lintake = 4;
+const int ControlMap::Rintake = 5;
+const int ControlMap::Mintake = 6;
+
 // Control System
 const int ControlMap::PressureSensorPort = 0;
 const int ControlMap::CompressorPort = 1;
+
 
 
 
@@ -51,9 +58,10 @@ const int ControlMap::CompressorPort = 1;
   const tButton ControlMap::ReverseDrivetrain{ 1, XboxController::kStart };
 #endif
 
-// Sub Systems
+//intake system 
 #if __CONTROLMAP_USING_JOYSTICK__
-
-#else
-
+  //@DO LATER
+#else 
+const tAxis ControlMap::IntakeIn{ 1, XboxController::kRightThrottle};
+const tAxis ControlMap::IntakeOut{1, XboxController::kLeftThrottle};
 #endif

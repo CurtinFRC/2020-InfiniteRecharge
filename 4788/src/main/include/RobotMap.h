@@ -69,6 +69,13 @@ struct RobotMap {
   };
   DriveSystem driveSystem;
 
+  struct Intake {
+    wml::TalonSrx LintakeMotor{ ControlMap::Lintake };
+    wml::TalonSrx RintakeMotor{ ControlMap::Rintake };
+    wml::TalonSrx MintakeMotor{ ControlMap::Mintake };
+  };
+  Intake intake;
+
 
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
