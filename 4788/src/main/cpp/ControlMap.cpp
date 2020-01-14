@@ -38,7 +38,13 @@ const int ControlMap::Lintake = 4;
 const int ControlMap::Rintake = 5;
 const int ControlMap::Mintake = 6;
 
+// Climber system 
+
+//const int ControlMap::ClimberMotor = 7;
+
+
 // Control System
+
 const int ControlMap::PressureSensorPort = 0;
 const int ControlMap::CompressorPort = 1;
 
@@ -65,3 +71,12 @@ const int ControlMap::CompressorPort = 1;
 const tAxis ControlMap::IntakeIn{ 1, XboxController::kRightThrottle};
 const tAxis ControlMap::IntakeOut{1, XboxController::kLeftThrottle};
 #endif
+
+//climber system 
+/*
+#if __CONTROLMAP_USING_JOYSTICK__ 
+
+#else 
+const tButton ControlMap::UpClimb{2, XboxController::kA};
+const tButton ControlMap::DownClimb{2, XboxController::kX};
+*/

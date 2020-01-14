@@ -76,6 +76,11 @@ struct RobotMap {
   };
   Intake intake;
 
+  //struct Climber {
+   // wml::TalonSrx ClimberMotor{ ControlMap::UpClimb };
+   // wml::TalonSrx ClimberMotor{ ControlMap::DownClimb };
+  //};
+
 
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };

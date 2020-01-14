@@ -14,7 +14,25 @@ ClimberTeleop::ClimberTeleop(std::string name, SmartControllerGroup &contGroup) 
 
 // On Loop Update, this code runs (Just the Climber)
 void ClimberTeleop::OnUpdate(double dt) {
-  //@TODO auto aim using values from CJ-Vision over nt
+ /* double UpClimbSpeed;
+  double DownClimbSpeed;
+  
+if (_contGroup.Get(ControlMap::UpClimb)){
+double UpClimbSpeed = ControlMap::UpClimb;
+ClimberMotor->Set(UpClimbSpeed);
+
+} else{
+ClimberMotor->Set(0);
+}
+
+if(_contGroup.Get(ControlMap::DownClimb)){
+double DownClimbSpeed = ControlMap::DownClimb;
+robotMap
+ClimberMotor->Set(DownClimbSpeed);
+} else{
+ClimberMotor->Set(0);
+}
+*/
 }
 
 

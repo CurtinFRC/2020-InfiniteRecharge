@@ -24,6 +24,9 @@ struct ControlMap {
   //Intake system 
   static const int Lintake, Rintake, Mintake;
 
+  //Climber system 
+  //static const int ClimberMotor;
+
   // Control System
   static const int PressureSensorPort;
   static const int CompressorPort;
@@ -42,4 +45,10 @@ struct ControlMap {
   // Intake
   static const wml::controllers::tAxis IntakeIn;
   static const wml::controllers::tAxis IntakeOut;
+
+  // Climber system 
+  //static const wml::controllers::tButton UpMiddle;
+  //static const wml::controllers::tButton UpFull;
+  //static const wml::controllers::tButton UpClimb;
+  //static const wml::controllers::tButton DownClimb;
 };
