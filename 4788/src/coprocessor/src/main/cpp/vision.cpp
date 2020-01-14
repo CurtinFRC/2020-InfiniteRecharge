@@ -47,11 +47,8 @@ void curtin_frc_vision::run() {
 			//Calc offset
 			offsetX = cx-(ResWidth/2);
 			offsetY = cy-(ResHeight/2);
-			
-			// Sending Values to nt
-			visionTable->PutNumber("X Offset", offsetX);
 
-			// TargetX.SetDouble(offsetX);
+			TargetX.SetDouble(offsetX);
 			TargetY.SetDouble(offsetY);
 			ImageHeight.SetDouble(ResHeight);
 			ImageWidth.SetDouble(ResWidth);

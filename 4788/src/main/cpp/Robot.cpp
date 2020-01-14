@@ -16,6 +16,7 @@ void Robot::RobotInit() {
 
   // Initializes drivetrain
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
+
   drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.contGroup));
   drivetrain->StartLoop(100);
 
@@ -24,11 +25,10 @@ void Robot::RobotInit() {
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(false);
 
   // ----------------------------Turret----------------------------
-  //@TODO
-
 
   // Registering our systems to be called
   StrategyController::Register(drivetrain);
+
 
   // Registering Systems to Network Tables
   NTProvider::Register(drivetrain);
@@ -50,7 +50,10 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {}
 
-void Robot::TeleopInit() { Schedule(drivetrain->GetDefaultStrategy(), true); }
+void Robot::TeleopInit() { 
+  Schedule(drivetrain->GetDefaultStrategy(), true);
+  Schedule(std::make_shared<TurretTeleop>("Turret Teleop", robotMap.contGroup)); // This is right... but also wrong
+}
 void Robot::TeleopPeriodic() {}
 
 void Robot::TestInit() {

@@ -1,30 +1,43 @@
 #pragma once
 
-#include "controllers/Controllers.h"
-#include "strategy/Strategy.h"
+#include <string>
+#include <utility>
+
+#include "devices/StateDevice.h"
+#include "Gearbox.h"
+#include "sensors/BinarySensor.h"
 #include "RobotMap.h"
 
-class TurretTeleop : public wml::Strategy {
-  public:
-    TurretTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+struct TurretConfig {
+	wml::Gearbox &horizontalAxis;		// WIP - type needs to be changed
+	wml::Gearbox &verticalAxis;  		// WIP - type needs to be changed
 
-    void OnUpdate(double dt) override;
+	wml::sensors::BinarySensor *limitSensorHorizontal;
+	wml::sensors::BinarySensor *limitSensorVertical;
 
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-    RobotMap robotMap;
+	std::string name = "<Turret>";
 };
 
-class TurretAuto : public wml::Strategy {
-  public:
-    TurretAuto(std::string name);
+enum class TurretState { kManual = 0, kSetpoint, kZeroing };
+class Turret : public wml::devices::StateDevice<TurretState> {
+ public:
+	Turret(TurretConfig config) : StateDevice(config.name), _config(config) {};
 
-    void OnUpdate(double dt) override;
-};
+	virtual std::string GetStateString() final;
 
-class TurretTest : public wml::Strategy {
-  public: 
-    TurretTest(std::string name);
+	void SetManual(double power);
+	void SetSetpoint(double setpoint);
+	void SetZeroing();
 
-    void OnUpdate(double dt) override;
+	std::pair<double, double> GetSetpoint() { return _setpoint; };
+
+	TurretConfig &GetConfig() { return _config; };
+	
+ protected:
+	virtual void OnStatePeriodic(TurretState state, double dt) override;
+
+ private:
+	TurretConfig _config;
+	std::pair<double, double> _setpoint;
+	// is this private. OR is it "private" or is this
 };

@@ -1,106 +1,54 @@
 #include "Turret.h"
-#include <iostream>
 
-#include <cmath>
+std::string Turret::GetStateString() {
+	switch (GetState()) {
+	 case TurretState::kManual:
+	 	return "kManual";
+		break;
 
-using namespace wml;
-using namespace wml::controllers;
+   case TurretState::kSetpoint:
+    return "kSetPoint";
+		break;
 
-//RobotMap robotMap;
+   case TurretState::kZeroing:
+    return "kZeroing";
+	 	break;
+	}
 
-double TurretTurnSpeed;
-double TurretAngleSpeed;
-double TurretFlyWheelSpeed;
+	return "<State Error>";
+};
 
-double TargetXGet;
-double TargetYGet;
+void Turret::SetManual(double power) {};
+void Turret::SetSetpoint(double setpoint) {};
+void Turret::SetZeroing() {};
 
-double TargetXOffset;
-double TargetYOffset;
 
-double ImageHeightGet;
-double ImageWidthGet;
+void Turret::OnStatePeriodic(TurretState state, double dt) {
+  switch (state) {
+   case TurretState::kManual:
+    _config.horizontalAxis.transmission->SetVoltage(12 * GetSetpoint().first);
+		_config.verticalAxis.transmission->SetVoltage(12 * GetSetpoint().second);
+    break;
 
-// Initializes & Defines groups for Manual/Teleop Control
-TurretTeleop::TurretTeleop(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
-}
+   case TurretState::kSetpoint:
+    _config.horizontalAxis.transmission->SetVoltage(0 * GetSetpoint().first);		// TEMP - requires 'set to encoder'
+		_config.verticalAxis.transmission->SetVoltage(0 * GetSetpoint().second);		// TEMP - requires 'set to encoder'
+    break;
 
-// On Loop Update, this code runs (Just the turret)
-void TurretTeleop::OnUpdate(double dt) {
-  TargetXGet = robotMap.controlSystem.TargetX.GetDouble(0);
-  TargetYGet = robotMap.controlSystem.TargetY.GetDouble(0);
-  ImageHeightGet = robotMap.controlSystem.ImageHeight.GetDouble(0);
-  ImageWidthGet = robotMap.controlSystem.ImageWidth.GetDouble(0);
+   case TurretState::kZeroing:
+    if (_config.limitSensorHorizontal != nullptr) {
+			if (!_config.limitSensorHorizontal->Get()) {
+				// Turn towards the limit switch -- TEMP
+				_config.horizontalAxis.transmission->SetVoltage(-0.1);
+			} else _config.horizontalAxis.transmission->SetVoltage(0);
+		} else _config.horizontalAxis.transmission->SetVoltage(0);
 
-  // Manual Turret Rotate
-  if (_contGroup.Get(ControlMap::TurretManualRotate) >= ControlMap::triggerDeadzone) {
-    TurretTurnSpeed = _contGroup.Get(ControlMap::TurretManualRotate);
-  } else {
-    TurretTurnSpeed = 0;
+		if (_config.limitSensorVertical != nullptr) {
+			if (!_config.limitSensorVertical->Get()) {
+				// Turn towards the limit switch  --  TEMP
+				_config.verticalAxis.transmission->SetVoltage(-0.1);
+			} else _config.verticalAxis.transmission->SetVoltage(0);
+		} else _config.verticalAxis.transmission->SetVoltage(0);
+    break;
   }
-
-  // Manual Turret Angle
-  if (_contGroup.Get(ControlMap::TurretManualAngle) >= ControlMap::triggerDeadzone) {
-    robotMap.turret.TurretAngle.Set(_contGroup.Get(ControlMap::TurretManualAngle));
-  } else {
-    TurretAngleSpeed = 0;
-  }
-
-  // Auto Aiming Code
-  if (_contGroup.Get(ControlMap::TurretAutoAim) >= ControlMap::triggerDeadzone) {
-    if ((TargetXGet >= ImageWidthGet) || (TargetYGet >= ImageHeightGet)) {
-      std::cout << "Vision Tracking Artificating Error" << std::endl;
-      //@TODO create vibration on controller. (Flashing Vibration)
-    } else {
-      TargetXOffset = TargetXGet/ImageWidthGet;
-      TargetYOffset = TargetYGet/ImageHeightGet;
-
-      TurretTurnSpeed = TargetXOffset;
-      TurretAngleSpeed = TargetYOffset;
-    } 
-  } 
-
-  // FlyWheel Code
-  if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) >= ControlMap::triggerDeadzone) {
-    TurretFlyWheelSpeed = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-  } else {
-    TurretFlyWheelSpeed = 0;
-  }
-
-  robotMap.turret.TurretAngle.Set(TurretAngleSpeed);
-  robotMap.turret.TurretRotation.Set(TurretTurnSpeed);
-  robotMap.turret.TurretFlyWheel.Set(TurretFlyWheelSpeed);
-}
-
-
-
-
-
-
-
-// Initializes & Defines groups for Auto Control
-TurretAuto::TurretAuto(std::string name) : Strategy(name) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
-}
-
-// On Loop Update, this code runs (Just the turret)
-void TurretAuto::OnUpdate(double dt) {
-  //@TODO auto aim during autonomous. (still working on pathweaver)
-}
-
-
-
-
-
-
-TurretTest::TurretTest(std::string name) : Strategy(name) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
-}
-
-void TurretTest::OnUpdate(double dt) {
-  //@TODO zero encoders activate motors and if it's getting vision tracking values. Basically... a test. lol
-}
+};

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "devices/StateDevice.h"
 #include "control/PIDController.h"
 #include "strategy/StrategySystem.h"
@@ -71,7 +73,7 @@ struct RobotMap {
 
   struct Turret {
     wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
-    wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
+    wml::VictorSpx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
   };
   Turret turret;
@@ -83,7 +85,8 @@ struct RobotMap {
     // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
     std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-    nt::NetworkTableEntry TargetX = table->GetEntry("Target_X"), TargetY = table->GetEntry("Target_Y"), ImageHeight = table->GetEntry("ImageHeight"), ImageWidth = table->GetEntry("ImageWidth");
+    std::string targetXName = "Target_X", targetYName = "Target_Y", imageHeightName = "ImageHeight", imageWidthName = "ImageWidth";
+    double &targetX, &targetY, &imageHeight, &imageWidth;
   };
   ControlSystem controlSystem;
 };

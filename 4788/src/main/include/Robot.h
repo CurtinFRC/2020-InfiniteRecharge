@@ -31,11 +31,13 @@
 #include <frc/DriverStation.h> 
 
 #include "Toggle.h"
+#include "NTUtil.h"
 
 // Local Files
 #include "ControlMap.h"
 #include "RobotMap.h"
 #include "DriveSystem.h"
+#include "Turret.h"
 
 
 class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider {
@@ -57,5 +59,12 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
   private:
     // Instances
     RobotMap robotMap;
+
     wml::Drivetrain *drivetrain;
+
+    // PRETEND TURRET
+    wml::NTBoundDouble targetXBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.targetXName, robotMap.controlSystem.targetX),  
+                       targetYBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.targetYName, robotMap.controlSystem.targetY),  
+                       imageHeightBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.imageHeightName, robotMap.controlSystem.imageHeight),  
+                       imageWidthBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.imageWidthName, robotMap.controlSystem.imageWidth);
 };
