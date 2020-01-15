@@ -8,6 +8,9 @@
 #include <frc/Talon.h>
 #include <frc/DoubleSolenoid.h>
 #include "controllers/Controllers.h"
+#include "networktables/NetworkTable.h"
+#include "networktables/NetworkTableEntry.h"
+#include "networktables/NetworkTableInstance.h"
 
 #include "WMLCtre.h"
 #include "Gearbox.h"
@@ -28,9 +31,14 @@ class Robot : public frc::TimedRobot {
 
   wml::controllers::XboxController *xbox;
   
-  frc::Spark *leftMotors[1], *rightMotors[1];
+  wml::TalonSrx *leftMotors, *rightMotors;
   wml::Gearbox *left, *right;
   wml::Drivetrain *drivetrain;
 
   frc::DoubleSolenoid *hatchEjector;
+
+  nt::NetworkTableEntry TargetX;
+  nt::NetworkTableEntry TargetY;
+  nt::NetworkTableEntry ImageHeight;
+  nt::NetworkTableEntry ImageWidth;
 };

@@ -41,7 +41,7 @@ void curtin_frc_vision::run() {
 			vision.Output.Display("Green Filtered Image", &TrackingImage);
 			vision.Output.Display("Contour Detection", &ProcessingOutput);
 			#else 
-			vision.Camera.cam.output.PutFrame(Image); // Might get rid of this to speed up loop.
+			vision.Camera.cam.output.PutFrame(ProcessingOutput); // Might get rid of this to speed up loop.
 			#endif
 
 			//Calc offset

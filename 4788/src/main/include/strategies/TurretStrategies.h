@@ -4,6 +4,7 @@
 
 #include "controllers/Controllers.h"
 #include "strategy/Strategy.h"
+#include "Turret.h"
 #include "RobotMap.h"
 
 struct TurretTeleopConfig {
