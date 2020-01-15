@@ -37,7 +37,7 @@
 #include "ControlMap.h"
 #include "RobotMap.h"
 #include "DriveSystem.h"
-#include "Turret.h"
+#include "TurretSystem.h"
 
 
 class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider {
@@ -61,10 +61,11 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     RobotMap robotMap;
 
     wml::Drivetrain *drivetrain;
+    wml::Turret *turret;
 
-    // PRETEND TURRET
-    wml::NTBoundDouble targetXBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.targetXName, robotMap.controlSystem.targetX),  
-                       targetYBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.targetYName, robotMap.controlSystem.targetY),  
-                       imageHeightBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.imageHeightName, robotMap.controlSystem.imageHeight),  
-                       imageWidthBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.imageWidthName, robotMap.controlSystem.imageWidth);
+    // PRETEND TURRET (Don't worry about this)
+    // wml::NTBoundDouble targetXBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.targetXName, robotMap.controlSystem.targetX),  
+    //                    targetYBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.targetYName, robotMap.controlSystem.targetY),  
+    //                    imageHeightBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.imageHeightName, robotMap.controlSystem.imageHeight),  
+    //                    imageWidthBoundDouble(robotMap.controlSystem.table, robotMap.controlSystem.imageWidthName, robotMap.controlSystem.imageWidth);
 };

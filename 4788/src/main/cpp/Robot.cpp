@@ -24,14 +24,21 @@ void Robot::RobotInit() {
   drivetrain->GetConfig().leftDrive.transmission->SetInverted(true);
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(false);
 
-  // ----------------------------Turret----------------------------
-
   // Registering our systems to be called
   StrategyController::Register(drivetrain);
+  NTProvider::Register(drivetrain); // Registers system to networktables
 
+  // ----------------------------Turret----------------------------
+  turret = new Turret(robotMap.turretSystem.turretConfig);
 
-  // Registering Systems to Network Tables
-  NTProvider::Register(drivetrain);
+  turret->SetDefault(std::make_shared<TurretTeleop>("Turret Teleop", *turret, robotMap.contGroup));
+  turret->StartLoop(100);
+
+  turret->GetConfig().horizontalAxis.transmission->SetInverted(false);
+  turret->GetConfig().horizontalAxis.transmission->SetInverted(false);
+
+  StrategyController::Register(turret);
+  NTProvider::Register(turret);
 }
 
 void Robot::RobotPeriodic() {
@@ -52,7 +59,7 @@ void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() { 
   Schedule(drivetrain->GetDefaultStrategy(), true);
-  Schedule(std::make_shared<TurretTeleop>("Turret Teleop", robotMap.contGroup)); // This is right... but also wrong
+  Schedule(turret->GetDefaultStrategy(), true);
 }
 void Robot::TeleopPeriodic() {}
 

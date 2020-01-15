@@ -29,9 +29,12 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
+  double PIDCalc(double dt, double input);
+
   wml::controllers::XboxController *xbox;
   
   wml::TalonSrx *leftMotors, *rightMotors;
+  wml::VictorSpx *bagMotor;
   wml::Gearbox *left, *right;
   wml::Drivetrain *drivetrain;
 

@@ -30,6 +30,7 @@
 #include <networktables/NetworkTableInstance.h>
 #include "control/PIDController.h"
 #include "MotionProfiling.h"
+#include "Turret.h"
 
 #include "Usage.h"
 
@@ -71,12 +72,19 @@ struct RobotMap {
   };
   DriveSystem driveSystem;
 
-  struct Turret {
+  struct TurretSystem {
     wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
     wml::VictorSpx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
+
+    wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
+    wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
+    wml::Gearbox turretFlyWheel{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretFlyWheel)), nullptr };
+
+    wml::TurretConfig turretConfig{ turretRotation, turretAngle };
+    wml::Turret turret{ turretConfig };
   };
-  Turret turret;
+  TurretSystem turretSystem;
 
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
@@ -85,8 +93,7 @@ struct RobotMap {
     // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
     std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-    std::string targetXName = "Target_X", targetYName = "Target_Y", imageHeightName = "ImageHeight", imageWidthName = "ImageWidth";
-    double &targetX, &targetY, &imageHeight, &imageWidth;
+    double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
   };
   ControlSystem controlSystem;
 };
