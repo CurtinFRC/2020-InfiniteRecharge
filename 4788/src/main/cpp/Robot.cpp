@@ -75,7 +75,7 @@ void Robot::TeleopPeriodic() {
 }
 
 void Robot::TestInit() {
-  Schedule(std::make_shared<DrivetrainTest>(*drivetrain, wml::control::PIDGains{ "I am gains 2: Elecis Booglsesoo", 1, 0, 0 }));
+  Schedule(std::make_shared<DrivetrainTest>(*drivetrain, wml::control::PIDGains{ "I am gains 2: Elecis Boogaloo", 1, 0, 0 }));
 }
 void Robot::TestPeriodic() {
   turret->TestOnUpdate(dt);
