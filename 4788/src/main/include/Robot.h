@@ -38,7 +38,7 @@
 #include "RobotMap.h"
 #include "DriveSystem.h"
 #include "Turret.h"
-#include "Intake.h"
+#include "BeltIntake.h"
 #include "MagLoader.h"
 
 class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider {
@@ -63,4 +63,5 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     wml::Drivetrain *drivetrain;
     Turret *turret;
     MagLoader *magLoader;
+    BeltIntake *beltIntake;
 };

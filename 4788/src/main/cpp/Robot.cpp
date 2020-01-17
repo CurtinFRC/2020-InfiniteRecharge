@@ -13,12 +13,11 @@ void Robot::RobotInit() {
   // Initializes The smart controllers assigned in robotmap
   ControlMap::InitSmartControllerGroup(robotMap.contGroup);
 
-  // --------------------------Drivetrain--------------------------
-
   // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
   turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.contGroup);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.contGroup);
+  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.contGroup);
 
 
   // Strategy controllers
@@ -29,7 +28,7 @@ void Robot::RobotInit() {
   drivetrain->GetConfig().leftDrive.transmission->SetInverted(true);
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(false);
 
-  // Registering our systems to be called
+  // Registering our systems to be called via strategy
   StrategyController::Register(drivetrain);
   NTProvider::Register(drivetrain); // Registers system to networktables
 }
@@ -56,6 +55,7 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
   turret->TeleopOnUpdate(dt);
   magLoader->TeleopOnUpdate(dt);
+  beltIntake->TeleopOnUpdate(dt);
 }
 
 void Robot::TestInit() {
