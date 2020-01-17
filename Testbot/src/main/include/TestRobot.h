@@ -8,6 +8,15 @@
 #include <frc/Talon.h>
 #include <frc/DoubleSolenoid.h>
 #include "controllers/Controllers.h"
+#include "networktables/NetworkTable.h"
+#include "networktables/NetworkTableEntry.h"
+#include "networktables/NetworkTableInstance.h"
+
+#include "actuators/Compressor.h"
+#include "actuators/DoubleSolenoid.h"
+
+#include "sensors/PressureSensor.h"
+
 
 #include "WMLCtre.h"
 #include "Gearbox.h"
@@ -26,11 +35,28 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
-  wml::controllers::XboxController *xbox;
+  double PIDCalc(double dt, double input);
+
+  frc::XboxController *xbox1;
+  frc::XboxController *xbox2;
   
-  frc::Spark *leftMotors[1], *rightMotors[1];
+  wml::TalonSrx *leftMotor1, *leftMotor2, *rightMotor1, *rightMotor2;
+  wml::TalonSrx *TurretRoation;
+  wml::TalonSrx *TurretAngle;
+  wml::TalonSrx *FlyWheel;
+
+  wml::actuators::Compressor compressor{};
+  wml::actuators::DoubleSolenoid solenoid{ 0, 1, 0.2 };
+  wml::sensors::PressureSensor pressureSensor{ 0 };
+
+
   wml::Gearbox *left, *right;
   wml::Drivetrain *drivetrain;
 
   frc::DoubleSolenoid *hatchEjector;
+
+  nt::NetworkTableEntry TargetX;
+  nt::NetworkTableEntry TargetY;
+  nt::NetworkTableEntry ImageHeight;
+  nt::NetworkTableEntry ImageWidth;
 };

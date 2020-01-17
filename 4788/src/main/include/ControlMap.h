@@ -1,58 +1,92 @@
 #pragma once
 
+#include <vector>
+
 #include "controllers/Controllers.h"
 
-#define __CONTROLMAP__USING_JOYSTICK__ false
+#define __CONTROLMAP_USING_JOYSTICK__ false
 
 struct ControlMap {
-	// ----------------Defined Ports----------------
+  static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup);
+  // ---------------- Defined Ports ------------------
 
-	// Controllers
-	static const int XboxController1Port, XboxController2Port;
-	static const int JoyController1Port, JoyController2Port;
+  // Controllers
+  static const int XboxController1Port, XboxController2Port;
+  static const int JoyController1Port, JoyController2Port;
 
-	static const double joyDeadzone;
-	static const double xboxDeadzone;
+  static const int Driver = 1;
+  static const int CoDriver = 2;
 
-	// Drive System
-	static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
+  static const double joyDeadzone;
+  static const double xboxDeadzone;
+  static const double triggerDeadzone;
 
-	// SubSystem1
-	static const int Sub1SRXport1, Sub1SRXport2;
+  // Drive System
+  static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
 
-	// SubSystem2
-	static const int Sub2SPXport1;
+  // Turret
+  static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
 
-	// Control System
-	static const int CompressorPort;
-	static const int PressureSensorPort;
+  // Intake
+  static const int IntakeMotorPort;
 
+  // MagLoader
+  static const int MagLoaderMotorPort;
 
+  // Climber
+  static const int ClimberActuatorPort1, ClimberActuatorPort2;
+  static const double ClimberActuationTime;
 
-	// -------------Defined Speed---------------------
-
-	// SubSystem1
-	static const double SubSystem1Speed;
-
-	// SubSystem2
-	static const double SubSystem2IdleSpeed;
-	static const double SubSystem2Speed;
-
-
+  // Control System
+  static const int PressureSensorPort;
+  static const int CompressorPort;
 
 
-	// ---------------Defined Buttons---------------
-	#if __CONTROLMAP__USING_JOYSTICK__
-	static const wml::controllers::tAxis DrivetrainForward, DrivetrainTurn;
-	#else
-	static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
-	#endif
-	static const wml::controllers::tButton ReverseDrivetrain;
-	
-	// SubSystem1
-	static const wml::controllers::tButton SubSystem1Up, SubSystem1Down;
+  // --------------- Defined Buttons -----------------
 
-	// SubSystem2
-	static const wml::controllers::tButton SubSystem2Intake, SubSystem2Outtake;
+  // Drivetrain
+  #if __CONTROLMAP_USING_JOYSTICK__
+  static const wml::controllers::tAxis DrivetrainForward, DrivetrainTurn;
+  #else
+  static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
+  #endif
+  static const wml::controllers::tButton ReverseDrivetrain;
+
+  // Turret
+  #if __CONTROLMAP_USING_JOYSTICK__
+  //@TODO
+  #else
+  static const wml::controllers::tAxis TurretAutoAim;
+  static const wml::controllers::tAxis TurretManualRotate;
+  static const wml::controllers::tAxis TurretManualAngle;
+  static const wml::controllers::tAxis TurretFlyWheelSpinUp;
+  static const wml::controllers::tButton TurretFire; // Might get rid of, if i automate Max speed of flywheel to fire.
+  #endif
+
+  // Intake
+  #if __CONTROLMAP_USING_JOYSTICK__
+  static const wml::controllers::tButton Intake;
+  static const wml::controllers::tButton Outake;
+  #else
+  static const wml::controllers::tAxis Intake;
+  static const wml::controllers::tAxis Outake;
+  #endif
+
+
+  // MagLoader
+  #if __CONTROLMAP_USING_JOYSTICK__
+
+  #else
+  static const wml::controllers::tButton ShiftUpMagazine;
+  static const wml::controllers::tButton ShiftDownMagazine;
+  #endif
+
+
+  // Climber
+  #if __CONTROLMAP_USING_JOYSTICK__
+
+  #else
+  static const wml::controllers::tButton ClimberUp;
+  static const wml::controllers::tButton ClumberDown;
+  #endif
 };
-void DefinePorts();

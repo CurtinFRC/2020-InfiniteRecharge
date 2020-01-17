@@ -6,8 +6,8 @@
 # just testing what works and what doesn't.
 
 # we don't need a trigger. because we want it to trigger for every branch
-#trigger: 
-#- master
+trigger: 
+- master
 
 resources:
   containers:
