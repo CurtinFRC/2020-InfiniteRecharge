@@ -17,7 +17,6 @@
 
 #include "WMLCtre.h"
 #include "controllers/Controllers.h"
-#include "Gearbox.h"
 #include "actuators/BinaryServo.h"
 #include "actuators/Compressor.h"
 #include "actuators/DoubleSolenoid.h"
@@ -30,7 +29,6 @@
 #include <networktables/NetworkTableInstance.h>
 #include "control/PIDController.h"
 #include "MotionProfiling.h"
-#include "Turret.h"
 
 #include "Usage.h"
 
@@ -72,19 +70,30 @@ struct RobotMap {
   };
   DriveSystem driveSystem;
 
-  struct TurretSystem {
+  struct Turret {
     wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
-    wml::VictorSpx TurretRotation{ ControlMap::TurretRotationPort };
+    wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
 
     wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
     wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
     wml::Gearbox turretFlyWheel{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretFlyWheel)), nullptr };
-
-    wml::TurretConfig turretConfig{ turretRotation, turretAngle };
-    wml::Turret turret{ turretConfig };
   };
-  TurretSystem turretSystem;
+  Turret turret;
+
+  struct Intake {
+    wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort };
+
+    wml::Gearbox intakeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(IntakeMotor)), nullptr };
+  };
+  Intake intake;
+
+  struct MagLoader {
+    wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort };
+
+    wml::Gearbox magLoaderMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MagLoaderMotor)), nullptr };
+  };
+  MagLoader magLoader;
 
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };

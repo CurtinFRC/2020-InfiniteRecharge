@@ -4,6 +4,7 @@ using namespace frc;
 using namespace wml;
 
 double lastTimestamp;
+double dt;
 
 void Robot::RobotInit() {
   // Get's last time stamp, used to calculate dt
@@ -14,9 +15,13 @@ void Robot::RobotInit() {
 
   // --------------------------Drivetrain--------------------------
 
-  // Initializes drivetrain
+  // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
+  turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.contGroup);
+  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.contGroup);
 
+
+  // Strategy controllers
   drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.contGroup));
   drivetrain->StartLoop(100);
 
@@ -27,22 +32,10 @@ void Robot::RobotInit() {
   // Registering our systems to be called
   StrategyController::Register(drivetrain);
   NTProvider::Register(drivetrain); // Registers system to networktables
-
-  // ----------------------------Turret----------------------------
-  turret = new Turret(robotMap.turretSystem.turretConfig);
-
-  turret->SetDefault(std::make_shared<TurretTeleop>("Turret Teleop", *turret, robotMap.contGroup));
-  turret->StartLoop(100);
-
-  turret->GetConfig().horizontalAxis.transmission->SetInverted(false);
-  turret->GetConfig().horizontalAxis.transmission->SetInverted(false);
-
-  StrategyController::Register(turret);
-  NTProvider::Register(turret);
 }
 
 void Robot::RobotPeriodic() {
-  double dt = Timer::GetFPGATimestamp() - lastTimestamp;
+  dt = Timer::GetFPGATimestamp() - lastTimestamp;
 
   StrategyController::Update(dt);
   NTProvider::Update();
@@ -59,9 +52,11 @@ void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() { 
   Schedule(drivetrain->GetDefaultStrategy(), true);
-  Schedule(turret->GetDefaultStrategy(), true);
 }
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  turret->TeleopOnUpdate(dt);
+  magLoader->TeleopOnUpdate(dt);
+}
 
 void Robot::TestInit() {
   Schedule(std::make_shared<DrivetrainTest>(*drivetrain, wml::control::PIDGains{ "I am gains 2: Elecis Booglsesoo", 1, 0, 0 }));

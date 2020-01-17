@@ -26,16 +26,22 @@ const double ControlMap::xboxDeadzone = 0.05;
 const double ControlMap::triggerDeadzone = 0.05;
 
 // Drive Left
-const int ControlMap::DriveSRXportL = 2;
-const int ControlMap::DriveSPXportL = 3;
+const int ControlMap::DriveSRXportL = 0;
+const int ControlMap::DriveSPXportL = 1;
 // Drive Right
-const int ControlMap::DriveSRXportR = 5;
-const int ControlMap::DriveSPXportR = 4;
+const int ControlMap::DriveSRXportR = 2;
+const int ControlMap::DriveSPXportR = 3;
 
 // Turret
-const int ControlMap::TurretFlyWheelPort = 7;
-const int ControlMap::TurretAnglePort = 9;
-const int ControlMap::TurretRotationPort = 8;
+const int ControlMap::TurretFlyWheelPort = 4;
+const int ControlMap::TurretAnglePort = 5;
+const int ControlMap::TurretRotationPort = 6;
+
+// Intake
+const int ControlMap::IntakeMotorPort = 7;
+
+// MagLoader
+const int ControlMap::MagLoaderMotorPort = 8;
 
 // Control System
 const int ControlMap::PressureSensorPort = 0;
@@ -51,18 +57,27 @@ const int ControlMap::CompressorPort = 1;
   const tAxis ControlMap::DrivetrainTurn{ 1, Joystick::kZAxis };
   const tButton ControlMap::ReverseDrivetrain{ 1, 2 };
 #else
-  const tAxis ControlMap::DrivetrainLeft{ 1, XboxController::kLeftYAxis };
-  const tAxis ControlMap::DrivetrainRight{ 1, XboxController::kRightYAxis };
-  const tButton ControlMap::ReverseDrivetrain{ 1, XboxController::kStart };
+  const tAxis ControlMap::DrivetrainLeft{ Driver, XboxController::kLeftYAxis };
+  const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
+  const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
 #endif
 
 // Turrent
 #if __CONTROLMAP_USING_JOYSTICK__
-  
+  //@todo
 #else
-  const tAxis ControlMap::TurretAutoAim{ 2, XboxController::kLeftThrottle };
-  const tAxis ControlMap::TurretManualRotate{ 2, XboxController::kRightXAxis };
-  const tAxis ControlMap::TurretManualAngle{ 2, XboxController::kLeftYAxis };
-  const tAxis ControlMap::TurretFlyWheelSpinUp{ 2, XboxController::kRightThrottle };
-  const tButton ControlMap::TurretFire{ 2, XboxController::kA };
+  const tAxis ControlMap::TurretAutoAim{ CoDriver, XboxController::kLeftThrottle };
+  const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
+  const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kLeftYAxis };
+  const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
+  const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
+#endif
+
+//Intake 
+#if __CONTROLMAP_USING_JOYSTICK__
+  const tButton ControlMap::Intake{ Driver, 11 };
+  const tButton ControlMap::Intake{ Driver, 12 };
+#else 
+  const tAxis ControlMap::Intake{ Driver, XboxController::kLeftThrottle};
+  const tAxis ControlMap::Outake{ Driver, XboxController::kRightThrottle};
 #endif

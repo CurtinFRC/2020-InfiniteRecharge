@@ -1,5 +1,6 @@
 #include "TestRobot.h"
 
+#include "frc/AnalogInput.h"
 #include <actuators/VoltageController.h>
 
 #include <math.h>
@@ -10,23 +11,33 @@ using namespace wml;
 
 double lastTimestamp;
 
+using hand = frc::XboxController::JoystickHand;
+
 void Robot::RobotInit() {
 
   // Get's last time stamp, used to calculate dt
   lastTimestamp = Timer::GetFPGATimestamp();
 
-  xbox = new wml::controllers::XboxController(0);
+  xbox1 = new frc::XboxController(0);
+  xbox2 = new frc::XboxController(1);
   
-  leftMotors = new TalonSrx(2);
-  leftMotors->SetInverted(false);
-  //left = new Gearbox{ new wml::actuators::MotorVoltageController(new SpeedControllerGroup(*leftMotors)), nullptr};
+  leftMotor1 = new TalonSrx(0);
+  leftMotor2 = new TalonSrx(1);
+  leftMotor1->SetInverted(false);
+  leftMotor2->SetInverted(false);
+  left = new Gearbox{ new wml::actuators::MotorVoltageController(new SpeedControllerGroup(*leftMotor1, *leftMotor2)), nullptr};
 
-  rightMotors= new TalonSrx(5);
-  rightMotors->SetInverted(true);
-  //right = new Gearbox{ new wml::actuators::MotorVoltageController(new SpeedControllerGroup(*rightMotors)), nullptr};
+  rightMotor1 = new TalonSrx(2);
+  rightMotor2 = new TalonSrx(3);
+  rightMotor1->SetInverted(true);
+  rightMotor2->SetInverted(true);
+  right = new Gearbox{ new wml::actuators::MotorVoltageController(new SpeedControllerGroup(*rightMotor1, *rightMotor2)), nullptr};
 
-  bagMotor = new VictorSpx(8);
-  hatchEjector = new DoubleSolenoid(0, 1);
+  TurretRoation = new TalonSrx(4);
+  TurretAngle = new TalonSrx(6);
+  FlyWheel = new TalonSrx(5);
+
+  AnalogInput *exampleAnalog = new AnalogInput(0);
 
   DrivetrainConfig drivetrainConfig{*left, *right};
   drivetrain = new Drivetrain(drivetrainConfig);
@@ -39,41 +50,40 @@ void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() {
   double dt = Timer::GetFPGATimestamp() - lastTimestamp;
 
-  auto inst = nt::NetworkTableInstance::GetDefault();
-  auto visionTable = inst.GetTable("VisionTracking");
-	auto table = visionTable->GetSubTable("Target");
+  double leftSpeed = -xbox1->GetAxisType(hand::kLeftHand); // L Y axis
+  double rightSpeed = -xbox1->GetAxisType(hand::kRightHand); // R Y axis  
 
-  double Xoffset = table->GetNumber("Target_X", 0);
-  double Yoffset = table->GetNumber("Target_Y", 0);
-  double ImageHeight = table->GetNumber("ImageHeight", 0);
-  double ImageWidth = table->GetNumber("ImageWidth", 0);
+  leftSpeed *= fabs(leftSpeed);
+  rightSpeed *= fabs(rightSpeed);
 
+  if (xbox2->GetTriggerAxis(hand::kLeftHand) > 0.1) {
+    FlyWheel->Set(xbox2->GetTriggerAxis(hand::kLeftHand));
+  }
 
-  std::cout << "X,Y: " << Xoffset << "," << Yoffset << std::endl;
+  if (xbox2->GetAxisType(hand::kRightHand) > 0.1) {
+    TurretRoation->Set(xbox2->GetAxisType(hand::kRightHand));
+  }
 
-  Xoffset = Xoffset/ImageWidth;
-  Yoffset = Yoffset/ImageHeight;
-  
-  double leftSpeed = -xbox->GetAxis(1); // L Y axis
-  double rightSpeed = -xbox->GetAxis(5); // R Y axis
+  if (xbox2->GetBumper(hand::kRightHand)) {
+    solenoid.SetTarget(actuators::BinaryActuatorState::kForward);
+  } else {
+    solenoid.SetTarget(actuators::BinaryActuatorState::kReverse);
+  }
 
-  leftSpeed = PIDCalc(dt, Xoffset);
-  rightSpeed = -PIDCalc(dt, Xoffset);
-
-  // leftSpeed *= fabs(leftSpeed);
-  // rightSpeed *= fabs(rightSpeed);
-
-  leftMotors->Set(leftSpeed);
-  rightMotors->Set(rightSpeed);
-
-  //bagMotor->Set(100);
-
-
+  if (pressureSensor.GetScaled() < 80) {
+    compressor.SetTarget(actuators::BinaryActuatorState::kForward);
+  }
 
   drivetrain->Set(leftSpeed, rightSpeed);
 
-  hatchEjector->Set(!xbox->GetButton(6) ? DoubleSolenoid::kForward : DoubleSolenoid::kReverse); // R bumper
-  
+  compressor.Update(dt);
+  solenoid.Update(dt);
+
+  compressor.Update(dt);
+  solenoid.Update(dt);
+
+  // Stop the solenoid if it's finished
+  if (solenoid.IsDone()) solenoid.Stop();
 }
 
 double kP = -0.8;
