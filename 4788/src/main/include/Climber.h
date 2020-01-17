@@ -1,28 +1,17 @@
 #pragma once
 
 #include "controllers/Controllers.h"
-#include "strategy/Strategy.h"
+#include "RobotMap.h"
 
-class ClimberTeleop : public wml::Strategy {
+class Climber {
   public:
-    ClimberTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+    Climber(wml::actuators::DoubleSolenoid &ClimberActuator, wml::controllers::SmartControllerGroup &contGroup);
 
-    void OnUpdate(double dt) override;
+    void TeleopOnUpdate(double dt);
+		void AutoOnUpdate(double dt);
+		void TestOnUpdate(double dt);
 
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
-
-class ClimberAuto : public wml::Strategy {
-  public:
-    ClimberAuto(std::string name);
-
-    void OnUpdate(double dt) override;
-};
-
-class ClimberTest : public wml::Strategy {
-  public:
-    ClimberTest(std::string name);
-
-    void OnUpdate(double dt) override;
+	private:
+		wml::actuators::DoubleSolenoid &_ClimberActuator;
+		wml::controllers::SmartControllerGroup &_contGroup;
 };

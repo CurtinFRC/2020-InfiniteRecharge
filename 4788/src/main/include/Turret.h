@@ -1,30 +1,19 @@
 #pragma once
 
 #include "controllers/Controllers.h"
-#include "strategy/Strategy.h"
 #include "RobotMap.h"
 
-class TurretTeleop : public wml::Strategy {
-  public:
-    TurretTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+class Turret {
+	public:
+		Turret(wml::Gearbox &RotationalAxis, wml::Gearbox &VerticalAxis, wml::Gearbox &FlyWheel,  wml::controllers::SmartControllerGroup &contGroup);
 
-    void OnUpdate(double dt) override;
+		void TeleopOnUpdate(double dt);
+		void AutoOnUpdate(double dt);
+		void TestOnUpdate(double dt);
 
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-    RobotMap robotMap;
-};
-
-class TurretAuto : public wml::Strategy {
-  public:
-    TurretAuto(std::string name);
-
-    void OnUpdate(double dt) override;
-};
-
-class TurretTest : public wml::Strategy {
-  public: 
-    TurretTest(std::string name);
-
-    void OnUpdate(double dt) override;
+	private:
+		wml::Gearbox &_RotationalAxis;
+		wml::Gearbox &_VerticalAxis;
+		wml::Gearbox &_FlyWheel;
+		wml::controllers::SmartControllerGroup &_contGroup;
 };
