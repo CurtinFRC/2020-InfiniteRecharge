@@ -95,6 +95,11 @@ struct RobotMap {
   };
   MagLoader magLoader;
 
+  struct Climber {
+    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime};
+  };
+  Climber climber;
+
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
     wml::actuators::Compressor compressor{ ControlMap::CompressorPort }; 

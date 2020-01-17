@@ -9,7 +9,7 @@ using namespace wml::controllers;
 void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {}
 
 
-// -------------Defined Ports-------------------
+// -------------Defined Ports/Values-------------------
 
 // Controllers
 #if __CONTROLMAP_USING_JOYSTICK__
@@ -43,6 +43,11 @@ const int ControlMap::IntakeMotorPort = 7;
 // MagLoader
 const int ControlMap::MagLoaderMotorPort = 8;
 
+// Climber 
+const int ControlMap::ClimberActuatorPort1 = 0;
+const int ControlMap::ClimberActuatorPort2 = 1;
+const double ControlMap::ClimberActuationTime = 0.2;
+
 // Control System
 const int ControlMap::PressureSensorPort = 0;
 const int ControlMap::CompressorPort = 1;
@@ -73,7 +78,7 @@ const int ControlMap::CompressorPort = 1;
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
 #endif
 
-//Intake 
+// Intake 
 #if __CONTROLMAP_USING_JOYSTICK__
   const tButton ControlMap::Intake{ Driver, 11 };
   const tButton ControlMap::Intake{ Driver, 12 };

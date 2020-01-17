@@ -27,3 +27,11 @@ void Turret::TeleopOnUpdate(double dt) {
 	_VerticalAxis.transmission->SetVoltage(AngularPower);
 	_FlyWheel.transmission->SetVoltage(FlyWheelPower);
 }
+
+void Turret::AutoOnUpdate(double dt) {
+
+}
+
+void Turret::TestOnUpdate(double dt) {
+	
+}
