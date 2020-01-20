@@ -1,6 +1,8 @@
 #include "TestRobot.h"
 
+#include "frc/AnalogInput.h"
 #include <actuators/VoltageController.h>
+#include "sensors/LimitSwitch.h"
 
 #include <math.h>
 #include <iostream>
@@ -8,21 +10,16 @@
 using namespace frc;
 using namespace wml;
 
+double lastTimestamp;
+
+using hand = frc::XboxController::JoystickHand;
+
+
 void Robot::RobotInit() {
-  xbox = new wml::controllers::XboxController(0);
-  
-  leftMotors[0] = new Spark(2);
-  leftMotors[0]->SetInverted(false);
-  left = new Gearbox{ new wml::actuators::MotorVoltageController(new SpeedControllerGroup(*leftMotors[0])), nullptr};
-
-  rightMotors[0] = new Spark(3);
-  rightMotors[0]->SetInverted(true);
-  right = new Gearbox{ new wml::actuators::MotorVoltageController(new SpeedControllerGroup(*rightMotors[0])), nullptr};
-
-  hatchEjector = new DoubleSolenoid(0, 1);
-
-  DrivetrainConfig drivetrainConfig{*left, *right};
-  drivetrain = new Drivetrain(drivetrainConfig);
+  // Get's last time stamp, used to calculate dt
+  lastTimestamp = Timer::GetFPGATimestamp();
+  BeltMotor = new VictorSpx(5);
+  BeltMotor->SetInverted(false);
 }
 
 void Robot::AutonomousInit() {}
@@ -30,22 +27,40 @@ void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() {
-  double leftSpeed = -xbox->GetAxis(1); // L Y axis
-  double rightSpeed = -xbox->GetAxis(5); // R Y axis
+  double dt = Timer::GetFPGATimestamp() - lastTimestamp;
 
-  leftSpeed *= fabs(leftSpeed);
-  rightSpeed *= fabs(rightSpeed);
+  auto inst = nt::NetworkTableInstance::GetDefault();
+	auto visionTable = inst.GetTable("TestBot");
+	auto table = visionTable->GetSubTable("Intake");
 
-  drivetrain->Set(leftSpeed, rightSpeed);
+  table->PutBoolean("first Limit Switch", LimitSwitch0.Get());
+  table->PutBoolean("second limit switch ", LimitSwitch1.Get());
+  table->PutBoolean("top Limit switch", LimitSwitch2.Get());
 
-  hatchEjector->Set(!xbox->GetButton(6) ? DoubleSolenoid::kForward : DoubleSolenoid::kReverse); // R bumper
-  // if (xbox->GetBumper(xbox->kRightHand)) {
-  //   solState++;
-  //   solState %= 2; //2;
-  //   hatchEjector->Set((bool)solState ? DoubleSolenoid::kForward : DoubleSolenoid::kReverse);
-  // }
+  timer.Start();
 
-  // if (xbox->GetBumper(xbox->kLeftHand)) hatchEjector->Set(DoubleSolenoid::kReverse);
+  std::cout << "Timer Value " << timer.Get() << std::endl;
+  if (LimitSwitch2.Get() > 0) {
+    timer.Start();
+    while (timer.Get() <= 0.7) {
+      BeltMotor->Set(1);
+    }
+    BeltMotor->Set(0);
+    timer.Stop();
+    timer.Reset();
+  }
+  //to move a whole space its 1.1s to move from intake to space 1 its 0.7s
+     
+     // else if (LimitSwitch1.Get() > 0) {
+      //   BeltMotor->Set(1);
+      // } else if (LimitSwitch2.Get() > 0) {
+      //   BeltMotor->Set(1);
+      // } else {
+      //   BeltMotor->Set(0);
+      // } 
+    
+
+  
 }
 
 void Robot::TestInit() {}

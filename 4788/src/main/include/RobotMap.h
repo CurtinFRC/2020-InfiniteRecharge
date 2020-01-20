@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "devices/StateDevice.h"
 #include "control/PIDController.h"
 #include "strategy/StrategySystem.h"
@@ -15,7 +17,6 @@
 
 #include "WMLCtre.h"
 #include "controllers/Controllers.h"
-#include "Gearbox.h"
 #include "actuators/BinaryServo.h"
 #include "actuators/Compressor.h"
 #include "actuators/DoubleSolenoid.h"
@@ -73,8 +74,38 @@ struct RobotMap {
     wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
+
+    wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
+    wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
+    wml::Gearbox turretFlyWheel{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretFlyWheel)), nullptr };
   };
   Turret turret;
+
+  struct Intake {
+    wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort };
+
+    wml::Gearbox intakeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(IntakeMotor)), nullptr };
+  };
+  Intake intake;
+
+  struct MagLoader {
+    wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort };
+
+    wml::Gearbox magLoaderMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MagLoaderMotor)), nullptr };
+  };
+  MagLoader magLoader;
+
+  struct WheelCringeGearBox {
+    wml::TalonSrx WheelCringeGearBoxMotor{ ControlMap::WheelCringePort };
+
+    wml::Gearbox WheelCringeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(WheelCringeGearBoxMotor)), nullptr };
+  };
+  WheelCringeGearBox wheelCringeGearBox;
+
+  struct Climber {
+    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime};
+  };
+  Climber climber;
 
   struct ControlSystem {
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
@@ -83,7 +114,7 @@ struct RobotMap {
     // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
     std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-    nt::NetworkTableEntry TargetX = table->GetEntry("Target_X"), TargetY = table->GetEntry("Target_Y"), ImageHeight = table->GetEntry("ImageHeight"), ImageWidth = table->GetEntry("ImageWidth");
+    double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
   };
   ControlSystem controlSystem;
 };

@@ -8,6 +8,16 @@
 #include <frc/Talon.h>
 #include <frc/DoubleSolenoid.h>
 #include "controllers/Controllers.h"
+#include "networktables/NetworkTable.h"
+#include "networktables/NetworkTableEntry.h"
+#include "networktables/NetworkTableInstance.h"
+
+#include "actuators/Compressor.h"
+#include "actuators/DoubleSolenoid.h"
+
+#include "sensors/PressureSensor.h"
+#include "sensors/LimitSwitch.h"
+
 
 #include "WMLCtre.h"
 #include "Gearbox.h"
@@ -26,11 +36,14 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
-  wml::controllers::XboxController *xbox;
-  
-  frc::Spark *leftMotors[1], *rightMotors[1];
-  wml::Gearbox *left, *right;
-  wml::Drivetrain *drivetrain;
+  double PIDCalc(double dt, double input);
 
-  frc::DoubleSolenoid *hatchEjector;
+  wml::controllers::XboxController *xbox1;
+
+  wml::sensors::LimitSwitch LimitSwitch0{0, false};
+  wml::sensors::LimitSwitch LimitSwitch1{1, false};
+  wml::sensors::LimitSwitch LimitSwitch2{2, false};
+  wml::VictorSpx *BeltMotor;
+
+  frc::Timer timer;
 };

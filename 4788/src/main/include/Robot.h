@@ -31,12 +31,17 @@
 #include <frc/DriverStation.h> 
 
 #include "Toggle.h"
+#include "NTUtil.h"
 
 // Local Files
 #include "ControlMap.h"
 #include "RobotMap.h"
 #include "DriveSystem.h"
-
+#include "Turret.h"
+#include "BeltIntake.h"
+#include "MagLoader.h"
+#include "Climber.h"
+#include "WheelOfCringe .h"
 
 class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider {
   public:
@@ -58,4 +63,9 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     // Instances
     RobotMap robotMap;
     wml::Drivetrain *drivetrain;
+    Turret *turret;
+    MagLoader *magLoader;
+    BeltIntake *beltIntake;
+    Climber *climber;
+    WheelCringeGearBox *wheelCringeGearBox;
 };
