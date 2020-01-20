@@ -34,7 +34,7 @@ struct ControlMap {
   static const int MagLoaderMotorPort;
 
   //Wheel of Cringe 
-  static const int WheelCringePort;
+  static const int ControlPannelPort;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
@@ -79,8 +79,8 @@ struct ControlMap {
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else 
-  static const wml::controllers::tButton WheelCringeUp;
-  static const wml::controllers::tButton WheelCringeTurn;
+  static const wml::controllers::tPOV ControlPannelUp;
+  static const wml::controllers::tPOV SpinControlPannel;
   #endif
 
   // MagLoader

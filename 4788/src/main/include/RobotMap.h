@@ -37,7 +37,6 @@
 
 
 struct RobotMap {
-  
 
   // Controllers
   #if __CONTROLMAP_USING_JOYSTICK__
@@ -95,12 +94,12 @@ struct RobotMap {
   };
   MagLoader magLoader;
 
-  struct WheelCringeGearBox {
-    wml::TalonSrx WheelCringeGearBoxMotor{ ControlMap::WheelCringePort };
+  struct ControlPannel {
+    wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
 
-    wml::Gearbox WheelCringeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(WheelCringeGearBoxMotor)), nullptr };
+    wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
   };
-  WheelCringeGearBox wheelCringeGearBox;
+    ControlPannel controlPannel;
 
   struct Climber {
     wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime};
