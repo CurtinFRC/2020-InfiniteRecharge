@@ -1,34 +1,17 @@
 #pragma once
 
 #include "controllers/Controllers.h"
-#include "strategy/Strategy.h"
+#include "RobotMap.h"
 
-class MagLoaderTeleop : public wml::Strategy {
+class MagLoader {
   public:
-    MagLoaderTeleop(std::string name, wml::controllers::SmartControllerGroup &contGroup);
+    MagLoader(wml::Gearbox &MagazineMotors, wml::controllers::SmartControllerGroup &contGroup);
 
-    void OnUpdate(double dt) override;
+    void TeleopOnUpdate(double dt);
+    void AutoOnUpdate(double dt);
+    void TestOnUpdate(double dt);
 
   private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
-
-class MagLoaderAuto : public wml::Strategy {
-  public:
-    MagLoaderAuto(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-
-  private:
-    wml::controllers::SmartControllerGroup &_contGroup;
-};
-
-class MagLoaderTest : public wml::Strategy {
-  public:
-    MagLoaderTest(std::string name, wml::controllers::SmartControllerGroup &contGroup);
-
-    void OnUpdate(double dt) override;
-
-  private:
+    wml::Gearbox &_MagazineMotors;
     wml::controllers::SmartControllerGroup &_contGroup;
 };
