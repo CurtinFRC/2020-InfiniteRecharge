@@ -23,6 +23,8 @@ struct ControlMap {
 
   // Drive System
   static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
+  static const int ChangeGearPort1, ChangeGearPort2;
+  static const double ChangeGearTime;
 
   // Turret
   static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;

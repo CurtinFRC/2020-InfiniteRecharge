@@ -31,6 +31,10 @@ const int ControlMap::DriveSPXportL = 99;
 // Drive Right
 const int ControlMap::DriveSRXportR = 99;
 const int ControlMap::DriveSPXportR = 99;
+// Drive Gearning
+const int ControlMap::ChangeGearPort1 = 99;
+const int ControlMap::ChangeGearPort2 = 99;
+const double ControlMap::ChangeGearTime = 0;
 
 // Turret
 const int ControlMap::TurretFlyWheelPort = 4;

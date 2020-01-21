@@ -63,6 +63,8 @@ struct RobotMap {
     wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Lsrx, Lspx)), nullptr };
     wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Rsrx, Rspx)), nullptr };
 
+    wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
+
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
     wml::Drivetrain drivetrain{ driveTrainConfig };
     wml::control::PIDGains gainsVelocity{ "Drivetrain Velocity", 1 };
@@ -105,7 +107,7 @@ struct RobotMap {
     ControlPannel controlPannel;
 
   struct Climber {
-    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime};
+    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
   };
   Climber climber;
 
