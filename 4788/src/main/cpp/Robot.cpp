@@ -28,7 +28,7 @@ void Robot::RobotInit() {
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.contGroup);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.contGroup);
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.contGroup);
-  controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.contGroup);
+  controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.PannelPnSol, robotMap.contGroup);
 
   // Strategy controllers
   drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.contGroup));

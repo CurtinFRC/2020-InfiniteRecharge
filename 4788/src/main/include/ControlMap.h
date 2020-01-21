@@ -32,9 +32,11 @@ struct ControlMap {
 
   // MagLoader
   static const int MagLoaderMotorPort;
+  static const int PannelActuatorPort;
 
   //Wheel of Cringe 
-  static const int ControlPannelPort;
+  static const int ControlPannelPort, PannelActuatorPort1;
+  static const double PannelActuationTime;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;

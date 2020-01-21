@@ -54,8 +54,8 @@ const int ControlMap::CompressorPort = 1;
 
 //Wheel of cringe
 const int ControlMap::ControlPannelPort = 99;
-//const int ControlMap::PannelActuatorPort = 99;
-//const double ControlMap::PannelActuationTime = 99;
+const int ControlMap::PannelActuatorPort1 = 99;
+const double ControlMap::PannelActuationTime = 99;
 
 
 // -------------Defined Buttons-------------------
