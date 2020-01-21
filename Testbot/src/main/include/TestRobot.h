@@ -45,5 +45,15 @@ class Robot : public frc::TimedRobot {
   wml::sensors::LimitSwitch LimitSwitch2{2, false};
   wml::VictorSpx *BeltMotor;
 
-  frc::Timer timer;
+
+  wml::Gearbox *left, *right;
+  wml::Drivetrain *drivetrain;
+
+  frc::DoubleSolenoid *hatchEjector;
+
+  nt::NetworkTableEntry TargetX;
+  nt::NetworkTableEntry TargetY;
+  nt::NetworkTableEntry ImageHeight;
+  nt::NetworkTableEntry ImageWidth;
+  std::shared_ptr<nt::NetworkTable> table;
 };

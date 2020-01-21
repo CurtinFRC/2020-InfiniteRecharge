@@ -84,7 +84,10 @@
     "*.tcc": "cpp",
     "cwctype": "cpp",
     "memory_resource": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "optional": "cpp",
+    "shared_mutex": "cpp",
+    "string_view": "cpp"
   },
   "C_Cpp.configurationWarnings": "Disabled"
 }
