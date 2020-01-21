@@ -16,6 +16,7 @@
 #include "actuators/DoubleSolenoid.h"
 
 #include "sensors/PressureSensor.h"
+#include "sensors/LimitSwitch.h"
 
 
 #include "WMLCtre.h"
@@ -37,26 +38,12 @@ class Robot : public frc::TimedRobot {
 
   double PIDCalc(double dt, double input);
 
-  frc::XboxController *xbox1;
-  frc::XboxController *xbox2;
-  
-  wml::TalonSrx *leftMotor1, *leftMotor2, *rightMotor1, *rightMotor2;
-  wml::TalonSrx *TurretRoation;
-  wml::TalonSrx *TurretAngle;
-  wml::TalonSrx *FlyWheel;
+  wml::controllers::XboxController *xbox1;
 
-  wml::actuators::Compressor compressor{};
-  wml::actuators::DoubleSolenoid solenoid{ 0, 1, 0.2 };
-  wml::sensors::PressureSensor pressureSensor{ 0 };
+  wml::sensors::LimitSwitch LimitSwitch0{0, false};
+  wml::sensors::LimitSwitch LimitSwitch1{1, false};
+  wml::sensors::LimitSwitch LimitSwitch2{2, false};
+  wml::VictorSpx *BeltMotor;
 
-
-  wml::Gearbox *left, *right;
-  wml::Drivetrain *drivetrain;
-
-  frc::DoubleSolenoid *hatchEjector;
-
-  nt::NetworkTableEntry TargetX;
-  nt::NetworkTableEntry TargetY;
-  nt::NetworkTableEntry ImageHeight;
-  nt::NetworkTableEntry ImageWidth;
+  frc::Timer timer;
 };

@@ -52,6 +52,10 @@ const double ControlMap::ClimberActuationTime = 0.2;
 const int ControlMap::PressureSensorPort = 0;
 const int ControlMap::CompressorPort = 1;
 
+//Wheel of cringe
+const int ControlMap::ControlPannelPort = 99;
+//const int ControlMap::PannelActuatorPort = 99;
+//const double ControlMap::PannelActuationTime = 99;
 
 
 // -------------Defined Buttons-------------------
@@ -67,7 +71,7 @@ const int ControlMap::CompressorPort = 1;
   const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
 #endif
 
-// Turrent
+// Turret
 #if __CONTROLMAP_USING_JOYSTICK__
   //@todo
 #else
@@ -85,4 +89,14 @@ const int ControlMap::CompressorPort = 1;
 #else 
   const tAxis ControlMap::Intake{ Driver, XboxController::kLeftThrottle};
   const tAxis ControlMap::Outake{ Driver, XboxController::kRightThrottle};
+#endif
+
+//Wheel of cringe 
+#if __CONTROLMAP_USING_JOYSTICK__
+  //please change if we ever use a joystick 
+  const tButton ControlMap::WheelCringeUp{ Driver, XboxController::5};
+  const tButton ControlMap::WheelCringeTurn{ Driver, XboxController::6};
+#else 
+  const tPOV ControlMap::ControlPannelUp{ Driver, XboxController::kBottom};
+  const tPOV ControlMap::SpinControlPannel{ Driver, XboxController::kTop};
 #endif
