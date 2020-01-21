@@ -24,8 +24,8 @@ void Robot::RobotInit() {
 
   // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
-  turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.contGroup);
-  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.contGroup);
+  turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.contGroup, robotMap.controlSystem.visionTable);
+  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit, robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.contGroup);
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.contGroup);
 
@@ -75,7 +75,7 @@ void Robot::TeleopPeriodic() {
 }
 
 void Robot::TestInit() {
-  Schedule(std::make_shared<DrivetrainTest>(*drivetrain, wml::control::PIDGains{ "I am gains 2: Elecis Boogaloo", 1, 0, 0 }));
+  Schedule(std::make_shared<DrivetrainTest>(*drivetrain, wml::control::PIDGains{ "I am gains 2: Electric Boogaloo", 1, 0, 0 }));
 }
 void Robot::TestPeriodic() {
   turret->TestOnUpdate(dt);

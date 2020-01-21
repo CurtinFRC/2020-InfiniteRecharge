@@ -91,6 +91,10 @@ struct RobotMap {
   struct MagLoader {
     wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort };
 
+    wml::sensors::LimitSwitch StartMagLimit{ ControlMap::StartMagLimitPort };
+    wml::sensors::LimitSwitch Position1Limit{ ControlMap::Position1LimitPort };
+    wml::sensors::LimitSwitch Position5Limit{ ControlMap::Position5LimitPort };
+
     wml::Gearbox magLoaderMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MagLoaderMotor)), nullptr };
   };
   MagLoader magLoader;
@@ -106,8 +110,8 @@ struct RobotMap {
 
     // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
-    std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-    double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
+    //std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
+    //double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
   };
   ControlSystem controlSystem;
 };

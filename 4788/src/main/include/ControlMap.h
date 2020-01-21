@@ -32,6 +32,9 @@ struct ControlMap {
 
   // MagLoader
   static const int MagLoaderMotorPort;
+  static const int StartMagLimitPort;
+  static const int Position1LimitPort;
+  static const int Position5LimitPort;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;

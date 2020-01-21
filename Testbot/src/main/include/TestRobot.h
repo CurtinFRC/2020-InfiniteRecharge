@@ -59,4 +59,5 @@ class Robot : public frc::TimedRobot {
   nt::NetworkTableEntry TargetY;
   nt::NetworkTableEntry ImageHeight;
   nt::NetworkTableEntry ImageWidth;
+  std::shared_ptr<nt::NetworkTable> table;
 };
