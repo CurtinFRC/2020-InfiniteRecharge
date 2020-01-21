@@ -11,6 +11,8 @@ class Turret {
 		void AutoOnUpdate(double dt);
 		void TestOnUpdate(double dt);
 
+		void MainControl(double dt);
+
 	private:
 		wml::Gearbox &_RotationalAxis;
 		wml::Gearbox &_VerticalAxis;

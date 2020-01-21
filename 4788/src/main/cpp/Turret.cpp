@@ -50,7 +50,6 @@ double YAutoAimCalc(double dt, double input) {
 	return output;
 }
 
-
 void Turret::TeleopOnUpdate(double dt) {
 	double RotationPower;
 	double AngularPower;
@@ -62,30 +61,55 @@ void Turret::TeleopOnUpdate(double dt) {
 	double targetX = table->GetNumber("Target_X", 0)/imageWidth;
 	double targetY = table->GetNumber("Target_Y", 0)/imageHeight;
 
-	// Turret Manual Rotation
-	if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::xboxDeadzone) {
-		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
-	}
+	if (_LeftLimit.Get()) {
+		RotationPower = 0;
+	} else if (_RightLimit.Get()) {
+		RotationPower = 0;
+	} else if (_AngleDownLimit.Get()) {
+		AngularPower = 0;
+	} else {
 
-	// Turret Manual Angle
-	if (_contGroup.Get(ControlMap::TurretManualAngle) > ControlMap::xboxDeadzone) {
-		AngularPower = _contGroup.Get(ControlMap::TurretManualAngle);
-	}
-
-	// Turret FlyWheel
-	if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
-		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-	}
-
-
-	// Turret Auto Aim (Note that we're using Y axis to detect distance. There is a possibility we need a seperate algorithm to adjust angle depending on y axis. Other than zeroing to goal)
-	if (_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) {
-		if (targetX > imageWidth || targetY > imageHeight) {
-			std::cout << "Error: >> Vision Artifacting Detected" << std::endl; 
-		} else {
-			RotationPower = XAutoAimCalc(dt, targetX);
-			AngularPower = YAutoAimCalc(dt, targetY);
+		// Turret Manual Rotation
+		if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::xboxDeadzone) {
+			RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
 		}
+
+		// Turret Manual Angle
+		if (_contGroup.Get(ControlMap::TurretManualAngle) > ControlMap::xboxDeadzone) {
+			AngularPower = _contGroup.Get(ControlMap::TurretManualAngle);
+		}
+
+		// Turret FlyWheel
+		if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
+			FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+		}
+
+
+		// Turret Auto Aim (Note that we're using Y axis to detect distance. There is a possibility we need a seperate algorithm to adjust angle depending on y axis. Other than zeroing to goal)
+		if (_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) {
+			if (_LeftLimit.Get()) {
+				std::cout << "Left Limit Hit" << std::endl;
+				while (targetX < 0) {
+					RotationPower = 0.5;
+				}
+			} else if (_RightLimit.Get()) {
+				std::cout << "Right Limit Hit" << std::endl;
+				while (targetX > 0) {
+					RotationPower = -0.5;
+				}
+			} else if (_AngleDownLimit.Get()) {
+				std::cout << "Angle Limit Hit" << std::endl;
+				AngularPower = 0;
+			} else {
+				if (targetX > imageWidth || targetY > imageHeight) {
+					std::cout << "Error: >> Vision Artifacting Detected" << std::endl; 
+				} else {
+					RotationPower = XAutoAimCalc(dt, targetX);
+					AngularPower = YAutoAimCalc(dt, targetY);
+				}
+			}
+		}
+
 	}
 	
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
