@@ -1,4 +1,4 @@
-#include "controlPannel.h"
+#include "ControlPannel.h"
 #include <iostream>
 
 using namespace wml;
