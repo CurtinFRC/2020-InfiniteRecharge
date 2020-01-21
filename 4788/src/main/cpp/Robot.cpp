@@ -28,7 +28,7 @@ void Robot::RobotInit() {
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit, robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.contGroup);
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.contGroup);
-
+  controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.contGroup);
 
   // Strategy controllers
   drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.contGroup));
@@ -62,6 +62,7 @@ void Robot::AutonomousPeriodic() {
   magLoader->AutoOnUpdate(dt);
   beltIntake->AutoOnUpdate(dt);
   climber->AutoOnUpdate(dt);
+  controlPannel->AutoOnUpdate(dt);
 }
 
 void Robot::TeleopInit() { 
@@ -72,6 +73,7 @@ void Robot::TeleopPeriodic() {
   magLoader->TeleopOnUpdate(dt);
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
+  controlPannel->TeleopOnUpdate(dt);
 }
 
 void Robot::TestInit() {
@@ -82,4 +84,5 @@ void Robot::TestPeriodic() {
   magLoader->TestOnUpdate(dt);
   beltIntake->TestOnUpdate(dt);
   climber->TestOnUpdate(dt);
+  controlPannel->TestOnUpdate(dt);
 }
