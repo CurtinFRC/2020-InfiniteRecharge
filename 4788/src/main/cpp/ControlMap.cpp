@@ -90,16 +90,28 @@ const double ControlMap::PannelActuationTime = 99;
   const tButton ControlMap::Intake{ Driver, 11 };
   const tButton ControlMap::Intake{ Driver, 12 };
 #else 
-  const tAxis ControlMap::Intake{ Driver, XboxController::kLeftThrottle};
-  const tAxis ControlMap::Outake{ Driver, XboxController::kRightThrottle};
+  const tAxis ControlMap::Intake{ Driver, XboxController::kRightThrottle};
+  const tAxis ControlMap::Outake{ Driver, XboxController::kLeftThrottle};
 #endif
 
 //Wheel of cringe 
 #if __CONTROLMAP_USING_JOYSTICK__
   //please change if we ever use a joystick 
-  const tButton ControlMap::WheelCringeUp{ Driver, XboxController::5};
-  const tButton ControlMap::WheelCringeTurn{ Driver, XboxController::6};
+  const tPOV ControlMap::ControlPannelUp{ Driver, 8};
+  const tPOV ControlMap::SpinControlPannelLeft{ Driver, 7};
+  const tPOV ControlMap::ControlPannelDown{ Driver, 6};
+  const tPOV ControlMap::SpinControlPannelRight{ Driver, 5};
 #else 
-  const tPOV ControlMap::ControlPannelUp{ Driver, XboxController::kBottom};
-  const tPOV ControlMap::SpinControlPannel{ Driver, XboxController::kTop};
+  const tPOV ControlMap::ControlPannelUp{ Driver, XboxController::kTop};
+  const tPOV ControlMap::SpinControlPannelLeft{ Driver, XboxController::kLeft};
+  const tPOV ControlMap::ControlPannelDown{ Driver, XboxController::kBottom};
+  const tPOV ControlMap::SpinControlPannelRight{ Driver, XboxController::kRight};
+#endif
+
+//Climber 
+#if __CONTROLMAP_USING_JOYSTICK__
+//please chaneg 
+  const tAxis ControlMap::ClimberControl{ CoDriver, 2};
+#else
+  const tAxis ControlMap::ClimberControl{ CoDriver, XboxController::kLeftYAxis};
 #endif

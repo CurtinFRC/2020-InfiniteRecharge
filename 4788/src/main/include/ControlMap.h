@@ -84,7 +84,10 @@ struct ControlMap {
 
   #else 
   static const wml::controllers::tPOV ControlPannelUp;
-  static const wml::controllers::tPOV SpinControlPannel;
+  static const wml::controllers::tPOV SpinControlPannelLeft;
+  static const wml::controllers::tPOV SpinControlPannelRight;
+  static const wml::controllers::tPOV ControlPannelDown;
+
   #endif
 
   // MagLoader
@@ -100,7 +103,6 @@ struct ControlMap {
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else
-  static const wml::controllers::tButton ClimberUp;
-  static const wml::controllers::tButton ClumberDown;
+  static const wml::controllers::tAxis ClimberControl;
   #endif
 };

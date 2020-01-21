@@ -82,7 +82,7 @@ struct RobotMap {
 
   struct Intake {
     wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort };
-
+    
     wml::Gearbox intakeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(IntakeMotor)), nullptr };
   };
   Intake intake;
