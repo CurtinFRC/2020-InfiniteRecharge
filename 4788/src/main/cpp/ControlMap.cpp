@@ -26,22 +26,25 @@ const double ControlMap::xboxDeadzone = 0.05;
 const double ControlMap::triggerDeadzone = 0.05;
 
 // Drive Left
-const int ControlMap::DriveSRXportL = 0;
-const int ControlMap::DriveSPXportL = 1;
+const int ControlMap::DriveSRXportL = 99;
+const int ControlMap::DriveSPXportL = 99;
 // Drive Right
-const int ControlMap::DriveSRXportR = 2;
-const int ControlMap::DriveSPXportR = 3;
+const int ControlMap::DriveSRXportR = 99;
+const int ControlMap::DriveSPXportR = 99;
 
 // Turret
 const int ControlMap::TurretFlyWheelPort = 4;
 const int ControlMap::TurretAnglePort = 5;
-const int ControlMap::TurretRotationPort = 6;
+const int ControlMap::TurretRotationPort = 0;
 
 // Intake
 const int ControlMap::IntakeMotorPort = 7;
 
 // MagLoader
 const int ControlMap::MagLoaderMotorPort = 8;
+const int ControlMap::StartMagLimitPort = 0;
+const int ControlMap::Position1LimitPort = 1;
+const int ControlMap::Position5LimitPort = 2;
 
 // Climber 
 const int ControlMap::ClimberActuatorPort1 = 0;

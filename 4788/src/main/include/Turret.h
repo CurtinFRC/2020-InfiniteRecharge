@@ -5,7 +5,7 @@
 
 class Turret {
 	public:
-		Turret(wml::Gearbox &RotationalAxis, wml::Gearbox &VerticalAxis, wml::Gearbox &FlyWheel,  wml::controllers::SmartControllerGroup &contGroup);
+		Turret(wml::Gearbox &RotationalAxis, wml::Gearbox &VerticalAxis, wml::Gearbox &FlyWheel, wml::controllers::SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable);
 
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
@@ -16,4 +16,6 @@ class Turret {
 		wml::Gearbox &_VerticalAxis;
 		wml::Gearbox &_FlyWheel;
 		wml::controllers::SmartControllerGroup &_contGroup;
+		std::shared_ptr<nt::NetworkTable> &_visionTable;
+		std::shared_ptr<nt::NetworkTable> table;
 };
