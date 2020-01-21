@@ -96,7 +96,6 @@ struct RobotMap {
 
   struct ControlPannel {
     wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
-
     wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
   };
     ControlPannel controlPannel;
