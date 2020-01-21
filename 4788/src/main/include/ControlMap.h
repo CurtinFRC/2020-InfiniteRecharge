@@ -23,18 +23,20 @@ struct ControlMap {
 
   // Drive System
   static const int DriveSRXportL, DriveSRXportR, DriveSPXportL, DriveSPXportR;
+  static const int ChangeGearPort1, ChangeGearPort2;
+  static const double ChangeGearTime;
 
   // Turret
   static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
+  static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
+  static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
 
   // Intake
   static const int IntakeMotorPort;
 
   // MagLoader
   static const int MagLoaderMotorPort;
-  static const int StartMagLimitPort;
-  static const int Position1LimitPort;
-  static const int Position5LimitPort;
+  static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
 
   //Wheel of Cringe 
   static const int ControlPannelPort;
@@ -57,6 +59,7 @@ struct ControlMap {
   static const wml::controllers::tAxis DrivetrainLeft, DrivetrainRight;
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
+  static const wml::controllers::tButton ShiftGears;
 
   // Turret
   #if __CONTROLMAP_USING_JOYSTICK__
