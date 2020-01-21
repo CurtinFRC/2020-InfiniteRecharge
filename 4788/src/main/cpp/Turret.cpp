@@ -4,7 +4,7 @@
 using namespace wml;
 using namespace wml::controllers;
 
-Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable) : _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), _FlyWheel(FlyWheel), _contGroup(contGroup), _visionTable(visionTable) {
+Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sensors::LimitSwitch &LeftLimit, sensors::LimitSwitch &RightLimit, sensors::LimitSwitch &AngleDownLimit, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable) : _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), _FlyWheel(FlyWheel), _LeftLimit(LeftLimit), _RightLimit(RightLimit), _AngleDownLimit(AngleDownLimit), _contGroup(contGroup), _visionTable(visionTable) {
 	table = _visionTable->GetSubTable("Target");
 }
 
@@ -60,7 +60,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	double imageWidth = table->GetNumber("ImageWidth", 0);
 
 	double targetX = table->GetNumber("Target_X", 0)/imageWidth;
-	double targetY = table->GetNumber("Target_Y", 0)/imageHeight;  
+	double targetY = table->GetNumber("Target_Y", 0)/imageHeight;
 
 	// Turret Manual Rotation
 	if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::xboxDeadzone) {

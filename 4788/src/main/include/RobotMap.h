@@ -72,6 +72,10 @@ struct RobotMap {
   DriveSystem driveSystem;
 
   struct Turret {
+    wml::sensors::LimitSwitch LeftLimit{ ControlMap::TurretLeftLimitPort, ControlMap::TurretLeftLimitInvert };
+    wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
+    wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
+
     wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
