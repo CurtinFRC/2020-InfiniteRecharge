@@ -9,7 +9,6 @@ Climber::Climber(actuators::DoubleSolenoid &ClimberActuator, SmartControllerGrou
 void Climber::TeleopOnUpdate(double dt) {
 
 }
-
 void Climber::AutoOnUpdate(double dt) {
 
 }

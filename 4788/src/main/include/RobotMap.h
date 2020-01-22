@@ -29,6 +29,7 @@
 #include <networktables/NetworkTableInstance.h>
 #include "control/PIDController.h"
 #include "MotionProfiling.h"
+#include "Toggle.h"
 
 #include "Usage.h"
 
@@ -88,7 +89,8 @@ struct RobotMap {
 
   struct Intake {
     wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort };
-
+    wml::actuators::DoubleSolenoid IntakeDown { ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
+    
     wml::Gearbox intakeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(IntakeMotor)), nullptr };
   };
   Intake intake;
@@ -106,6 +108,8 @@ struct RobotMap {
 
   struct ControlPannel {
     wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
+    wml::actuators::DoubleSolenoid PannelPnSol { ControlMap::ControlPannelPort, ControlMap::PannelActuatorPort1, ControlMap::PannelActuationTime};
+
     wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
   };
     ControlPannel controlPannel;
@@ -123,6 +127,9 @@ struct RobotMap {
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
     //std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
     //double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
+
   };
   ControlSystem controlSystem;
+
+
 };
