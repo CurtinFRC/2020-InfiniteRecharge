@@ -5,7 +5,7 @@
 
 class Climber {
   public:
-    Climber(wml::actuators::DoubleSolenoid &ClimberActuator, wml::controllers::SmartControllerGroup &contGroup);
+    Climber(wml::actuators::DoubleSolenoid &ClimberActuator, wml::actuators::BinaryServo &ShiftPTO, wml::Gearbox &ExtendElevator, wml::controllers::SmartControllerGroup &contGroup);
 
     void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
@@ -13,5 +13,7 @@ class Climber {
 
 	private:
 		wml::actuators::DoubleSolenoid &_ClimberActuator;
+		wml::actuators::BinaryServo &_ShiftPTO;
+		wml::Gearbox &_ExtendElevator;
 		wml::controllers::SmartControllerGroup &_contGroup;
 };

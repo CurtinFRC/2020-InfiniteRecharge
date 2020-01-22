@@ -44,6 +44,7 @@ struct ControlMap {
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
   static const double ClimberActuationTime;
+  static const int Shift2PTOPort;
 
   // Control System
   static const int PressureSensorPort;
@@ -103,6 +104,7 @@ struct ControlMap {
 
   #else
   static const wml::controllers::tButton ClimberUp;
-  static const wml::controllers::tButton ClumberDown;
+  static const wml::controllers::tButton ClimberDown;
+  static const wml::controllers::tButton Shift2PTO;
   #endif
 };

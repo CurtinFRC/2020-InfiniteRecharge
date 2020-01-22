@@ -30,23 +30,12 @@ double XAutoAimCalc(double dt, double input)  {
 	return output;
 }
 
-// PID Calculations Y axis
-double YkP = -0.3;
-double YkI = 0;
-double YkD = -0.005;
+double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) { // Doubt Y needs PID, More needs adjustments from pixles using Y to encoder ticks. To adjust angle at a "Sorta Distance"
 
-double Ysum = 0;
-double YpreviousError = 0;
-double Ygoal = 0;
+	double output = 0;
+	
 
-double YAutoAimCalc(double dt, double input) {
-	double error = Ygoal - input;
-	double derror = (error - YpreviousError) / dt;
-	Ysum = Ysum + error * dt;
 
-	double output = YkP * error + YkI * Ysum + YkD * derror;
-
-	YpreviousError = error;
 	return output;
 }
 
@@ -105,7 +94,7 @@ void Turret::TeleopOnUpdate(double dt) {
 					std::cout << "Error: >> Vision Artifacting Detected" << std::endl; 
 				} else {
 					RotationPower = XAutoAimCalc(dt, targetX);
-					AngularPower = YAutoAimCalc(dt, targetY);
+					AngularPower = YAutoAimCalc(dt, targetY, _VerticalAxis.encoder->GetEncoderTicks(), imageHeight);
 				}
 			}
 		}
