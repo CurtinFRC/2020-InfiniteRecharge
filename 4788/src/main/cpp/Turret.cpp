@@ -30,23 +30,26 @@ double XAutoAimCalc(double dt, double input)  {
 	return output;
 }
 
-// PID Calculations Y axis
-double YkP = -0.3;
-double YkI = 0;
-double YkD = -0.005;
+double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
 
-double Ysum = 0;
-double YpreviousError = 0;
-double Ygoal = 0;
+	double output = 0;
+	
+	/**
+	 * We need the angle to adjust to a certain angle depending on the distance.
+	 * The target is at a set height. So we just need the angle to change depending on the Y value
+	 * The Camera isn't placed on the moving part of the angle. (Mostly because we don't want it to go to zero, we want it to go to curve the ball trajectory)
+	 * The best Way to do this (From Jaci's experience) is to get the encoder/angle at certain distances of the target, then depending on those set points create a program
+	 * that also calclates the inbetweens. Should be easy right...
+	 * 
+	 * We need about three set points which will give us our main algorithm
+	 * Set point 1 (Put the robot as far back as it can with the ball going into the goal)
+	 * Set point 2 (The closest the robot can be and still shoot into the goal)
+	 * Set point 3 (This is the middle point between the furthest and closest)
+	 * 
+	 * After this we should be able to get an algorithm using the 3 points to adjust the angle for everything in between as well.
+	*/
 
-double YAutoAimCalc(double dt, double input) {
-	double error = Ygoal - input;
-	double derror = (error - YpreviousError) / dt;
-	Ysum = Ysum + error * dt;
 
-	double output = YkP * error + YkI * Ysum + YkD * derror;
-
-	YpreviousError = error;
 	return output;
 }
 
@@ -105,7 +108,7 @@ void Turret::TeleopOnUpdate(double dt) {
 					std::cout << "Error: >> Vision Artifacting Detected" << std::endl; 
 				} else {
 					RotationPower = XAutoAimCalc(dt, targetX);
-					AngularPower = YAutoAimCalc(dt, targetY);
+					AngularPower = YAutoAimCalc(dt, targetY, _VerticalAxis.encoder->GetEncoderTicks(), imageHeight);
 				}
 			}
 		}

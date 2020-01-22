@@ -112,10 +112,16 @@ struct RobotMap {
 
     wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
   };
-    ControlPannel controlPannel;
+  ControlPannel controlPannel;
 
   struct Climber {
     wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
+
+    wml::actuators::BinaryServo ShiftPTOServos{ ControlMap::Shift2PTOPort, ControlMap::Shift2PTOForwardPosition, ControlMap::Shift2PTOReversePosition };
+    wml::TalonSrx Climber1Motor{ ControlMap::ClimberMotor1Port };
+    wml::TalonSrx Climber2Motor{ ControlMap::ClimberMotor2Port };
+
+    wml::Gearbox ClimberElevator{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Climber1Motor, Climber2Motor)), nullptr };
   };
   Climber climber;
 

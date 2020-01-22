@@ -27,7 +27,7 @@ void Robot::RobotInit() {
   turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.turret.LeftLimit, robotMap.turret.RightLimit, robotMap.turret.AngleDownLimit, robotMap.contGroup, robotMap.controlSystem.visionTable);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit, robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup);
-  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.contGroup);
+  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ShiftPTOServos, robotMap.climber.ClimberElevator, robotMap.contGroup);
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.PannelPnSol, robotMap.contGroup);
 
   // Strategy controllers

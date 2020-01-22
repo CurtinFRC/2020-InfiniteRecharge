@@ -47,11 +47,12 @@ struct ControlMap {
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
   static const double ClimberActuationTime;
+  static const int Shift2PTOPort, Shift2PTOForwardPosition, Shift2PTOReversePosition;
+  static const int ClimberMotor1Port, ClimberMotor2Port;
 
   // Control System
   static const int PressureSensorPort;
   static const int CompressorPort;
-
 
   // --------------- Defined Buttons -----------------
 
@@ -99,8 +100,8 @@ struct ControlMap {
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else
-  static const wml::controllers::tButton ShiftUpMagazine;
-  static const wml::controllers::tButton ShiftDownMagazine;
+  static const wml::controllers::tPOV ShiftUpMagazine;
+  static const wml::controllers::tPOV ShiftDownMagazine;
   #endif
 
 
@@ -110,5 +111,7 @@ struct ControlMap {
   #else
   static const wml::controllers::tAxis ClimberControl;
   static const wml::controllers::tButton ClimberUp;
+  static const wml::controllers::tButton ClimberDown;
+  static const wml::controllers::tButton Shift2PTO;
   #endif
 }; 
