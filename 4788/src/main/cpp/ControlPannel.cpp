@@ -3,6 +3,7 @@
 
 using namespace wml;
 using namespace wml::controllers;
+int i;
 
 ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, actuators::DoubleSolenoid &PannelPnSol, SmartControllerGroup &contGroup) : _ControlPannelMotor(ControlPannelMotor), _PannelPnSol(PannelPnSol), _contGroup(contGroup) {}
 
@@ -33,7 +34,40 @@ void ControlPannel::AutoOnUpdate(double dt) {
 }
 
 void ControlPannel::TestOnUpdate(double dt) {
+	double ControlPannelPower;
+	timer.Start();
+	while (timer.Get() >= 10) {
+		double Speed = 1;
+		_ControlPannelMotor.transmission->SetVoltage(12 * Speed);
+	}
+	timer.Stop();
+	timer.Reset();
+	timer.Start();
+	while (timer.Get() >= 10) {
+		double Speed = -1;
+		_ControlPannelMotor.transmission->SetVoltage(12 * Speed);
+	}
+	timer.Stop();
+	timer.Reset();
 
 
+	while ( i >= 4)
+	{
+	_PannelPnSol.SetTarget(wml::actuators::kForward);
+	timer.Start();
+	while (timer.Get() > 3) {
+
+	}
+	timer.Stop();
+	timer.Reset();
+	_PannelPnSol.SetTarget(wml::actuators::kReverse);
+	timer.Start();
+	while (timer.Get() > 3) {
+
+	}
+	timer.Stop();
+	timer.Reset();
+	i = i + 1;
+	}
 
 }

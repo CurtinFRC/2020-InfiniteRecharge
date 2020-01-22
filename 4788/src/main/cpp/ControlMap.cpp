@@ -39,6 +39,9 @@ const int ControlMap::TurretRotationPort = 0;
 
 // Intake
 const int ControlMap::IntakeMotorPort = 7;
+const int ControlMap::IntakeDownPort1 = 99;
+const int ControlMap::IntakeDownPort2 = 99;
+const double ControlMap::IntakeDownActuationTime = 99;
 
 // MagLoader
 const int ControlMap::MagLoaderMotorPort = 8;
@@ -50,6 +53,7 @@ const int ControlMap::Position5LimitPort = 2;
 const int ControlMap::ClimberActuatorPort1 = 0;
 const int ControlMap::ClimberActuatorPort2 = 1;
 const double ControlMap::ClimberActuationTime = 0.2;
+//const int ControlMap::
 
 // Control System
 const int ControlMap::PressureSensorPort = 0;
@@ -92,6 +96,7 @@ const double ControlMap::PannelActuationTime = 99;
 #else 
   const tAxis ControlMap::Intake{ Driver, XboxController::kRightThrottle};
   const tAxis ControlMap::Outake{ Driver, XboxController::kLeftThrottle};
+  const tButton ControlMap::DownIntake{ Driver, XboxController::kY};
 #endif
 
 //Wheel of cringe 

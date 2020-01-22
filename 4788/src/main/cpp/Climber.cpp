@@ -8,7 +8,6 @@ Climber::Climber(actuators::DoubleSolenoid &ClimberActuator, SmartControllerGrou
 
 void Climber::TeleopOnUpdate(double dt) {
 
-//if (_contGroup.Get(ControlMap::))
 }
 void Climber::AutoOnUpdate(double dt) {
 

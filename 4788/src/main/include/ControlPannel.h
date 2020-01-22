@@ -3,6 +3,7 @@
 #include "controllers/Controllers.h"
 #include "RobotMap.h"
 
+
 class ControlPannel {
 	public:
 		ControlPannel(wml::Gearbox &ControlPannelMotor, wml::actuators::DoubleSolenoid &PannelPnSol, wml::controllers::SmartControllerGroup &contGroup);
@@ -15,4 +16,5 @@ class ControlPannel {
 		wml::Gearbox &_ControlPannelMotor;
 		wml::actuators::DoubleSolenoid &_PannelPnSol;
 		wml::controllers::SmartControllerGroup &_contGroup;
+		frc::Timer timer;
 };
