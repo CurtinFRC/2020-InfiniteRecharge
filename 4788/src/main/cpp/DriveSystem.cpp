@@ -4,7 +4,7 @@ using namespace wml;
 using namespace wml::controllers;
 
 // Initializes & Defines groups for Manual Control
-DrivetrainManual::DrivetrainManual(std::string name, Drivetrain &drivetrain, SmartControllerGroup &contGroup) : Strategy(name), _drivetrain(drivetrain), _contGroup(contGroup) {
+DrivetrainManual::DrivetrainManual(std::string name, Drivetrain &drivetrain, wml::actuators::DoubleSolenoid &ChangeGears, SmartControllerGroup &contGroup) : Strategy(name), _drivetrain(drivetrain), _ChangeGears(ChangeGears), _contGroup(contGroup) {
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
@@ -26,8 +26,9 @@ void DrivetrainManual::OnUpdate(double dt) {
     rightSpeed = -_contGroup.Get(ControlMap::DrivetrainRight);
   #endif
 
-  if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE))
+  if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE)) {
     _drivetrain.SetInverted(!_drivetrain.GetInverted());
+  }
 
   _drivetrain.Set(leftSpeed, rightSpeed);
 }

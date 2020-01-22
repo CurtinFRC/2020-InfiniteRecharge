@@ -24,14 +24,14 @@ void Robot::RobotInit() {
 
   // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
-  turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.contGroup, robotMap.controlSystem.visionTable);
+  turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.turret.LeftLimit, robotMap.turret.RightLimit, robotMap.turret.AngleDownLimit, robotMap.contGroup, robotMap.controlSystem.visionTable);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit, robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup);
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.contGroup);
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.PannelPnSol, robotMap.contGroup);
 
   // Strategy controllers
-  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.contGroup));
+  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.driveSystem.ChangeGearing, robotMap.contGroup));
   drivetrain->StartLoop(100);
 
   // Inverts one side of our drivetrain
@@ -62,7 +62,6 @@ void Robot::AutonomousPeriodic() {
   magLoader->AutoOnUpdate(dt);
   beltIntake->AutoOnUpdate(dt);
   climber->AutoOnUpdate(dt);
-  controlPannel->AutoOnUpdate(dt);
 }
 
 void Robot::TeleopInit() { 
@@ -73,7 +72,6 @@ void Robot::TeleopPeriodic() {
   magLoader->TeleopOnUpdate(dt);
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
-  controlPannel->TeleopOnUpdate(dt);
 }
 
 void Robot::TestInit() {
@@ -84,5 +82,4 @@ void Robot::TestPeriodic() {
   magLoader->TestOnUpdate(dt);
   beltIntake->TestOnUpdate(dt);
   climber->TestOnUpdate(dt);
-  controlPannel->TestOnUpdate(dt);
 }

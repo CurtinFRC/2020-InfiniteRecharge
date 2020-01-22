@@ -31,11 +31,23 @@ const int ControlMap::DriveSPXportL = 99;
 // Drive Right
 const int ControlMap::DriveSRXportR = 99;
 const int ControlMap::DriveSPXportR = 99;
+// Drive Gearning
+const int ControlMap::ChangeGearPort1 = 99;
+const int ControlMap::ChangeGearPort2 = 99;
+const double ControlMap::ChangeGearTime = 0;
 
 // Turret
 const int ControlMap::TurretFlyWheelPort = 4;
 const int ControlMap::TurretAnglePort = 5;
 const int ControlMap::TurretRotationPort = 0;
+
+const int ControlMap::TurretLeftLimitPort = 99;
+const int ControlMap::TurretRightLimitPort = 99;
+const int ControlMap::TurretAngleDownLimitPort = 99;
+
+const bool ControlMap::TurretLeftLimitInvert = false;
+const bool ControlMap::TurretRightLimitInvert = false;
+const bool ControlMap::TurretAngleDownLimitInvert = false;
 
 // Intake
 const int ControlMap::IntakeMotorPort = 7;
@@ -69,13 +81,15 @@ const double ControlMap::PannelActuationTime = 99;
 
 // Drive System
 #if __CONTROLMAP_USING_JOYSTICK__
-  const tAxis ControlMap::DrivetrainForward{ 1, Joystick::kYAxis };
-  const tAxis ControlMap::DrivetrainTurn{ 1, Joystick::kZAxis };
-  const tButton ControlMap::ReverseDrivetrain{ 1, 2 };
+  const tAxis ControlMap::DrivetrainForward{ Driver, Joystick::kYAxis };
+  const tAxis ControlMap::DrivetrainTurn{ Driver, Joystick::kZAxis };
+  const tButton ControlMap::ReverseDrivetrain{ Driver, 2 };
+  const tButton ControlMap::ShiftGears{ Driver, 99 };
 #else
   const tAxis ControlMap::DrivetrainLeft{ Driver, XboxController::kLeftYAxis };
   const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
+  const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperLeft };
 #endif
 
 // Turret
