@@ -30,10 +30,24 @@ double XAutoAimCalc(double dt, double input)  {
 	return output;
 }
 
-double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) { // Doubt Y needs PID, More needs adjustments from pixles using Y to encoder ticks. To adjust angle at a "Sorta Distance"
+double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
 
 	double output = 0;
 	
+	/**
+	 * We need the angle to adjust to a certain angle depending on the distance.
+	 * The target is at a set height. So we just need the angle to change depending on the Y value
+	 * The Camera isn't placed on the moving part of the angle. (Mostly because we don't want it to go to zero, we want it to go to curve the ball trajectory)
+	 * The best Way to do this (From Jaci's experience) is to get the encoder/angle at certain distances of the target, then depending on those set points create a program
+	 * that also calclates the inbetweens. Should be easy right...
+	 * 
+	 * We need about three set points which will give us our main algorithm
+	 * Set point 1 (Put the robot as far back as it can with the ball going into the goal)
+	 * Set point 2 (The closest the robot can be and still shoot into the goal)
+	 * Set point 3 (This is the middle point between the furthest and closest)
+	 * 
+	 * After this we should be able to get an algorithm using the 3 points to adjust the angle for everything in between as well.
+	*/
 
 
 	return output;
