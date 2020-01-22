@@ -33,23 +33,26 @@ struct ControlMap {
 
   // Intake
   static const int IntakeMotorPort;
+  static const int IntakeDownPort1, IntakeDownPort2;
+  static const double IntakeDownActuationTime;
 
   // MagLoader
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
 
   //Wheel of Cringe 
-  static const int ControlPannelPort;
+  static const int ControlPannelPort, PannelActuatorPort1;
+  static const double PannelActuationTime;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
   static const double ClimberActuationTime;
-  static const int Shift2PTOPort;
+  static const int Shift2PTOPort, Shift2PTOForwardPosition, Shift2PTOReversePosition;
+  static const int ClimberMotor1Port, ClimberMotor2Port;
 
   // Control System
   static const int PressureSensorPort;
   static const int CompressorPort;
-
 
   // --------------- Defined Buttons -----------------
 
@@ -75,11 +78,11 @@ struct ControlMap {
 
   // Intake
   #if __CONTROLMAP_USING_JOYSTICK__
-  static const wml::controllers::tButton Intake;
-  static const wml::controllers::tButton Outake;
+
   #else
   static const wml::controllers::tAxis Intake;
   static const wml::controllers::tAxis Outake;
+  static const wml::controllers::tButton DownIntake;
   #endif
 
   //Wheel of Cringe 
@@ -87,15 +90,18 @@ struct ControlMap {
 
   #else 
   static const wml::controllers::tPOV ControlPannelUp;
-  static const wml::controllers::tPOV SpinControlPannel;
+  static const wml::controllers::tPOV SpinControlPannelLeft;
+  static const wml::controllers::tPOV SpinControlPannelRight;
+  static const wml::controllers::tPOV ControlPannelDown;
+
   #endif
 
   // MagLoader
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else
-  static const wml::controllers::tButton ShiftUpMagazine;
-  static const wml::controllers::tButton ShiftDownMagazine;
+  static const wml::controllers::tPOV ShiftUpMagazine;
+  static const wml::controllers::tPOV ShiftDownMagazine;
   #endif
 
 
@@ -103,8 +109,9 @@ struct ControlMap {
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else
+  static const wml::controllers::tAxis ClimberControl;
   static const wml::controllers::tButton ClimberUp;
   static const wml::controllers::tButton ClimberDown;
   static const wml::controllers::tButton Shift2PTO;
   #endif
-};
+}; 

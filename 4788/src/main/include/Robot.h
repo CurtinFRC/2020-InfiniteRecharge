@@ -26,6 +26,7 @@
 #include "sensors/LimitSwitch.h"
 #include "sensors/NavX.h"
 #include "sensors/PressureSensor.h"
+#include "frc/Timer.h"
 
 #include <cameraserver/CameraServer.h>
 #include <frc/DriverStation.h> 
