@@ -18,6 +18,38 @@
 #include "sensors/PressureSensor.h"
 #include "sensors/LimitSwitch.h"
 
+#include <string>
+
+#include "devices/StateDevice.h"
+#include "control/PIDController.h"
+#include "strategy/StrategySystem.h"
+#include "control/MotorFilters.h"
+#include "Gearbox.h"
+#include "strategy/Strategy.h"
+#include "controllers/Controllers.h"
+#include "sensors/BinarySensor.h"
+
+#include <frc/SpeedControllerGroup.h>
+#include <frc/Spark.h>
+#include <frc/PowerDistributionPanel.h>
+
+#include "WMLCtre.h"
+#include "controllers/Controllers.h"
+#include "actuators/BinaryServo.h"
+#include "actuators/Compressor.h"
+#include "actuators/DoubleSolenoid.h"
+#include "actuators/VoltageController.h"
+#include "Drivetrain.h"
+#include "sensors/Encoder.h"
+#include "sensors/LimitSwitch.h"
+#include "sensors/NavX.h"
+#include "sensors/PressureSensor.h"
+#include <networktables/NetworkTableInstance.h>
+#include "control/PIDController.h"
+#include "MotionProfiling.h"
+#include "Toggle.h"
+
+#include "Usage.h"
 
 #include "WMLCtre.h"
 #include "Gearbox.h"
