@@ -44,22 +44,8 @@ jobs:
   - template: azure-init.yml
   - script: git submodule update --init
   - script: git submodule update
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      publishJUnitResults: false
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'installRoboRioToolchain'
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      publishJUnitResults: false
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'downloadAll'
+  - script: ./gradlew installRoboRioToolchain
+  - script: ./gradlew downloadAll
   - task: Gradle@2
     inputs:
       workingDirectory: ''
