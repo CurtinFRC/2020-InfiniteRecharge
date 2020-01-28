@@ -51,8 +51,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'installRoboRioToolchain'
-      tasks: 'clean build'
+      tasks: 'installRoboRioToolchain', 'clean build'
       options: '-Pno-roborio'
 
 - job: linux16
