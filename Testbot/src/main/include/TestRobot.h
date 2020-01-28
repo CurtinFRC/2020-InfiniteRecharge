@@ -39,7 +39,6 @@
 #include "actuators/Compressor.h"
 #include "actuators/DoubleSolenoid.h"
 #include "actuators/VoltageController.h"
-#include "Drivetrain.h"
 #include "sensors/Encoder.h"
 #include "sensors/LimitSwitch.h"
 #include "sensors/NavX.h"
@@ -58,6 +57,9 @@
 class Robot : public frc::TimedRobot {
  public:
   void RobotInit() override;
+  void RobotPeriodic() override;
+
+  void DisabledInit() override;
 
   void AutonomousInit() override;
   void AutonomousPeriodic() override;
@@ -67,25 +69,4 @@ class Robot : public frc::TimedRobot {
 
   void TestInit() override;
   void TestPeriodic() override;
-
-  double PIDCalc(double dt, double input);
-
-  wml::controllers::XboxController *xbox1;
-
-  wml::sensors::LimitSwitch LimitSwitch0{0, false};
-  wml::sensors::LimitSwitch LimitSwitch1{1, false};
-  wml::sensors::LimitSwitch LimitSwitch2{2, false};
-  wml::VictorSpx *BeltMotor;
-
-
-  wml::Gearbox *left, *right;
-  wml::Drivetrain *drivetrain;
-
-  frc::DoubleSolenoid *hatchEjector;
-
-  nt::NetworkTableEntry TargetX;
-  nt::NetworkTableEntry TargetY;
-  nt::NetworkTableEntry ImageHeight;
-  nt::NetworkTableEntry ImageWidth;
-  std::shared_ptr<nt::NetworkTable> table;
 };
