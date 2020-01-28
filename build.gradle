@@ -6,8 +6,8 @@ plugins {
 // For Azure
 allprojects {
   plugins.withType(edu.wpi.first.toolchain.roborio.RoboRioToolchainPlugin).whenPluginAdded {
-    if (project.hasProperty('no-roborio'))
-      toolchainsPlugin.getByName('roboRio').optional = true
+    //if (project.hasProperty('no-roborio'))
+      //toolchainsPlugin.getByName('roboRio').optional = true
   }
 
   plugins.withType(NativeComponentPlugin).whenPluginAdded {
@@ -35,5 +35,5 @@ subprojects {
 }
 
 wrapper {
-  gradleVersion = '7.0'
+  gradleVersion = '6.0'
 }
