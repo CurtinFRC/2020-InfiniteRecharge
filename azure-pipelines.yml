@@ -44,8 +44,8 @@ jobs:
   - template: azure-init.yml
   - script: git submodule update --init
   - script: git submodule update
-  - script: ./gradlew installRoboRioToolchain
-  - script: ./gradlew downloadAll
+  - script: sudo ./gradlew installRoboRioToolchain
+  - script: sudo ./gradlew downloadAll
   - task: Gradle@2
     inputs:
       workingDirectory: ''
