@@ -52,7 +52,6 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'installRoboRioToolchain'
-      options: '-Pno-roborio'
   - task: Gradle@2
     inputs:
       workingDirectory: ''
