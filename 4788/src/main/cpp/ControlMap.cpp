@@ -41,6 +41,10 @@ const int ControlMap::TurretFlyWheelPort = 99;
 const int ControlMap::TurretAnglePort = 99;
 const int ControlMap::TurretRotationPort = 99;
 
+const double ControlMap::TurretDistanceSetpoint1 = 0; // Close
+const double ControlMap::TurretDistanceSetpoint2 = 0; // Mid
+const double ControlMap::TurretDistanceSetpoint3 = 0; // Far
+
 const int ControlMap::TurretLeftLimitPort = 99;
 const int ControlMap::TurretRightLimitPort = 99;
 const int ControlMap::TurretAngleDownLimitPort = 99;
@@ -104,7 +108,7 @@ const double ControlMap::PannelActuationTime = 0;
 #else
   const tAxis ControlMap::TurretAutoAim{ CoDriver, XboxController::kLeftThrottle };
   const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
-  const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kLeftYAxis };
+  const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kRightYAxis };
   const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
 #endif

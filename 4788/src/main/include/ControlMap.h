@@ -30,6 +30,7 @@ struct ControlMap {
   static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
+  static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;
 
   // Intake
   static const int IntakeMotorPort;

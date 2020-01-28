@@ -22,13 +22,13 @@ void curtin_frc_vision::run() {
 
 	inst.StartClientTeam(4788);
 
-	vision.SetupVision(&Image, 4, 30, ResHeight, ResWidth, 1, "Turret Cam", true);
-	vision.CustomTrack(&TrackingImage, &Image, 30, 70, 50, 255, 0, 0);
+	vision.SetupVision(&Image, 0, 30, ResHeight, ResWidth, 1, "Turret Cam", true);
+	vision.CustomTrack(&TrackingImage, &Image, 30, 70, 0, 255, 0, 0);
 	vision.Processing.visionHullGeneration.BoundingBox(&TrackingImage, &ProcessingOutput, &cx, &cy, 10);
 	#ifdef __DESKTOP__ 
 	std::cout << "Exposure Might be dissabled on local machine" << std::endl;
 	#else
-	system("v4l2-ctl -d /dev/video4 --set-ctrl=exposure_absolute=1");
+	system("v4l2-ctl -d /dev/video0 --set-ctrl=exposure_absolute=1");
 	#endif
 
 	std::cout << "Vision Tracking Process Running" << std::endl;

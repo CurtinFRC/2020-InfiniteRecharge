@@ -8,6 +8,22 @@ Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sens
 	table = _visionTable->GetSubTable("Target");
 }
 
+void Turret::ZeroTurret() {
+	while (!_LeftLimit.Get()) {
+		_RotationalAxis.transmission->SetVoltage(12 * -0.3);
+	} 
+	_RotationalAxis.encoder->ZeroEncoder();
+	while (!_RightLimit.Get()) {
+		_RotationalAxis.transmission->SetVoltage(12 * 0.3);
+	}
+	MaxRotationTicks = _RotationalAxis.encoder->GetEncoderTicks();
+	while(!_AngleDownLimit.Get()) {
+		_VerticalAxis.transmission->SetVoltage(12 * 0.2);
+	}
+	_VerticalAxis.encoder->ZeroEncoder();
+	_FlyWheel.encoder->ZeroEncoder();
+}
+
 
 // PID Calculations X axis
 double XkP = -0.3;
@@ -19,7 +35,7 @@ double XpreviousError = 0;
 double Xgoal = 0;
 
 
-double XAutoAimCalc(double dt, double input)  {
+double Turret::XAutoAimCalc(double dt, double input)  {
 	double error = Xgoal - input;
 	double derror = (error - XpreviousError) / dt;
 	Xsum = Xsum + error * dt;
@@ -30,9 +46,11 @@ double XAutoAimCalc(double dt, double input)  {
 	return output;
 }
 
-double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
+double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
 
 	double output = 0;
+
+	
 	
 	/**
 	 * We need the angle to adjust to a certain angle depending on the distance.
