@@ -177,20 +177,20 @@ jobs:
 #       tasks: 'clean :4788:src:coprocessor:build'
 #       #options: '-Pno-roborio -Pno-desktop -xcheck'
 
-- job: doxygen_linux16
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  container: linux_jaci
-  steps:
-  - script: git submodule update --init
-  - script: git submodule update
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      tasks: 'doxygen'
-      #options: '-Pno-roborio'
-  - task: PublishBuildArtifacts@1
-    inputs:
-      artifactName: 'doxygen'
-      pathtoPublish: build/docs/doxygen/html
+# - job: doxygen_linux16
+#   pool:
+#     vmImage: 'Ubuntu-16.04'
+#   container: linux_jaci
+#   steps:
+#   - script: git submodule update --init
+#   - script: git submodule update
+#   - task: Gradle@2
+#     inputs:
+#       workingDirectory: ''
+#       gradleWrapperFile: 'gradlew'
+#       tasks: 'doxygen'
+#       #options: '-Pno-roborio'
+#   - task: PublishBuildArtifacts@1
+#     inputs:
+#       artifactName: 'doxygen'
+#       pathtoPublish: build/docs/doxygen/html
