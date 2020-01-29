@@ -34,6 +34,14 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
+      tasks: 'installRoboRioToolchain'
+  - task: Gradle@2
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
       #options: '-Pno-roborio'
 
@@ -52,7 +60,6 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'installRoboRioToolchain'
-      #options: '-Pno-roborio'
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -78,6 +85,14 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
+      tasks: 'installRoboRioToolchain'
+  - task: Gradle@2
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
       #options: '-Pno-roborio'
 
@@ -88,6 +103,14 @@ jobs:
   steps:
   - script: git submodule update --init
   - script: git submodule update
+  - task: Gradle@2
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'installRoboRioToolchain'
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -112,22 +135,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean :4788:src:coprocessor:build'
-      #options: '-Pno-roborio -Pno-desktop -xcheck'
-
-- job: tinkerboard_vision_linux16
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  container: linux_jaci
-  steps:
-  - script: git submodule update --init
-  - script: git submodule update
-  - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      tasks: ':4788:src:coprocessor:installTinkerboardToolchain'
-      #options: '-Pno-roborio -Pno-desktop --scan --stacktrace'
+      tasks: 'installRaspbianToolchain'
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -137,6 +145,29 @@ jobs:
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean :4788:src:coprocessor:build'
       #options: '-Pno-roborio -Pno-desktop -xcheck'
+
+# - job: tinkerboard_vision_linux16
+#   pool:
+#     vmImage: 'Ubuntu-16.04'
+#   container: linux_jaci
+#   steps:
+#   - script: git submodule update --init
+#   - script: git submodule update
+#   - task: Gradle@2
+#     inputs:
+#       workingDirectory: ''
+#       gradleWrapperFile: 'gradlew'
+#       tasks: ':4788:src:coprocessor:installTinkerboardToolchain'
+#       #options: '-Pno-roborio -Pno-desktop --scan --stacktrace'
+#   - task: Gradle@2
+#     inputs:
+#       workingDirectory: ''
+#       gradleWrapperFile: 'gradlew'
+#       gradleOptions: '-Xmx3072m'
+#       publishJUnitResults: false
+#       testResultsFiles: '**/TEST-*.xml'
+#       tasks: 'clean :4788:src:coprocessor:build'
+#       #options: '-Pno-roborio -Pno-desktop -xcheck'
 
 - job: doxygen_linux16
   pool:
