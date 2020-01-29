@@ -42,7 +42,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean build'
+      tasks: 'clean :4788:build'
       #options: '-Pno-roborio'
 
 - job: macOS
@@ -67,7 +67,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean build'
+      tasks: 'clean :4788:build'
       #options: '-Pno-roborio'
 
 - job: linux16
@@ -93,7 +93,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean build'
+      tasks: 'clean :4788:build'
       #options: '-Pno-roborio'
 
 - job: roborio_linux16
@@ -118,7 +118,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'clean build'
+      tasks: 'clean :4788:build'
       #options: '-Pno-desktop -xcheck -x:4788:src:coprocessor:build'
 
 - job: pi_vision_linux16
@@ -127,7 +127,7 @@ jobs:
   container: raspbian
   steps:
   - script: git submodule update --init
-  - script: git submodule update
+  - script: git submodule update --remote -f
   - task: Gradle@2
     inputs:
       workingDirectory: ''
