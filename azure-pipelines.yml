@@ -35,7 +35,7 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
-      options: '-Pno-roborio'
+      #options: '-Pno-roborio'
 
 - job: macOS
   pool:
@@ -52,7 +52,7 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
-      options: '-Pno-roborio'
+      #options: '-Pno-roborio'
 
 - job: linux16
   pool: 
@@ -70,7 +70,7 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
-      options: '-Pno-roborio'
+      #options: '-Pno-roborio'
 
 - job: roborio_linux16
   pool: 
@@ -87,7 +87,7 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
-      options: '-Pno-desktop -xcheck -x:4788:src:coprocessor:build'
+      #options: '-Pno-desktop -xcheck -x:4788:src:coprocessor:build'
 
 - job: pi_vision_linux16
   pool: 
@@ -104,7 +104,7 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean :4788:src:coprocessor:build'
-      options: '-Pno-roborio -Pno-desktop -xcheck'
+      #options: '-Pno-roborio -Pno-desktop -xcheck'
 
 - job: tinkerboard_vision_linux16
   pool:
@@ -118,7 +118,7 @@ jobs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
       tasks: ':4788:src:coprocessor:installTinkerboardToolchain'
-      options: '-Pno-roborio -Pno-desktop --scan --stacktrace'
+      #options: '-Pno-roborio -Pno-desktop --scan --stacktrace'
   - task: Gradle@2
     inputs:
       workingDirectory: ''
@@ -127,7 +127,7 @@ jobs:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean :4788:src:coprocessor:build'
-      options: '-Pno-roborio -Pno-desktop -xcheck'
+      #options: '-Pno-roborio -Pno-desktop -xcheck'
 
 - job: doxygen_linux16
   pool:
@@ -141,7 +141,7 @@ jobs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
       tasks: 'doxygen'
-      options: '-Pno-roborio'
+      #options: '-Pno-roborio'
   - task: PublishBuildArtifacts@1
     inputs:
       artifactName: 'doxygen'
