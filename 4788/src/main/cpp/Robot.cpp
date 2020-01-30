@@ -66,7 +66,7 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() { 
   Schedule(drivetrain->GetDefaultStrategy(), true);
-  turret->ZeroTurret();
+  // turret->ZeroTurret();
 }
 void Robot::TeleopPeriodic() {
   turret->TeleopOnUpdate(dt);
