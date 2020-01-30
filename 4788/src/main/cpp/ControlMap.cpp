@@ -26,11 +26,11 @@ const double ControlMap::xboxDeadzone = 0.05;
 const double ControlMap::triggerDeadzone = 0.05;
 
 // Drive Left
-const int ControlMap::DriveSRXportL = 99;
-const int ControlMap::DriveSPXportL = 99;
+const int ControlMap::DriveMAXportFL = 99;
+const int ControlMap::DriveMAXportBL = 99;
 // Drive Right
-const int ControlMap::DriveSRXportR = 99;
-const int ControlMap::DriveSPXportR = 99;
+const int ControlMap::DriveMAXportFR = 99;
+const int ControlMap::DriveMAXportBR = 99;
 // Drive Gearning
 const int ControlMap::ChangeGearPort1 = 99;
 const int ControlMap::ChangeGearPort2 = 99;

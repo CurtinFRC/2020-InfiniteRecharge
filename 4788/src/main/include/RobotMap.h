@@ -11,9 +11,15 @@
 #include "controllers/Controllers.h"
 #include "sensors/BinarySensor.h"
 
+// FRC
 #include <frc/SpeedControllerGroup.h>
 #include <frc/Spark.h>
 #include <frc/PowerDistributionPanel.h>
+#include <frc/PWMSparkMax.h>
+
+// REV
+// #include "rev/CANSparkMax.h"
+
 
 #include "WMLCtre.h"
 #include "controllers/Controllers.h"
@@ -54,15 +60,18 @@ struct RobotMap {
 
   // Drive System
   struct DriveSystem {
-    wml::TalonSrx Lsrx{ ControlMap::DriveSRXportL };
-    wml::TalonSrx Rsrx{ ControlMap::DriveSRXportR };
-    wml::VictorSpx Lspx{ ControlMap::DriveSPXportL };
-    wml::VictorSpx Rspx{ ControlMap::DriveSPXportR };
+    // Front
+    frc::PWMSparkMax FLmax{ ControlMap::DriveMAXportFL };
+    frc::PWMSparkMax FRmax{ ControlMap::DriveMAXportFR };
+
+    // Back
+    frc::PWMSparkMax BLmax{ ControlMap::DriveMAXportBL };
+    frc::PWMSparkMax BRmax{ ControlMap::DriveMAXportBR };
 
     // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
-    wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Lsrx, Lspx)), nullptr };
-    wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Rsrx, Rspx)), nullptr };
+    wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(FLmax, BLmax)), nullptr };
+    wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(FRmax, BRmax)), nullptr };
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
 
@@ -77,7 +86,6 @@ struct RobotMap {
     wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
 
-    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
 
@@ -86,10 +94,11 @@ struct RobotMap {
 
     wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
     wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
-    wml::Gearbox turretFlyWheel{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretFlyWheel)), nullptr };
 
-
-
+    // Fly Wheel
+    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
+    wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel);
+    wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
   };
   Turret turret;
 

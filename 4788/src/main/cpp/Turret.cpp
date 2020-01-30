@@ -128,14 +128,13 @@ void Turret::TeleopOnUpdate(double dt) {
 				}
 			}
 		}
-
 	}
 	
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
-	std::cout << "Flywheel speed =" << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
-	
+
+	std::cout << "FlyWheel Encoder " << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
 }
 
 void Turret::AutoOnUpdate(double dt) {
