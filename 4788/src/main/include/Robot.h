@@ -41,6 +41,7 @@
 #include "BeltIntake.h"
 #include "MagLoader.h"
 #include "Climber.h"
+#include "ControlPannel.h"
 
 class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider {
   public:
@@ -66,4 +67,5 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     MagLoader *magLoader;
     BeltIntake *beltIntake;
     Climber *climber;
+    ControlPannel *controlPannel;
 };

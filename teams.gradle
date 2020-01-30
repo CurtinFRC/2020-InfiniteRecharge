@@ -7,75 +7,76 @@ apply plugin: 'edu.wpi.first.GradleRIO'
 deploy {
   targets {
     roboRIO('roborio') {
-      team = project.hasProperty("team") ? project.team.toInteger() : project.name.toInteger()
-      
-      // For VSCode Debugging - we won't be able to deploy to every target!
-      if (project.hasProperty("debugMode"))
-        failOnMissing = false
+      team = frc.getTeamNumber()
     }
   }
 
   artifacts {
     frcNativeArtifact('frcCpp') {
       targets << 'roborio'
-      component = "frcUserProgram${project.name}"
+      component = "frcUserProgram"
       // Debug can be overridden by command line, for use with VSCode (with -PdebugMode)
       debug = frc.getDebugOrDefault(false)
     }
     fileTreeArtifact('frcStaticFileDeploy') {
-      targets << 'roborio'
       files = fileTree(dir: 'src/main/deploy')
       // Deploy to RoboRIO target, into /home/lvuser/deploy
+      targets << 'roborio'
       directory = '/home/lvuser/deploy'
     }
   }
 }
 
+def includeSrcInIncludeRoot = false
+
+// Set this to true to enable desktop support.
+def includeDesktopSupport = false
+
 dependencies {
-  // The 2019.2.1 release of halsim_ds_socket is broken on windows, so we built a fixed version ourselves while
-  // we wait for 2019.3.1
-  if (wpi.platforms.desktop == 'windowsx86-64') {
-    simulation rootProject.files('libs/halsim_ds_socketd.dll')
-  } else if (wpi.platforms.desktop == 'osxx86-64') {
-    simulation rootProject.files('libs/libhalsim_ds_socketd.dylib')
-  } else if (wpi.platforms.desktop == 'linuxx86-64') {
-    simulation rootProject.files('libs/libhalsim_ds_socketd.so')
-  } else {
-    simulation "edu.wpi.first.halsim:halsim_ds_socket:${wpi.wpilibVersion}:${wpi.platforms.desktop}debug@zip"
-  }
+  simulation wpi.deps.sim.gui(wpi.platforms.desktop, true)
 }
 
-wpi.deps.vendor.loadFrom(project(':common'))
-wpi.deps.vendor.loadFrom(project(':wml'))
+
+//wpi.deps.vendor.loadFrom(project(':wml'))
 
 model {
   components {
-    "frcUserProgram${project.name}"(NativeExecutableSpec) {
+    frcUserProgram(NativeExecutableSpec) {
       targetPlatform wpi.platforms.roborio
-      targetPlatform wpi.platforms.desktop
+      if (includeDesktopSupport) {
+        targetPlatform wpi.platforms.desktop
+      }
 
       sources.cpp {
         source {
           srcDir 'src/main/cpp'
+          srcDir rootProject.file('wml/src/main/cpp')
+          include '**/*.cpp', '**/*.cc'
         }
         exportedHeaders {
           srcDir 'src/main/include'
+          srcDir rootProject.file('wml/src/main/include')
+          if (includeSrcInIncludeRoot) {
+            srcDir 'src/main/cpp'
+            srcDir rootProject.file('wml/src/main/cpp')
+          }
         }
       }
 
-      binaries.all {
-        lib project: ':common', library: 'curtinFrcCommon', linkage: 'static'
-        lib project: ':wml', library: 'wml', linkage: 'static'
-      }
+      // binaries.all {
+      //   lib project: ':common', library: 'curtinFrcCommon', linkage: 'static'
+      //   lib project: ':wml', library: 'wml', linkage: 'static'
+      // }
 
-      useLibrary(it, "wpilib")
+      // useLibrary(it, "wpilib")
+      wpi.deps.wpilib(it)
       wpi.deps.vendor.cpp(it)
     }
   }
 
   testSuites {
-    "frcUserProgramTest${project.name}"(GoogleTestTestSuiteSpec) {
-      testing $.components.get("frcUserProgram${project.name}")
+    frcUserProgramTest(GoogleTestTestSuiteSpec) {
+      testing $.components.frcUserProgram
 
       sources.cpp {
         source {
@@ -84,21 +85,21 @@ model {
         }
       }
 
-      binaries.all {
-        lib project: ':common', library: 'curtinFrcCommon', linkage: 'static'
-        lib project: ':wml', library: 'wml', linkage: 'static'
-      }
+      // binaries.all {
+      //     lib project: ':wml', library: 'wml', linkage: 'static'
+      // }
 
-      useLibrary(it, "wpilib", "googletest")
+      wpi.deps.wpilib(it)
+      wpi.deps.googleTest(it)
       wpi.deps.vendor.cpp(it)
     }
   }
 }
 
-task "sim${project.name}"(dependsOn: "simulateFrcUserProgram${project.name}${wpi.platforms.desktop.capitalize()}DebugExecutable")
+// task "sim${project.name}"(dependsOn: "simulateFrcUserProgram${project.name}${wpi.platforms.desktop.capitalize()}DebugExecutable")
 
-if (!project.hasProperty('no-common-check'))
-  tasks.check.dependsOn(':common:check')
+// if (!project.hasProperty('no-common-check'))
+//   tasks.check.dependsOn(':common:check')
 
-if (!project.hasProperty('no-wml-check'))
-  tasks.check.dependsOn(':wml:check') 
+// if (!project.hasProperty('no-wml-check'))
+//   tasks.check.dependsOn(':wml:check') 

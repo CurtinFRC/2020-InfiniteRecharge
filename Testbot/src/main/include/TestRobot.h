@@ -16,7 +16,39 @@
 #include "actuators/DoubleSolenoid.h"
 
 #include "sensors/PressureSensor.h"
+#include "sensors/LimitSwitch.h"
 
+#include <string>
+
+#include "devices/StateDevice.h"
+#include "control/PIDController.h"
+#include "strategy/StrategySystem.h"
+#include "control/MotorFilters.h"
+#include "Gearbox.h"
+#include "strategy/Strategy.h"
+#include "controllers/Controllers.h"
+#include "sensors/BinarySensor.h"
+
+#include <frc/SpeedControllerGroup.h>
+#include <frc/Spark.h>
+#include <frc/PowerDistributionPanel.h>
+
+#include "WMLCtre.h"
+#include "controllers/Controllers.h"
+#include "actuators/BinaryServo.h"
+#include "actuators/Compressor.h"
+#include "actuators/DoubleSolenoid.h"
+#include "actuators/VoltageController.h"
+#include "sensors/Encoder.h"
+#include "sensors/LimitSwitch.h"
+#include "sensors/NavX.h"
+#include "sensors/PressureSensor.h"
+#include <networktables/NetworkTableInstance.h>
+#include "control/PIDController.h"
+#include "MotionProfiling.h"
+#include "Toggle.h"
+
+#include "Usage.h"
 
 #include "WMLCtre.h"
 #include "Gearbox.h"
@@ -25,6 +57,9 @@
 class Robot : public frc::TimedRobot {
  public:
   void RobotInit() override;
+  void RobotPeriodic() override;
+
+  void DisabledInit() override;
 
   void AutonomousInit() override;
   void AutonomousPeriodic() override;
@@ -34,29 +69,4 @@ class Robot : public frc::TimedRobot {
 
   void TestInit() override;
   void TestPeriodic() override;
-
-  double PIDCalc(double dt, double input);
-
-  frc::XboxController *xbox1;
-  frc::XboxController *xbox2;
-  
-  wml::TalonSrx *leftMotor1, *leftMotor2, *rightMotor1, *rightMotor2;
-  wml::TalonSrx *TurretRoation;
-  wml::TalonSrx *TurretAngle;
-  wml::TalonSrx *FlyWheel;
-
-  wml::actuators::Compressor compressor{};
-  wml::actuators::DoubleSolenoid solenoid{ 0, 1, 0.2 };
-  wml::sensors::PressureSensor pressureSensor{ 0 };
-
-
-  wml::Gearbox *left, *right;
-  wml::Drivetrain *drivetrain;
-
-  frc::DoubleSolenoid *hatchEjector;
-
-  nt::NetworkTableEntry TargetX;
-  nt::NetworkTableEntry TargetY;
-  nt::NetworkTableEntry ImageHeight;
-  nt::NetworkTableEntry ImageWidth;
 };

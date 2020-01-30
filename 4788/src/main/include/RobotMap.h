@@ -11,9 +11,15 @@
 #include "controllers/Controllers.h"
 #include "sensors/BinarySensor.h"
 
+// FRC
 #include <frc/SpeedControllerGroup.h>
 #include <frc/Spark.h>
 #include <frc/PowerDistributionPanel.h>
+#include <frc/PWMSparkMax.h>
+
+// REV
+// #include "rev/CANSparkMax.h"
+
 
 #include "WMLCtre.h"
 #include "controllers/Controllers.h"
@@ -29,6 +35,7 @@
 #include <networktables/NetworkTableInstance.h>
 #include "control/PIDController.h"
 #include "MotionProfiling.h"
+#include "Toggle.h"
 
 #include "Usage.h"
 
@@ -37,7 +44,6 @@
 
 
 struct RobotMap {
-  
 
   // Controllers
   #if __CONTROLMAP_USING_JOYSTICK__
@@ -54,15 +60,20 @@ struct RobotMap {
 
   // Drive System
   struct DriveSystem {
-    wml::TalonSrx Lsrx{ ControlMap::DriveSRXportL };
-    wml::TalonSrx Rsrx{ ControlMap::DriveSRXportR };
-    wml::VictorSpx Lspx{ ControlMap::DriveSPXportL };
-    wml::VictorSpx Rspx{ ControlMap::DriveSPXportR };
+    // Front
+    frc::PWMSparkMax FLmax{ ControlMap::DriveMAXportFL };
+    frc::PWMSparkMax FRmax{ ControlMap::DriveMAXportFR };
+
+    // Back
+    frc::PWMSparkMax BLmax{ ControlMap::DriveMAXportBL };
+    frc::PWMSparkMax BRmax{ ControlMap::DriveMAXportBR };
 
     // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
-    wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Lsrx, Lspx)), nullptr };
-    wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Rsrx, Rspx)), nullptr };
+    wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(FLmax, BLmax)), nullptr };
+    wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(FRmax, BRmax)), nullptr };
+
+    wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
     wml::Drivetrain drivetrain{ driveTrainConfig };
@@ -71,19 +82,27 @@ struct RobotMap {
   DriveSystem driveSystem;
 
   struct Turret {
-    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
+    wml::sensors::LimitSwitch LeftLimit{ ControlMap::TurretLeftLimitPort, ControlMap::TurretLeftLimitInvert };
+    wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
+    wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
+
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
 
     wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
     wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
-    wml::Gearbox turretFlyWheel{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretFlyWheel)), nullptr };
+
+    // Fly Wheel
+    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
+    wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel);
+    wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
   };
   Turret turret;
 
   struct Intake {
     wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort };
-
+    wml::actuators::DoubleSolenoid IntakeDown { ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
+    
     wml::Gearbox intakeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(IntakeMotor)), nullptr };
   };
   Intake intake;
@@ -91,12 +110,30 @@ struct RobotMap {
   struct MagLoader {
     wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort };
 
+    wml::sensors::LimitSwitch StartMagLimit{ ControlMap::StartMagLimitPort };
+    wml::sensors::LimitSwitch Position1Limit{ ControlMap::Position1LimitPort };
+    wml::sensors::LimitSwitch Position5Limit{ ControlMap::Position5LimitPort };
+
     wml::Gearbox magLoaderMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MagLoaderMotor)), nullptr };
   };
   MagLoader magLoader;
 
+  struct ControlPannel {
+    wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
+    wml::actuators::DoubleSolenoid PannelPnSol { ControlMap::ControlPannelPort, ControlMap::PannelActuatorPort1, ControlMap::PannelActuationTime};
+
+    wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
+  };
+  ControlPannel controlPannel;
+
   struct Climber {
-    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime};
+    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
+
+    wml::actuators::BinaryServo ShiftPTOServos{ ControlMap::Shift2PTOPort, ControlMap::Shift2PTOForwardPosition, ControlMap::Shift2PTOReversePosition };
+    wml::TalonSrx Climber1Motor{ ControlMap::ClimberMotor1Port };
+    wml::TalonSrx Climber2Motor{ ControlMap::ClimberMotor2Port };
+
+    wml::Gearbox ClimberElevator{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Climber1Motor, Climber2Motor)), nullptr };
   };
   Climber climber;
 
@@ -106,8 +143,11 @@ struct RobotMap {
 
     // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
-    std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-    double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
+    //std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
+    //double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
+
   };
   ControlSystem controlSystem;
+
+
 };
