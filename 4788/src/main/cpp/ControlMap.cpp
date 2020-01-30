@@ -37,7 +37,7 @@ const int ControlMap::ChangeGearPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
 
 // Turret
-const int ControlMap::TurretFlyWheelPort = 99;
+const int ControlMap::TurretFlyWheelPort = 0;
 const int ControlMap::TurretAnglePort = 99;
 const int ControlMap::TurretRotationPort = 99;
 

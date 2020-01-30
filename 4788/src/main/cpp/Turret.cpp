@@ -49,8 +49,6 @@ double Turret::XAutoAimCalc(double dt, double input)  {
 double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
 
 	double output = 0;
-
-	
 	
 	/**
 	 * We need the angle to adjust to a certain angle depending on the distance.
@@ -136,6 +134,8 @@ void Turret::TeleopOnUpdate(double dt) {
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+	std::cout << "Flywheel speed =" << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
+	
 }
 
 void Turret::AutoOnUpdate(double dt) {

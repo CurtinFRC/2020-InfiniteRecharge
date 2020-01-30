@@ -17,7 +17,7 @@ void MagLoader::TeleopOnUpdate(double dt) {
     MagazinePower = 1;
   } else if (_contGroup.Get(ControlMap::ShiftDownMagazine)) {
     MagazinePower = -1;
-  }else {
+  } else {
     if (_StartMag.Get()) {
       MagazinePower = 1;
     } 

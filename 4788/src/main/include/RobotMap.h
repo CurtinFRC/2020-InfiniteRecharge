@@ -81,9 +81,15 @@ struct RobotMap {
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
 
+
+
+
     wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
     wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
     wml::Gearbox turretFlyWheel{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretFlyWheel)), nullptr };
+
+
+
   };
   Turret turret;
 

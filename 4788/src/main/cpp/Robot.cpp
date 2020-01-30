@@ -66,13 +66,13 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() { 
   Schedule(drivetrain->GetDefaultStrategy(), true);
-  turret->ZeroTurret();
 }
 void Robot::TeleopPeriodic() {
   turret->TeleopOnUpdate(dt);
   magLoader->TeleopOnUpdate(dt);
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
+ // std::cout << "Encoder Ticks" << robotMap.turret.TurretFlyWheel.GetEncoderTicks() << std::endl;
 }
 
 void Robot::TestInit() {
