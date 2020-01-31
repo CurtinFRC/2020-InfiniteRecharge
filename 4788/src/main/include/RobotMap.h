@@ -18,7 +18,7 @@
 #include <frc/PWMSparkMax.h>
 
 // REV
-// #include "rev/CANSparkMax.h"
+#include "rev/CANSparkMax.h"
 
 
 #include "WMLCtre.h"
@@ -61,12 +61,12 @@ struct RobotMap {
   // Drive System
   struct DriveSystem {
     // Front
-    frc::PWMSparkMax FLmax{ ControlMap::DriveMAXportFL };
-    frc::PWMSparkMax FRmax{ ControlMap::DriveMAXportFR };
+    wml::TalonSrx FLmax{ ControlMap::DriveMAXportFL };
+    wml::TalonSrx FRmax{ ControlMap::DriveMAXportFR };
 
     // Back
-    frc::PWMSparkMax BLmax{ ControlMap::DriveMAXportBL };
-    frc::PWMSparkMax BRmax{ ControlMap::DriveMAXportBR };
+    rev::CANSparkMax BLmax{ 1, rev::CANSparkMax::MotorType::kBrushed };
+    rev::CANSparkMax BRmax{ 4, rev::CANSparkMax::MotorType::kBrushed };
 
     // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
@@ -86,7 +86,7 @@ struct RobotMap {
     wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
 
-    wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
+    wml::VictorSpx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
 
     wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };

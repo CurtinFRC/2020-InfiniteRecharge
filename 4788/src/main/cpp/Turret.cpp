@@ -26,24 +26,31 @@ void Turret::ZeroTurret() {
 
 
 // PID Calculations X axis
-double XkP = -0.3;
-double XkI = 0;
-double XkD = -0.005;
+double XkP = 0.25;
+double XkI = 0.0002;
+double XkD = 0.00003;
 
 double Xsum = 0;
 double XpreviousError = 0;
 double Xgoal = 0;
 
+double FOV = 60;
+
+// Turret FOV 60 degrees
+
+
 
 double Turret::XAutoAimCalc(double dt, double input)  {
 	double error = Xgoal - input;
 	double derror = (error - XpreviousError) / dt;
-	Xsum = Xsum + error * dt;
+	Xsum = (Xsum>1000) ? 1000 : Xsum + error * dt;
+	std::cout << "XSum = " << Xsum << std::endl;
+	table->PutNumber("XSum", Xsum);
 
 	double output = XkP * error + XkI * Xsum + XkD * derror;
 
 	XpreviousError = error;
-	return output;
+	return -output;
 }
 
 double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
@@ -81,62 +88,30 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	double targetX = table->GetNumber("Target_X", 0)/imageWidth;
 	double targetY = table->GetNumber("Target_Y", 0)/imageHeight;
-
-	if (_LeftLimit.Get()) {
-		RotationPower = 0;
-	} else if (_RightLimit.Get()) {
-		RotationPower = 0;
-	} else if (_AngleDownLimit.Get()) {
-		AngularPower = 0;
-	} else {
-
-		// Turret Manual Rotation
-		if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::xboxDeadzone) {
-			RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
+	
+	if (_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) {
+		if (targetX > imageWidth || targetY > imageHeight) {
+			std::cout << "Error: Target is artifacting" << std::endl;
+		} else {
+			RotationPower = XAutoAimCalc(dt, targetX);
 		}
+	}
 
-		// Turret Manual Angle
-		if (_contGroup.Get(ControlMap::TurretManualAngle) > ControlMap::xboxDeadzone) {
-			AngularPower = _contGroup.Get(ControlMap::TurretManualAngle);
-		}
+	if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::joyDeadzone) {
+		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
+	}
 
-		// Turret FlyWheel
-		if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
-			FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-		}
-
-
-		// Turret Auto Aim (Note that we're using Y axis to detect distance. There is a possibility we need a seperate algorithm to adjust angle depending on y axis. Other than zeroing to goal)
-		if (_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) {
-			if (_LeftLimit.Get()) {
-				std::cout << "Left Limit Hit" << std::endl;
-				while (targetX < 0) {
-					RotationPower = 0.5;
-				}
-			} else if (_RightLimit.Get()) {
-				std::cout << "Right Limit Hit" << std::endl;
-				while (targetX > 0) {
-					RotationPower = -0.5;
-				}
-			} else if (_AngleDownLimit.Get()) {
-				std::cout << "Angle Limit Hit" << std::endl;
-				AngularPower = 0;
-			} else {
-				if (targetX > imageWidth || targetY > imageHeight) {
-					std::cout << "Error: >> Vision Artifacting Detected" << std::endl; 
-				} else {
-					RotationPower = XAutoAimCalc(dt, targetX);
-					AngularPower = YAutoAimCalc(dt, targetY, _VerticalAxis.encoder->GetEncoderTicks(), imageHeight);
-				}
-			}
-		}
+	if (_contGroup.Get(ControlMap::TurretManualRotate) < -ControlMap::joyDeadzone) {
+		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
 	}
 	
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
 
-	std::cout << "FlyWheel Encoder " << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
+	std::cout << "Rotation Power " << RotationPower << std::endl;
+
+	// std::cout << "FlyWheel Encoder " << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
 }
 
 void Turret::AutoOnUpdate(double dt) {
