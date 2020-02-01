@@ -21,7 +21,7 @@ void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {}
 #endif
 
 // Deadzones
-const double ControlMap::joyDeadzone = 0.1;
+const double ControlMap::joyDeadzone = 0.15;
 const double ControlMap::xboxDeadzone = 0.05;
 const double ControlMap::triggerDeadzone = 0.05;
 
@@ -88,6 +88,14 @@ const double ControlMap::PannelActuationTime = 0;
 
 
 // -------------Defined Buttons-------------------
+
+// Temp PID Controller
+const tButton ControlMap::kpUP{ CoDriver, XboxController::kB };
+const tButton ControlMap::kpDOWN{ CoDriver, XboxController::kA };
+const tButton ControlMap::kiUP{ CoDriver, XboxController::kY };
+const tButton ControlMap::kiDOWN{ CoDriver, XboxController::kX };
+const tButton ControlMap::kdUP{ CoDriver, XboxController::kStart };
+const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
 
 // Drive System
 #if __CONTROLMAP_USING_JOYSTICK__

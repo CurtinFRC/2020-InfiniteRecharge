@@ -1,8 +1,15 @@
 #include "Turret.h"
+#include <frc/Timer.h>
 #include <iostream>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/PIDController.h>
 
 using namespace wml;
 using namespace wml::controllers;
+
+double CurrentTime;
+double LastTimestamp;
+double DT;
 
 Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sensors::LimitSwitch &LeftLimit, sensors::LimitSwitch &RightLimit, sensors::LimitSwitch &AngleDownLimit, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable) : _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), _FlyWheel(FlyWheel), _LeftLimit(LeftLimit), _RightLimit(RightLimit), _AngleDownLimit(AngleDownLimit), _contGroup(contGroup), _visionTable(visionTable) {
 	table = _visionTable->GetSubTable("Target");
@@ -26,9 +33,9 @@ void Turret::ZeroTurret() {
 
 
 // PID Calculations X axis
-double XkP = 0.25;
-double XkI = 0.0002;
-double XkD = 0.00003;
+double XkP = 0;
+double XkI = 0;
+double XkD = 0;
 
 double Xsum = 0;
 double XpreviousError = 0;
@@ -42,10 +49,18 @@ double FOV = 60;
 
 double Turret::XAutoAimCalc(double dt, double input)  {
 	double error = Xgoal - input;
+
 	double derror = (error - XpreviousError) / dt;
-	Xsum = (Xsum>1000) ? 1000 : Xsum + error * dt;
-	std::cout << "XSum = " << Xsum << std::endl;
-	table->PutNumber("XSum", Xsum);
+	Xsum = Xsum + error * dt;
+
+	if (Xsum > 320) {
+		Xsum = 320;
+	} else if (Xsum < -320) {
+		Xsum = -320;
+	}
+	table->PutNumber("DError", derror);
+	table->PutNumber("Error", error);
+	table->PutNumber("Delta Time", dt);
 
 	double output = XkP * error + XkI * Xsum + XkD * derror;
 
@@ -79,6 +94,8 @@ double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, 
 }
 
 void Turret::TeleopOnUpdate(double dt) {
+	CurrentTime = frc::Timer::GetFPGATimestamp();
+	DT = CurrentTime - LastTimestamp;
 	double RotationPower;
 	double AngularPower;
 	double FlyWheelPower;
@@ -88,23 +105,59 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	double targetX = table->GetNumber("Target_X", 0)/imageWidth;
 	double targetY = table->GetNumber("Target_Y", 0)/imageHeight;
+
+
+	if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
+		XkP = XkP + 0.01;
+	} else if (_contGroup.Get(ControlMap::kpDOWN, Controller::ONRISE)) {
+		XkP = XkP - 0.001;
+	} else if (_contGroup.Get(ControlMap::kiUP, Controller::ONRISE)) {
+		XkI = XkI + 0.001;
+	} else if (_contGroup.Get(ControlMap::kiDOWN, Controller::ONRISE)) {
+		XkI = XkI - 0.001;
+	} else if (_contGroup.Get(ControlMap::kdUP, Controller::ONRISE)) {
+		XkD = XkD + 0.001;
+	}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
+		XkD = XkD - 0.001;
+	}
+
+	table->PutNumber("kP", XkP);
+	table->PutNumber("kI", XkI);
+	table->PutNumber("kD", XkD);
+
 	
 	if (_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) {
 		if (targetX > imageWidth || targetY > imageHeight) {
 			std::cout << "Error: Target is artifacting" << std::endl;
 		} else {
-			RotationPower = XAutoAimCalc(dt, targetX);
+			RotationPower = XAutoAimCalc(1 /*DT*/, targetX);
 		}
+	}	else {
+		Xsum = 0;
 	}
+	table->PutNumber("XSum", Xsum);
 
 	if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::joyDeadzone) {
 		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
+		RotationPower = RotationPower/6;
 	}
 
 	if (_contGroup.Get(ControlMap::TurretManualRotate) < -ControlMap::joyDeadzone) {
 		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
+		RotationPower = RotationPower/6;
 	}
 	
+
+	// Motor DeadBand Calc
+	float ForwardDB = 0.14; // actually 0.118
+	float ReverseDB = 0.16; // actually 0.138
+	if(RotationPower > 0.01) {
+		RotationPower = (1-ForwardDB)*RotationPower + ForwardDB;
+	} 
+	if(RotationPower < -0.01) {
+		RotationPower = (1-ReverseDB)*RotationPower - ReverseDB;
+	} 
+
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
@@ -112,6 +165,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	std::cout << "Rotation Power " << RotationPower << std::endl;
 
 	// std::cout << "FlyWheel Encoder " << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
+	LastTimestamp = CurrentTime;
 }
 
 void Turret::AutoOnUpdate(double dt) {

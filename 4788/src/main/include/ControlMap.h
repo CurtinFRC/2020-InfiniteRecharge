@@ -57,6 +57,11 @@ struct ControlMap {
 
   // --------------- Defined Buttons -----------------
 
+  // Temp PID Controller
+  static const wml::controllers::tButton kpUP, kpDOWN;
+  static const wml::controllers::tButton kiUP, kiDOWN;
+  static const wml::controllers::tButton kdUP, kdDOWN;
+
   // Drivetrain
   #if __CONTROLMAP_USING_JOYSTICK__
   static const wml::controllers::tAxis DrivetrainForward, DrivetrainTurn;
