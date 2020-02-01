@@ -97,11 +97,15 @@ struct RobotMap {
     wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
 
-    wml::VictorSpx TurretRotation{ ControlMap::TurretRotationPort };
-    wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
+    // Rotation
+    wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort, 2048 };
+    wml::actuators::MotorVoltageController rotationMotors = wml::actuators::MotorVoltageController::Group(TurretRotation);
+    wml::Gearbox turretRotation{ &rotationMotors, &TurretRotation, 8.45 };
 
-    wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
-    wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
+    // Angle
+    wml::TalonSrx TurretAngle{ ControlMap::TurretAnglePort, 2048 };
+    wml::actuators::MotorVoltageController turretAngleMotors = wml::actuators::MotorVoltageController::Group(TurretAngle);
+    wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 
     // Fly Wheel
     wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
