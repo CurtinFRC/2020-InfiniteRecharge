@@ -1,8 +1,5 @@
 #include "Turret.h"
-#include <frc/Timer.h>
 #include <iostream>
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/PIDController.h>
 
 using namespace wml;
 using namespace wml::controllers;

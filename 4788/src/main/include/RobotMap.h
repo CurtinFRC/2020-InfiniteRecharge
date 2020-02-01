@@ -16,6 +16,17 @@
 #include <frc/Spark.h>
 #include <frc/PowerDistributionPanel.h>
 #include <frc/PWMSparkMax.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+
+#include <frc/Filesystem.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/Path.h>
+#include <wpi/SmallString.h>
+
+#include <frc/Filesystem.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/Path.h>
+#include <wpi/SmallString.h>
 
 // REV
 #include "rev/CANSparkMax.h"
@@ -138,13 +149,17 @@ struct RobotMap {
   Climber climber;
 
   struct ControlSystem {
+
+    // Pneumatics
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
     wml::actuators::Compressor compressor{ ControlMap::CompressorPort }; 
 
-    // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
+    // Vision
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
-    //std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-    //double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
+
+    // Auto
+    wpi::SmallString<64> deployDirectory;
+    // frc::filesystem::GetDeployDirectory(deployDirectory);
 
   };
   ControlSystem controlSystem;
