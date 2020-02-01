@@ -117,19 +117,18 @@ struct RobotMap {
   struct Intake {
     wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort };
     wml::actuators::DoubleSolenoid IntakeDown { ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
-    
     wml::Gearbox intakeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(IntakeMotor)), nullptr };
   };
   Intake intake;
 
   struct MagLoader {
-    wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort };
-
     wml::sensors::LimitSwitch StartMagLimit{ ControlMap::StartMagLimitPort };
     wml::sensors::LimitSwitch Position1Limit{ ControlMap::Position1LimitPort };
     wml::sensors::LimitSwitch Position5Limit{ ControlMap::Position5LimitPort };
 
-    wml::Gearbox magLoaderMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MagLoaderMotor)), nullptr };
+    wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort, 2048 };
+    wml::actuators::MotorVoltageController magLoaderMotors = wml::actuators::MotorVoltageController::Group(MagLoaderMotor);
+    wml::Gearbox magLoaderMotor{ &magLoaderMotors, &MagLoaderMotor, 8.45 };
   };
   MagLoader magLoader;
 
