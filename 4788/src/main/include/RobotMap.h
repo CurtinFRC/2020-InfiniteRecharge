@@ -72,17 +72,20 @@ struct RobotMap {
   // Drive System
   struct DriveSystem {
     // Front
-    wml::TalonSrx FLmax{ ControlMap::DriveMAXportFL };
-    wml::TalonSrx FRmax{ ControlMap::DriveMAXportFR };
+    rev::CANSparkMax FLmax{ ControlMap::DriveMAXportFL, rev::CANSparkMax::MotorType::kBrushed };
+    rev::CANSparkMax FRmax{ ControlMap::DriveMAXportFR, rev::CANSparkMax::MotorType::kBrushed  };
 
     // Back
-    rev::CANSparkMax BLmax{ 1, rev::CANSparkMax::MotorType::kBrushed };
-    rev::CANSparkMax BRmax{ 4, rev::CANSparkMax::MotorType::kBrushed };
+    rev::CANSparkMax BLmax{ ControlMap::DriveMAXportBL, rev::CANSparkMax::MotorType::kBrushed };
+    rev::CANSparkMax BRmax{ ControlMap::DriveMAXportBR, rev::CANSparkMax::MotorType::kBrushed };
 
     // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
-    wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(FLmax, BLmax)), nullptr };
-    wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(FRmax, BRmax)), nullptr };
+    wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);
+    wml::actuators::MotorVoltageController rightMotors = wml::actuators::MotorVoltageController::Group(FRmax, BRmax);
+
+    wml::Gearbox LGearbox{ &leftMotors, &FLmax, 8.45 };
+    wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
 
