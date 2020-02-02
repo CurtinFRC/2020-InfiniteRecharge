@@ -27,6 +27,7 @@ struct ControlMap {
   static const double ChangeGearTime;
 
   // Turret
+  static const bool TuneTurretPID;
   static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
@@ -57,7 +58,7 @@ struct ControlMap {
 
   // --------------- Defined Buttons -----------------
 
-  // Temp PID Controller
+  // PID Controller
   static const wml::controllers::tButton kpUP, kpDOWN;
   static const wml::controllers::tButton kiUP, kiDOWN;
   static const wml::controllers::tButton kdUP, kdDOWN;

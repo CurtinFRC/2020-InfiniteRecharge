@@ -40,6 +40,7 @@ const double ControlMap::ChangeGearTime = 0;
 const int ControlMap::TurretFlyWheelPort = 99;
 const int ControlMap::TurretAnglePort = 99;
 const int ControlMap::TurretRotationPort = 5;
+const bool ControlMap::TuneTurretPID = true;
 
 const double ControlMap::TurretDistanceSetpoint1 = 0; // Close
 const double ControlMap::TurretDistanceSetpoint2 = 0; // Mid

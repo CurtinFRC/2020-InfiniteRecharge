@@ -69,7 +69,7 @@ void Robot::TeleopInit() {
   // turret->ZeroTurret();
 }
 void Robot::TeleopPeriodic() {
-  turret->TeleopOnUpdate(dt);
+  // turret->TeleopOnUpdate(dt);
   // magLoader->TeleopOnUpdate(dt);
   // beltIntake->TeleopOnUpdate(dt);
   // climber->TeleopOnUpdate(dt);

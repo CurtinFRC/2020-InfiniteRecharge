@@ -17,11 +17,7 @@
 #include <frc/PowerDistributionPanel.h>
 #include <frc/PWMSparkMax.h>
 #include <frc/smartdashboard/SmartDashboard.h>
-
-#include <frc/Filesystem.h>
-#include <frc/trajectory/TrajectoryUtil.h>
-#include <wpi/Path.h>
-#include <wpi/SmallString.h>
+#include <frc/AnalogInput.h>
 
 #include <frc/Filesystem.h>
 #include <frc/trajectory/TrajectoryUtil.h>
@@ -47,6 +43,7 @@
 #include "control/PIDController.h"
 #include "MotionProfiling.h"
 #include "Toggle.h"
+#include "WMLRev.h"
 
 #include "Usage.h"
 
@@ -72,12 +69,12 @@ struct RobotMap {
   // Drive System
   struct DriveSystem {
     // Front
-    rev::CANSparkMax FLmax{ ControlMap::DriveMAXportFL, rev::CANSparkMax::MotorType::kBrushed };
-    rev::CANSparkMax FRmax{ ControlMap::DriveMAXportFR, rev::CANSparkMax::MotorType::kBrushed  };
+    wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 2048 };
+    wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 2048 };
 
     // Back
-    rev::CANSparkMax BLmax{ ControlMap::DriveMAXportBL, rev::CANSparkMax::MotorType::kBrushed };
-    rev::CANSparkMax BRmax{ ControlMap::DriveMAXportBR, rev::CANSparkMax::MotorType::kBrushed };
+    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 2048 };
+    wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 2048 };
 
     // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
@@ -128,6 +125,8 @@ struct RobotMap {
     wml::sensors::LimitSwitch StartMagLimit{ ControlMap::StartMagLimitPort };
     wml::sensors::LimitSwitch Position1Limit{ ControlMap::Position1LimitPort };
     wml::sensors::LimitSwitch Position5Limit{ ControlMap::Position5LimitPort };
+
+    frc::AnalogInput IRSensor{ 3 };
 
     wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort, 2048 };
     wml::actuators::MotorVoltageController magLoaderMotors = wml::actuators::MotorVoltageController::Group(MagLoaderMotor);
