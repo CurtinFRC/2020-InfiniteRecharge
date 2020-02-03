@@ -1,106 +1,153 @@
 #include "Turret.h"
 #include <iostream>
 
-#include <cmath>
-
 using namespace wml;
 using namespace wml::controllers;
 
-//RobotMap robotMap;
+Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sensors::LimitSwitch &LeftLimit, sensors::LimitSwitch &RightLimit, sensors::LimitSwitch &AngleDownLimit, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable) : _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), _FlyWheel(FlyWheel), _LeftLimit(LeftLimit), _RightLimit(RightLimit), _AngleDownLimit(AngleDownLimit), _contGroup(contGroup), _visionTable(visionTable) {
+	table = _visionTable->GetSubTable("Target");
 
-double TurretTurnSpeed;
-double TurretAngleSpeed;
-double TurretFlyWheelSpeed;
-
-double TargetXGet;
-double TargetYGet;
-
-double TargetXOffset;
-double TargetYOffset;
-
-double ImageHeightGet;
-double ImageWidthGet;
-
-// Initializes & Defines groups for Manual/Teleop Control
-TurretTeleop::TurretTeleop(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
+	imageHeight = table->GetNumber("ImageHeight", 0); 
+	imageWidth = table->GetNumber("ImageWidth", 0);
 }
 
-// On Loop Update, this code runs (Just the turret)
-void TurretTeleop::OnUpdate(double dt) {
-  TargetXGet = robotMap.controlSystem.TargetX.GetDouble(0);
-  TargetYGet = robotMap.controlSystem.TargetY.GetDouble(0);
-  ImageHeightGet = robotMap.controlSystem.ImageHeight.GetDouble(0);
-  ImageWidthGet = robotMap.controlSystem.ImageWidth.GetDouble(0);
-
-  // Manual Turret Rotate
-  if (_contGroup.Get(ControlMap::TurretManualRotate) >= ControlMap::triggerDeadzone) {
-    TurretTurnSpeed = _contGroup.Get(ControlMap::TurretManualRotate);
-  } else {
-    TurretTurnSpeed = 0;
-  }
-
-  // Manual Turret Angle
-  if (_contGroup.Get(ControlMap::TurretManualAngle) >= ControlMap::triggerDeadzone) {
-    robotMap.turret.TurretAngle.Set(_contGroup.Get(ControlMap::TurretManualAngle));
-  } else {
-    TurretAngleSpeed = 0;
-  }
-
-  // Auto Aiming Code
-  if (_contGroup.Get(ControlMap::TurretAutoAim) >= ControlMap::triggerDeadzone) {
-    if ((TargetXGet >= ImageWidthGet) || (TargetYGet >= ImageHeightGet)) {
-      std::cout << "Vision Tracking Artificating Error" << std::endl;
-      //@TODO create vibration on controller. (Flashing Vibration)
-    } else {
-      TargetXOffset = TargetXGet/ImageWidthGet;
-      TargetYOffset = TargetYGet/ImageHeightGet;
-
-      TurretTurnSpeed = TargetXOffset;
-      TurretAngleSpeed = TargetYOffset;
-    } 
-  } 
-
-  // FlyWheel Code
-  if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) >= ControlMap::triggerDeadzone) {
-    TurretFlyWheelSpeed = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-  } else {
-    TurretFlyWheelSpeed = 0;
-  }
-
-  robotMap.turret.TurretAngle.Set(TurretAngleSpeed);
-  robotMap.turret.TurretRotation.Set(TurretTurnSpeed);
-  robotMap.turret.TurretFlyWheel.Set(TurretFlyWheelSpeed);
+void Turret::ZeroTurret() {
+	while (!_LeftLimit.Get()) {
+		_RotationalAxis.transmission->SetVoltage(12 * -0.3);
+	} 
+	_RotationalAxis.encoder->ZeroEncoder();
+	while (!_RightLimit.Get()) {
+		_RotationalAxis.transmission->SetVoltage(12 * 0.3);
+	}
+	MaxRotationTicks = _RotationalAxis.encoder->GetEncoderTicks();
+	while(!_AngleDownLimit.Get()) {
+		_VerticalAxis.transmission->SetVoltage(12 * 0.2);
+	}
+	_VerticalAxis.encoder->ZeroEncoder();
+	_FlyWheel.encoder->ZeroEncoder();
 }
 
 
 
+double Turret::XAutoAimCalc(double dt, double input)  {
+
+	
 
 
+	// Calculate PID
+	error = goal - input;
 
+	double derror = (error - previousError) / dt;
+	sum = sum + error * dt;
 
-// Initializes & Defines groups for Auto Control
-TurretAuto::TurretAuto(std::string name) : Strategy(name) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
+	if (sum > (imageWidth/2)) {
+		sum = imageWidth;
+	} else if (sum < -(imageWidth/2)) {
+		sum = -imageWidth;
+	}
+
+	double output = kP * error + kI * sum + kD * derror;
+
+	table->PutNumber("DError", derror);
+	table->PutNumber("Error", error);
+	table->PutNumber("Delta Time", dt);
+	table->PutNumber("Output", output);
+
+	previousError = error;
+	return -output;
 }
 
-// On Loop Update, this code runs (Just the turret)
-void TurretAuto::OnUpdate(double dt) {
-  //@TODO auto aim during autonomous. (still working on pathweaver)
+double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
+
+	double output = 0;
+
+
+	return output;
+}
+
+void Turret::TuneTurretPID() {
+
+		if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
+		kP = kP + 0.01;
+	} else if (_contGroup.Get(ControlMap::kpDOWN, Controller::ONRISE)) {
+		kP = kP - 0.001;
+	} else if (_contGroup.Get(ControlMap::kiUP, Controller::ONRISE)) {
+		kI = kI + 0.001;
+	} else if (_contGroup.Get(ControlMap::kiDOWN, Controller::ONRISE)) {
+		kI = kI - 0.001;
+	} else if (_contGroup.Get(ControlMap::kdUP, Controller::ONRISE)) {
+		kD = kD + 0.001;
+	}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
+		kD = kD - 0.001;
+	}
+
+	table->PutNumber("kP", kP);
+	table->PutNumber("kI", kI);
+	table->PutNumber("kD", kD);
+
+}
+
+void Turret::TeleopOnUpdate(double dt) {
+
+	double RotationPower;
+	double AngularPower;
+	double FlyWheelPower;
+
+	targetX = table->GetNumber("Target_X", 0)/imageWidth;
+	targetY = table->GetNumber("Target_Y", 0)/imageHeight;
+
+
+	if (ControlMap::TuneTurretPID) {
+		TuneTurretPID();
+	}
+
+	
+	if (_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) {
+		if (targetX > imageWidth || targetY > imageHeight) {
+			std::cout << "Error: Target is artifacting" << std::endl;
+		} else {
+			RotationPower = XAutoAimCalc(dt, targetX);
+		}
+	}	else {
+		sum = 0;
+	}
+	table->PutNumber("Sum", sum);
+
+	if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::joyDeadzone) {
+		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
+		RotationPower = RotationPower/6;
+	}
+
+	if (_contGroup.Get(ControlMap::TurretManualRotate) < -ControlMap::joyDeadzone) {
+		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
+		RotationPower = RotationPower/6;
+	}
+	
+
+	// Motor DeadBand Calc
+	float ForwardDB = 0.14; // actually 0.118
+	float ReverseDB = 0.16; // actually 0.138
+	if(RotationPower > 0.01) {
+		RotationPower = (1-ForwardDB)*RotationPower + ForwardDB;
+	} 
+	if(RotationPower < -0.01) {
+		RotationPower = (1-ReverseDB)*RotationPower - ReverseDB;
+	} 
+
+	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
+	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
+	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+
+	// std::cout << "FlyWheel Encoder " << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
+	table->PutNumber("Rotation Power", RotationPower);
+}
+
+void Turret::AutoOnUpdate(double dt) {
+
+}
+
+void Turret::TestOnUpdate(double dt) {
+	
 }
 
 
-
-
-
-
-TurretTest::TurretTest(std::string name) : Strategy(name) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
-}
-
-void TurretTest::OnUpdate(double dt) {
-  //@TODO zero encoders activate motors and if it's getting vision tracking values. Basically... a test. lol
-}

@@ -1,47 +1,58 @@
 #include "MagLoader.h"
-#include "RobotMap.h"
-
-#include <cmath>
+#include <iostream>
 
 using namespace wml;
 using namespace wml::controllers;
 
-// Initializes & Defines groups for Manual/Teleop Control
-MagLoaderTeleop::MagLoaderTeleop(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
+MagLoader::MagLoader(Gearbox &MagazineMotors, sensors::LimitSwitch &StartMag, sensors::LimitSwitch &Position1, sensors::LimitSwitch &Position5, SmartControllerGroup &contGroup) : _MagazineMotors(MagazineMotors), _StartMag(StartMag), _Position1(Position1), _Position5(Position5), _contGroup(contGroup) {}
+
+void MagLoader::TeleopOnUpdate(double dt) {
+  double MagazinePower;
+
+  // Auto Control
+  if (_Position5.Get() >= 1) {
+    MagazinePower = 0;
+  } else if (_Position1.Get() >= 1) {
+    MagazinePower = 0;
+  } else if (_StartMag.Get() >= 1) {
+    MagazinePower = 1;
+  }
+  
+  // Manual Control
+  else if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {
+    MagazinePower = 1;
+  } else if (_contGroup.Get(ControlMap::ShiftDownMagazine)) {
+    MagazinePower = -1;
+  }
+
+  _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
 }
 
-// On Loop Update, this code runs (Just the MagLoader)
-void MagLoaderTeleop::OnUpdate(double dt) {
-  //@TODO auto aim using values from CJ-Vision over nt
+void MagLoader::AutoOnUpdate(double dt) {
+  double MagazinePower;
+
+
+  // Auto Control
+  if (_Position5.Get() >= 1) {
+    MagazinePower = 0;
+  } else if (_Position1.Get() >= 1) {
+    MagazinePower = 0;
+  } else if (_StartMag.Get() >= 1) {
+    MagazinePower = 1;
+  }
+
+  _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
 }
 
-
-
-
-
-
-// Initializes & Defines groups for Auto Control
-MagLoaderAuto::MagLoaderAuto(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
-}
-
-// On Loop Update, this code runs (Just the MagLoader)
-void MagLoaderAuto::OnUpdate(double dt) {
-  //@TODO auto aim during autonomous. (still working on pathweaver)
-}
-
-
-
-// Initializes & Defines groups for Auto Control
-MagLoaderTest::MagLoaderTest(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
-}
-
-// On Loop Update, this code runs (Just the MagLoader)
-void MagLoaderTest::OnUpdate(double dt) {
-  //@TODO
+void MagLoader::TestOnUpdate(double dt) {
+  double MagazinePower;
+  
+  for (int i = 0; i > 1000; i++) {
+    MagazinePower = 1;
+    _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
+  } 
+  for (int i = 0; i > 1000; i++) {
+    MagazinePower = -1;
+    _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
+  }
 }

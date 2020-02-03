@@ -1,47 +1,21 @@
 #include "Climber.h"
-#include "RobotMap.h"
-
-#include <cmath>
+#include <iostream>
 
 using namespace wml;
 using namespace wml::controllers;
 
-// Initializes & Defines groups for Manual/Teleop Control
-ClimberTeleop::ClimberTeleop(std::string name, SmartControllerGroup &contGroup) : Strategy(name), _contGroup(contGroup) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
+Climber::Climber(actuators::DoubleSolenoid &ClimberActuator, actuators::BinaryServo &ShiftPTO, Gearbox &ClimberElevator, SmartControllerGroup &contGroup) : _ClimberActuator(ClimberActuator), _ShiftPTO(ShiftPTO), _ClimberElevator(ClimberElevator), _contGroup(contGroup) {}
+
+void Climber::TeleopOnUpdate(double dt) {
+
+}
+void Climber::AutoOnUpdate(double dt) {
+
 }
 
-// On Loop Update, this code runs (Just the Climber)
-void ClimberTeleop::OnUpdate(double dt) {
-  //@TODO auto aim using values from CJ-Vision over nt
-}
-
-
-
-
-
-
-// Initializes & Defines groups for Auto Control
-ClimberAuto::ClimberAuto(std::string name) : Strategy(name) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
-}
-
-// On Loop Update, this code runs (Just the Climber)
-void ClimberAuto::OnUpdate(double dt) {
-  //@TODO auto aim during autonomous. (still working on pathweaver)
+void Climber::TestOnUpdate(double dt) {
+  
 }
 
 
 
-// Initializes & Defines groups for Auto Control
-ClimberTest::ClimberTest(std::string name) : Strategy(name) {
-  SetCanBeInterrupted(true);
-  SetCanBeReused(true);
-}
-
-// On Loop Update, this code runs (Just the Climber)
-void ClimberTest::OnUpdate(double dt) {
-  //@TODO auto aim during autonomous. (still working on pathweaver)
-}
