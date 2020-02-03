@@ -18,7 +18,7 @@
 #include <frc/PWMSparkMax.h>
 
 // REV
-// #include "rev/CANSparkMax.h"
+#include "rev/CANSparkMax.h"
 
 
 #include "WMLCtre.h"
@@ -85,20 +85,28 @@ struct RobotMap {
     wml::sensors::LimitSwitch LeftLimit{ ControlMap::TurretLeftLimitPort, ControlMap::TurretLeftLimitInvert };
     wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
+    
 
-    wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort };
+    wml::VictorSpx TurretRotation{ ControlMap::TurretRotationPort };
     wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
-
-
 
 
     wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
     wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
 
     // Fly Wheel
-    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
-    wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel);
-    wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
+   // wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
+   // wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel);
+   // wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
+
+
+    rev::CANSparkMax TurretFlyWheel{ 4, rev::CANSparkMax::MotorType::kBrushed };
+    rev::CANSparkMax TurretFlyWheel2{ 1, rev::CANSparkMax::MotorType::kBrushed };
+
+    // wml::Gearbox turretFlyWheel{ TurretFlyWheel, nullptr};
+    wml::Gearbox turretFlyWheel{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretFlyWheel, TurretFlyWheel2)), nullptr };
+    //wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel);
+    
   };
   Turret turret;
 
@@ -123,9 +131,11 @@ struct RobotMap {
 
   struct ControlPannel {
     wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
-    wml::actuators::DoubleSolenoid PannelPnSol { ControlMap::ControlPannelPort, ControlMap::PannelActuatorPort1, ControlMap::PannelActuationTime};
+    wml::TalonSrx controlPannelUpMotor{ ControlMap::ControlPannelUpPort};
+
 
     wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
+    wml::Gearbox ControlPannelUpMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(controlPannelUpMotor)), nullptr};
   };
   ControlPannel controlPannel;
 

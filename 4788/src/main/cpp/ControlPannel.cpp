@@ -3,71 +3,42 @@
 
 using namespace wml;
 using namespace wml::controllers;
-int i;
 
-ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, actuators::DoubleSolenoid &PannelPnSol, SmartControllerGroup &contGroup) : _ControlPannelMotor(ControlPannelMotor), _PannelPnSol(PannelPnSol), _contGroup(contGroup) {}
+ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, Gearbox &ControlPannelUpMotor, SmartControllerGroup &contGroup) : _ControlPannelMotor(ControlPannelMotor), _ControlPannelUpMotor(ControlPannelUpMotor), _contGroup(contGroup) {}
 
 void ControlPannel::TeleopOnUpdate(double dt) {
-
 	double ControlPannelPower;
-
-	if (_contGroup.Get(ControlMap::ControlPannelUp)) {
-		_PannelPnSol.SetTarget(wml::actuators::kForward);
-	} else {}
+	double ControlPannelUpPower;
 	
-	if (_contGroup.Get(ControlMap::ControlPannelDown)) {
-		_PannelPnSol.SetTarget(wml::actuators::kReverse);
-	} else {}
-
 	if (_contGroup.Get(ControlMap::SpinControlPannelLeft)) {
 		ControlPannelPower = 0.5;
-	} else {}
-
-	if (_contGroup.Get(ControlMap::SpinControlPannelRight)) {
+	} else if (_contGroup.Get(ControlMap::SpinControlPannelRight)) {
 		ControlPannelPower = -0.5;
-	} else {}
+	} else if (_contGroup.Get(ControlMap::ControlPannelUp)) {
+		ControlPannelUpPower = 0.5;
+	} else if (_contGroup.Get(ControlMap::ControlPannelDown)) {
+		ControlPannelUpPower = -0.5;
+	}
 
 	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelPower);
+	_ControlPannelUpMotor.transmission->SetVoltage(12 * ControlPannelUpPower);
 }
-void ControlPannel::AutoOnUpdate(double dt) {
-//not used 
-}
+void ControlPannel::AutoOnUpdate(double dt) {}
 
 void ControlPannel::TestOnUpdate(double dt) {
 	double ControlPannelPower;
+	double ControlPannelUpPower;
+
+	
+
 	timer.Start();
-	while (timer.Get() >= 10) {
-		double Speed = 1;
-		_ControlPannelMotor.transmission->SetVoltage(12 * Speed);
-	}
-	timer.Stop();
-	timer.Reset();
-	timer.Start();
-	while (timer.Get() >= 10) {
-		double Speed = -1;
-		_ControlPannelMotor.transmission->SetVoltage(12 * Speed);
-	}
-	timer.Stop();
-	timer.Reset();
-
-
-	while ( i >= 4)
-	{
-	_PannelPnSol.SetTarget(wml::actuators::kForward);
-	timer.Start();
-	while (timer.Get() > 3) {
-
-	}
-	timer.Stop();
-	timer.Reset();
-	_PannelPnSol.SetTarget(wml::actuators::kReverse);
-	timer.Start();
-	while (timer.Get() > 3) {
-
-	}
-	timer.Stop();
-	timer.Reset();
-	i = i + 1;
+	while (timer.Get() <= 10) {
+		double ControlPannelSpeed = 1;
+		_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
+	} while (timer.Get() <= 20) {
+		double ControlPannelSpeed = -1;
+		_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
 	}
 
+//do after climber 
 }

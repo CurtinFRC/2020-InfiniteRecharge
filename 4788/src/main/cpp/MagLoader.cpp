@@ -25,7 +25,7 @@ void MagLoader::TeleopOnUpdate(double dt) {
       MagazinePower = 0;
     }
   } 
-
+if(_contGroup.Get(ControlMap::ShiftUpMagazine))
   _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
 }
 
