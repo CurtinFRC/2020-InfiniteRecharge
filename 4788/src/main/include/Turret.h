@@ -13,7 +13,7 @@ class Turret {
 
 		void TuneTurretPID();
 
-		double XAutoAimCalc(double dt);
+		double XAutoAimCalc(double dt, double input);
 		double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight);
 
 		void ZeroTurret();
@@ -38,6 +38,8 @@ class Turret {
 		double kI = 0;
 		double kD = 0;
 
+		double error;
+
 		double sum = 0;
 		double previousError = 0;
 		double goal = 0;
@@ -54,7 +56,7 @@ class Turret {
 		double CamFOV = 60; // Degrees
 		double TurretLargeGearDiameter = 330; // Mills
 		double TurretSmallGearDiameter = 47.75;
-		double TurretMotorGearRatio = 10; // Ratio
+		double TurretMotorGearRatio = 10 * TurretLargeGearDiameter / TurretSmallGearDiameter; // Ratio
 		double TurretMotorGearRatioTo = 1;
 
 		double TicksPerTurretRotation;

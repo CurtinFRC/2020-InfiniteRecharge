@@ -3,12 +3,11 @@
 using namespace frc;
 using namespace wml;
 
+double CurrentTime;
 double lastTimestamp;
 double dt;
 
 void Robot::RobotInit() {
-  // Get's last time stamp, used to calculate dt
-  lastTimestamp = Timer::GetFPGATimestamp();
 
   // Initializes The smart controllers assigned in robotmap
   ControlMap::InitSmartControllerGroup(robotMap.contGroup);
@@ -38,14 +37,14 @@ void Robot::RobotInit() {
   drivetrain->GetConfig().leftDrive.transmission->SetInverted(false);
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(true);
 
+  robotMap.turret.rotationMotors.SetInverted(true);
+
   // Registering our systems to be called via strategy
   StrategyController::Register(drivetrain);
   NTProvider::Register(drivetrain); // Registers system to networktables
 }
 
 void Robot::RobotPeriodic() {
-  dt = Timer::GetFPGATimestamp() - lastTimestamp;
-
   StrategyController::Update(dt);
   NTProvider::Update();
 }
@@ -69,10 +68,15 @@ void Robot::TeleopInit() {
   // turret->ZeroTurret();
 }
 void Robot::TeleopPeriodic() {
-  // turret->TeleopOnUpdate(dt);
-  // magLoader->TeleopOnUpdate(dt);
-  // beltIntake->TeleopOnUpdate(dt);
-  // climber->TeleopOnUpdate(dt);
+  CurrentTime = frc::Timer::GetFPGATimestamp();
+  dt = CurrentTime - lastTimestamp;
+
+  turret->TeleopOnUpdate(dt);
+  magLoader->TeleopOnUpdate(dt);
+  beltIntake->TeleopOnUpdate(dt);
+  climber->TeleopOnUpdate(dt);
+
+  lastTimestamp = CurrentTime;
 }
 
 void Robot::TestInit() {
@@ -80,7 +84,7 @@ void Robot::TestInit() {
 }
 void Robot::TestPeriodic() {
   turret->TestOnUpdate(dt);
-  // magLoader->TestOnUpdate(dt);
-  // beltIntake->TestOnUpdate(dt);
-  // climber->TestOnUpdate(dt);
+  magLoader->TestOnUpdate(dt);
+  beltIntake->TestOnUpdate(dt);
+  climber->TestOnUpdate(dt);
 }

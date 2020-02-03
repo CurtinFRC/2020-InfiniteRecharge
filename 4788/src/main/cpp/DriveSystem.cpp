@@ -3,6 +3,7 @@
 using namespace wml;
 using namespace wml::controllers;
 
+
 // Initializes & Defines groups for Manual Control
 DrivetrainManual::DrivetrainManual(std::string name, Drivetrain &drivetrain, wml::actuators::DoubleSolenoid &ChangeGears, SmartControllerGroup &contGroup) : Strategy(name), _drivetrain(drivetrain), _ChangeGears(ChangeGears), _contGroup(contGroup) {
   Requires(&drivetrain);
@@ -12,7 +13,6 @@ DrivetrainManual::DrivetrainManual(std::string name, Drivetrain &drivetrain, wml
 
 // On Loop Update, this code runs (Just a drivebase)
 void DrivetrainManual::OnUpdate(double dt) {
-  double leftSpeed, rightSpeed;
 
   #if __CONTROLMAP_USING_JOYSTICK__
     double joyForward = -_contGroup.Get(ControlMap::DrivetrainForward) * 0.9;
@@ -22,8 +22,46 @@ void DrivetrainManual::OnUpdate(double dt) {
     leftSpeed = joyForward + joyTurn;
     rightSpeed = joyForward - joyTurn;
   #else
-    leftSpeed = -_contGroup.Get(ControlMap::DrivetrainLeft);
-    rightSpeed = -_contGroup.Get(ControlMap::DrivetrainRight);
+
+    // Left Drive
+    if (fabs(_contGroup.Get(ControlMap::DrivetrainLeft)) > ControlMap::xboxDeadzone) { // I'm So fab
+      // Forwards
+      if (_contGroup.Get(ControlMap::DrivetrainLeft) < -(leftSpeed + ControlMap::MaxDrivetrainAcceleration)) {
+        leftSpeed = leftSpeed + ControlMap::MaxDrivetrainAcceleration;
+      } else if (_contGroup.Get(ControlMap::DrivetrainLeft) < leftSpeed) {
+        leftSpeed = fabs(_contGroup.Get(ControlMap::DrivetrainLeft));
+      }
+      // Reverse 
+      else if (_contGroup.Get(ControlMap::DrivetrainLeft) > (leftSpeed + ControlMap::MaxDrivetrainAcceleration)) {
+        leftSpeed = leftSpeed - ControlMap::MaxDrivetrainAcceleration;
+      } else if (_contGroup.Get(ControlMap::DrivetrainLeft) > leftSpeed) {
+        leftSpeed = _contGroup.Get(ControlMap::DrivetrainLeft);
+        leftSpeed = -leftSpeed;
+      } 
+    } else {
+      leftSpeed = 0;
+    }
+
+    // Right Drive
+    if (fabs(_contGroup.Get(ControlMap::DrivetrainRight)) > ControlMap::xboxDeadzone) {
+      // Forwards
+      if (_contGroup.Get(ControlMap::DrivetrainRight) < -(rightSpeed + ControlMap::MaxDrivetrainAcceleration)) {
+        rightSpeed = rightSpeed + ControlMap::MaxDrivetrainAcceleration;
+      } else if (_contGroup.Get(ControlMap::DrivetrainRight) < rightSpeed) {
+        rightSpeed = fabs(_contGroup.Get(ControlMap::DrivetrainRight));
+      }
+      // Reverse
+      else if (_contGroup.Get(ControlMap::DrivetrainRight) > (rightSpeed + ControlMap::MaxDrivetrainAcceleration)) {
+        rightSpeed = rightSpeed - ControlMap::MaxDrivetrainAcceleration;
+      } else if (_contGroup.Get(ControlMap::DrivetrainRight) > rightSpeed) {
+        rightSpeed = _contGroup.Get(ControlMap::DrivetrainRight);
+        rightSpeed = -rightSpeed;
+      }
+    } else {
+      rightSpeed = 0;
+    }
+
+
   #endif
 
   if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE)) {

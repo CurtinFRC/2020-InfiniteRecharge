@@ -22,19 +22,22 @@ void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {}
 
 // Deadzones
 const double ControlMap::joyDeadzone = 0.15;
-const double ControlMap::xboxDeadzone = 0.05;
-const double ControlMap::triggerDeadzone = 0.05;
+const double ControlMap::xboxDeadzone = 0.1;
+const double ControlMap::triggerDeadzone = 0.15;
 
 // Drive Left
-const int ControlMap::DriveMAXportFL = 1;
-const int ControlMap::DriveMAXportBL = 99;
+const int ControlMap::DriveMAXportFL = 3;
+const int ControlMap::DriveMAXportBL = 4;
 // Drive Right
-const int ControlMap::DriveMAXportFR = 99;
-const int ControlMap::DriveMAXportBR = 4;
-// Drive Gearning
+const int ControlMap::DriveMAXportFR = 2;
+const int ControlMap::DriveMAXportBR = 1;
+// Drive Gearing
 const int ControlMap::ChangeGearPort1 = 99;
 const int ControlMap::ChangeGearPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
+// Drive Speeds
+const double ControlMap::MaxDrivetrainAcceleration = 0.015;
+const double ControlMap::MaxDrivetrainSpeed = 1;
 
 // Turret
 const int ControlMap::TurretFlyWheelPort = 99;

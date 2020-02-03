@@ -25,6 +25,8 @@ struct ControlMap {
   static const int DriveMAXportFL, DriveMAXportFR, DriveMAXportBL, DriveMAXportBR;
   static const int ChangeGearPort1, ChangeGearPort2;
   static const double ChangeGearTime;
+  static const double MaxDrivetrainSpeed;
+  static const double MaxDrivetrainAcceleration;
 
   // Turret
   static const bool TuneTurretPID;

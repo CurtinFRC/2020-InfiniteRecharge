@@ -17,6 +17,8 @@ class DrivetrainManual : public wml::Strategy {
     wml::Drivetrain &_drivetrain;
     wml::actuators::BinaryActuator &_ChangeGears;
     wml::controllers::SmartControllerGroup &_contGroup;
+    double leftSpeed = 0, rightSpeed = 0;
+    double currentSpeed;
 };
 
 // Class that Runs in Autonomous
@@ -29,6 +31,8 @@ class DrivetrainAuto : public wml::Strategy {
   private:
     wml::Drivetrain &_drivetrain;
     wml::control::PIDController _pid;
+    double leftSpeed = 0, rightSpeed = 0;
+    double currentSpeed;
 };
 
 // Class that Runs in Test Mode
@@ -41,4 +45,5 @@ class DrivetrainTest : public wml::Strategy {
   private:
     wml::Drivetrain &_drivetrain;
     wml::control::PIDController _pid;
+    double leftSpeed = 0, rightSpeed = 0;
 };

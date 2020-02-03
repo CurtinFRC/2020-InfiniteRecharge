@@ -4,10 +4,6 @@
 using namespace wml;
 using namespace wml::controllers;
 
-double CurrentTime;
-double LastTimestamp;
-double DT;
-
 Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sensors::LimitSwitch &LeftLimit, sensors::LimitSwitch &RightLimit, sensors::LimitSwitch &AngleDownLimit, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable) : _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), _FlyWheel(FlyWheel), _LeftLimit(LeftLimit), _RightLimit(RightLimit), _AngleDownLimit(AngleDownLimit), _contGroup(contGroup), _visionTable(visionTable) {
 	table = _visionTable->GetSubTable("Target");
 
@@ -33,21 +29,13 @@ void Turret::ZeroTurret() {
 
 
 
-double Turret::XAutoAimCalc(double dt)  {
+double Turret::XAutoAimCalc(double dt, double input)  {
 
-	// Calculate 360 Degrees in ticks
-	TicksPerTurretRotation = MotorTicks * TurretMotorGearRatio * (TurretLargeGearDiameter / TurretSmallGearDiameter);
-	TicksPerCamFOV = CamFOV * (TicksPerTurretRotation / 360);
-
-	// Calculate TargetX Pixles to Ticks
-	ticksToTargetX = targetX * (TicksPerCamFOV / imageWidth);
-
-	// Convert to -1 to 1 for motor power
-	double input = ticksToTargetX / TicksPerCamFOV;
+	
 
 
 	// Calculate PID
-	double error = goal - input;
+	error = goal - input;
 
 	double derror = (error - previousError) / dt;
 	sum = sum + error * dt;
@@ -100,8 +88,6 @@ void Turret::TuneTurretPID() {
 }
 
 void Turret::TeleopOnUpdate(double dt) {
-	CurrentTime = frc::Timer::GetFPGATimestamp();
-	DT = CurrentTime - LastTimestamp;
 
 	double RotationPower;
 	double AngularPower;
@@ -120,7 +106,7 @@ void Turret::TeleopOnUpdate(double dt) {
 		if (targetX > imageWidth || targetY > imageHeight) {
 			std::cout << "Error: Target is artifacting" << std::endl;
 		} else {
-			RotationPower = XAutoAimCalc(DT);
+			RotationPower = XAutoAimCalc(dt, targetX);
 		}
 	}	else {
 		sum = 0;
@@ -153,7 +139,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
 
 	// std::cout << "FlyWheel Encoder " << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
-	LastTimestamp = CurrentTime;
+	table->PutNumber("Rotation Power", RotationPower);
 }
 
 void Turret::AutoOnUpdate(double dt) {
