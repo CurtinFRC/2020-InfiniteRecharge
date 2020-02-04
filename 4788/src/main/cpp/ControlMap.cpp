@@ -21,25 +21,29 @@ void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {}
 #endif
 
 // Deadzones
-const double ControlMap::joyDeadzone = 0.05;
-const double ControlMap::xboxDeadzone = 0.05;
-const double ControlMap::triggerDeadzone = 0.05;
+const double ControlMap::joyDeadzone = 0.15;
+const double ControlMap::xboxDeadzone = 0.1;
+const double ControlMap::triggerDeadzone = 0.15;
 
 // Drive Left
-const int ControlMap::DriveMAXportFL = 99;
-const int ControlMap::DriveMAXportBL = 99;
+const int ControlMap::DriveMAXportFL = 3;
+const int ControlMap::DriveMAXportBL = 4;
 // Drive Right
-const int ControlMap::DriveMAXportFR = 99;
-const int ControlMap::DriveMAXportBR = 99;
-// Drive Gearning
+const int ControlMap::DriveMAXportFR = 2;
+const int ControlMap::DriveMAXportBR = 1;
+// Drive Gearing
 const int ControlMap::ChangeGearPort1 = 99;
 const int ControlMap::ChangeGearPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
+// Drive Speeds
+const double ControlMap::MaxDrivetrainAcceleration = 0.015;
+const double ControlMap::MaxDrivetrainSpeed = 1;
 
 // Turret
-const int ControlMap::TurretFlyWheelPort = 7;
+const int ControlMap::TurretFlyWheelPort = 99;
 const int ControlMap::TurretAnglePort = 99;
 const int ControlMap::TurretRotationPort = 5;
+const bool ControlMap::TuneTurretPID = true;
 
 const double ControlMap::TurretDistanceSetpoint1 = 0; // Close
 const double ControlMap::TurretDistanceSetpoint2 = 0; // Mid
@@ -59,6 +63,7 @@ const int ControlMap::IntakeDownPort1 = 99;
 const int ControlMap::IntakeDownPort2 = 99;
 const double ControlMap::PannelActuationTime = 0;
 const double ControlMap::IntakeDownActuationTime = 99;
+
 
 // MagLoader
 const int ControlMap::MagLoaderMotorPort = 99;
@@ -85,9 +90,20 @@ const int ControlMap::CompressorPort = 99;
 //Control Pannel
 const int ControlMap::ControlPannelPort = 99;
 const int ControlMap::ControlPannelUpPort = 99;
+const int ControlMap::ControlPannelUpSolPort1 = 99;
+const int ControlMap::ControlPannelUpSolPort2 = 99;
+const double ControlMap::ControlPannelActuationTime = 99;
 
 
 // -------------Defined Buttons-------------------
+
+// Temp PID Controller
+const tButton ControlMap::kpUP{ CoDriver, XboxController::kB };
+const tButton ControlMap::kpDOWN{ CoDriver, XboxController::kA };
+const tButton ControlMap::kiUP{ CoDriver, XboxController::kY };
+const tButton ControlMap::kiDOWN{ CoDriver, XboxController::kX };
+const tButton ControlMap::kdUP{ CoDriver, XboxController::kStart };
+const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
 
 // Drive System
 #if __CONTROLMAP_USING_JOYSTICK__

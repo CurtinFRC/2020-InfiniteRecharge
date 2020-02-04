@@ -11,10 +11,13 @@ class Turret {
 		void AutoOnUpdate(double dt);
 		void TestOnUpdate(double dt);
 
+		void TuneTurretPID();
+
 		double XAutoAimCalc(double dt, double input);
 		double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight);
 
 		void ZeroTurret();
+		std::shared_ptr<nt::NetworkTable> table;
 
 	private:
 		wml::Gearbox &_RotationalAxis;
@@ -29,7 +32,38 @@ class Turret {
 
 		wml::controllers::SmartControllerGroup &_contGroup;
 		std::shared_ptr<nt::NetworkTable> &_visionTable;
-		std::shared_ptr<nt::NetworkTable> table;
+
+		// PID Calculations X axis
+		double kP = 0;
+		double kI = 0;
+		double kD = 0;
+
+		double error;
+
+		double sum = 0;
+		double previousError = 0;
+		double goal = 0;
+
+		// Cam Values
+		double imageHeight;
+		double imageWidth;
+		double targetX;
+		double targetY;
+
+		double ticksToTargetX;
+
+		// Turret Cam FOV/Turret Gear Values
+		double CamFOV = 60; // Degrees
+		double TurretLargeGearDiameter = 330; // Mills
+		double TurretSmallGearDiameter = 47.75;
+		double TurretMotorGearRatio = 10 * TurretLargeGearDiameter / TurretSmallGearDiameter; // Ratio
+		double TurretMotorGearRatioTo = 1;
+
+		double TicksPerTurretRotation;
+		double TicksPerCamFOV;
+
+
 		double MaxRotationTicks;
 		double MaxAngleTicks;
+		double MotorTicks = 2048;
 };

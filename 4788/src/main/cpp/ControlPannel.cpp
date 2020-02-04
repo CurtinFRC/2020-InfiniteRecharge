@@ -4,8 +4,7 @@
 using namespace wml;
 using namespace wml::controllers;
 
-ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, Gearbox &ControlPannelUpMotor, SmartControllerGroup &contGroup) : _ControlPannelMotor(ControlPannelMotor), _ControlPannelUpMotor(ControlPannelUpMotor), _contGroup(contGroup) {}
-
+ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, wml::actuators::DoubleSolenoid &ControlPannelUpSol, SmartControllerGroup &contGroup) : _ControlPannelMotor(ControlPannelMotor), _ControlPannelUpSol(ControlPannelUpSol), _contGroup(contGroup){}
 void ControlPannel::TeleopOnUpdate(double dt) {
 	double ControlPannelPower;
 	double ControlPannelUpPower;
@@ -15,13 +14,12 @@ void ControlPannel::TeleopOnUpdate(double dt) {
 	} else if (_contGroup.Get(ControlMap::SpinControlPannelRight)) {
 		ControlPannelPower = -0.5;
 	} else if (_contGroup.Get(ControlMap::ControlPannelUp)) {
-		ControlPannelUpPower = 0.5;
+	
 	} else if (_contGroup.Get(ControlMap::ControlPannelDown)) {
 		ControlPannelUpPower = -0.5;
 	}
-
 	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelPower);
-	_ControlPannelUpMotor.transmission->SetVoltage(12 * ControlPannelUpPower);
+	//_ControlPannelUpSol.transmission->SetVoltage(12 * ControlPannelUpPower);
 }
 void ControlPannel::AutoOnUpdate(double dt) {}
 

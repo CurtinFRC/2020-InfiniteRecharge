@@ -25,8 +25,11 @@ struct ControlMap {
   static const int DriveMAXportFL, DriveMAXportFR, DriveMAXportBL, DriveMAXportBR;
   static const int ChangeGearPort1, ChangeGearPort2;
   static const double ChangeGearTime;
+  static const double MaxDrivetrainSpeed;
+  static const double MaxDrivetrainAcceleration;
 
   // Turret
+  static const bool TuneTurretPID;
   static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
@@ -45,6 +48,9 @@ struct ControlMap {
   //Control Pannel
   static const int ControlPannelPort;
   static const int ControlPannelUpPort;
+  static const int ControlPannelUpSolPort1;
+  static const int ControlPannelUpSolPort2;
+  static const double ControlPannelActuationTime;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
@@ -57,6 +63,11 @@ struct ControlMap {
   static const int CompressorPort;
 
   // --------------- Defined Buttons -----------------
+
+  // PID Controller
+  static const wml::controllers::tButton kpUP, kpDOWN;
+  static const wml::controllers::tButton kiUP, kiDOWN;
+  static const wml::controllers::tButton kdUP, kdDOWN;
 
   // Drivetrain
   #if __CONTROLMAP_USING_JOYSTICK__

@@ -16,6 +16,13 @@
 #include <frc/Spark.h>
 #include <frc/PowerDistributionPanel.h>
 #include <frc/PWMSparkMax.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/AnalogInput.h>
+
+#include <frc/Filesystem.h>
+#include <frc/trajectory/TrajectoryUtil.h>
+#include <wpi/Path.h>
+#include <wpi/SmallString.h>
 
 // REV
 #include "rev/CANSparkMax.h"
@@ -36,6 +43,7 @@
 #include "control/PIDController.h"
 #include "MotionProfiling.h"
 #include "Toggle.h"
+#include "WMLRev.h"
 
 #include "Usage.h"
 
@@ -61,17 +69,26 @@ struct RobotMap {
   // Drive System
   struct DriveSystem {
     // Front
-    frc::PWMSparkMax FLmax{ ControlMap::DriveMAXportFL };
-    frc::PWMSparkMax FRmax{ ControlMap::DriveMAXportFR };
+    // wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 2048 };
+    // wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 2048 };
+
+    rev::CANSparkMax FLmax{ ControlMap::DriveMAXportFL, rev::CANSparkMax::MotorType::kBrushless };
+    rev::CANSparkMax FRmax{ ControlMap::DriveMAXportFR, rev::CANSparkMax::MotorType::kBrushless };
 
     // Back
-    frc::PWMSparkMax BLmax{ ControlMap::DriveMAXportBL };
-    frc::PWMSparkMax BRmax{ ControlMap::DriveMAXportBR };
+    // wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 2048 };
+    // wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 2048 };
+
+    rev::CANSparkMax BLmax{ ControlMap::DriveMAXportBL, rev::CANSparkMax::MotorType::kBrushless };
+    rev::CANSparkMax BRmax{ ControlMap::DriveMAXportBR, rev::CANSparkMax::MotorType::kBrushless };
 
     // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
-    wml::Gearbox LGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(FLmax, BLmax)), nullptr };
-    wml::Gearbox RGearbox{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(FRmax, BRmax)), nullptr };
+    wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);
+    wml::actuators::MotorVoltageController rightMotors = wml::actuators::MotorVoltageController::Group(FRmax, BRmax);
+
+    wml::Gearbox LGearbox{ &leftMotors, nullptr/*&FLmax, 8.45*/ };
+    wml::Gearbox RGearbox{ &rightMotors, nullptr/*&FRmax, 8.45*/ };
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
 
@@ -87,12 +104,15 @@ struct RobotMap {
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
     
 
-    wml::VictorSpx TurretRotation{ ControlMap::TurretRotationPort };
-    wml::TalonSrx TurretAngle{ ControlMap::TurretRotationPort };
+    // Rotation
+    wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort, 2048 };
+    wml::actuators::MotorVoltageController rotationMotors = wml::actuators::MotorVoltageController::Group(TurretRotation);
+    wml::Gearbox turretRotation{ &rotationMotors, &TurretRotation, 8.45 };
 
-
-    wml::Gearbox turretRotation{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretRotation)), nullptr };
-    wml::Gearbox turretAngle{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(TurretAngle)), nullptr };
+    // Angle
+    wml::TalonSrx TurretAngle{ ControlMap::TurretAnglePort, 2048 };
+    wml::actuators::MotorVoltageController turretAngleMotors = wml::actuators::MotorVoltageController::Group(TurretAngle);
+    wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 
     // Fly Wheel
    // wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
@@ -111,31 +131,34 @@ struct RobotMap {
   Turret turret;
 
   struct Intake {
-    wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort };
+    wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort, 2048 };
     wml::actuators::DoubleSolenoid IntakeDown { ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
+    wml::actuators::MotorVoltageController IntakeMotors = wml::actuators::MotorVoltageController::Group(IntakeMotor);
+    wml::Gearbox intakeMotor{ &IntakeMotors, &IntakeMotor, 8.45};
     
-    wml::Gearbox intakeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(IntakeMotor)), nullptr };
   };
   Intake intake;
 
   struct MagLoader {
-    wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort };
-
     wml::sensors::LimitSwitch StartMagLimit{ ControlMap::StartMagLimitPort };
     wml::sensors::LimitSwitch Position1Limit{ ControlMap::Position1LimitPort };
     wml::sensors::LimitSwitch Position5Limit{ ControlMap::Position5LimitPort };
 
-    wml::Gearbox magLoaderMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MagLoaderMotor)), nullptr };
+    frc::AnalogInput IRSensor{ 3 };
+
+    wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort, 2048 };
+    wml::actuators::MotorVoltageController magLoaderMotors = wml::actuators::MotorVoltageController::Group(MagLoaderMotor);
+    wml::Gearbox magLoaderMotor{ &magLoaderMotors, &MagLoaderMotor, 8.45 };
   };
   MagLoader magLoader;
 
   struct ControlPannel {
     wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
-    wml::TalonSrx controlPannelUpMotor{ ControlMap::ControlPannelUpPort};
+    wml::actuators::DoubleSolenoid ControlPannelUpSol{ ControlMap::ControlPannelUpSolPort1, ControlMap::ControlPannelUpSolPort2, ControlMap::ControlPannelActuationTime};
 
 
     wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
-    wml::Gearbox ControlPannelUpMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(controlPannelUpMotor)), nullptr};
+   // wml::Gearbox ControlPannelUpSol { new wml::actuators::DoubleSolenoid(wml::actuators::DoubleSolenoid::Group(ControlPannelUpSol)), nullptr};
   };
   ControlPannel controlPannel;
 
@@ -151,14 +174,20 @@ struct RobotMap {
   Climber climber;
 
   struct ControlSystem {
+
+    // Pneumatics
     wml::sensors::PressureSensor pressureSensor{ ControlMap::PressureSensorPort };
     wml::actuators::Compressor compressor{ ControlMap::CompressorPort }; 
 
-    // Vision Tracking Values Sent from the coprocessor (pi/tinkerboard)
+    // Vision
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
-    //std::shared_ptr<nt::NetworkTable> table = visionTable->GetSubTable("Target");
-    //double targetX = table->GetNumber("Target_X", 0), targetY = table->GetNumber("Target_Y", 0), imageHeight = table->GetNumber("ImageHeight", 0), imageWidth = table->GetNumber("ImageWidth", 0);
 
+    // Auto
+    wpi::SmallString<64> deployDirectory;
+    // frc::filesystem::GetDeployDirectory(deployDirectory);
+
+    //Belt intake 
+   // std::shared_ptr<nt::NetworkTable> pancakes = nt::NetworkTableInstance::GetDefault().GetTable("Belt Intake Encoders");
   };
   ControlSystem controlSystem;
 
