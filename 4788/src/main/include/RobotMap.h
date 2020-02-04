@@ -27,7 +27,7 @@
 // REV
 #include "rev/CANSparkMax.h"
 
-
+// WML
 #include "WMLCtre.h"
 #include "controllers/Controllers.h"
 #include "actuators/BinaryServo.h"
@@ -69,26 +69,26 @@ struct RobotMap {
   // Drive System
   struct DriveSystem {
     // Front
-    // wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 2048 };
-    // wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 2048 };
+    wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 2048 };
+    wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 2048 };
 
-    rev::CANSparkMax FLmax{ ControlMap::DriveMAXportFL, rev::CANSparkMax::MotorType::kBrushless };
-    rev::CANSparkMax FRmax{ ControlMap::DriveMAXportFR, rev::CANSparkMax::MotorType::kBrushless };
+    // rev::CANSparkMax FLmax{ ControlMap::DriveMAXportFL, rev::CANSparkMax::MotorType::kBrushless };
+    // rev::CANSparkMax FRmax{ ControlMap::DriveMAXportFR, rev::CANSparkMax::MotorType::kBrushless };
 
     // Back
-    // wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 2048 };
-    // wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 2048 };
+    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 2048 };
+    wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 2048 };
 
-    rev::CANSparkMax BLmax{ ControlMap::DriveMAXportBL, rev::CANSparkMax::MotorType::kBrushless };
-    rev::CANSparkMax BRmax{ ControlMap::DriveMAXportBR, rev::CANSparkMax::MotorType::kBrushless };
+    // rev::CANSparkMax BLmax{ ControlMap::DriveMAXportBL, rev::CANSparkMax::MotorType::kBrushless };
+    // rev::CANSparkMax BRmax{ ControlMap::DriveMAXportBR, rev::CANSparkMax::MotorType::kBrushless };
 
     // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
     wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);
     wml::actuators::MotorVoltageController rightMotors = wml::actuators::MotorVoltageController::Group(FRmax, BRmax);
 
-    wml::Gearbox LGearbox{ &leftMotors, nullptr/*&FLmax, 8.45*/ };
-    wml::Gearbox RGearbox{ &rightMotors, nullptr/*&FRmax, 8.45*/ };
+    wml::Gearbox LGearbox{ &leftMotors, &FLmax, 8.45 };
+    wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
 
@@ -109,13 +109,14 @@ struct RobotMap {
     wml::Gearbox turretRotation{ &rotationMotors, &TurretRotation, 8.45 };
 
     // Angle
-    wml::TalonSrx TurretAngle{ ControlMap::TurretAnglePort, 2048 };
+    wml::TalonSrx TurretAngle{ 7, 2048 };
     wml::actuators::MotorVoltageController turretAngleMotors = wml::actuators::MotorVoltageController::Group(TurretAngle);
     wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 
     // Fly Wheel
-    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
-    wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel);
+    wml::TalonSrx TurretFlyWheel{ 8, 2048 };
+    wml::TalonSrx TurretFlyWheel2{ 6, 2048 };
+    wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel, TurretFlyWheel2);
     wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
   };
   Turret turret;
@@ -174,6 +175,4 @@ struct RobotMap {
 
   };
   ControlSystem controlSystem;
-
-
 };

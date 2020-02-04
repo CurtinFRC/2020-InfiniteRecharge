@@ -12,17 +12,39 @@ Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sens
 }
 
 void Turret::ZeroTurret() {
-	while (!_LeftLimit.Get()) {
-		_RotationalAxis.transmission->SetVoltage(12 * -0.3);
+	// Zero Encoder on left limit
+	ZeroTimer.Start();
+	while (_LeftLimit.Get() < 1) {
+		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
+			_RotationalAxis.transmission->SetVoltage(12 * -0.3);
+		} else {
+			std::cout << "Turret Zero Timed Out" << std::endl;
+			_RotationalAxis.transmission->SetVoltage(0);
+			break;
+		}
 	} 
 	_RotationalAxis.encoder->ZeroEncoder();
-	while (!_RightLimit.Get()) {
-		_RotationalAxis.transmission->SetVoltage(12 * 0.3);
+	while (_RightLimit.Get() < 1) {
+		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
+			_RotationalAxis.transmission->SetVoltage(12 * 0.3);
+		} else {
+			std::cout << "Turret Zero Timed Out" << std::endl;
+			_RotationalAxis.transmission->SetVoltage(0);
+			break;
+		}
 	}
 	MaxRotationTicks = _RotationalAxis.encoder->GetEncoderTicks();
-	while(!_AngleDownLimit.Get()) {
-		_VerticalAxis.transmission->SetVoltage(12 * 0.2);
+	while(_AngleDownLimit.Get() < 1) {
+		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
+			_VerticalAxis.transmission->SetVoltage(12 * 0.2);
+		} else {
+			_VerticalAxis.transmission->SetVoltage(0);
+			std::cout << "Turret Zero Timed Out" << std::endl;
+			break;
+		}
 	}
+	ZeroTimer.Stop();
+	ZeroTimer.Reset();
 	_VerticalAxis.encoder->ZeroEncoder();
 	_FlyWheel.encoder->ZeroEncoder();
 }
@@ -89,10 +111,6 @@ void Turret::TuneTurretPID() {
 
 void Turret::TeleopOnUpdate(double dt) {
 
-	double RotationPower;
-	double AngularPower;
-	double FlyWheelPower;
-
 	targetX = table->GetNumber("Target_X", 0)/imageWidth;
 	targetY = table->GetNumber("Target_Y", 0)/imageHeight;
 
@@ -122,6 +140,18 @@ void Turret::TeleopOnUpdate(double dt) {
 		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
 		RotationPower = RotationPower/6;
 	}
+
+	if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > 0.1) {
+		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+	} else {
+		FlyWheelPower = 0;
+	}
+
+	if (_contGroup.Get(ControlMap::TurretFire)) {
+		AngularPower = -1;
+	} else {
+		AngularPower = 0;
+	}
 	
 
 	// Motor DeadBand Calc
@@ -147,7 +177,20 @@ void Turret::AutoOnUpdate(double dt) {
 }
 
 void Turret::TestOnUpdate(double dt) {
-	
+	if (!leftEncoderTest && !rightEncoderTest) {
+		if (turretTest) {
+			std::cout << "Turret Test Succesful" << std::endl;
+			turretTest = false;
+		}
+	} else {
+		if (leftLimitTest) {
+
+		}
+	}
+
+	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
+	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
+	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
 }
 
 

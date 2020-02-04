@@ -33,6 +33,8 @@ class Turret {
 		std::shared_ptr<nt::NetworkTable> &_visionTable;
 		std::shared_ptr<nt::NetworkTable> table;
 
+		frc::Timer ZeroTimer;
+
 		// PID Calculations X axis
 		double kP = 0;
 		double kI = 0;
@@ -66,4 +68,22 @@ class Turret {
 		double MaxRotationTicks;
 		double MaxAngleTicks;
 		double MotorTicks = 2048;
+
+		// Test
+		bool turretTest = true;
+
+    bool leftLimitTest = true;
+    bool rightLimitTest = true;
+    bool leftEncoderTest = true;
+    bool rightEncoderTest = true;
+
+		bool angleLimitTest = true;
+		bool angleEncoderTet = true;
+
+		bool FlywheelTest = true;
+
+		// Power 
+		double RotationPower = 0;
+		double AngularPower = 0;
+		double FlyWheelPower = 0;
 };
