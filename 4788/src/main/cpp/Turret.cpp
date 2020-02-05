@@ -165,7 +165,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	} 
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
-	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
+	_VerticalAxis.transmission->SetVoltage(12 * 0);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
 
 	// std::cout << "FlyWheel Encoder " << _FlyWheel.encoder->GetEncoderTicks() << std::endl;

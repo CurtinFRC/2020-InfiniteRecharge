@@ -16,8 +16,12 @@
   },
   "C_Cpp.default.configurationProvider": "vscode-wpilib",
   "files.associations": {
+<<<<<<< HEAD
+    "iostream": "cpp"
+=======
     "iostream": "cpp",
     "cmath": "cpp",
+<<<<<<< HEAD
     "complex": "cpp",
     "algorithm": "cpp",
     "cctype": "cpp",
@@ -91,5 +95,9 @@
     "iomanip": "cpp",
     "sstream": "cpp",
     "cinttypes": "cpp"
+=======
+    "complex": "cpp"
+>>>>>>> 54d57c8b1debff179875a739de8cc18c74bc4449
+>>>>>>> 21b933812bdf0da834f3eabba70829d3b8fda994
   }
 }

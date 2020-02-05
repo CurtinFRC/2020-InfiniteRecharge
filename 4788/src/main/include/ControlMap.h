@@ -40,15 +40,19 @@ struct ControlMap {
   // Intake
   static const int IntakeMotorPort;
   static const int IntakeDownPort1, IntakeDownPort2;
+  static const double PannelActuationTime;
   static const double IntakeDownActuationTime;
 
   // MagLoader
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
 
-  //Wheel of Cringe 
-  static const int ControlPannelPort, PannelActuatorPort1;
-  static const double PannelActuationTime;
+  //Control Pannel
+  static const int ControlPannelPort;
+  static const int ControlPannelUpPort;
+  static const int ControlPannelUpSolPort1;
+  static const int ControlPannelUpSolPort2;
+  static const double ControlPannelActuationTime;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
@@ -114,7 +118,6 @@ struct ControlMap {
   static const wml::controllers::tPOV ShiftUpMagazine;
   static const wml::controllers::tPOV ShiftDownMagazine;
   #endif
-
 
   // Climber
   #if __CONTROLMAP_USING_JOYSTICK__

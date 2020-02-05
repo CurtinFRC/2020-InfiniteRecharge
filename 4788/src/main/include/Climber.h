@@ -16,4 +16,5 @@ class Climber {
 		wml::actuators::BinaryServo &_ShiftPTO;
 		wml::Gearbox &_ClimberElevator;
 		wml::controllers::SmartControllerGroup &_contGroup;
+		frc::Timer timer;
 };

@@ -17,6 +17,7 @@ class Turret {
 		double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight);
 
 		void ZeroTurret();
+		std::shared_ptr<nt::NetworkTable> table;
 
 	private:
 		wml::Gearbox &_RotationalAxis;
@@ -31,7 +32,6 @@ class Turret {
 
 		wml::controllers::SmartControllerGroup &_contGroup;
 		std::shared_ptr<nt::NetworkTable> &_visionTable;
-		std::shared_ptr<nt::NetworkTable> table;
 
 		frc::Timer ZeroTimer;
 

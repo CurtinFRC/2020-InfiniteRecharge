@@ -64,7 +64,9 @@ const double ControlMap::TurretZeroTimeoutSeconds = 5;
 const int ControlMap::IntakeMotorPort = 99;
 const int ControlMap::IntakeDownPort1 = 99;
 const int ControlMap::IntakeDownPort2 = 99;
+const double ControlMap::PannelActuationTime = 0;
 const double ControlMap::IntakeDownActuationTime = 99;
+
 
 // MagLoader
 const int ControlMap::MagLoaderMotorPort = 99;
@@ -82,16 +84,18 @@ const int ControlMap::ClimberMotor2Port = 99;
 
 const int ControlMap::Shift2PTOPort = 99;
 const int ControlMap::Shift2PTOForwardPosition = 20;
-const int ControlMap::Shift2PTOReversePosition = 0;
+const int ControlMap::Shift2PTOReversePosition = 99;
 
 // Control System
 const int ControlMap::PressureSensorPort = 99;
 const int ControlMap::CompressorPort = 99;
 
-//Wheel of cringe
+//Control Pannel
 const int ControlMap::ControlPannelPort = 99;
-const int ControlMap::PannelActuatorPort1 = 99;
-const double ControlMap::PannelActuationTime = 0;
+const int ControlMap::ControlPannelUpPort = 99;
+const int ControlMap::ControlPannelUpSolPort1 = 99;
+const int ControlMap::ControlPannelUpSolPort2 = 99;
+const double ControlMap::ControlPannelActuationTime = 99;
 
 
 // -------------Defined Buttons-------------------
@@ -125,6 +129,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
   const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kRightYAxis };
   const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
+  
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
 #endif
 
@@ -163,7 +168,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
 //Climber 
 #if __CONTROLMAP_USING_JOYSTICK__
 //please change
-  //const tAxis ControlMap::ClimberControl{ CoDriver, 2};
+  const tAxis ControlMap::ClimberControl{ CoDriver, 2};
 #else
-  //const tAxis ControlMap::ClimberControl{ CoDriver, XboxController::kLeftYAxis};
+  const tAxis ControlMap::ClimberControl{ CoDriver, XboxController::kLeftYAxis};
 #endif

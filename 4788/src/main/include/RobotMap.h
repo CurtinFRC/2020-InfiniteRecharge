@@ -72,17 +72,9 @@ struct RobotMap {
     wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 2048 };
     wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 2048 };
 
-    // rev::CANSparkMax FLmax{ ControlMap::DriveMAXportFL, rev::CANSparkMax::MotorType::kBrushless };
-    // rev::CANSparkMax FRmax{ ControlMap::DriveMAXportFR, rev::CANSparkMax::MotorType::kBrushless };
-
     // Back
     wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 2048 };
     wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 2048 };
-
-    // rev::CANSparkMax BLmax{ ControlMap::DriveMAXportBL, rev::CANSparkMax::MotorType::kBrushless };
-    // rev::CANSparkMax BRmax{ ControlMap::DriveMAXportBR, rev::CANSparkMax::MotorType::kBrushless };
-
-    // @TODO: Add encoders to drivetrain gearboxes (Will do when we have neo's... or if we have neo's... they may be on fire by the time they get here. Whatever)
 
     wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);
     wml::actuators::MotorVoltageController rightMotors = wml::actuators::MotorVoltageController::Group(FRmax, BRmax);
@@ -102,6 +94,7 @@ struct RobotMap {
     wml::sensors::LimitSwitch LeftLimit{ ControlMap::TurretLeftLimitPort, ControlMap::TurretLeftLimitInvert };
     wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
+    
 
     // Rotation
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort, 2048 };
@@ -122,9 +115,11 @@ struct RobotMap {
   Turret turret;
 
   struct Intake {
-    wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort };
+    wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort, 2048 };
     wml::actuators::DoubleSolenoid IntakeDown { ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
-    wml::Gearbox intakeMotor{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(IntakeMotor)), nullptr };
+    wml::actuators::MotorVoltageController IntakeMotors = wml::actuators::MotorVoltageController::Group(IntakeMotor);
+    wml::Gearbox intakeMotor{ &IntakeMotors, &IntakeMotor, 8.45};
+    
   };
   Intake intake;
 
@@ -143,9 +138,11 @@ struct RobotMap {
 
   struct ControlPannel {
     wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
-    wml::actuators::DoubleSolenoid PannelPnSol { ControlMap::ControlPannelPort, ControlMap::PannelActuatorPort1, ControlMap::PannelActuationTime};
+    wml::actuators::DoubleSolenoid ControlPannelUpSol{ ControlMap::ControlPannelUpSolPort1, ControlMap::ControlPannelUpSolPort2, ControlMap::ControlPannelActuationTime};
+
 
     wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
+   // wml::Gearbox ControlPannelUpSol { new wml::actuators::DoubleSolenoid(wml::actuators::DoubleSolenoid::Group(ControlPannelUpSol)), nullptr};
   };
   ControlPannel controlPannel;
 
@@ -173,6 +170,8 @@ struct RobotMap {
     wpi::SmallString<64> deployDirectory;
     // frc::filesystem::GetDeployDirectory(deployDirectory);
 
+    //Belt intake 
+   // std::shared_ptr<nt::NetworkTable> pancakes = nt::NetworkTableInstance::GetDefault().GetTable("Belt Intake Encoders");
   };
   ControlSystem controlSystem;
 };
