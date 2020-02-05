@@ -11,6 +11,8 @@ class curtin_frc_vision {
   void run();
  private:
   CJ::VisionTracking vision;
+  cs::UsbCamera cam;
+
   nt::NetworkTableEntry TargetX;
   nt::NetworkTableEntry TargetY;
   nt::NetworkTableEntry ImageHeight;

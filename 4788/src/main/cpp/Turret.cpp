@@ -148,7 +148,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	}
 
 	if (_contGroup.Get(ControlMap::TurretFire)) {
-		AngularPower = -1;
+		AngularPower = 1;
 	} else {
 		AngularPower = 0;
 	}

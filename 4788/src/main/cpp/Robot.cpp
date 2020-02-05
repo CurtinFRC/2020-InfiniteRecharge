@@ -59,7 +59,7 @@ void Robot::DisabledInit() {
 
 void Robot::AutonomousInit() {
   Schedule(std::make_shared<DrivetrainAuto>(*drivetrain, wml::control::PIDGains{ "I am gains", 1, 0, 0 }));
-  turret->ZeroTurret();
+  // turret->ZeroTurret();
 }
 void Robot::AutonomousPeriodic() {
   turret->AutoOnUpdate(dt);
@@ -70,7 +70,7 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() { 
   Schedule(drivetrain->GetDefaultStrategy(), true);
-  turret->ZeroTurret();
+  // turret->ZeroTurret();
 }
 void Robot::TeleopPeriodic() {
   CurrentTime = frc::Timer::GetFPGATimestamp();
