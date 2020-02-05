@@ -35,9 +35,10 @@ const int ControlMap::DriveMAXportBR = 1;
 const int ControlMap::ChangeGearPort1 = 99;
 const int ControlMap::ChangeGearPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
-// Drive Speeds
+// Drive General Values
 const double ControlMap::MaxDrivetrainAcceleration = 0.015;
 const double ControlMap::MaxDrivetrainSpeed = 1;
+const double ControlMap::DriveTestCaseRotations = 0.05;
 
 // Turret
 const int ControlMap::TurretFlyWheelPort = 99;
@@ -56,6 +57,8 @@ const int ControlMap::TurretAngleDownLimitPort = 99;
 const bool ControlMap::TurretLeftLimitInvert = false;
 const bool ControlMap::TurretRightLimitInvert = false;
 const bool ControlMap::TurretAngleDownLimitInvert = false;
+
+const double ControlMap::TurretZeroTimeoutSeconds = 5;
 
 // Intake
 const int ControlMap::IntakeMotorPort = 99;

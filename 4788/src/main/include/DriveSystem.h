@@ -46,4 +46,11 @@ class DrivetrainTest : public wml::Strategy {
     wml::Drivetrain &_drivetrain;
     wml::control::PIDController _pid;
     double leftSpeed = 0, rightSpeed = 0;
+
+    bool drivetest = true;
+
+    bool leftFwdTest = true;
+    bool rightFwdTest = true;
+    bool leftRevTest = true;
+    bool rightRevTest = true;
 };

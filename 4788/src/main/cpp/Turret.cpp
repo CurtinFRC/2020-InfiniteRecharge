@@ -12,17 +12,39 @@ Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sens
 }
 
 void Turret::ZeroTurret() {
-	while (!_LeftLimit.Get()) {
-		_RotationalAxis.transmission->SetVoltage(12 * -0.3);
+	// Zero Encoder on left limit
+	ZeroTimer.Start();
+	while (_LeftLimit.Get() < 1) {
+		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
+			_RotationalAxis.transmission->SetVoltage(12 * -0.3);
+		} else {
+			std::cout << "Turret Zero Timed Out" << std::endl;
+			_RotationalAxis.transmission->SetVoltage(0);
+			break;
+		}
 	} 
 	_RotationalAxis.encoder->ZeroEncoder();
-	while (!_RightLimit.Get()) {
-		_RotationalAxis.transmission->SetVoltage(12 * 0.3);
+	while (_RightLimit.Get() < 1) {
+		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
+			_RotationalAxis.transmission->SetVoltage(12 * 0.3);
+		} else {
+			std::cout << "Turret Zero Timed Out" << std::endl;
+			_RotationalAxis.transmission->SetVoltage(0);
+			break;
+		}
 	}
 	MaxRotationTicks = _RotationalAxis.encoder->GetEncoderTicks();
-	while(!_AngleDownLimit.Get()) {
-		_VerticalAxis.transmission->SetVoltage(12 * 0.2);
+	while(_AngleDownLimit.Get() < 1) {
+		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
+			_VerticalAxis.transmission->SetVoltage(12 * 0.2);
+		} else {
+			_VerticalAxis.transmission->SetVoltage(0);
+			std::cout << "Turret Zero Timed Out" << std::endl;
+			break;
+		}
 	}
+	ZeroTimer.Stop();
+	ZeroTimer.Reset();
 	_VerticalAxis.encoder->ZeroEncoder();
 	_FlyWheel.encoder->ZeroEncoder();
 }
@@ -89,10 +111,6 @@ void Turret::TuneTurretPID() {
 
 void Turret::TeleopOnUpdate(double dt) {
 
-	double RotationPower;
-	double AngularPower;
-	double FlyWheelPower;
-
 	targetX = table->GetNumber("Target_X", 0)/imageWidth;
 	targetY = table->GetNumber("Target_Y", 0)/imageHeight;
 
@@ -123,56 +141,17 @@ void Turret::TeleopOnUpdate(double dt) {
 		RotationPower = RotationPower/6;
 	}
 
+	if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > 0.1) {
+		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+	} else {
+		FlyWheelPower = 0;
+	}
 
-	// if (_LeftLimit.Get()) {
-	// 	RotationPower = 0;
-	// } else if (_RightLimit.Get()) {
-	// 	RotationPower = 0;
-	// } else if (_AngleDownLimit.Get()) {
-	// 	AngularPower = 0;
-	// } else {
-
-	// 	// Turret Manual Rotation
-	// 	if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::xboxDeadzone) {
-	// 		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
-	// 	}
-
-	// 	// Turret Manual Angle
-	// 	if (_contGroup.Get(ControlMap::TurretManualAngle) > ControlMap::xboxDeadzone) {
-	// 		AngularPower = _contGroup.Get(ControlMap::TurretManualAngle);
-	// 	}
-
-	// 	// Turret FlyWheel
-	// 	if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
-	// 		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-	// 	}
-
-
-	// 	// Turret Auto Aim (Note that we're using Y axis to detect distance. There is a possibility we need a seperate algorithm to adjust angle depending on y axis. Other than zeroing to goal)
-	// 	if (_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) {
-	// 		if (_LeftLimit.Get()) {
-	// 			std::cout << "Left Limit Hit" << std::endl;
-	// 			while (targetX < 0) {
-	// 				RotationPower = 0.5;
-	// 			}
-	// 		} else if (_RightLimit.Get()) {
-	// 			std::cout << "Right Limit Hit" << std::endl;
-	// 			while (targetX > 0) {
-	// 				RotationPower = -0.5;
-	// 			}
-	// 		} else if (_AngleDownLimit.Get()) {
-	// 			std::cout << "Angle Limit Hit" << std::endl;
-	// 			AngularPower = 0;
-	// 		} else {
-	// 			if (targetX > imageWidth || targetY > imageHeight) {
-	// 				std::cout << "Error: >> Vision Artifacting Detected" << std::endl; 
-	// 			} else {
-	// 				RotationPower = XAutoAimCalc(dt, targetX);
-	// 				AngularPower = YAutoAimCalc(dt, targetY, _VerticalAxis.encoder->GetEncoderTicks(), imageHeight);
-	// 			}
-	// 		}
-	// 	}
-	// }
+	if (_contGroup.Get(ControlMap::TurretFire)) {
+		AngularPower = 1;
+	} else {
+		AngularPower = 0;
+	}
 	
 
 	// Motor DeadBand Calc
@@ -198,7 +177,20 @@ void Turret::AutoOnUpdate(double dt) {
 }
 
 void Turret::TestOnUpdate(double dt) {
-	
+	if (!leftEncoderTest && !rightEncoderTest) {
+		if (turretTest) {
+			std::cout << "Turret Test Succesful" << std::endl;
+			turretTest = false;
+		}
+	} else {
+		if (leftLimitTest) {
+
+		}
+	}
+
+	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
+	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
+	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
 }
 
 

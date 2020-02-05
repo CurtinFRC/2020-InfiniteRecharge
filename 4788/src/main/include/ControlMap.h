@@ -27,6 +27,7 @@ struct ControlMap {
   static const double ChangeGearTime;
   static const double MaxDrivetrainSpeed;
   static const double MaxDrivetrainAcceleration;
+  static const double DriveTestCaseRotations;
 
   // Turret
   static const bool TuneTurretPID;
@@ -34,6 +35,7 @@ struct ControlMap {
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
   static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;
+  static const double TurretZeroTimeoutSeconds;
 
   // Intake
   static const int IntakeMotorPort;

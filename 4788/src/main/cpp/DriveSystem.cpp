@@ -32,7 +32,7 @@ void DrivetrainManual::OnUpdate(double dt) {
         leftSpeed = fabs(_contGroup.Get(ControlMap::DrivetrainLeft));
       }
       // Reverse 
-      else if (_contGroup.Get(ControlMap::DrivetrainLeft) > (leftSpeed + ControlMap::MaxDrivetrainAcceleration)) {
+      if (_contGroup.Get(ControlMap::DrivetrainLeft) > (leftSpeed + ControlMap::MaxDrivetrainAcceleration)) {
         leftSpeed = leftSpeed - ControlMap::MaxDrivetrainAcceleration;
       } else if (_contGroup.Get(ControlMap::DrivetrainLeft) > leftSpeed) {
         leftSpeed = _contGroup.Get(ControlMap::DrivetrainLeft);
@@ -51,7 +51,7 @@ void DrivetrainManual::OnUpdate(double dt) {
         rightSpeed = fabs(_contGroup.Get(ControlMap::DrivetrainRight));
       }
       // Reverse
-      else if (_contGroup.Get(ControlMap::DrivetrainRight) > (rightSpeed + ControlMap::MaxDrivetrainAcceleration)) {
+      if (_contGroup.Get(ControlMap::DrivetrainRight) > (rightSpeed + ControlMap::MaxDrivetrainAcceleration)) {
         rightSpeed = rightSpeed - ControlMap::MaxDrivetrainAcceleration;
       } else if (_contGroup.Get(ControlMap::DrivetrainRight) > rightSpeed) {
         rightSpeed = _contGroup.Get(ControlMap::DrivetrainRight);
@@ -80,7 +80,6 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain, control::PIDGains gains) 
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(false);
-  //@TODO PID stuff. which i will do in a few weeks when i have a working robot
 }
 
 void DrivetrainAuto::OnUpdate(double dt) {
@@ -98,5 +97,54 @@ DrivetrainTest::DrivetrainTest(Drivetrain &drivetrain, control::PIDGains gains) 
 }
 
 void DrivetrainTest::OnUpdate(double dt) {
-  //@TODO Just drive forwards and backwards using encoders. Then make some outputs to make sure everything is working
+
+  if (!leftRevTest && !rightRevTest) {
+    if (drivetest) {
+      std::cout << "Drivetrain Test Successful" << std::endl;
+      drivetest = false;
+    }
+  } else {
+    // Left Test
+    if (leftFwdTest) {
+      if (_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() < ControlMap::DriveTestCaseRotations) {
+        leftSpeed = 0.25;
+      } else {
+        leftSpeed = 0;
+        leftFwdTest = false;
+      }
+    }
+    if (!leftFwdTest) {
+      if (_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() > 0) {
+        leftSpeed = -0.25;
+      } else {
+        leftSpeed = 0;
+        std::cout << "LeftDrive Return Successful" << std::endl;
+        leftRevTest = false;
+      }
+    } 
+
+    // Right Test
+    if (rightFwdTest) {
+      if (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() > -ControlMap::DriveTestCaseRotations) {
+        rightSpeed = 0.25;
+      } else {
+        rightSpeed = 0;
+        rightFwdTest = false;
+      }
+    }
+    if (!rightFwdTest) {
+      if (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() < 0) {
+        rightSpeed = -0.25;
+      } else {
+        rightSpeed = 0;
+        std::cout << "RightDrive Return Successful" << std::endl;
+        rightRevTest = false;
+      }
+    } 
+
+    std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+    std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+
+  }
+  _drivetrain.Set(leftSpeed, rightSpeed);
 }
