@@ -1,6 +1,5 @@
 #include "vision.h"
 #include <iostream>
-#include "windows.h"
 
 double offsetX, offsetY;
 int ResWidth = 640, ResHeight = 480;
@@ -37,7 +36,7 @@ void curtin_frc_vision::run() {
 	std::cout << "Vision Tracking Process Running" << std::endl;
 	while (true) {
 		if (vision.Camera.cam.sink.GrabFrame(Image) != 0) {
-			vision.Output.Display("Output", &Image, &vision.Camera.cam.CamOutput);
+			vision.Display("Output", &Image);
 		}
 	}
 }
