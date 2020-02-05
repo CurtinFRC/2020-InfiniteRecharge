@@ -36,7 +36,22 @@ void curtin_frc_vision::run() {
 	std::cout << "Vision Tracking Process Running" << std::endl;
 	while (true) {
 		if (vision.Camera.cam.sink.GrabFrame(Image) != 0) {
-			vision.Display("Output", &Image);
+
+			// Display Image
+			vision.Display("Output", &ProcessingOutput);
+
+			//Calc offset
+			offsetX = cx-(ResWidth/2);
+			offsetY = cy-(ResHeight/2);
+
+			visionTable->PutBoolean("Vision Active", true);
+
+			TargetX.SetDouble(offsetX);
+			TargetY.SetDouble(offsetY);
+			ImageHeight.SetDouble(ResHeight);
+			ImageWidth.SetDouble(ResWidth);
+		} else {
+			visionTable->PutBoolean("Vision Active", false);
 		}
 	}
 }
