@@ -46,6 +46,7 @@ struct ControlMap {
   // MagLoader
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
+  static const double MagTestCaseRotations;
 
   //Control Pannel
   static const int ControlPannelPort;

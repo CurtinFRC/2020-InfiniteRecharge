@@ -35,8 +35,6 @@ void MagLoader::TeleopOnUpdate(double dt) {
 }
 
 void MagLoader::AutoOnUpdate(double dt) {
-  double MagazinePower;
-
 
   // Auto Control
   if (_Position5.Get() >= 1) {
@@ -51,14 +49,37 @@ void MagLoader::AutoOnUpdate(double dt) {
 }
 
 void MagLoader::TestOnUpdate(double dt) {
-  double MagazinePower;
-  
-  for (int i = 0; i > 1000; i++) {
-    MagazinePower = 1;
-    _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
-  } 
-  for (int i = 0; i > 1000; i++) {
-    MagazinePower = -1;
-    _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
+
+  if (!LimitTest) {
+    if (magtest) {
+      std::cout << "Magazine Test Succesful" << std::endl;
+      magtest = false;
+    }
+  } else {
+    // Forward Test
+    if (FwdTest) {
+      if (_MagazineMotors.encoder->GetEncoderRotations() < ControlMap::MagTestCaseRotations) {
+        MagazinePower = 0.5;
+      } else {
+        MagazinePower = 0;
+        FwdTest = false;
+      }
+    }
+    // Backward Test
+    if (!FwdTest) {
+      if (_MagazineMotors.encoder->GetEncoderRotations() > 0) {
+        MagazinePower = -1;
+      } else {
+        MagazinePower = 0;
+        BckwdTest = false;
+      }
+    }
+
+    // Limit Test
+    if (!BckwdTest) {
+      
+    }
   }
+
+  _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
 }

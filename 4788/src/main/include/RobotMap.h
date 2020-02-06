@@ -73,7 +73,9 @@ struct RobotMap {
     wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 2048 };
 
     // Back
-    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 2048 };
+    // 4096
+    // rev::CANSparkMax BLmax{ ControlMap::DriveMAXportBL, rev::CANSparkMax::MotorType::kBrushless };
+    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 10 };
     wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 2048 };
 
     wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);

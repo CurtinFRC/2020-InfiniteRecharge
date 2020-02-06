@@ -26,8 +26,8 @@ const double ControlMap::xboxDeadzone = 0.1;
 const double ControlMap::triggerDeadzone = 0.15;
 
 // Drive Left
-const int ControlMap::DriveMAXportFL = 3;
-const int ControlMap::DriveMAXportBL = 4;
+const int ControlMap::DriveMAXportFL = 4;
+const int ControlMap::DriveMAXportBL = 3;
 // Drive Right
 const int ControlMap::DriveMAXportFR = 2;
 const int ControlMap::DriveMAXportBR = 1;
@@ -73,6 +73,7 @@ const int ControlMap::MagLoaderMotorPort = 99;
 const int ControlMap::StartMagLimitPort = 99;
 const int ControlMap::Position1LimitPort = 99;
 const int ControlMap::Position5LimitPort = 99;
+const double ControlMap::MagTestCaseRotations = 5;
 
 // Climber 
 const int ControlMap::ClimberActuatorPort1 = 99;

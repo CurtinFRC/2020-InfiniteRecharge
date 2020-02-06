@@ -73,12 +73,15 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() { 
   Schedule(drivetrain->GetDefaultStrategy(), true);
   // turret->ZeroTurret();
+  // robotMap.driveSystem.BLmax.ZeroEncoder();
 }
 void Robot::TeleopPeriodic() {
   CurrentTime = frc::Timer::GetFPGATimestamp();
   dt = CurrentTime - lastTimestamp;
 
-  turret->TeleopOnUpdate(dt);
+  // std::cout << "Spark Max Rotations " << robotMap.driveSystem.BLmax.GetEncoderRotations() << std::endl;
+
+  // turret->TeleopOnUpdate(dt);
   // magLoader->TeleopOnUpdate(dt);
   // beltIntake->TeleopOnUpdate(dt);
   // climber->TeleopOnUpdate(dt);
