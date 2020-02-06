@@ -1,7 +1,7 @@
 [submodule "wml"]
 	path = wml
 	url = https://github.com/wml-frc/WML
-	branch = CJ-DevBranch
+	branch = sparkmax
 
 [submodule "CJ-Vision"]
 	path = CJ-Vision

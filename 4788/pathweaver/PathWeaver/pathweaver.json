@@ -1,10 +1,8 @@
 {
-  "lengthUnit": "Meter",
-  "timeStep": 0.01,
-  "maxVelocity": 3.0,
-  "maxAcceleration": 1.8,
-  "maxJerk": 60.0,
-  "wheelBase": 0.7,
-  "gameName": "Destination: Deep Space",
-  "outputDir": "../../src/main/deploy/paths"
+  "lengthUnit": "Centimeter",
+  "maxVelocity": 200.0,
+  "maxAcceleration": 200.0,
+  "wheelBase": 56.0,
+  "gameName": "Infinite Recharge",
+  "outputDir": ""
 }
