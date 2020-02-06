@@ -64,9 +64,14 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   #endif
 
+  // _contGroup.GetController(ControlMap::Driver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+
   if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE)) {
     _drivetrain.SetInverted(!_drivetrain.GetInverted());
   }
+
+  leftSpeed *= ControlMap::MaxDrivetrainSpeed;
+  rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
   _drivetrain.Set(leftSpeed, rightSpeed);
 }

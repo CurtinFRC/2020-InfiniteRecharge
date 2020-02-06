@@ -8,6 +8,13 @@ MagLoader::MagLoader(Gearbox &MagazineMotors, sensors::LimitSwitch &StartMag, se
 
 void MagLoader::TeleopOnUpdate(double dt) {
 
+  if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {
+    std::cout << "this is working" << std::endl;
+  }
+  if (_contGroup.Get(ControlMap::ShiftDownMagazine)) {
+    std::cout << "this is working sqrt(-2) Electric Boooglaoo" << std::endl;
+  }
+
   // @TODO currently we are using sensors. As a backup also use encoders in case sensors disconnect
 
   // Auto Control
@@ -77,7 +84,7 @@ void MagLoader::TestOnUpdate(double dt) {
 
     // Limit Test
     if (!BckwdTest) {
-      
+
     }
   }
 

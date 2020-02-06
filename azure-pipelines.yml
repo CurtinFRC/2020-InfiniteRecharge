@@ -153,7 +153,7 @@ jobs:
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean :4788:src:coprocessor:build'
       #options: '-Pno-roborio -Pno-desktop -xcheck'
-
+# Vision Broke because vision.gradle is newer version. Sim works tho... which is wierd
 # - job: tinkerboard_vision_linux16
 #   pool:
 #     vmImage: 'Ubuntu-16.04'

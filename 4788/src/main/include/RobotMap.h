@@ -69,14 +69,12 @@ struct RobotMap {
   // Drive System
   struct DriveSystem {
     // Front
-    wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 2048 };
-    wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 2048 };
+    wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 42 };
+    wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 42 };
 
     // Back
-    // 4096
-    // rev::CANSparkMax BLmax{ ControlMap::DriveMAXportBL, rev::CANSparkMax::MotorType::kBrushless };
-    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 10 };
-    wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 2048 };
+    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 42 };
+    wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 42 };
 
     wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);
     wml::actuators::MotorVoltageController rightMotors = wml::actuators::MotorVoltageController::Group(FRmax, BRmax);
@@ -109,8 +107,8 @@ struct RobotMap {
     wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 
     // Fly Wheel
-    wml::TalonSrx TurretFlyWheel{ 8, 2048 };
-    wml::TalonSrx TurretFlyWheel2{ 6, 2048 };
+    wml::TalonSrx TurretFlyWheel{ 99, 2048 };
+    wml::TalonSrx TurretFlyWheel2{ 99, 2048 };
     wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel, TurretFlyWheel2);
     wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
   };
