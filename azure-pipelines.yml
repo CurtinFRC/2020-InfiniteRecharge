@@ -151,7 +151,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'runVision'
+      tasks: 'clean :4788:src:coprocessor:build'
       #options: '-Pno-roborio -Pno-desktop -xcheck'
 
 # - job: tinkerboard_vision_linux16

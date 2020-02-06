@@ -7,7 +7,8 @@ using namespace wml::controllers;
 MagLoader::MagLoader(Gearbox &MagazineMotors, sensors::LimitSwitch &StartMag, sensors::LimitSwitch &Position1, sensors::LimitSwitch &Position5, SmartControllerGroup &contGroup) : _MagazineMotors(MagazineMotors), _StartMag(StartMag), _Position1(Position1), _Position5(Position5), _contGroup(contGroup) {}
 
 void MagLoader::TeleopOnUpdate(double dt) {
-  double MagazinePower;
+
+  // @TODO currently we are using sensors. As a backup also use encoders in case sensors disconnect
 
   // Auto Control
   if (_Position5.Get() >= 1) {
@@ -23,6 +24,11 @@ void MagLoader::TeleopOnUpdate(double dt) {
     MagazinePower = 1;
   } else if (_contGroup.Get(ControlMap::ShiftDownMagazine)) {
     MagazinePower = -1;
+  }
+
+  // Fire Control
+  if (_contGroup.Get(ControlMap::TurretFire)) {
+    MagazinePower = 1;
   }
 
   _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
