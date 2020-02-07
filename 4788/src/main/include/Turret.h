@@ -56,17 +56,10 @@ class Turret {
 
 		// Turret Cam FOV/Turret Gear Values
 		double CamFOV = 60; // Degrees
-		double TurretLargeGearDiameter = 330; // Mills
-		double TurretSmallGearDiameter = 47.75;
-		double TurretMotorGearRatio = 10 * TurretLargeGearDiameter / TurretSmallGearDiameter; // Ratio
-		double TurretMotorGearRatioTo = 1;
 
-		double TicksPerTurretRotation;
-		double TicksPerCamFOV;
-
-
-		double MaxRotationTicks;
-		double MaxAngleTicks;
+		double MinRotation;
+		double MaxRotation;
+		double MaxAngleRotations;
 		double MotorTicks = 2048;
 
 		// Test

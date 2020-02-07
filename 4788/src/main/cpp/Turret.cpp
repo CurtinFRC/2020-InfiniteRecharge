@@ -24,6 +24,7 @@ void Turret::ZeroTurret() {
 		}
 	} 
 	_RotationalAxis.encoder->ZeroEncoder();
+	MinRotation = (_RotationalAxis.encoder->GetEncoderRotations() + ControlMap::TurretEncoderSafeZone);
 	while (_RightLimit.Get() < 1) {
 		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
 			_RotationalAxis.transmission->SetVoltage(12 * 0.3);
@@ -33,7 +34,7 @@ void Turret::ZeroTurret() {
 			break;
 		}
 	}
-	MaxRotationTicks = _RotationalAxis.encoder->GetEncoderTicks();
+	MaxRotation = (_RotationalAxis.encoder->GetEncoderTicks() - ControlMap::TurretEncoderSafeZone);
 	while(_AngleDownLimit.Get() < 1) {
 		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
 			_VerticalAxis.transmission->SetVoltage(12 * 0.2);
@@ -46,6 +47,7 @@ void Turret::ZeroTurret() {
 	ZeroTimer.Stop();
 	ZeroTimer.Reset();
 	_VerticalAxis.encoder->ZeroEncoder();
+	MaxAngleRotations = (_VerticalAxis.encoder->GetEncoderRotations() + ControlMap::TurretEncoderSafeZone);
 	_FlyWheel.encoder->ZeroEncoder();
 }
 
@@ -89,7 +91,7 @@ double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, 
 
 void Turret::TuneTurretPID() {
 
-		if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
+	if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
 		kP = kP + 0.01;
 	} else if (_contGroup.Get(ControlMap::kpDOWN, Controller::ONRISE)) {
 		kP = kP - 0.001;
@@ -106,7 +108,6 @@ void Turret::TuneTurretPID() {
 	table->PutNumber("kP", kP);
 	table->PutNumber("kI", kI);
 	table->PutNumber("kD", kD);
-
 }
 
 void Turret::TeleopOnUpdate(double dt) {
@@ -120,7 +121,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	}
 
 	
-	if (_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) {
+	if (_contGroup.Get(ControlMap::TurretAutoAim)) {
 		if (targetX > imageWidth || targetY > imageHeight) {
 			std::cout << "Error: Target is artifacting" << std::endl;
 		} else {
@@ -131,45 +132,18 @@ void Turret::TeleopOnUpdate(double dt) {
 	}
 	table->PutNumber("Sum", sum);
 
-	if (_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::joyDeadzone) {
-		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
-		RotationPower = RotationPower/6;
-	}
+	// Manual Rotation Control
+	RotationPower = std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 
-	if (_contGroup.Get(ControlMap::TurretManualRotate) < -ControlMap::joyDeadzone) {
-		RotationPower = _contGroup.Get(ControlMap::TurretManualRotate);
-		RotationPower = RotationPower/6;
-	}
+	// Fly Wheel Code
+	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0;
 
-	if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > 0.1) {
-		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-	} else {
-		FlyWheelPower = 0;
-	}
-
-	if (_contGroup.Get(ControlMap::TurretFire)) {
-		AngularPower = 1;
-	} else {
-		AngularPower = 0;
-	}
-	
-
-	// Motor DeadBand Calc
-	float ForwardDB = 0.14; // actually 0.118
-	float ReverseDB = 0.16; // actually 0.138
-	if(RotationPower > 0.01) {
-		RotationPower = (1-ForwardDB)*RotationPower + ForwardDB;
-	} 
-	if(RotationPower < -0.01) {
-		RotationPower = (1-ReverseDB)*RotationPower - ReverseDB;
-	} 
+	// Limits Turret Speed
+	RotationPower *= ControlMap::MaxTurretSpeed; 
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
-
-	// std::cout << "FlyWheel Encoder " << _FlyWheel.encoder->GetEncoderTicks() << std::endl;
-	table->PutNumber("Rotation Power", RotationPower);
 }
 
 void Turret::AutoOnUpdate(double dt) {
