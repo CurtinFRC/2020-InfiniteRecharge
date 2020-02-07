@@ -17,4 +17,16 @@ class MagLoader {
     wml::sensors::LimitSwitch &_Position1;
     wml::sensors::LimitSwitch &_Position5;
     wml::controllers::SmartControllerGroup &_contGroup;
+
+    double MagazinePower = 0;
+
+    bool magtest = true;
+
+    bool FwdTest = true;
+    bool BckwdTest = true;
+    bool LimitTest = true;
+    bool limit1;
+    bool limit2;
+    bool limit3;
+    bool EncoderTest = true;
 };

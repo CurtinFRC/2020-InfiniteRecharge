@@ -36,6 +36,8 @@ struct ControlMap {
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
   static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;
   static const double TurretZeroTimeoutSeconds;
+  static const double TurretEncoderSafeZone;
+  static const double MaxTurretSpeed, FlyWheelVelocity;
 
   // Intake
   static const int IntakeMotorPort;
@@ -46,6 +48,7 @@ struct ControlMap {
   // MagLoader
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
+  static const double MagTestCaseRotations;
 
   //Control Pannel
   static const int ControlPannelPort;
@@ -84,7 +87,9 @@ struct ControlMap {
   #if __CONTROLMAP_USING_JOYSTICK__
   //@TODO
   #else
-  static const wml::controllers::tAxis TurretAutoAim;
+  static const wml::controllers::tAxis TurretAutoAimAxis;
+  static const wml::controllers::tButton TurretAutoAim;
+
   static const wml::controllers::tAxis TurretManualRotate;
   static const wml::controllers::tAxis TurretManualAngle;
   static const wml::controllers::tAxis TurretFlyWheelSpinUp;
@@ -112,12 +117,10 @@ struct ControlMap {
   #endif
 
   // MagLoader
-  #if __CONTROLMAP_USING_JOYSTICK__
+  static const wml::controllers::tPOV ShiftMagazinePOV;
 
-  #else
-  static const wml::controllers::tPOV ShiftUpMagazine;
-  static const wml::controllers::tPOV ShiftDownMagazine;
-  #endif
+  static const wml::controllers::tButton ShiftUpMagazine;
+  static const wml::controllers::tButton ShiftDownMagazine;
 
   // Climber
   #if __CONTROLMAP_USING_JOYSTICK__

@@ -6,7 +6,14 @@ using hand = frc::XboxController::JoystickHand; // Only for FRC controllers
 using namespace wml;
 using namespace wml::controllers;
 
-void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {}
+void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {
+  contGroup.GetController(ControlMap::TurretAutoAimAxis.cont).Map(ControlMap::TurretAutoAimAxis, ControlMap::TurretAutoAim, ControlMap::triggerDeadzone);
+
+  contGroup.GetController(ControlMap::ShiftMagazinePOV.cont).Map(ControlMap::ShiftMagazinePOV, {
+    { Controller::POVPos::kTop, ControlMap::ShiftUpMagazine },
+    { Controller::POVPos::kBottom, ControlMap::ShiftDownMagazine }
+  });
+}
 
 
 // -------------Defined Ports/Values-------------------
@@ -26,8 +33,8 @@ const double ControlMap::xboxDeadzone = 0.1;
 const double ControlMap::triggerDeadzone = 0.15;
 
 // Drive Left
-const int ControlMap::DriveMAXportFL = 3;
-const int ControlMap::DriveMAXportBL = 4;
+const int ControlMap::DriveMAXportFL = 4;
+const int ControlMap::DriveMAXportBL = 3;
 // Drive Right
 const int ControlMap::DriveMAXportFR = 2;
 const int ControlMap::DriveMAXportBR = 1;
@@ -38,12 +45,12 @@ const double ControlMap::ChangeGearTime = 0;
 // Drive General Values
 const double ControlMap::MaxDrivetrainAcceleration = 0.015;
 const double ControlMap::MaxDrivetrainSpeed = 1;
-const double ControlMap::DriveTestCaseRotations = 0.05;
+const double ControlMap::DriveTestCaseRotations = 50;
 
 // Turret
 const int ControlMap::TurretFlyWheelPort = 99;
 const int ControlMap::TurretAnglePort = 99;
-const int ControlMap::TurretRotationPort = 5;
+const int ControlMap::TurretRotationPort = 8;
 const bool ControlMap::TuneTurretPID = true;
 
 const double ControlMap::TurretDistanceSetpoint1 = 0; // Close
@@ -59,6 +66,9 @@ const bool ControlMap::TurretRightLimitInvert = false;
 const bool ControlMap::TurretAngleDownLimitInvert = false;
 
 const double ControlMap::TurretZeroTimeoutSeconds = 5;
+const double ControlMap::TurretEncoderSafeZone = 5;
+const double ControlMap::MaxTurretSpeed = 0.35;
+const double ControlMap::FlyWheelVelocity = 1;
 
 // Intake
 const int ControlMap::IntakeMotorPort = 99;
@@ -73,6 +83,7 @@ const int ControlMap::MagLoaderMotorPort = 99;
 const int ControlMap::StartMagLimitPort = 99;
 const int ControlMap::Position1LimitPort = 99;
 const int ControlMap::Position5LimitPort = 99;
+const double ControlMap::MagTestCaseRotations = 5;
 
 // Climber 
 const int ControlMap::ClimberActuatorPort1 = 99;
@@ -125,7 +136,9 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
 #if __CONTROLMAP_USING_JOYSTICK__
   //@todo
 #else
-  const tAxis ControlMap::TurretAutoAim{ CoDriver, XboxController::kLeftThrottle };
+  const tAxis ControlMap::TurretAutoAimAxis{ CoDriver, XboxController::kLeftThrottle };
+  const tButton ControlMap::TurretAutoAim{ CoDriver, 30 };
+
   const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
   const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kRightYAxis };
   const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
@@ -158,11 +171,12 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
 #endif
 
 // MagLoader
+const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
 #if __CONTROLMAP_USING_JOYSTICK__
 
 #else
-  const tPOV ControlMap::ShiftUpMagazine{ CoDriver, XboxController::kTop };
-  const tPOV ControlMap::ShiftDownMagazine{ CoDriver, XboxController::kBottom };
+  const tButton ControlMap::ShiftUpMagazine{ CoDriver, __LINE__ + 30 };
+  const tButton ControlMap::ShiftDownMagazine{ CoDriver, __LINE__ + 30 };
 #endif
 
 //Climber 
