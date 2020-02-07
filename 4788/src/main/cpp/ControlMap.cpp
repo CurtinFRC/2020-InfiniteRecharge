@@ -67,7 +67,8 @@ const bool ControlMap::TurretAngleDownLimitInvert = false;
 
 const double ControlMap::TurretZeroTimeoutSeconds = 5;
 const double ControlMap::TurretEncoderSafeZone = 5;
-const double ControlMap::MaxTurretSpeed = 0.35;
+const double ControlMap::MaxTurretSpeed = 0.5;
+const double ControlMap::MaxTurretAngularSpeed = 0.5;
 const double ControlMap::FlyWheelVelocity = 1;
 
 // Intake

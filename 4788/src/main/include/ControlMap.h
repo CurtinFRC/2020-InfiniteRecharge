@@ -37,7 +37,7 @@ struct ControlMap {
   static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;
   static const double TurretZeroTimeoutSeconds;
   static const double TurretEncoderSafeZone;
-  static const double MaxTurretSpeed, FlyWheelVelocity;
+  static const double MaxTurretSpeed, MaxTurretAngularSpeed, FlyWheelVelocity;
 
   // Intake
   static const int IntakeMotorPort;
