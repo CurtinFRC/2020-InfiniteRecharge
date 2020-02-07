@@ -151,11 +151,11 @@ void Turret::TeleopOnUpdate(double dt) {
 		FlyWheelPower = 0;
 	}
 
-	if (_contGroup.Get(ControlMap::TurretFire)) {
-		_contGroup.Set({ControlMap::CoDriver, wml::controllers::RumbleType::kLeftRumble}, 0.5);
-	} else {
-		_contGroup.Set({ControlMap::CoDriver, wml::controllers::RumbleType::kLeftRumble}, 0);
-	}
+	// if (_contGroup.Get(ControlMap::TurretFire)) {
+	// 	_contGroup.Set({ControlMap::CoDriver, wml::controllers::RumbleType::kLeftRumble}, 0.5);
+	// } else {
+	// 	_contGroup.Set({ControlMap::CoDriver, wml::controllers::RumbleType::kLeftRumble}, 0);
+	// }
 	
 
 	// Motor DeadBand Calc
