@@ -133,40 +133,10 @@ void Turret::TeleopOnUpdate(double dt) {
 	table->PutNumber("Sum", sum);
 
 	// Manual Rotation Control
-	RotationPower = 
-	_contGroup.Get(ControlMap::TurretManualRotate) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) :
-	_contGroup.Get(ControlMap::TurretManualRotate) < -ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
-
+	RotationPower = std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 
 	// Fly Wheel Code
-	FlyWheelPower = 
-	_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0
-
-
-	if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
-		if (_FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity) {
-			FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-		}
-	} else {
-		FlyWheelPower = 0;
-	}
-
-	// if (_contGroup.Get(ControlMap::TurretFire)) {
-	// 	_contGroup.Set({ControlMap::CoDriver, wml::controllers::RumbleType::kLeftRumble}, 0.5);
-	// } else {
-	// 	_contGroup.Set({ControlMap::CoDriver, wml::controllers::RumbleType::kLeftRumble}, 0);
-	// }
-	
-
-	// Motor DeadBand Calc
-	// float ForwardDB = 0.14; // actually 0.118
-	// float ReverseDB = 0.16; // actually 0.138
-	// if(RotationPower > 0.01) {
-	// 	RotationPower = (1-ForwardDB)*RotationPower + ForwardDB;
-	// } 
-	// if(RotationPower < -0.01) {
-	// 	RotationPower = (1-ReverseDB)*RotationPower - ReverseDB;
-	// } 
+	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0;
 
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 
