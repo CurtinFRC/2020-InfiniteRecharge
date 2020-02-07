@@ -23,7 +23,7 @@ void DrivetrainManual::OnUpdate(double dt) {
     rightSpeed = joyForward - joyTurn;
   #else
 
-    // Left Drive
+    // Left Drive/ Acceleration
     if (fabs(_contGroup.Get(ControlMap::DrivetrainLeft)) > ControlMap::xboxDeadzone) { // I'm So fab
       // Forwards
       if (_contGroup.Get(ControlMap::DrivetrainLeft) < -(leftSpeed + ControlMap::MaxDrivetrainAcceleration)) {
@@ -32,7 +32,7 @@ void DrivetrainManual::OnUpdate(double dt) {
         leftSpeed = fabs(_contGroup.Get(ControlMap::DrivetrainLeft));
       }
       // Reverse 
-      if (_contGroup.Get(ControlMap::DrivetrainLeft) > (leftSpeed + ControlMap::MaxDrivetrainAcceleration)) {
+      if (-_contGroup.Get(ControlMap::DrivetrainLeft) < (leftSpeed - ControlMap::MaxDrivetrainAcceleration)) {
         leftSpeed = leftSpeed - ControlMap::MaxDrivetrainAcceleration;
       } else if (_contGroup.Get(ControlMap::DrivetrainLeft) > leftSpeed) {
         leftSpeed = _contGroup.Get(ControlMap::DrivetrainLeft);
@@ -42,7 +42,7 @@ void DrivetrainManual::OnUpdate(double dt) {
       leftSpeed = 0;
     }
 
-    // Right Drive
+    // Right Drive/ Acceleration
     if (fabs(_contGroup.Get(ControlMap::DrivetrainRight)) > ControlMap::xboxDeadzone) {
       // Forwards
       if (_contGroup.Get(ControlMap::DrivetrainRight) < -(rightSpeed + ControlMap::MaxDrivetrainAcceleration)) {
@@ -51,7 +51,7 @@ void DrivetrainManual::OnUpdate(double dt) {
         rightSpeed = fabs(_contGroup.Get(ControlMap::DrivetrainRight));
       }
       // Reverse
-      if (_contGroup.Get(ControlMap::DrivetrainRight) > (rightSpeed + ControlMap::MaxDrivetrainAcceleration)) {
+      if (-_contGroup.Get(ControlMap::DrivetrainRight) < (rightSpeed - ControlMap::MaxDrivetrainAcceleration)) {
         rightSpeed = rightSpeed - ControlMap::MaxDrivetrainAcceleration;
       } else if (_contGroup.Get(ControlMap::DrivetrainRight) > rightSpeed) {
         rightSpeed = _contGroup.Get(ControlMap::DrivetrainRight);
@@ -64,9 +64,14 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   #endif
 
+  // _contGroup.GetController(ControlMap::Driver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+
   if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE)) {
     _drivetrain.SetInverted(!_drivetrain.GetInverted());
   }
+
+  leftSpeed *= ControlMap::MaxDrivetrainSpeed;
+  rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
   _drivetrain.Set(leftSpeed, rightSpeed);
 

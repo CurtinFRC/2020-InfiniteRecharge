@@ -26,8 +26,12 @@ void Robot::RobotInit() {
   turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.turret.LeftLimit, robotMap.turret.RightLimit, robotMap.turret.AngleDownLimit, robotMap.contGroup, robotMap.controlSystem.visionTable);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup);
+<<<<<<< HEAD
   // robotMap.controlSystem.pancakes
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ShiftPTOSoul, robotMap.climber.ClimberElevator, robotMap.contGroup);
+=======
+  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ShiftPTOServos, robotMap.climber.ClimberElevator, robotMap.contGroup);
+>>>>>>> 723c0a269938c5b7bb6c9a5ffcdcb7c1658c60b9
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ControlPannelUpSol, robotMap.contGroup);
 
   // Zero All Encoders
@@ -63,7 +67,7 @@ void Robot::AutonomousInit() {
   // turret->ZeroTurret();
 }
 void Robot::AutonomousPeriodic() {
-  // turret->AutoOnUpdate(dt);
+  turret->AutoOnUpdate(dt);
   robotMap.turret.TurretRotation.Set(0.1);
   magLoader->AutoOnUpdate(dt);
   beltIntake->AutoOnUpdate(dt);
@@ -79,9 +83,9 @@ void Robot::TeleopPeriodic() {
   dt = CurrentTime - lastTimestamp;
 
   turret->TeleopOnUpdate(dt);
-  // magLoader->TeleopOnUpdate(dt);
-  // beltIntake->TeleopOnUpdate(dt);
-  // climber->TeleopOnUpdate(dt);
+  magLoader->TeleopOnUpdate(dt);
+  beltIntake->TeleopOnUpdate(dt);
+  climber->TeleopOnUpdate(dt);
 
   lastTimestamp = CurrentTime;
 }
