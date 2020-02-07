@@ -57,8 +57,10 @@ struct ControlMap {
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
   static const double ClimberActuationTime;
-  static const int Shift2PTOPort, Shift2PTOForwardPosition, Shift2PTOReversePosition;
+  static const int Shift2PTOPort, Shift1PTOPort;
+  static const double ShiftPTOActuationTime;
   static const int ClimberMotor1Port, ClimberMotor2Port;
+  static const double LiftMaxSpeed;
 
   // Control System
   static const int PressureSensorPort;
@@ -100,7 +102,7 @@ struct ControlMap {
   static const wml::controllers::tButton DownIntake;
   #endif
 
-  //Wheel of Cringe 
+  //Control Pannel
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else 
@@ -117,6 +119,7 @@ struct ControlMap {
   #else
   static const wml::controllers::tPOV ShiftUpMagazine;
   static const wml::controllers::tPOV ShiftDownMagazine;
+  static const wml::controllers::tButton ManualMag;
   #endif
 
   // Climber
@@ -125,7 +128,7 @@ struct ControlMap {
   #else
   static const wml::controllers::tAxis ClimberControl;
   static const wml::controllers::tButton ClimberUp;
-  static const wml::controllers::tButton ClimberDown;
-  static const wml::controllers::tButton Shift2PTO;
+  // static const wml::controllers::tButton ClimberDown;
+  static const wml::controllers::tButton PT2OShift;
   #endif
 }; 

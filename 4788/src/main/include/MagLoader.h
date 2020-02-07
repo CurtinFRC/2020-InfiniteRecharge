@@ -17,4 +17,6 @@ class MagLoader {
     wml::sensors::LimitSwitch &_Position1;
     wml::sensors::LimitSwitch &_Position5;
     wml::controllers::SmartControllerGroup &_contGroup;
+
+    bool ToggleEnabled;
 };

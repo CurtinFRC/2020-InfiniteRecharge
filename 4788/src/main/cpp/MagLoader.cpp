@@ -8,7 +8,19 @@ MagLoader::MagLoader(Gearbox &MagazineMotors, sensors::LimitSwitch &StartMag, se
 
 void MagLoader::TeleopOnUpdate(double dt) {
   double MagazinePower;
+  int manualControl = 0;
 
+if (_contGroup.Get(ControlMap::ManualMag)) {
+  if (ToggleEnabled) {
+    manualControl = 1;
+    ToggleEnabled = false;
+  } else if (!ToggleEnabled ) {
+    manualControl = 0;
+    ToggleEnabled = true;
+  }
+}
+
+if (manualControl == 0) {
   // Auto Control
   if (_Position5.Get() >= 1) {
     MagazinePower = 0;
@@ -17,6 +29,7 @@ void MagLoader::TeleopOnUpdate(double dt) {
   } else if (_StartMag.Get() >= 1) {
     MagazinePower = 1;
   }
+}
   
   // Manual Control
   else if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {

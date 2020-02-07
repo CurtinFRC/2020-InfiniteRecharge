@@ -82,9 +82,10 @@ const double ControlMap::ClimberActuationTime = 0.2;
 const int ControlMap::ClimberMotor1Port = 99;
 const int ControlMap::ClimberMotor2Port = 99;
 
-const int ControlMap::Shift2PTOPort = 99;
-const int ControlMap::Shift2PTOForwardPosition = 20;
-const int ControlMap::Shift2PTOReversePosition = 99;
+const int ControlMap::Shift1PTOPort = 99;
+const int ControlMap::Shift2PTOPort = 20;
+const double ControlMap::ShiftPTOActuationTime = 99;
+const double ControlMap::LiftMaxSpeed = 0.5;
 
 // Control System
 const int ControlMap::PressureSensorPort = 99;
@@ -143,7 +144,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tButton ControlMap::DownIntake{ Driver, XboxController::kY};
 #endif
 
-//Wheel of cringe 
+//Control Pannel
 #if __CONTROLMAP_USING_JOYSTICK__
   //please change if we ever use a joystick 
   const tPOV ControlMap::ControlPannelUp{ Driver, 8};
@@ -163,6 +164,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
 #else
   const tPOV ControlMap::ShiftUpMagazine{ CoDriver, XboxController::kTop };
   const tPOV ControlMap::ShiftDownMagazine{ CoDriver, XboxController::kBottom };
+  const tButton ControlMap::ManualMag{ CoDriver, XboxController::kStart};
 #endif
 
 //Climber 
@@ -171,4 +173,6 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tAxis ControlMap::ClimberControl{ CoDriver, 2};
 #else
   const tAxis ControlMap::ClimberControl{ CoDriver, XboxController::kLeftYAxis};
+  const tButton ControlMap::ClimberUp{ CoDriver, XboxController::kX};
+  const tButton ControlMap::PT2OShift{ Driver, XboxController::kBack};
 #endif
