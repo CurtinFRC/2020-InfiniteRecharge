@@ -9,10 +9,10 @@ using namespace wml::controllers;
 void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {
   contGroup.GetController(ControlMap::TurretAutoAimAxis.cont).Map(ControlMap::TurretAutoAimAxis, ControlMap::TurretAutoAim, ControlMap::triggerDeadzone);
 
-  // contGroup.GetController(ControlMap::ShiftMagazinePOV.cont).Map(ControlMap::ShiftMagazinePOV, {
-  //   { Controller::POVPos::kTop, ControlMap::ShiftUpMagazine },
-  //   { Controller::POVPos::kBottom, ControlMap::ShiftDownMagazine }
-  // });
+  contGroup.GetController(ControlMap::ShiftMagazinePOV.cont).Map(ControlMap::ShiftMagazinePOV, {
+    { Controller::POVPos::kTop, ControlMap::ShiftUpMagazine },
+    { Controller::POVPos::kBottom, ControlMap::ShiftDownMagazine }
+  });
 }
 
 
@@ -36,8 +36,8 @@ const double ControlMap::triggerDeadzone = 0.15;
 const int ControlMap::DriveMAXportFL = 4;
 const int ControlMap::DriveMAXportBL = 3;
 // Drive Right
-const int ControlMap::DriveMAXportFR = 2;
-const int ControlMap::DriveMAXportBR = 1;
+const int ControlMap::DriveMAXportFR = 1;
+const int ControlMap::DriveMAXportBR = 2;
 // Drive Gearing
 const int ControlMap::ChangeGearPort1 = 99;
 const int ControlMap::ChangeGearPort2 = 99;
@@ -74,7 +74,7 @@ const double ControlMap::TurretEncoderRotations = 500;
 const double ControlMap::TurretRatio = 7;
 const double ControlMap::MaxTurretSpeed = 0.5;
 const double ControlMap::MaxTurretAngularSpeed = 0.5;
-const double ControlMap::FlyWheelVelocity = 1;
+const double ControlMap::FlyWheelVelocity = 500;
 
 // Intake
 const int ControlMap::IntakeMotorPort = 99;

@@ -155,12 +155,20 @@ void Turret::TeleopOnUpdate(double dt) {
 	// Manual Rotation Control
 	RotationPower = std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 
-	// Manual Fly Wheel Code
-	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0;
+	// FlyWheel Code
+	if ((_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) && (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone)) {
+		FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
+	} else if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
+		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+	} else {
+		FlyWheelPower = 0;
+	}
 
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 
 	AngularPower *= ControlMap::MaxTurretAngularSpeed;
+
+	std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);
