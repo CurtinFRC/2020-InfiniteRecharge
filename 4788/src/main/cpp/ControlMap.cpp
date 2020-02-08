@@ -54,7 +54,8 @@ const int ControlMap::TurretFlyWheelPort = 5;
 const int ControlMap::TurretFlyWheelPort2 = 6;
 const int ControlMap::TurretAnglePort = 99;
 const int ControlMap::TurretRotationPort = 8;
-const bool ControlMap::TuneTurretPID = true;
+const bool ControlMap::TuneTurretPID = false;
+const bool ControlMap::TuneAnglePID = true;
 
 const double ControlMap::TurretDistanceSetpoint1 = 0; // Close
 const double ControlMap::TurretDistanceSetpoint2 = 0; // Mid
@@ -71,10 +72,23 @@ const bool ControlMap::TurretAngleDownLimitInvert = false;
 const double ControlMap::TurretZeroTimeoutSeconds = 5;
 const double ControlMap::TurretEncoderSafeZone = 5;
 const double ControlMap::TurretEncoderRotations = 500;
+const double ControlMap::MaxAngleEncoderRotations = 500;
 const double ControlMap::TurretRatio = 7;
 const double ControlMap::MaxTurretSpeed = 0.5;
 const double ControlMap::MaxTurretAngularSpeed = 0.5;
 const double ControlMap::FlyWheelVelocity = 500;
+
+// Angle Setpoints (Encoder Values)
+const double ControlMap::AngleSetpoint1 = 100;
+const double ControlMap::AngleSetpoint2 = 110;
+const double ControlMap::AngleSetpoint3 = 120;
+const double ControlMap::AngleSetpoint4 = 130;
+const double ControlMap::AngleSetpoint5 = 140;
+const double ControlMap::AngleSetpoint6 = 150;
+const double ControlMap::AngleSetpoint7 = 160;
+const double ControlMap::AngleSetpoint8 = 170;
+const double ControlMap::AngleSetpoint9 = 180;
+const double ControlMap::AngleSetpoint10 = 190;
 
 // Intake
 const int ControlMap::IntakeMotorPort = 99;
