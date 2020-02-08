@@ -14,7 +14,7 @@ class Turret {
 		void TuneTurretPID();
 
 		double XAutoAimCalc(double dt, double input);
-		double YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight);
+		double YAutoAimCalc(double dt, double TargetInput);
 
 		void ZeroTurret();
 		std::shared_ptr<nt::NetworkTable> table;
@@ -27,8 +27,6 @@ class Turret {
 		wml::sensors::LimitSwitch &_LeftLimit;
 		wml::sensors::LimitSwitch &_RightLimit;
 		wml::sensors::LimitSwitch &_AngleDownLimit;
-		// Might add up limit if necessart
-
 
 		wml::controllers::SmartControllerGroup &_contGroup;
 		std::shared_ptr<nt::NetworkTable> &_visionTable;
@@ -46,15 +44,18 @@ class Turret {
 		double previousError = 0;
 		double goal = 0;
 
-		// Cam Values
-		double imageHeight;
-		double imageWidth;
-		double targetX;
-		double targetY;
+		double AngleGoal = 0;
 
-		double MinRotation;
-		double MaxRotation;
-		double MaxAngleRotations;
+
+		// Cam Values
+		double imageHeight = 0;
+		double imageWidth = 0;
+		double targetX = 0;
+		double targetY = 0;
+
+		double MinRotation = 0;
+		double MaxRotation = 0;
+		double MaxAngleRotations = 0;
 		double MotorTicks = 2048;
 
 		// Test

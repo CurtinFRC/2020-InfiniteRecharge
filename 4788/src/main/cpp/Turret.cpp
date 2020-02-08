@@ -4,7 +4,22 @@
 using namespace wml;
 using namespace wml::controllers;
 
-Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sensors::LimitSwitch &LeftLimit, sensors::LimitSwitch &RightLimit, sensors::LimitSwitch &AngleDownLimit, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable) : _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), _FlyWheel(FlyWheel), _LeftLimit(LeftLimit), _RightLimit(RightLimit), _AngleDownLimit(AngleDownLimit), _contGroup(contGroup), _visionTable(visionTable) {
+Turret::Turret(Gearbox &Rotation,
+ 							 Gearbox &VerticalAxis, 
+							 Gearbox &FlyWheel, 
+							 sensors::LimitSwitch &LeftLimit, 
+							 sensors::LimitSwitch &RightLimit, 
+							 sensors::LimitSwitch &AngleDownLimit, 
+							 SmartControllerGroup &contGroup, 
+							 std::shared_ptr<nt::NetworkTable> &visionTable) : 
+							 
+							 _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), 
+							 _FlyWheel(FlyWheel), 
+							 _LeftLimit(LeftLimit), 
+							 _RightLimit(RightLimit), 
+							 _AngleDownLimit(AngleDownLimit), 
+							 _contGroup(contGroup), 
+							 _visionTable(visionTable) {
 	table = _visionTable->GetSubTable("Target");
 
 	imageHeight = table->GetNumber("ImageHeight", 0); 
@@ -55,7 +70,7 @@ void Turret::ZeroTurret() {
 
 double Turret::XAutoAimCalc(double dt, double targetx)  {
 
-	double TurretFullRotation = (ControlMap::EncoderRotationsPerTurretRotations * 360);
+	double TurretFullRotation = (ControlMap::TurretEncoderRotations * ControlMap::TurretRatio);
 	double Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
 	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
 
@@ -75,6 +90,7 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 	}
 
 	double output = kP * error + kI * sum + kD * derror;
+	output /= Rotations2FOV;
 
 	table->PutNumber("DError", derror);
 	table->PutNumber("Error", error);
@@ -85,7 +101,7 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 	return -output;
 }
 
-double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
+double Turret::YAutoAimCalc(double dt, double TargetInput) {
 
 	double output = 0;
 
