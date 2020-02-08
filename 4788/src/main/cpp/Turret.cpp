@@ -253,7 +253,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	RotationPower *= ControlMap::MaxTurretSpeed; 
 	AngularPower *= ControlMap::MaxTurretAngularSpeed;
 
-	std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+	// std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);

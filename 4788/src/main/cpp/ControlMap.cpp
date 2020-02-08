@@ -39,8 +39,8 @@ const int ControlMap::DriveMAXportBL = 3;
 const int ControlMap::DriveMAXportFR = 1;
 const int ControlMap::DriveMAXportBR = 2;
 // Drive Gearing
-const int ControlMap::ChangeGearPort1 = 99;
-const int ControlMap::ChangeGearPort2 = 99;
+const int ControlMap::ChangeGearPort1 = 5;
+const int ControlMap::ChangeGearPort2 = 4;
 const int ControlMap::Shift2PTOPort1 = 99;
 const int ControlMap::Shift2PTOPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
@@ -80,6 +80,7 @@ const double ControlMap::FlyWheelVelocity = 500;
 
 // Angle Setpoints (Encoder Values)
 const double ControlMap::AngleSetpoint1 = 100;
+
 const double ControlMap::AngleSetpoint2 = 110;
 const double ControlMap::AngleSetpoint3 = 120;
 const double ControlMap::AngleSetpoint4 = 130;
@@ -118,7 +119,7 @@ const double ControlMap::LiftMaxSpeed = 0.5;
 
 // Control System
 const int ControlMap::PressureSensorPort = 99;
-const int ControlMap::CompressorPort = 99;
+const int ControlMap::CompressorPort = 0;
 const int ControlMap::CamFOV = 60;
 
 //Control Pannel

@@ -82,20 +82,18 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   if (_contGroup.Get(ControlMap::ShiftGears)) {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kForward);
+    std::cout << "Shift Gears" << std::endl;
   } else {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kReverse);
+    // std::cout << "Not Shifting Gears" << std::endl;
   }
+
+  _ChangeGears.Update(dt);
 
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
   _drivetrain.Set(leftSpeed, rightSpeed);
-
-  if (_contGroup.Get(ControlMap::ShiftGears)) {
-    _ChangeGears.SetTarget(wml::actuators::kForward);
-  } else {
-    _ChangeGears.SetTarget(wml::actuators::kReverse);
-  }
 }
 
 // Initializes & Defines groups for Autonomous driving

@@ -49,6 +49,8 @@ void Robot::RobotInit() {
 }
 
 void Robot::RobotPeriodic() {
+  robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+  robotMap.controlSystem.compressor.Update(dt);
   StrategyController::Update(dt);
   NTProvider::Update();
 }
