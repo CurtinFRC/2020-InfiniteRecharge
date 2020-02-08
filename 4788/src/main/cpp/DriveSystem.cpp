@@ -80,11 +80,13 @@ void DrivetrainManual::OnUpdate(double dt) {
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
   _drivetrain.Set(leftSpeed, rightSpeed);
+
+  if (_contGroup.Get(ControlMap::ShiftGears)) {
+    _ChangeGears.SetTarget(wml::actuators::kForward);
+  } else {
+    _ChangeGears.SetTarget(wml::actuators::kReverse);
+  }
 }
-
-
-
-
 
 // Initializes & Defines groups for Autonomous driving
 DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain, control::PIDGains gains) : _drivetrain(drivetrain), _pid(gains) {

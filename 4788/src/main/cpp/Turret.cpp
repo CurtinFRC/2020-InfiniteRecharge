@@ -165,6 +165,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+
 }
 
 void Turret::AutoOnUpdate(double dt) {

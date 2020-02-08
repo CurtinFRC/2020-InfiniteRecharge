@@ -32,7 +32,7 @@ struct ControlMap {
 
   // Turret
   static const bool TuneTurretPID;
-  static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
+  static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort, TurretFlyWheelPort2;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
   static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;
@@ -52,6 +52,7 @@ struct ControlMap {
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
   static const double MagTestCaseRotations;
+  //static const double ManualMag;
 
   //Control Pannel
   static const int ControlPannelPort;
@@ -63,8 +64,11 @@ struct ControlMap {
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
   static const double ClimberActuationTime;
-  static const int Shift2PTOPort, Shift2PTOForwardPosition, Shift2PTOReversePosition;
-  static const int ClimberMotor1Port, ClimberMotor2Port;
+  static const int Shift1PTOPort, Shift2PTOPort;
+  static const int ClimberMotor1Port;
+  static const double LiftMaxSpeed;
+  static const double ShiftPTOActuationTime;
+
 
   // Control System
   static const int PressureSensorPort;
@@ -73,7 +77,7 @@ struct ControlMap {
 
   // --------------- Defined Buttons -----------------
 
-  // PID Controller
+  // Turret PID Tuner
   static const wml::controllers::tButton kpUP, kpDOWN;
   static const wml::controllers::tButton kiUP, kiDOWN;
   static const wml::controllers::tButton kdUP, kdDOWN;
@@ -86,7 +90,6 @@ struct ControlMap {
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
   static const wml::controllers::tButton ShiftGears;
-  static const wml::controllers::tButton Shift2PTO; // Toggle
 
   // Turret
   #if __CONTROLMAP_USING_JOYSTICK__
@@ -110,7 +113,7 @@ struct ControlMap {
   static const wml::controllers::tButton DownIntake;
   #endif
 
-  //Wheel of Cringe 
+  //Control Pannel
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else 
@@ -126,13 +129,14 @@ struct ControlMap {
 
   static const wml::controllers::tButton ShiftUpMagazine;
   static const wml::controllers::tButton ShiftDownMagazine;
-
-  // Climber
+  static const wml::controllers::tButton ManualMag;
+  //Climber
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else
   static const wml::controllers::tAxis ClimberControl;
   static const wml::controllers::tButton ClimberUp;
   static const wml::controllers::tButton ClimberDown;
+  static const wml::controllers::tButton Shift2PTO; // Toggle
   #endif
 }; 

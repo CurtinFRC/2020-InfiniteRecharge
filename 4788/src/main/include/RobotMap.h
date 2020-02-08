@@ -83,7 +83,7 @@ struct RobotMap {
     wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
-    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
+    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ChangeGearTime };
 
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
@@ -109,8 +109,8 @@ struct RobotMap {
     wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 
     // Fly Wheel
-    wml::TalonSrx TurretFlyWheel{ 5, 2048 };
-    wml::TalonSrx TurretFlyWheel2{ 6, 2048 };
+    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
+    wml::TalonSrx TurretFlyWheel2{ ControlMap::TurretFlyWheelPort2, 2048 };
     wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel, TurretFlyWheel2);
     wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
   };
@@ -151,11 +151,11 @@ struct RobotMap {
   struct Climber {
     wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
 
-    wml::actuators::BinaryServo ShiftPTOServos{ ControlMap::Shift2PTOPort, ControlMap::Shift2PTOForwardPosition, ControlMap::Shift2PTOReversePosition };
-    wml::TalonSrx Climber1Motor{ ControlMap::ClimberMotor1Port };
-    wml::TalonSrx Climber2Motor{ ControlMap::ClimberMotor2Port };
 
-    wml::Gearbox ClimberElevator{ new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(Climber1Motor, Climber2Motor)), nullptr };
+    wml::TalonSrx Climber1Motor{ ControlMap::ClimberMotor1Port, 2048};
+    wml::actuators::MotorVoltageController Climber1Motors  = wml::actuators::MotorVoltageController::Group(Climber1Motor);
+    wml::Gearbox ClimberElevator{ &Climber1Motors, &Climber1Motor, 8.45};
+    wml::actuators::DoubleSolenoid ShiftPTOSoul{ControlMap::Shift1PTOPort, ControlMap::Shift2PTOPort, ControlMap::ShiftPTOActuationTime};
   };
   Climber climber;
 
