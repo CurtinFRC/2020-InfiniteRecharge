@@ -12,14 +12,14 @@ void Robot::RobotInit() {
   // Initializes The smart controllers assigned in robotmap
   ControlMap::InitSmartControllerGroup(robotMap.contGroup);
 
-  // auto cameraFront = CameraServer::GetInstance()->StartAutomaticCapture(0);
-  // auto cameraBack = CameraServer::GetInstance()->StartAutomaticCapture(1);
+  auto cameraFront = CameraServer::GetInstance()->StartAutomaticCapture(0);
+  auto cameraBack = CameraServer::GetInstance()->StartAutomaticCapture(1);
 
-  // cameraFront.SetFPS(30);
-  // cameraBack.SetFPS(30);
+  cameraFront.SetFPS(30);
+  cameraBack.SetFPS(30);
 
-  // cameraFront.SetResolution(160, 120);
-  // cameraBack.SetResolution(160, 120);
+  cameraFront.SetResolution(160, 120);
+  cameraBack.SetResolution(160, 120);
 
   // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
@@ -34,7 +34,7 @@ void Robot::RobotInit() {
   robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
 
   // Strategy controllers
-  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.driveSystem.ChangeGearing, robotMap.contGroup));
+  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain, robotMap.driveSystem.ChangeGearing, robotMap.driveSystem.Shift2PTO, robotMap.contGroup));
   drivetrain->StartLoop(100);
 
   // Inverts one side of our drivetrain

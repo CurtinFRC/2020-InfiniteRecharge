@@ -41,6 +41,8 @@ const int ControlMap::DriveMAXportBR = 1;
 // Drive Gearing
 const int ControlMap::ChangeGearPort1 = 99;
 const int ControlMap::ChangeGearPort2 = 99;
+const int ControlMap::Shift2PTOPort1 = 99;
+const int ControlMap::Shift2PTOPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
 // Drive General Values
 const double ControlMap::MaxDrivetrainAcceleration = 0.015;
@@ -68,6 +70,8 @@ const bool ControlMap::TurretAngleDownLimitInvert = false;
 
 const double ControlMap::TurretZeroTimeoutSeconds = 5;
 const double ControlMap::TurretEncoderSafeZone = 5;
+const double ControlMap::TurretEncoderRotations = 500;
+const double ControlMap::TurretRatio = 7;
 const double ControlMap::MaxTurretSpeed = 0.5;
 const double ControlMap::MaxTurretAngularSpeed = 0.5;
 const double ControlMap::FlyWheelVelocity = 1;
@@ -101,6 +105,7 @@ const double ControlMap::LiftMaxSpeed = 0.5;
 // Control System
 const int ControlMap::PressureSensorPort = 99;
 const int ControlMap::CompressorPort = 99;
+const int ControlMap::CamFOV = 60;
 
 //Control Pannel
 const int ControlMap::ControlPannelPort = 99;
@@ -112,7 +117,7 @@ const double ControlMap::ControlPannelActuationTime = 99;
 
 // -------------Defined Buttons-------------------
 
-// Temp PID Controller
+// Turret PID Tuner
 const tButton ControlMap::kpUP{ CoDriver, XboxController::kB };
 const tButton ControlMap::kpDOWN{ CoDriver, XboxController::kA };
 const tButton ControlMap::kiUP{ CoDriver, XboxController::kY };
@@ -126,6 +131,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tAxis ControlMap::DrivetrainTurn{ Driver, Joystick::kZAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, 2 };
   const tButton ControlMap::ShiftGears{ Driver, 99 };
+  const tButton ControlMap::Shift2PTO{ CoDriver, 99 };
 #else
   const tAxis ControlMap::DrivetrainLeft{ Driver, XboxController::kLeftYAxis };
   const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
@@ -187,6 +193,6 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tAxis ControlMap::ClimberControl{ CoDriver, 2};
 #else
   const tAxis ControlMap::ClimberControl{ CoDriver, XboxController::kLeftYAxis};
-  const tButton ControlMap::PT2OShift{ CoDriver, XboxController::kBumperRight};
   const tButton ControlMap::ClimberUp{ CoDriver, XboxController::kX };
+  const tButton ControlMap::Shift2PTO{ CoDriver, XboxController::kBumperRight };
 #endif

@@ -83,6 +83,8 @@ struct RobotMap {
     wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
+    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ChangeGearTime };
+
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
     wml::Drivetrain drivetrain{ driveTrainConfig };
@@ -102,7 +104,7 @@ struct RobotMap {
     wml::Gearbox turretRotation{ &rotationMotors, &TurretRotation, 8.45 };
 
     // Angle
-    wml::TalonSrx TurretAngle{ 7, 2048 };
+    wml::TalonSrx TurretAngle{ ControlMap::TurretAnglePort, 2048 };
     wml::actuators::MotorVoltageController turretAngleMotors = wml::actuators::MotorVoltageController::Group(TurretAngle);
     wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 

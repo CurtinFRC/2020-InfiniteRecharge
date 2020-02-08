@@ -5,8 +5,9 @@
 
 class BeltIntake {
   public:
-    BeltIntake(wml::Gearbox &BeltIntakeMotors, wml::actuators::DoubleSolenoid &IntakeDown, wml::controllers::SmartControllerGroup &contGroup);
-    // std::shared_ptr<nt::NetworkTable> &pancakes);
+    BeltIntake(wml::Gearbox &BeltIntakeMotors, 
+               wml::actuators::DoubleSolenoid &IntakeDown, 
+               wml::controllers::SmartControllerGroup &contGroup);
     
     void TeleopOnUpdate(double dt);
     void AutoOnUpdate(double dt);

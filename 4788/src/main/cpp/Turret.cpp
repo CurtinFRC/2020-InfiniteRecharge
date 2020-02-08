@@ -4,7 +4,22 @@
 using namespace wml;
 using namespace wml::controllers;
 
-Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sensors::LimitSwitch &LeftLimit, sensors::LimitSwitch &RightLimit, sensors::LimitSwitch &AngleDownLimit, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable) : _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), _FlyWheel(FlyWheel), _LeftLimit(LeftLimit), _RightLimit(RightLimit), _AngleDownLimit(AngleDownLimit), _contGroup(contGroup), _visionTable(visionTable) {
+Turret::Turret(Gearbox &Rotation,
+ 							 Gearbox &VerticalAxis, 
+							 Gearbox &FlyWheel, 
+							 sensors::LimitSwitch &LeftLimit, 
+							 sensors::LimitSwitch &RightLimit, 
+							 sensors::LimitSwitch &AngleDownLimit, 
+							 SmartControllerGroup &contGroup, 
+							 std::shared_ptr<nt::NetworkTable> &visionTable) : 
+							 
+							 _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), 
+							 _FlyWheel(FlyWheel), 
+							 _LeftLimit(LeftLimit), 
+							 _RightLimit(RightLimit), 
+							 _AngleDownLimit(AngleDownLimit), 
+							 _contGroup(contGroup), 
+							 _visionTable(visionTable) {
 	table = _visionTable->GetSubTable("Target");
 
 	imageHeight = table->GetNumber("ImageHeight", 0); 
@@ -51,8 +66,16 @@ void Turret::ZeroTurret() {
 	_FlyWheel.encoder->ZeroEncoder();
 }
 
-double Turret::XAutoAimCalc(double dt, double input)  {
 
+
+double Turret::XAutoAimCalc(double dt, double targetx)  {
+
+	double TurretFullRotation = (ControlMap::TurretEncoderRotations * ControlMap::TurretRatio);
+	double Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
+	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
+
+	goal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
+	double input = _RotationalAxis.encoder->GetEncoderRotations();
 
 	// Calculate PID
 	error = goal - input;
@@ -67,6 +90,7 @@ double Turret::XAutoAimCalc(double dt, double input)  {
 	}
 
 	double output = kP * error + kI * sum + kD * derror;
+	output /= Rotations2FOV;
 
 	table->PutNumber("DError", derror);
 	table->PutNumber("Error", error);
@@ -77,7 +101,7 @@ double Turret::XAutoAimCalc(double dt, double input)  {
 	return -output;
 }
 
-double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
+double Turret::YAutoAimCalc(double dt, double TargetInput) {
 
 	double output = 0;
 
@@ -131,16 +155,12 @@ void Turret::TeleopOnUpdate(double dt) {
 	// Manual Rotation Control
 	RotationPower = std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 
-	// Fly Wheel Code
-	 FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0;
-
-//  if (_contGroup.Get(ControlMap::TurretFire) > ControlMap::triggerDeadzone) {
-//    double speed = _contGroup.Get(ControlMap::TurretFire);
-// 		_FlyWheel.transmission->SetVoltage(12 * speed);
-//  } 
+	// Manual Fly Wheel Code
+	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0;
 
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 
+	AngularPower *= ControlMap::MaxTurretAngularSpeed;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);
