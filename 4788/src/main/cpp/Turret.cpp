@@ -53,7 +53,16 @@ void Turret::ZeroTurret() {
 
 
 
-double Turret::XAutoAimCalc(double dt, double input)  {
+double Turret::XAutoAimCalc(double dt, double targetx)  {
+
+	double TurretFullRotation = (ControlMap::EncoderRotationsPerTurretRotations * 360);
+	double Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
+	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
+
+	goal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
+	double input = _RotationalAxis.encoder->GetEncoderRotations();
+
+	// double input = targetXinRotations/Rotations2FOV;
 
 	// Calculate PID
 	error = goal - input;

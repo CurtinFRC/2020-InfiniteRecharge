@@ -52,11 +52,6 @@ class Turret {
 		double targetX;
 		double targetY;
 
-		double ticksToTargetX;
-
-		// Turret Cam FOV/Turret Gear Values
-		double CamFOV = 60; // Degrees
-
 		double MinRotation;
 		double MaxRotation;
 		double MaxAngleRotations;

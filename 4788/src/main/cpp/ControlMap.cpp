@@ -41,6 +41,8 @@ const int ControlMap::DriveMAXportBR = 1;
 // Drive Gearing
 const int ControlMap::ChangeGearPort1 = 99;
 const int ControlMap::ChangeGearPort2 = 99;
+const int ControlMap::Shift2PTOPort1 = 99;
+const int ControlMap::Shift2PTOPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
 // Drive General Values
 const double ControlMap::MaxDrivetrainAcceleration = 0.015;
@@ -101,6 +103,7 @@ const int ControlMap::Shift2PTOReversePosition = 99;
 // Control System
 const int ControlMap::PressureSensorPort = 99;
 const int ControlMap::CompressorPort = 99;
+const int ControlMap::CamFOV = 60;
 
 //Control Pannel
 const int ControlMap::ControlPannelPort = 99;

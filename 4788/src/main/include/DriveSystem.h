@@ -9,13 +9,14 @@
 // Class that Runs In Manual Drive e.g Human Drivers
 class DrivetrainManual : public wml::Strategy {
   public:
-    DrivetrainManual(std::string name, wml::Drivetrain &drivetrain, wml::actuators::DoubleSolenoid &ChangeGears, wml::controllers::SmartControllerGroup &contGroup);
+    DrivetrainManual(std::string name, wml::Drivetrain &drivetrain, wml::actuators::DoubleSolenoid &ChangeGears, wml::actuators::DoubleSolenoid &Shift2PTO, wml::controllers::SmartControllerGroup &contGroup);
 
     void OnUpdate(double dt) override;
 
   private:
     wml::Drivetrain &_drivetrain;
     wml::actuators::BinaryActuator &_ChangeGears;
+    wml::actuators::BinaryActuator &_Shift2PTO;
     wml::controllers::SmartControllerGroup &_contGroup;
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;

@@ -24,6 +24,7 @@ struct ControlMap {
   // Drive System
   static const int DriveMAXportFL, DriveMAXportFR, DriveMAXportBL, DriveMAXportBR;
   static const int ChangeGearPort1, ChangeGearPort2;
+  static const int Shift2PTOPort1, Shift2PTOPort2;
   static const double ChangeGearTime;
   static const double MaxDrivetrainSpeed;
   static const double MaxDrivetrainAcceleration;
@@ -38,6 +39,7 @@ struct ControlMap {
   static const double TurretZeroTimeoutSeconds;
   static const double TurretEncoderSafeZone;
   static const double MaxTurretSpeed, MaxTurretAngularSpeed, FlyWheelVelocity;
+  static const double EncoderRotationsPerTurretRotations;
 
   // Intake
   static const int IntakeMotorPort;
@@ -66,6 +68,7 @@ struct ControlMap {
   // Control System
   static const int PressureSensorPort;
   static const int CompressorPort;
+  static const int CamFOV;
 
   // --------------- Defined Buttons -----------------
 
@@ -82,6 +85,7 @@ struct ControlMap {
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
   static const wml::controllers::tButton ShiftGears;
+  static const wml::controllers::tButton Shift2PTO; // Toggle
 
   // Turret
   #if __CONTROLMAP_USING_JOYSTICK__
@@ -129,6 +133,5 @@ struct ControlMap {
   static const wml::controllers::tAxis ClimberControl;
   static const wml::controllers::tButton ClimberUp;
   static const wml::controllers::tButton ClimberDown;
-  static const wml::controllers::tButton Shift2PTO;
   #endif
 }; 
