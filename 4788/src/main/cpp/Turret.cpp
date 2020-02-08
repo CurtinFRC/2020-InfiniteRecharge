@@ -62,8 +62,6 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 	goal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
 	double input = _RotationalAxis.encoder->GetEncoderRotations();
 
-	// double input = targetXinRotations/Rotations2FOV;
-
 	// Calculate PID
 	error = goal - input;
 
