@@ -31,11 +31,13 @@ struct ControlMap {
 
   // Turret
   static const bool TuneTurretPID;
-  static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
+  static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort, TurretFlyWheelPort2;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
   static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;
   static const double TurretZeroTimeoutSeconds;
+  static const double TurretEncoderSafeZone;
+  static const double MaxTurretSpeed, MaxTurretAngularSpeed, FlyWheelVelocity;
 
   // Intake
   static const int IntakeMotorPort;
@@ -46,6 +48,8 @@ struct ControlMap {
   // MagLoader
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
+  static const double MagTestCaseRotations;
+  //static const double ManualMag;
 
   //Control Pannel
   static const int ControlPannelPort;
@@ -57,10 +61,11 @@ struct ControlMap {
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
   static const double ClimberActuationTime;
-  static const int Shift2PTOPort, Shift1PTOPort;
-  static const double ShiftPTOActuationTime;
-  static const int ClimberMotor1Port, ClimberMotor2Port;
+  static const int Shift1PTOPort, Shift2PTOPort;
+  static const int ClimberMotor1Port;
   static const double LiftMaxSpeed;
+  static const double ShiftPTOActuationTime;
+
 
   // Control System
   static const int PressureSensorPort;
@@ -82,12 +87,13 @@ struct ControlMap {
   static const wml::controllers::tButton ReverseDrivetrain;
   static const wml::controllers::tButton ShiftGears;
 
-
   // Turret
   #if __CONTROLMAP_USING_JOYSTICK__
   //@TODO
   #else
-  static const wml::controllers::tAxis TurretAutoAim;
+  static const wml::controllers::tAxis TurretAutoAimAxis;
+  static const wml::controllers::tButton TurretAutoAim;
+
   static const wml::controllers::tAxis TurretManualRotate;
   static const wml::controllers::tAxis TurretManualAngle;
   static const wml::controllers::tAxis TurretFlyWheelSpinUp;
@@ -115,21 +121,17 @@ struct ControlMap {
   #endif
 
   // MagLoader
-  #if __CONTROLMAP_USING_JOYSTICK__
+  static const wml::controllers::tPOV ShiftMagazinePOV;
 
-  #else
-  static const wml::controllers::tPOV ShiftUpMagazine;
-  static const wml::controllers::tPOV ShiftDownMagazine;
+  static const wml::controllers::tButton ShiftUpMagazine;
+  static const wml::controllers::tButton ShiftDownMagazine;
   static const wml::controllers::tButton ManualMag;
-  #endif
-
-  // Climber
+  //Climber
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else
   static const wml::controllers::tAxis ClimberControl;
-  static const wml::controllers::tButton ClimberUp;
-  // static const wml::controllers::tButton ClimberDown;
   static const wml::controllers::tButton PT2OShift;
+  static const wml::controllers::tButton ClimberUp;
   #endif
 }; 

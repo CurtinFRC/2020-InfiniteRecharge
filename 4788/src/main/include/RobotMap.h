@@ -107,8 +107,8 @@ struct RobotMap {
     wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 
     // Fly Wheel
-    wml::TalonSrx TurretFlyWheel{ 99, 2048 };
-    wml::TalonSrx TurretFlyWheel2{ 99, 2048 };
+    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
+    wml::TalonSrx TurretFlyWheel2{ ControlMap::TurretFlyWheelPort2, 2048 };
     wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel, TurretFlyWheel2);
     wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
   };
@@ -154,7 +154,6 @@ struct RobotMap {
     wml::actuators::MotorVoltageController Climber1Motors  = wml::actuators::MotorVoltageController::Group(Climber1Motor);
     wml::Gearbox ClimberElevator{ &Climber1Motors, &Climber1Motor, 8.45};
     wml::actuators::DoubleSolenoid ShiftPTOSoul{ControlMap::Shift1PTOPort, ControlMap::Shift2PTOPort, ControlMap::ShiftPTOActuationTime};
-  //  wml::TalonSrx Climber2Motor{ ControlMap::ClimberMotor2Port };
   };
   Climber climber;
 

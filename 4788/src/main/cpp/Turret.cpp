@@ -51,11 +51,7 @@ void Turret::ZeroTurret() {
 	_FlyWheel.encoder->ZeroEncoder();
 }
 
-
-
 double Turret::XAutoAimCalc(double dt, double input)  {
-
-	
 
 
 	// Calculate PID
@@ -136,7 +132,12 @@ void Turret::TeleopOnUpdate(double dt) {
 	RotationPower = std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 
 	// Fly Wheel Code
-	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0;
+	 FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0;
+
+//  if (_contGroup.Get(ControlMap::TurretFire) > ControlMap::triggerDeadzone) {
+//    double speed = _contGroup.Get(ControlMap::TurretFire);
+// 		_FlyWheel.transmission->SetVoltage(12 * speed);
+//  } 
 
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 
@@ -144,6 +145,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+
 }
 
 void Turret::AutoOnUpdate(double dt) {

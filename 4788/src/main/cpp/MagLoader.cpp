@@ -18,19 +18,20 @@ void MagLoader::TeleopOnUpdate(double dt) {
   }
 
   // @TODO currently we are using sensors. As a backup also use encoders in case sensors disconnect
+  // Also a backup overide in case something is wired something wrong
 
-if (_contGroup.Get(ControlMap::ManualMag)) {
-  if (ToggleEnabled) {
+ if (_contGroup.Get(ControlMap::ManualMag)) {
+   if (ToggleEnabled) {
     manualControl = 1;
     ToggleEnabled = false;
   } else if (!ToggleEnabled ) {
     manualControl = 0;
     ToggleEnabled = true;
-  }
+   }
 }
-
-if (manualControl == 0) {
-  // Auto Control
+std::cout << manualControl << std::endl;
+  if (manualControl == 0) {
+   // Auto Control
   if (_Position5.Get() >= 1) {
     MagazinePower = 0;
   } else if (_Position1.Get() >= 1) {
@@ -38,7 +39,6 @@ if (manualControl == 0) {
   } else if (_StartMag.Get() >= 1) {
     MagazinePower = 1;
   }
-}
   
   // Manual Control
   else if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {
@@ -53,8 +53,8 @@ if (manualControl == 0) {
   }
 
   _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
+ }
 }
-
 void MagLoader::AutoOnUpdate(double dt) {
 
   // Auto Control
