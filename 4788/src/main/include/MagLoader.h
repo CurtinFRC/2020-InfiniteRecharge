@@ -18,6 +18,7 @@ class MagLoader {
     wml::sensors::LimitSwitch &_Position5;
     wml::controllers::SmartControllerGroup &_contGroup;
 
+    bool ToggleEnabled;
     double MagazinePower = 0;
 
     bool magtest = true;

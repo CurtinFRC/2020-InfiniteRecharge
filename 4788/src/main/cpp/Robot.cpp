@@ -26,7 +26,7 @@ void Robot::RobotInit() {
   turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.turret.LeftLimit, robotMap.turret.RightLimit, robotMap.turret.AngleDownLimit, robotMap.contGroup, robotMap.controlSystem.visionTable);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup);
-  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ShiftPTOServos, robotMap.climber.ClimberElevator, robotMap.contGroup);
+  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ShiftPTOSoul, robotMap.climber.ClimberElevator, robotMap.contGroup);
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ControlPannelUpSol, robotMap.contGroup);
 
   // Zero All Encoders
@@ -81,6 +81,7 @@ void Robot::TeleopPeriodic() {
   magLoader->TeleopOnUpdate(dt);
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
+
 
   lastTimestamp = CurrentTime;
 }

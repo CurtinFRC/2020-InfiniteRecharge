@@ -9,10 +9,10 @@ using namespace wml::controllers;
 void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {
   contGroup.GetController(ControlMap::TurretAutoAimAxis.cont).Map(ControlMap::TurretAutoAimAxis, ControlMap::TurretAutoAim, ControlMap::triggerDeadzone);
 
-  contGroup.GetController(ControlMap::ShiftMagazinePOV.cont).Map(ControlMap::ShiftMagazinePOV, {
-    { Controller::POVPos::kTop, ControlMap::ShiftUpMagazine },
-    { Controller::POVPos::kBottom, ControlMap::ShiftDownMagazine }
-  });
+  // contGroup.GetController(ControlMap::ShiftMagazinePOV.cont).Map(ControlMap::ShiftMagazinePOV, {
+  //   { Controller::POVPos::kTop, ControlMap::ShiftUpMagazine },
+  //   { Controller::POVPos::kBottom, ControlMap::ShiftDownMagazine }
+  // });
 }
 
 
@@ -48,7 +48,8 @@ const double ControlMap::MaxDrivetrainSpeed = 1;
 const double ControlMap::DriveTestCaseRotations = 50;
 
 // Turret
-const int ControlMap::TurretFlyWheelPort = 99;
+const int ControlMap::TurretFlyWheelPort = 5;
+const int ControlMap::TurretFlyWheelPort2 = 6;
 const int ControlMap::TurretAnglePort = 99;
 const int ControlMap::TurretRotationPort = 8;
 const bool ControlMap::TuneTurretPID = true;
@@ -67,7 +68,8 @@ const bool ControlMap::TurretAngleDownLimitInvert = false;
 
 const double ControlMap::TurretZeroTimeoutSeconds = 5;
 const double ControlMap::TurretEncoderSafeZone = 5;
-const double ControlMap::MaxTurretSpeed = 0.35;
+const double ControlMap::MaxTurretSpeed = 0.5;
+const double ControlMap::MaxTurretAngularSpeed = 0.5;
 const double ControlMap::FlyWheelVelocity = 1;
 
 // Intake
@@ -91,11 +93,10 @@ const int ControlMap::ClimberActuatorPort2 = 99;
 const double ControlMap::ClimberActuationTime = 0.2;
 
 const int ControlMap::ClimberMotor1Port = 99;
-const int ControlMap::ClimberMotor2Port = 99;
-
+const int ControlMap::Shift1PTOPort = 99;
 const int ControlMap::Shift2PTOPort = 99;
-const int ControlMap::Shift2PTOForwardPosition = 20;
-const int ControlMap::Shift2PTOReversePosition = 99;
+const double ControlMap::ShiftPTOActuationTime = 0.2;
+const double ControlMap::LiftMaxSpeed = 0.5;
 
 // Control System
 const int ControlMap::PressureSensorPort = 99;
@@ -156,7 +157,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tButton ControlMap::DownIntake{ Driver, XboxController::kY};
 #endif
 
-//Wheel of cringe 
+//Control Pannel
 #if __CONTROLMAP_USING_JOYSTICK__
   //please change if we ever use a joystick 
   const tPOV ControlMap::ControlPannelUp{ Driver, 8};
@@ -177,6 +178,7 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
 #else
   const tButton ControlMap::ShiftUpMagazine{ CoDriver, __LINE__ + 30 };
   const tButton ControlMap::ShiftDownMagazine{ CoDriver, __LINE__ + 30 };
+  const tButton ControlMap::ManualMag{ CoDriver, XboxController::kBack};
 #endif
 
 //Climber 
@@ -185,4 +187,6 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tAxis ControlMap::ClimberControl{ CoDriver, 2};
 #else
   const tAxis ControlMap::ClimberControl{ CoDriver, XboxController::kLeftYAxis};
+  const tButton ControlMap::PT2OShift{ CoDriver, XboxController::kBumperRight};
+  const tButton ControlMap::ClimberUp{ CoDriver, XboxController::kX };
 #endif
