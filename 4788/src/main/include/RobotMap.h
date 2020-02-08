@@ -83,7 +83,7 @@ struct RobotMap {
     wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
-    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ChangeGearTime };
+    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ShiftPTOActuationTime };
 
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };

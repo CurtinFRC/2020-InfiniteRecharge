@@ -19,6 +19,7 @@ class Turret {
 		void TestOnUpdate(double dt);
 
 		void TuneTurretPID();
+		void TuneAnglePID();
 
 		double XAutoAimCalc(double dt, double input);
 		double YAutoAimCalc(double dt, double TargetInput);
@@ -40,18 +41,27 @@ class Turret {
 
 		frc::Timer ZeroTimer;
 
-		// PID Calculations X axis
-		double kP = 0;
-		double kI = 0;
-		double kD = 0;
+		// PID Calculations X axis (Rotation R)
+		double RkP = 0;
+		double RkI = 0;
+		double RkD = 0;
 
-		double error;
+		double Rerror;
 
-		double sum = 0;
-		double previousError = 0;
-		double goal = 0;
+		double Rsum = 0;
+		double RpreviousError = 0;
+		double Rgoal = 0;
 
-		double AngleGoal = 0;
+		// PID Calculation Y axis (Angle A)
+		double AkP = 0;
+		double AkI = 0;
+		double AkD = 0;
+
+		double Aerror;
+
+		double Asum = 0;
+		double ApreviousError = 0;
+		double AGoal = 0;
 
 
 		// Cam Values
