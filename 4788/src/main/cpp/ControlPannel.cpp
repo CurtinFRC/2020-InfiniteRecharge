@@ -4,7 +4,7 @@
 using namespace wml;
 using namespace wml::controllers;
 
-ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, wml::actuators::DoubleSolenoid &ControlPannelUpSol, SmartControllerGroup &contGroup) : _ControlPannelMotor(ControlPannelMotor), _ControlPannelUpSol(ControlPannelUpSol), _contGroup(contGroup){}
+ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, wml::actuators::DoubleSolenoid &ControlPannelUpSol, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &ControlPannelTable) : _ControlPannelMotor(ControlPannelMotor), _ControlPannelUpSol(ControlPannelUpSol), _contGroup(contGroup), _ControlPannelTable(ControlPannelTable) {}
 void ControlPannel::TeleopOnUpdate(double dt) {
 	double ControlPannelPower;
 	double ControlPannelUpPower;
@@ -24,19 +24,19 @@ void ControlPannel::TeleopOnUpdate(double dt) {
 void ControlPannel::AutoOnUpdate(double dt) {}
 
 void ControlPannel::TestOnUpdate(double dt) {
-	double ControlPannelPower;
-	double ControlPannelUpPower;
+	// double ControlPannelPower;
+	// double ControlPannelUpPower;
 
 	
 
-	timer.Start();
-	while (timer.Get() <= 10) {
-		double ControlPannelSpeed = 1;
-		_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
-	} while (timer.Get() <= 20) {
-		double ControlPannelSpeed = -1;
-		_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
-	}
+	// timer.Start();
+	// while (timer.Get() <= 10) {
+	// 	double ControlPannelSpeed = 1;
+	// 	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
+	// } while (timer.Get() <= 20) {
+	// 	double ControlPannelSpeed = -1;
+	// 	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
+	// }
 
 //do after climber 
 }

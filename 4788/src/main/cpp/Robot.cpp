@@ -25,9 +25,9 @@ void Robot::RobotInit() {
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
   turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.turret.LeftLimit, robotMap.turret.RightLimit, robotMap.turret.AngleDownLimit, robotMap.contGroup, robotMap.controlSystem.visionTable);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
-  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup);
+  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.controlSystem.BeltIntakeTable );
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ShiftPTOSoul, robotMap.climber.ClimberElevator, robotMap.contGroup);
-  controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ControlPannelUpSol, robotMap.contGroup);
+  controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ControlPannelUpSol, robotMap.contGroup, robotMap.controlSystem.ControlPannelTable);
 
   // Zero All Encoders
   robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();

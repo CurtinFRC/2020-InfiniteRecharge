@@ -166,12 +166,17 @@ struct RobotMap {
     // Vision
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
 
+    // Climber
+
     // Auto
     wpi::SmallString<64> deployDirectory;
     // frc::filesystem::GetDeployDirectory(deployDirectory);
 
     //Belt intake 
-   // std::shared_ptr<nt::NetworkTable> pancakes = nt::NetworkTableInstance::GetDefault().GetTable("Belt Intake Encoders");
+   std::shared_ptr<nt::NetworkTable> BeltIntakeTable = nt::NetworkTableInstance::GetDefault().GetTable("Belt Intake Encoders");
+
+   //Control Pannel
+   std::shared_ptr<nt::NetworkTable> ControlPannelTable = nt::NetworkTableInstance::GetDefault().GetTable("Control Pannel stuff");
   };
   ControlSystem controlSystem;
 };
