@@ -5,7 +5,17 @@ using namespace wml::controllers;
 
 
 // Initializes & Defines groups for Manual Control
-DrivetrainManual::DrivetrainManual(std::string name, Drivetrain &drivetrain, wml::actuators::DoubleSolenoid &ChangeGears, actuators::DoubleSolenoid &Shift2PTO, SmartControllerGroup &contGroup) : Strategy(name), _drivetrain(drivetrain), _ChangeGears(ChangeGears), _Shift2PTO(Shift2PTO), _contGroup(contGroup) {
+DrivetrainManual::DrivetrainManual(std::string name, 
+                                   Drivetrain &drivetrain, 
+                                   wml::actuators::DoubleSolenoid &ChangeGears, 
+                                   actuators::DoubleSolenoid &Shift2PTO, 
+                                   SmartControllerGroup &contGroup) : 
+                                   
+                                   Strategy(name), 
+                                   _drivetrain(drivetrain), 
+                                   _ChangeGears(ChangeGears), 
+                                   _Shift2PTO(Shift2PTO), 
+                                   _contGroup(contGroup) {
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);

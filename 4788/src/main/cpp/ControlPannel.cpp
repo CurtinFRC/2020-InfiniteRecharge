@@ -4,7 +4,13 @@
 using namespace wml;
 using namespace wml::controllers;
 
-ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, wml::actuators::DoubleSolenoid &ControlPannelUpSol, SmartControllerGroup &contGroup) : _ControlPannelMotor(ControlPannelMotor), _ControlPannelUpSol(ControlPannelUpSol), _contGroup(contGroup){}
+ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, 
+														 wml::actuators::DoubleSolenoid &ControlPannelUpSol, 
+														 SmartControllerGroup &contGroup) : 
+														
+														 _ControlPannelMotor(ControlPannelMotor), 
+														 _ControlPannelUpSol(ControlPannelUpSol), 
+														 _contGroup(contGroup){}
 void ControlPannel::TeleopOnUpdate(double dt) {
 	double ControlPannelPower;
 	double ControlPannelUpPower;

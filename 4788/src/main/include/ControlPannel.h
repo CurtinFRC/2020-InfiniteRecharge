@@ -6,7 +6,9 @@
 
 class ControlPannel {
 	public:
-		ControlPannel(wml::Gearbox &ControlPannelMotor, wml::actuators::DoubleSolenoid &ControlPannelUpSol, wml::controllers::SmartControllerGroup &contGroup);
+		ControlPannel(wml::Gearbox &ControlPannelMotor, 
+									wml::actuators::DoubleSolenoid &ControlPannelUpSol, 
+									wml::controllers::SmartControllerGroup &contGroup);
 
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);

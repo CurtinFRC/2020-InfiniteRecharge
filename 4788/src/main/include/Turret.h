@@ -5,7 +5,14 @@
 
 class Turret {
 	public:
-		Turret(wml::Gearbox &RotationalAxis, wml::Gearbox &VerticalAxis, wml::Gearbox &FlyWheel, wml::sensors::LimitSwitch &LeftLimit, wml::sensors::LimitSwitch &RightLimit, wml::sensors::LimitSwitch &AngleDownLimit, wml::controllers::SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable);
+		Turret(wml::Gearbox &RotationalAxis, 
+					 wml::Gearbox &VerticalAxis, 
+					 wml::Gearbox &FlyWheel, 
+					 wml::sensors::LimitSwitch &LeftLimit, 
+					 wml::sensors::LimitSwitch &RightLimit, 
+					 wml::sensors::LimitSwitch &AngleDownLimit, 
+					 wml::controllers::SmartControllerGroup &contGroup, 
+					 std::shared_ptr<nt::NetworkTable> &visionTable);
 
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
