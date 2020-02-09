@@ -5,7 +5,11 @@
 
 class MagLoader {
   public:
-    MagLoader(wml::Gearbox &MagazineMotors, wml::sensors::LimitSwitch &StartMag, wml::sensors::LimitSwitch &Position1, wml::sensors::LimitSwitch &Position5, wml::controllers::SmartControllerGroup &contGroup); // also need to add the limit switch & indexing math.
+    MagLoader(wml::Gearbox &MagazineMotors, 
+              wml::sensors::LimitSwitch &StartMag, 
+              wml::sensors::LimitSwitch &Position1, 
+              wml::sensors::LimitSwitch &Position5, 
+              wml::controllers::SmartControllerGroup &contGroup); // also need to add the limit switch & indexing math.
 
     void TeleopOnUpdate(double dt);
     void AutoOnUpdate(double dt);

@@ -58,12 +58,14 @@ struct RobotMap {
   
   wml::controllers::Joystick joy1{ ControlMap::JoyController1Port };
   wml::controllers::Joystick joy2{ ControlMap::JoyController2Port };
-  wml::controllers::SmartControllerGroup contGroup{ joy1, joy2 };
+  wml::controllers::Joystick override{ ControlMap::JoyController3Port};
+  wml::controllers::SmartControllerGroup contGroup{ joy1, joy2, override };
   #else
 
   wml::controllers::XboxController xbox1{ ControlMap::XboxController1Port };
   wml::controllers::XboxController xbox2{ ControlMap::XboxController2Port };
-  wml::controllers::SmartControllerGroup contGroup{ xbox1, xbox2 };
+  wml::controllers::Joystick override{ ControlMap::JoyController3Port};
+  wml::controllers::SmartControllerGroup contGroup{ xbox1, xbox2, override};
   #endif
 
   // Drive System
@@ -83,6 +85,8 @@ struct RobotMap {
     wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
+    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ChangeGearTime };
+    //wml::actuators::DoubleSolenoid IntakeDown{ ControlMap::IntakeDownPort1, ControlPannel::IntakeDownPort2, ControlPannel::PannelActuationTime};
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
     wml::Drivetrain drivetrain{ driveTrainConfig };
@@ -102,7 +106,7 @@ struct RobotMap {
     wml::Gearbox turretRotation{ &rotationMotors, &TurretRotation, 8.45 };
 
     // Angle
-    wml::TalonSrx TurretAngle{ 7, 2048 };
+    wml::TalonSrx TurretAngle{ ControlMap::TurretAnglePort, 2048 };
     wml::actuators::MotorVoltageController turretAngleMotors = wml::actuators::MotorVoltageController::Group(TurretAngle);
     wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 

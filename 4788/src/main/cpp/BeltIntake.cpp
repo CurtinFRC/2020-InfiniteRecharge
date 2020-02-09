@@ -4,9 +4,16 @@
 using namespace wml;
 using namespace wml::controllers;
 
-BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors, actuators::DoubleSolenoid &IntakeDown, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &BeltIntakeTable) : _BeltIntakeMotors(BeltIntakeMotors), _IntakeDown(IntakeDown),  _contGroup(contGroup), _BeltIntakeTable(BeltIntakeTable) {}
+BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors, 
+											 actuators::DoubleSolenoid &IntakeDown, 
+											 SmartControllerGroup &contGroup, 
+											 std::shared_ptr<nt::NetworkTable> &BeltIntakeTable) : 
+											 
+											 _BeltIntakeMotors(BeltIntakeMotors), 
+											 _IntakeDown(IntakeDown),  
+											 _contGroup(contGroup), 
+											 _BeltIntakeTable(BeltIntakeTable){}
 
-//table = &_pancakes->GetSubTable("Encoder Value");
 void BeltIntake::TeleopOnUpdate(double dt) {
 	double IntakePower;
 

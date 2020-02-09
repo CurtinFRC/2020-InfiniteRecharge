@@ -5,7 +5,19 @@ using namespace wml::controllers;
 
 
 // Initializes & Defines groups for Manual Control
-DrivetrainManual::DrivetrainManual(std::string name, Drivetrain &drivetrain, wml::actuators::DoubleSolenoid &ChangeGears, SmartControllerGroup &contGroup) : Strategy(name), _drivetrain(drivetrain), _ChangeGears(ChangeGears), _contGroup(contGroup) {
+DrivetrainManual::DrivetrainManual(std::string name, 
+                                   //actuators::DoubleSolenoid &IntakeDown,
+                                   Drivetrain &drivetrain, 
+                                   wml::actuators::DoubleSolenoid &ChangeGears, 
+                                   actuators::DoubleSolenoid &Shift2PTO, 
+                                   SmartControllerGroup &contGroup) : 
+                                   
+                                   Strategy(name), 
+                                   //_IntakeDown(IntakeDown),
+                                   _drivetrain(drivetrain), 
+                                   _ChangeGears(ChangeGears), 
+                                   _Shift2PTO(Shift2PTO), 
+                                   _contGroup(contGroup) {
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
@@ -70,6 +82,12 @@ void DrivetrainManual::OnUpdate(double dt) {
     _drivetrain.SetInverted(!_drivetrain.GetInverted());
   }
 
+  if (_contGroup.Get(ControlMap::ShiftGears)) {
+    _ChangeGears.SetTarget(actuators::BinaryActuatorState::kForward);
+  } else {
+    _ChangeGears.SetTarget(actuators::BinaryActuatorState::kReverse);
+  }
+
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
@@ -80,6 +98,14 @@ void DrivetrainManual::OnUpdate(double dt) {
   } else {
     _ChangeGears.SetTarget(wml::actuators::kReverse);
   }
+
+double DanceSpeed;
+  //Dance Button
+  if (_contGroup.Get(ControlMap::R3)) { 
+    DanceSpeed = 0.5;
+  }
+  _drivetrain.SetVoltage((12 * DanceSpeed),0 );
+  
 }
 
 // Initializes & Defines groups for Autonomous driving

@@ -9,13 +9,20 @@
 // Class that Runs In Manual Drive e.g Human Drivers
 class DrivetrainManual : public wml::Strategy {
   public:
-    DrivetrainManual(std::string name, wml::Drivetrain &drivetrain, wml::actuators::DoubleSolenoid &ChangeGears, wml::controllers::SmartControllerGroup &contGroup);
+    DrivetrainManual(std::string name, 
+                     //wml::actuators::DoubleSolenoid &IntakeDown,
+                     wml::Drivetrain &drivetrain, 
+                     wml::actuators::DoubleSolenoid &ChangeGears, 
+                     wml::actuators::DoubleSolenoid &Shift2PTO, 
+                     wml::controllers::SmartControllerGroup &contGroup);
 
     void OnUpdate(double dt) override;
 
   private:
     wml::Drivetrain &_drivetrain;
+    //wml::actuators::DoubleSolenoid &_IntakeDown;
     wml::actuators::BinaryActuator &_ChangeGears;
+    wml::actuators::BinaryActuator &_Shift2PTO;
     wml::controllers::SmartControllerGroup &_contGroup;
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;
@@ -24,7 +31,8 @@ class DrivetrainManual : public wml::Strategy {
 // Class that Runs in Autonomous
 class DrivetrainAuto : public wml::Strategy {
   public:
-    DrivetrainAuto(wml::Drivetrain &drivetrain, wml::control::PIDGains gains);
+    DrivetrainAuto(wml::Drivetrain &drivetrain, 
+                   wml::control::PIDGains gains);
 
     void OnUpdate(double dt) override;
 
@@ -38,7 +46,8 @@ class DrivetrainAuto : public wml::Strategy {
 // Class that Runs in Test Mode
 class DrivetrainTest : public wml::Strategy {
   public:
-    DrivetrainTest(wml::Drivetrain &drivetrain, wml::control::PIDGains gains);
+    DrivetrainTest(wml::Drivetrain &drivetrain, 
+                   wml::control::PIDGains gains);
 
     void OnUpdate(double dt) override;
 
