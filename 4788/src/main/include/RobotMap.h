@@ -127,11 +127,9 @@ struct RobotMap {
   Intake intake;
 
   struct MagLoader {
-    wml::sensors::LimitSwitch StartMagLimit{ ControlMap::StartMagLimitPort };
-    wml::sensors::LimitSwitch Position1Limit{ ControlMap::Position1LimitPort };
-    wml::sensors::LimitSwitch Position5Limit{ ControlMap::Position5LimitPort };
-
-    frc::AnalogInput IRSensor{ 3 };
+    frc::AnalogInput StartMagLimit{ ControlMap::StartMagLimitPort };
+    frc::AnalogInput Position1Limit{ ControlMap::Position1LimitPort };
+    frc::AnalogInput Position5Limit{ ControlMap::Position5LimitPort };
 
     wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort, 2048 };
     wml::actuators::MotorVoltageController magLoaderMotors = wml::actuators::MotorVoltageController::Group(MagLoaderMotor);

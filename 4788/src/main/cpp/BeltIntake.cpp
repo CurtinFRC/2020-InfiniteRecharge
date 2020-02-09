@@ -26,9 +26,9 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 		}
 	}
 	if (_contGroup.Get(ControlMap::Intake)) {
-		IntakePower = 1;
+		IntakePower = _contGroup.Get(ControlMap::Intake);
 	} else if (_contGroup.Get(ControlMap::Outake)) {
-		IntakePower = -1;
+		IntakePower = -_contGroup.Get(ControlMap::Outake);
 	} 
 	_BeltIntakeMotors.transmission->SetVoltage(12 * IntakePower);
 }

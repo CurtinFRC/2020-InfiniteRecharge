@@ -5,9 +5,9 @@ using namespace wml;
 using namespace wml::controllers;
 
 MagLoader::MagLoader(Gearbox &MagazineMotors, 
-                     sensors::LimitSwitch &StartMag, 
-                     sensors::LimitSwitch &Position1, 
-                     sensors::LimitSwitch &Position5, 
+                     frc::AnalogInput &StartMag, 
+                     frc::AnalogInput &Position1, 
+                     frc::AnalogInput &Position5, 
                      SmartControllerGroup &contGroup) : 
                      
                      _MagazineMotors(MagazineMotors), 
@@ -18,43 +18,29 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
 
 void MagLoader::TeleopOnUpdate(double dt) {
   double MagazinePower;
-  int manualControl = 0;
 
+  // Shifting Mag up
   if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {
-    std::cout << "this is working" << std::endl;
-  }
-  if (_contGroup.Get(ControlMap::ShiftDownMagazine)) {
-    std::cout << "this is working sqrt(-2) Electric Boooglaoo" << std::endl;
-  }
-
-  // @TODO currently we are using sensors. As a backup also use encoders in case sensors disconnect
-  // Also a backup overide in case something is wired something wrong
-
- if (_contGroup.Get(ControlMap::ManualMag)) {
-   if (ToggleEnabled) {
-    manualControl = 1;
-    ToggleEnabled = false;
-  } else if (!ToggleEnabled ) {
-    manualControl = 0;
-    ToggleEnabled = true;
-   }
-}
-std::cout << manualControl << std::endl;
-  if (manualControl == 0) {
-   // Auto Control
-  if (_Position5.Get() >= 1) {
-    MagazinePower = 0;
-  } else if (_Position1.Get() >= 1) {
-    MagazinePower = 0;
-  } else if (_StartMag.Get() >= 1) {
-    MagazinePower = 1;
-  }
-  
-  // Manual Control
-  else if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {
-    MagazinePower = 1;
+    if (MagOverride) {
+      MagazinePower = 1;
+    } else {
+      if (_Position5.GetAverageValue() < ControlMap::MagazineBallThresh) {
+        MagazinePower = 0;
+      } else {
+        MagazinePower = 1;
+      }
+    }
+  // Shifting Mag Down
   } else if (_contGroup.Get(ControlMap::ShiftDownMagazine)) {
-    MagazinePower = -1;
+    if (MagOverride) {
+      MagazinePower = -1;
+    } else {
+      if (_Position5.GetAverageValue() < ControlMap::MagazineBallThresh) {
+        MagazinePower = 0;
+      } else {
+        MagazinePower = -1;
+      }
+    }
   }
 
   // Fire Control
@@ -63,18 +49,17 @@ std::cout << manualControl << std::endl;
   }
 
   _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
- }
 }
 void MagLoader::AutoOnUpdate(double dt) {
 
   // Auto Control
-  if (_Position5.Get() >= 1) {
-    MagazinePower = 0;
-  } else if (_Position1.Get() >= 1) {
-    MagazinePower = 0;
-  } else if (_StartMag.Get() >= 1) {
-    MagazinePower = 1;
-  }
+  // if (_Position5.Get() >= 1) {
+  //   MagazinePower = 0;
+  // } else if (_Position1.Get() >= 1) {
+  //   MagazinePower = 0;
+  // } else if (_StartMag.Get() >= 1) {
+  //   MagazinePower = 1;
+  // }
 
   _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
 }
