@@ -37,17 +37,17 @@ void BeltIntake::AutoOnUpdate(double dt) {}
 
 void BeltIntake::TestOnUpdate(double dt) {
 
-//_pancakes->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
+	//_pancakes->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
 	_IntakeDown.SetTarget(wml::actuators::kForward);
   while (_BeltIntakeMotors.encoder->GetEncoderRotations() > 10) {
-//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
+	//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
 	  double Speed = 1;
 		_BeltIntakeMotors.transmission->SetVoltage(12 * Speed);
   } while (_BeltIntakeMotors.encoder->GetEncoderRotations() > 10) {
-//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
+	//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
 		double Speed = -1;
 		_BeltIntakeMotors.transmission->SetVoltage(12 * Speed);
 	}
-//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
+	//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
 	_IntakeDown.SetTarget(wml::actuators::kReverse);
 }

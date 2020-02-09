@@ -43,6 +43,10 @@ void Robot::RobotInit() {
 
   robotMap.turret.rotationMotors.SetInverted(true);
 
+  // Arduino Controller
+  robotMap.controlSystem.arduino.WriteBulk(&robotMap.controlSystem.message, 16);
+  robotMap.controlSystem.message = 78;
+
   // Registering our systems to be called via strategy
   StrategyController::Register(drivetrain);
   NTProvider::Register(drivetrain); // Registers system to networktables

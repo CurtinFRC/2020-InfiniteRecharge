@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <stdint.h>
 
 #include "devices/StateDevice.h"
 #include "control/PIDController.h"
@@ -168,10 +169,10 @@ struct RobotMap {
 
     // Auto
     wpi::SmallString<64> deployDirectory;
-    // frc::filesystem::GetDeployDirectory(deployDirectory);
 
-    //Belt intake 
-   // std::shared_ptr<nt::NetworkTable> pancakes = nt::NetworkTableInstance::GetDefault().GetTable("Belt Intake Encoders");
+    // Extra Controller
+    frc::I2C arduino{ frc::I2C::kOnboard, 8 };
+    uint8_t message = 73;
   };
   ControlSystem controlSystem;
 };
