@@ -82,8 +82,8 @@ struct RobotMap {
     wml::Gearbox LGearbox{ &leftMotors, &FLmax, 8.45 };
     wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
-    wml::actuators::DoubleSolenoid ChangeGearing{20, ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
-    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ShiftPTOActuationTime };
+    wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::PCModule, ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
+    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::PCModule, ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ShiftPTOActuationTime };
 
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
@@ -118,7 +118,7 @@ struct RobotMap {
 
   struct Intake {
     wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort, 2048 };
-    wml::actuators::DoubleSolenoid IntakeDown { ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
+    wml::actuators::DoubleSolenoid IntakeDown { ControlMap::PCModule, ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
     wml::actuators::MotorVoltageController IntakeMotors = wml::actuators::MotorVoltageController::Group(IntakeMotor);
     wml::Gearbox intakeMotor{ &IntakeMotors, &IntakeMotor, 8.45};
     
@@ -140,7 +140,7 @@ struct RobotMap {
 
   struct ControlPannel {
     wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
-    wml::actuators::DoubleSolenoid ControlPannelUpSol{ ControlMap::ControlPannelUpSolPort1, ControlMap::ControlPannelUpSolPort2, ControlMap::ControlPannelActuationTime};
+    wml::actuators::DoubleSolenoid ControlPannelUpSol{ControlMap::PCModule, ControlMap::ControlPannelUpSolPort1, ControlMap::ControlPannelUpSolPort2, ControlMap::ControlPannelActuationTime};
 
 
     wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
@@ -155,7 +155,6 @@ struct RobotMap {
     wml::TalonSrx Climber1Motor{ ControlMap::ClimberMotor1Port, 2048};
     wml::actuators::MotorVoltageController Climber1Motors  = wml::actuators::MotorVoltageController::Group(Climber1Motor);
     wml::Gearbox ClimberElevator{ &Climber1Motors, &Climber1Motor, 8.45};
-    wml::actuators::DoubleSolenoid ShiftPTOSoul{ControlMap::Shift1PTOPort, ControlMap::Shift2PTOPort, ControlMap::ShiftPTOActuationTime};
   };
   Climber climber;
 

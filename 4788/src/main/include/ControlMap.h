@@ -8,6 +8,15 @@
 
 struct ControlMap {
   static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup);
+
+
+  /**
+   * CAN Port Number System We are using (PWM Not Included)
+   * - 0-9 (Control System, e.g Pneumatics, PDP...)
+   * - 10-19 (SparkMax/Brushless Motor Controllers)
+   * - 20- (Regular Motor Controllers)
+  **/
+
   // ---------------- Defined Ports ------------------
 
   // Controllers
@@ -20,6 +29,10 @@ struct ControlMap {
   static const double joyDeadzone;
   static const double xboxDeadzone;
   static const double triggerDeadzone;
+
+  // PCM1
+  static const int PCModule = 1;
+
 
   // Drive System
   static const int DriveMAXportFL, DriveMAXportFR, DriveMAXportBL, DriveMAXportBR;

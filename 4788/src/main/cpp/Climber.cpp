@@ -5,26 +5,15 @@ using namespace wml;
 using namespace wml::controllers;
 
 Climber::Climber(actuators::DoubleSolenoid &ClimberActuator, 
-                 actuators::DoubleSolenoid &ShiftPTO, 
                  Gearbox &ClimberElevator, 
                  SmartControllerGroup &contGroup) : 
 
                  _ClimberActuator(ClimberActuator), 
-                 _ShiftPTO(ShiftPTO), 
                  _ClimberElevator(ClimberElevator), 
                  _contGroup(contGroup) {}
 void Climber::TeleopOnUpdate(double dt) {
    double liftSpeed;
   
-  if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONFALL)) {
-    if (ToggleEnabled) {
-      _ShiftPTO.SetTarget(wml::actuators::kForward);
-      ToggleEnabled = false;
-    } else if (!ToggleEnabled) {
-      _ShiftPTO.SetTarget(wml::actuators::kReverse);
-      ToggleEnabled = true;
-    }
-  }
   
   if (_contGroup.Get(ControlMap::ClimberUp, Controller::ONFALL)) {
     _ClimberActuator.SetTarget(wml::actuators::kForward);
@@ -43,9 +32,6 @@ void Climber::AutoOnUpdate(double dt) {}
 
 void Climber::TestOnUpdate(double dt) {
   double liftSpeed;
-
-  _ShiftPTO.SetTarget(wml::actuators::kForward);
-  _ClimberActuator.SetTarget(wml::actuators::kForward);
   
   if (_ClimberElevator.encoder->GetEncoderRotations() <= 6) {
     _ClimberElevator.transmission->SetVoltage(1);
@@ -54,7 +40,6 @@ void Climber::TestOnUpdate(double dt) {
   }
 
   _ClimberActuator.SetTarget(wml::actuators::kReverse);
-  _ShiftPTO.SetTarget(wml::actuators::kReverse);
 }
   
 
