@@ -21,5 +21,5 @@ class Climber {
  	
 	 	frc::Timer ClimberTimer;
 
- 	bool ToggleEnabled;
+ 		bool ToggleEnabled;
  };

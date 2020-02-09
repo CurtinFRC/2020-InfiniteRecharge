@@ -30,7 +30,7 @@ void MagLoader::TeleopOnUpdate(double dt) {
   // @TODO currently we are using sensors. As a backup also use encoders in case sensors disconnect
   // Also a backup overide in case something is wired something wrong
 
- if (_contGroup.Get(ControlMap::ManualMag)) {
+ if (_contGroup.Get(ControlMap::R1)) {
    if (ToggleEnabled) {
     manualControl = 1;
     ToggleEnabled = false;

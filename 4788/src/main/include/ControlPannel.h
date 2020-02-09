@@ -6,17 +6,23 @@
 
 class ControlPannel {
 	public:
-		ControlPannel(wml::Gearbox &ControlPannelMotor, 
+		ControlPannel(wml::actuators::DoubleSolenoid &ClimberActuator,
+									wml::Gearbox &ControlPannelMotor, 
 									wml::actuators::DoubleSolenoid &ControlPannelUpSol, 
-									wml::controllers::SmartControllerGroup &contGroup);
-
+									wml::controllers::SmartControllerGroup &contGroup,
+									std::shared_ptr<nt::NetworkTable> &ControlPannelTable);
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
 		void TestOnUpdate(double dt);
 
 	private:
+		wml::actuators::DoubleSolenoid &_ClimberActuator;
 		wml::Gearbox &_ControlPannelMotor;
 		wml::actuators::DoubleSolenoid &_ControlPannelUpSol;
 		wml::controllers::SmartControllerGroup &_contGroup;
-		frc::Timer timer;
+		std::shared_ptr<nt::NetworkTable> &_ControlPannelTable;
+
+		frc::Timer CringeTimer;
+
+		bool ToggleEnabled;
 };

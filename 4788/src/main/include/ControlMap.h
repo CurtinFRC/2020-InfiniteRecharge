@@ -12,10 +12,11 @@ struct ControlMap {
 
   // Controllers
   static const int XboxController1Port, XboxController2Port;
-  static const int JoyController1Port, JoyController2Port;
+  static const int JoyController1Port, JoyController2Port, JoyController3Port;
 
   static const int Driver = 1;
   static const int CoDriver = 2;
+  static const int override = 3;
 
   static const double joyDeadzone;
   static const double xboxDeadzone;
@@ -74,6 +75,7 @@ struct ControlMap {
   static const int ControlPannelUpSolPort1;
   static const int ControlPannelUpSolPort2;
   static const double ControlPannelActuationTime;
+  static const bool ControlClimb;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
@@ -118,6 +120,7 @@ struct ControlMap {
   static const wml::controllers::tButton TurretFire; // Might get rid of, if i automate Max speed of flywheel to fire.
   #endif
 
+
   // Intake
   #if __CONTROLMAP_USING_JOYSTICK__
 
@@ -153,4 +156,17 @@ struct ControlMap {
   static const wml::controllers::tButton ClimberDown;
   static const wml::controllers::tButton Shift2PTO; // Toggle
   #endif
-}; 
+
+  //override buttons 
+  #if __CONTROLMAP_USING_JOYSTICK__
+
+  #else
+  static const wml::controllers::tButton R1;
+  static const wml::controllers::tButton R2;
+  static const wml::controllers::tButton R3;
+  static const wml::controllers::tButton G1;
+  static const wml::controllers::tButton G2;
+  static const wml::controllers::tButton G3;
+  #endif
+
+};
