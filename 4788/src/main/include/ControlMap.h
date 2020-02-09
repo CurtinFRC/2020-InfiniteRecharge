@@ -33,6 +33,7 @@ struct ControlMap {
 
   // Turret
   static const bool TuneTurretPID;
+  static const bool TuneAnglePID;
   static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort, TurretFlyWheelPort2;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
@@ -41,7 +42,20 @@ struct ControlMap {
   static const double TurretEncoderSafeZone;
   static const double MaxTurretSpeed, MaxTurretAngularSpeed, FlyWheelVelocity;
   static const double TurretEncoderRotations;
+  static const double MaxAngleEncoderRotations;
   static const double TurretRatio;
+
+  // Y Axis Setpoints
+  static const double AngleSetpoint1;
+  static const double AngleSetpoint2;
+  static const double AngleSetpoint3;
+  static const double AngleSetpoint4;
+  static const double AngleSetpoint5;
+  static const double AngleSetpoint6;
+  static const double AngleSetpoint7;
+  static const double AngleSetpoint8;
+  static const double AngleSetpoint9;
+  static const double AngleSetpoint10;
 
   // Intake
   static const int IntakeMotorPort;
