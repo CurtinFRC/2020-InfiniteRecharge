@@ -31,7 +31,7 @@ struct ControlMap {
   static const double triggerDeadzone;
 
   // PCM1
-  static const int PCModule = 1;
+  static const int PCModule;
 
 
   // Drive System
@@ -84,9 +84,6 @@ struct ControlMap {
   //Control Pannel
   static const int ControlPannelPort;
   static const int ControlPannelUpPort;
-  static const int ControlPannelUpSolPort1;
-  static const int ControlPannelUpSolPort2;
-  static const double ControlPannelActuationTime;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;

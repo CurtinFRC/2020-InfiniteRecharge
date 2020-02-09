@@ -32,6 +32,9 @@ const double ControlMap::joyDeadzone = 0.15;
 const double ControlMap::xboxDeadzone = 0.1;
 const double ControlMap::triggerDeadzone = 0.15;
 
+// PCMs
+const int ControlMap::PCModule = 1;
+
 // Drive Left
 const int ControlMap::DriveMAXportFL = 4;
 const int ControlMap::DriveMAXportBL = 3;
@@ -39,8 +42,8 @@ const int ControlMap::DriveMAXportBL = 3;
 const int ControlMap::DriveMAXportFR = 1;
 const int ControlMap::DriveMAXportBR = 2;
 // Drive Gearing
-const int ControlMap::ChangeGearPort1 = 5;
-const int ControlMap::ChangeGearPort2 = 4;
+const int ControlMap::ChangeGearPort1 = 0;
+const int ControlMap::ChangeGearPort2 = 1;
 const int ControlMap::Shift2PTOPort1 = 99;
 const int ControlMap::Shift2PTOPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
@@ -125,9 +128,6 @@ const int ControlMap::CamFOV = 60;
 //Control Pannel
 const int ControlMap::ControlPannelPort = 99;
 const int ControlMap::ControlPannelUpPort = 99;
-const int ControlMap::ControlPannelUpSolPort1 = 99;
-const int ControlMap::ControlPannelUpSolPort2 = 99;
-const double ControlMap::ControlPannelActuationTime = 99;
 
 
 // -------------Defined Buttons-------------------

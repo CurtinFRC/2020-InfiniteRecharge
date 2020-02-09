@@ -7,7 +7,7 @@
 class ControlPannel {
 	public:
 		ControlPannel(wml::Gearbox &ControlPannelMotor, 
-									wml::actuators::DoubleSolenoid &ControlPannelUpSol, 
+									wml::Gearbox &ControlPannelUpMotor,
 									wml::controllers::SmartControllerGroup &contGroup);
 
 		void TeleopOnUpdate(double dt);
@@ -16,7 +16,7 @@ class ControlPannel {
 
 	private:
 		wml::Gearbox &_ControlPannelMotor;
-		wml::actuators::DoubleSolenoid &_ControlPannelUpSol;
+		wml::Gearbox &_ControlPannelUpMotor;
 		wml::controllers::SmartControllerGroup &_contGroup;
 		frc::Timer timer;
 };
