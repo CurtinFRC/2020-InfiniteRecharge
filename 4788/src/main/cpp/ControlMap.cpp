@@ -36,11 +36,11 @@ const double ControlMap::triggerDeadzone = 0.15;
 const int ControlMap::PCModule = 1;
 
 // Drive Left
-const int ControlMap::DriveMAXportFL = 12;
-const int ControlMap::DriveMAXportBL = 13;
+const int ControlMap::DriveMAXportFL = 10;
+const int ControlMap::DriveMAXportBL = 11;
 // Drive Right
-const int ControlMap::DriveMAXportFR = 10;
-const int ControlMap::DriveMAXportBR = 11;
+const int ControlMap::DriveMAXportFR = 12;
+const int ControlMap::DriveMAXportBR = 13;
 // Drive Gearing
 const int ControlMap::ChangeGearPort1 = 6;
 const int ControlMap::ChangeGearPort2 = 7;
@@ -49,16 +49,16 @@ const int ControlMap::Shift2PTOPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
 // Drive General Values
 const double ControlMap::MaxDrivetrainAcceleration = 0.015;
-const double ControlMap::MaxDrivetrainSpeed = 0.85;
+const double ControlMap::MaxDrivetrainSpeed = 1;
 const double ControlMap::DriveTestCaseRotations = 50;
 
 // Turret
-const int ControlMap::TurretFlyWheelPort = 99;
-const int ControlMap::TurretFlyWheelPort2 = 99;
+const int ControlMap::TurretFlyWheelPort = 21;
+const int ControlMap::TurretFlyWheelPort2 = 22;
 const int ControlMap::TurretAnglePort = 99;
-const int ControlMap::TurretRotationPort = 99;
+const int ControlMap::TurretRotationPort = 20;
 const bool ControlMap::TuneTurretPID = false;
-const bool ControlMap::TuneAnglePID = true;
+const bool ControlMap::TuneAnglePID = false;
 
 const int ControlMap::TurretLeftLimitPort = 99;
 const int ControlMap::TurretRightLimitPort = 99;
@@ -91,7 +91,7 @@ const double ControlMap::AngleSetpoint9 = 180;
 const double ControlMap::AngleSetpoint10 = 190;
 
 // Intake
-const int ControlMap::IntakeMotorPort = 20;
+const int ControlMap::IntakeMotorPort = 99;
 const int ControlMap::IntakeDownPort1 = 99;
 const int ControlMap::IntakeDownPort2 = 99;
 const double ControlMap::PannelActuationTime = 0;

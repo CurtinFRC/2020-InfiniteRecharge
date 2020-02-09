@@ -165,9 +165,6 @@ struct RobotMap {
     // Vision
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
 
-    // Auto
-    wpi::SmallString<64> deployDirectory;
-
     // Extra Controller
     frc::I2C arduino{ frc::I2C::kOnboard, 8 };
     uint8_t message = 73;

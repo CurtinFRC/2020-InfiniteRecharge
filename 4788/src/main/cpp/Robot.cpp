@@ -69,7 +69,6 @@ void Robot::AutonomousInit() {
 }
 void Robot::AutonomousPeriodic() {
   turret->AutoOnUpdate(dt);
-  robotMap.turret.TurretRotation.Set(0.1);
   magLoader->AutoOnUpdate(dt);
   beltIntake->AutoOnUpdate(dt);
   climber->AutoOnUpdate(dt);
