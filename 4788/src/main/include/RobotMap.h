@@ -181,6 +181,8 @@ struct RobotMap {
 
    //Control Pannel
    std::shared_ptr<nt::NetworkTable> ControlPannelTable = nt::NetworkTableInstance::GetDefault().GetTable("Control Pannel stuff");
+
+   
   };
   ControlSystem controlSystem;
 };

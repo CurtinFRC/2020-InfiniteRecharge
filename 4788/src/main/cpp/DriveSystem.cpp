@@ -101,10 +101,10 @@ void DrivetrainManual::OnUpdate(double dt) {
 
 double DanceSpeed;
   //Dance Button
-  if (_contGroup.Get(ControlMap::R3)) { 
-    DanceSpeed = 0.5;
-  }
-  _drivetrain.SetVoltage((12 * DanceSpeed),0 );
+  // if (_contGroup.Get(ControlMap::R3)) { 
+  //   DanceSpeed = 0.5;
+  // }
+  // _drivetrain.SetVoltage((12 * DanceSpeed),0 );
   
 }
 
