@@ -79,7 +79,6 @@ struct ControlMap {
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
   static const double MagazineBallThresh;
-  static const bool MagOverride;
   static const double MagTestCaseRotations;
 
   //Control Pannel
@@ -101,19 +100,30 @@ struct ControlMap {
   static const int CamFOV;
 
   // Auto Values
+  static const double AutoGearRatio; // 1:AutoGearRatio
+  static const double WheelDiameter; // CM
 
     // 6 Ball
   static const double Strt6Ballx, Strt6Bally, Strt6BallAngle, Strt6BallEncoderDrift, Strt6BallAngleDrift;
+  bool Strt6BallComplete = false;
   static const double wypt1Ball6x, wypt1Ball6y, wypt1Ball6Angle, wypt1Ball6EncoderDrift, wypt1Ball6AngleDrift;
+  bool wypt1Ball6Complete = false;
   static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
+  bool wypt2Ball6Complete = false;
   static const double End6Ballx, End6Bally, End6BallAngle, End6BallEncoderDrift, End6BallAngleDrift;
+  bool End6BallComplete = false;
 
     // 8 Ball
   static const double Strt8Ballx, Strt8Bally, Strt8BallAngle, Strt8BallEncoderDrift, Strt8BallAngleDrift;
-  static const double wypt1Ball8x, wypt1Ball8y, wypt1Ball8Angle, wypt1Ball8EncoderDrift, wyptBall8AngleDrift;
-  static const double wypt2Ball8x, wypt2Ball8y, wpypt2Ball8Angle, wypt2Ball8EnoderDrift, wypt2Ball8AngleDrift;
-  static const double wypt3Ball8x, wypt3Ball8y, wpypt3Ball8Angle, wypt3Ball8EnoderDrift, wypt3Ball8AngleDrift;
+  bool Strt8BallComplete = false;
+  static const double wypt1Ball8x, wypt1Ball8y, wypt1Ball8Angle, wypt1Ball8EncoderDrift, wypt1Ball8AngleDrift;
+  bool wypt1Ball8Complete = false;
+  static const double wypt2Ball8x, wypt2Ball8y, wypt2Ball8Angle, wypt2Ball8EncoderDrift, wypt2Ball8AngleDrift;
+  bool wypt2Ball8Complete = false;
+  static const double wypt3Ball8x, wypt3Ball8y, wypt3Ball8Angle, wypt3Ball8EnoderDrift, wypt3Ball8AngleDrift;
+  bool wypt3Ball8Complete = false;
   static const double End8Ballx, End8Bally, End8BallAngle, End8BallEncoderDrift, End8BallAngleDrift;
+  bool End8BallComplete = false;
 
   // --------------- Defined Buttons -----------------
 
