@@ -126,6 +126,34 @@ const int ControlMap::CamFOV = 60;
 const int ControlMap::ControlPannelPort = 99;
 const int ControlMap::ControlPannelUpPort = 99;
 
+// Auto Values (In Meters)
+  // 6 Ball
+const double ControlMap::Strt6Ballx = 3.2;
+const double ControlMap::Strt6Bally = -2.4;
+const double ControlMap::Strt6BallAngle = -54.46232221; // Kinda Doesn't Matter
+const double ControlMap::Strt6BallEncoderDrift = 0;
+const double ControlMap::Strt6BallAngleDrift = 0;
+
+const double ControlMap::wypt1Ball6x = 5.4;
+const double ControlMap::wypt1Ball6y = -0.7;
+const double ControlMap::wypt1Ball6Angle = 0;
+const double ControlMap::wypt1Ball6EncoderDrift = 0;
+const double ControlMap::wypt1Ball6AngleDrift = 0;
+
+const double ControlMap::wypt2Ball6x = 8;
+const double ControlMap::wypt2Ball6y = -0.7;
+const double ControlMap::wypt2Ball6Angle = -21.80140949;
+const double ControlMap::wypt2Ball6EncoderDrift = 0;
+const double ControlMap::wypt2Ball6AngleDrift = 0;
+
+const double ControlMap::End6Ballx = 4.2;
+const double ControlMap::End6Bally = -2.4;
+const double ControlMap::End6BallAngle = 0;
+const double ControlMap::End6BallEncoderDrift = 0;
+const double ControlMap::End6BallAngleDrift = 0;
+
+ // 8 Ball
+
 
 // -------------Defined Buttons-------------------
 

@@ -100,6 +100,21 @@ struct ControlMap {
   static const int CompressorPort;
   static const int CamFOV;
 
+  // Auto Values
+
+    // 6 Ball
+  static const double Strt6Ballx, Strt6Bally, Strt6BallAngle, Strt6BallEncoderDrift, Strt6BallAngleDrift;
+  static const double wypt1Ball6x, wypt1Ball6y, wypt1Ball6Angle, wypt1Ball6EncoderDrift, wypt1Ball6AngleDrift;
+  static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
+  static const double End6Ballx, End6Bally, End6BallAngle, End6BallEncoderDrift, End6BallAngleDrift;
+
+    // 8 Ball
+  static const double Strt8Ballx, Strt8Bally, Strt8BallAngle, Strt8BallEncoderDrift, Strt8BallAngleDrift;
+  static const double wypt1Ball8x, wypt1Ball8y, wypt1Ball8Angle, wypt1Ball8EncoderDrift, wyptBall8AngleDrift;
+  static const double wypt2Ball8x, wypt2Ball8y, wpypt2Ball8Angle, wypt2Ball8EnoderDrift, wypt2Ball8AngleDrift;
+  static const double wypt3Ball8x, wypt3Ball8y, wpypt3Ball8Angle, wypt3Ball8EnoderDrift, wypt3Ball8AngleDrift;
+  static const double End8Ballx, End8Bally, End8BallAngle, End8BallEncoderDrift, End8BallAngleDrift;
+
   // --------------- Defined Buttons -----------------
 
   // Turret PID Tuner
