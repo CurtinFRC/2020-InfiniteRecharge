@@ -30,7 +30,13 @@ class DrivetrainManual : public wml::Strategy {
 class DrivetrainAuto : public wml::Strategy {
   public:
     DrivetrainAuto(wml::Drivetrain &drivetrain, 
-                   wml::control::PIDGains gains);
+                   wml::control::PIDGains gains,
+                   int &autoSelector,
+                   bool &strt,
+                   bool &p1,
+                   bool &p2,
+                   bool &p3,
+                   bool &end);
 
     void OnUpdate(double dt) override;
 
@@ -39,6 +45,13 @@ class DrivetrainAuto : public wml::Strategy {
     wml::control::PIDController _pid;
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;
+
+    int &_autoSelector;
+    bool &_strt;
+    bool &_p1;
+    bool &_p2;
+    bool &_p3;
+    bool &_end;
 };
 
 // Class that Runs in Test Mode

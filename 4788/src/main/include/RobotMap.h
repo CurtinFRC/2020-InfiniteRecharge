@@ -156,6 +156,29 @@ struct RobotMap {
   };
   Climber climber;
 
+  struct Auto {
+
+    /**
+     * Auto Selection
+     * 8 Ball = 1 (Default)
+     * 6 Ball = 2
+     * 3 Ball Left = 3
+     * 3 Ball Mid = 4
+     * 3 Ball Right = 5
+    */ 
+
+    // Selection
+    int AutoSelecter = 1;
+
+    // 6 Ball
+    bool StartPointComplete = false;
+    bool WayPoint1Complete = false;
+    bool WayPoint2Complete = false;
+    bool WayPoint3Complete = false;
+    bool EndComplete = false;
+  };
+  Auto autonomous;
+
   struct ControlSystem {
 
     // Pneumatics

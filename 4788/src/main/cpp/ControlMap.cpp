@@ -129,7 +129,18 @@ const int ControlMap::ControlPannelUpPort = 99;
 // Auto Values (In Meters)
 const double ControlMap::AutoGearRatio = 15; // 1:AutoGearRatio
 const double ControlMap::WheelDiameter = 15.24; // CM
-  // 6 Ball
+
+// LeftDrive
+const double ControlMap::leftKp = 0.01;
+const double ControlMap::leftKi = 0;
+const double ControlMap::leftKd = 0;
+
+// RightDrive
+const double ControlMap::rightKd = 0.01;
+const double ControlMap::rightKi = 0;
+const double ControlMap::rightKd = 0;
+
+// 6 Ball
 const double ControlMap::Strt6Ballx = 3.2;
 const double ControlMap::Strt6Bally = -2.4;
 const double ControlMap::Strt6BallAngle = -54.46232221; // Kinda Doesn't Matter
@@ -154,7 +165,7 @@ const double ControlMap::End6BallAngle = 0;
 const double ControlMap::End6BallEncoderDrift = 0;
 const double ControlMap::End6BallAngleDrift = 0;
 
- // 8 Ball
+// 8 Ball
 const double ControlMap::Strt8Ballx = 3.2;
 const double ControlMap::Strt8Bally = -2.4;
 const double ControlMap::Strt8BallAngle = -54.46232221; // Kinda Doesn't Matter
