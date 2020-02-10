@@ -136,7 +136,7 @@ const double ControlMap::leftKi = 0;
 const double ControlMap::leftKd = 0;
 
 // RightDrive
-const double ControlMap::rightKd = 0.01;
+const double ControlMap::rightKp = 0.01;
 const double ControlMap::rightKi = 0;
 const double ControlMap::rightKd = 0;
 
