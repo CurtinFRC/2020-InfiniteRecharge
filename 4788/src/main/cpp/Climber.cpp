@@ -4,14 +4,16 @@
 using namespace wml;
 using namespace wml::controllers;
 
-Climber::Climber(actuators::DoubleSolenoid &ClimberActuator, 
+Climber::Climber(actuators::DoubleSolenoid &ClimberActuator,
                  actuators::DoubleSolenoid &ShiftPTO, 
-                 Gearbox &ClimberElevator, 
+                 Gearbox &ClimberElevatorLeft, 
+                 Gearbox &ClimberElevatorRight,
                  SmartControllerGroup &contGroup) : 
 
                  _ClimberActuator(ClimberActuator), 
                  _ShiftPTO(ShiftPTO), 
-                 _ClimberElevator(ClimberElevator), 
+                 _ClimberElevatorLeft(ClimberElevatorLeft), 
+                 _ClimberElevatorRight(ClimberElevatorRight),
                  _contGroup(contGroup) {}
 void Climber::TeleopOnUpdate(double dt) {
    double liftSpeed;
@@ -34,9 +36,10 @@ void Climber::TeleopOnUpdate(double dt) {
     ToggleEnabled = true;
   }
 
-  liftSpeed = _contGroup.Get(ControlMap::ClimberControl) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControl) : 0;
+  liftSpeed = _contGroup.Get(ControlMap::ClimberControlLeft) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
   liftSpeed *= ControlMap::LiftMaxSpeed;
-  _ClimberElevator.transmission->SetVoltage(12 * liftSpeed);
+  _ClimberElevatorLeft.transmission->SetVoltage(12 * liftSpeed);
+  
 }
 
 void Climber::AutoOnUpdate(double dt) {}
@@ -46,13 +49,11 @@ void Climber::TestOnUpdate(double dt) {
 
   _ShiftPTO.SetTarget(wml::actuators::kForward);
   _ClimberActuator.SetTarget(wml::actuators::kForward);
-  
-  if (_ClimberElevator.encoder->GetEncoderRotations() <= 6) {
-    _ClimberElevator.transmission->SetVoltage(1);
+  if (_ClimberElevatorLeft.encoder->GetEncoderRotations() <= 6) {
+    _ClimberElevatorLeft.transmission->SetVoltage(1);
   } else {
-    _ClimberElevator.transmission->SetVoltage(0);
+    _ClimberElevatorLeft.transmission->SetVoltage(0);
   }
-
   _ClimberActuator.SetTarget(wml::actuators::kReverse);
   _ShiftPTO.SetTarget(wml::actuators::kReverse);
 }

@@ -112,6 +112,7 @@ const int ControlMap::ClimberActuatorPort2 = 99;
 const double ControlMap::ClimberActuationTime = 0.2;
 
 const int ControlMap::ClimberMotor1Port = 99;
+const int ControlMap::ClimberMotor2Port = 99;
 const int ControlMap::Shift1PTOPort = 99;
 const int ControlMap::Shift2PTOPort = 99;
 const double ControlMap::ShiftPTOActuationTime = 0.2;
@@ -208,7 +209,9 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
 //please change
   const tAxis ControlMap::ClimberControl{ CoDriver, 2};
 #else
-  const tAxis ControlMap::ClimberControl{ CoDriver, XboxController::kLeftYAxis};
+  const tAxis ControlMap::ClimberControlLeft{ CoDriver, XboxController::kLeftYAxis};
+  const tAxis ControlMap::ClimberControlRight{ CoDriver, XboxController::kRightYAxis};
+  const tButton ControlMap::ClimberToggle{ CoDriver, XboxController::kY};
   const tButton ControlMap::ClimberUp{ CoDriver, XboxController::kX };
   const tButton ControlMap::Shift2PTO{ CoDriver, XboxController::kBumperRight };
 #endif

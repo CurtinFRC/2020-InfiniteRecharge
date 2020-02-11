@@ -151,10 +151,13 @@ struct RobotMap {
   struct Climber {
     wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
 
+    wml::TalonSrx Climber2Motor{ ControlMap::ClimberMotor2Port, 2048};
+    wml::actuators::MotorVoltageController Climber2Motors = wml::actuators::MotorVoltageController::Group(Climber2Motor);
+    wml::Gearbox ClimberElevatorLeft{ &Climber2Motors, &Climber2Motor, 8.45};
 
     wml::TalonSrx Climber1Motor{ ControlMap::ClimberMotor1Port, 2048};
     wml::actuators::MotorVoltageController Climber1Motors  = wml::actuators::MotorVoltageController::Group(Climber1Motor);
-    wml::Gearbox ClimberElevator{ &Climber1Motors, &Climber1Motor, 8.45};
+    wml::Gearbox ClimberElevatorRight{ &Climber1Motors, &Climber1Motor, 8.45};
     wml::actuators::DoubleSolenoid ShiftPTOSoul{ControlMap::Shift1PTOPort, ControlMap::Shift2PTOPort, ControlMap::ShiftPTOActuationTime};
   };
   Climber climber;

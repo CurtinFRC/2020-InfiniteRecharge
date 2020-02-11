@@ -26,8 +26,6 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 			ToggleEnabled = true;
 		}
 	}
-
-
 	if (_contGroup.Get(ControlMap::Intake)) {
 		IntakePower = 1;
 	} else if (_contGroup.Get(ControlMap::Outake)) {
