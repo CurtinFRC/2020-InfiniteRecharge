@@ -26,70 +26,115 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
   SetCanBeReused(false);
 }
 
-void Rotation2Point(double *DistanceInRotations, double p1x, double p1y, double p2x, double p2y) {}
+double Rotation2Point(double p1x, double p1y, double p2x, double p2y) {
+
+  double distanceInMeters = sqrt(pow(p2x - p1x, 2) + pow(p2y - p1y, 2) * 1.0);
+  double DistanceInCM = distanceInMeters*100;
+
+  double DistanceInRotations = ControlMap::AutoGearRatio * (DistanceInCM/ControlMap::WheelCircumference);
+
+  return DistanceInRotations;
+}
 
 double leftPreviousError = 0;
 double rightPreviousError = 0;
 double leftSum = 0;
 double rightSum = 0;
 
+
+
+
+
+
+
 double AutoPID(double dt, double goal, double input, double kp, double ki, double kd, double *previousError, double *sum) {
   double error = goal - input;
   double derror = (error - *previousError) / dt;
   *sum = *sum + error * dt;  
 
-   double output = kp * error + ki * *sum + kd * derror;
+  double output = kp * error + ki * *sum + kd * derror;
 
   *previousError = error;
+  std::cout << "Goal " << goal << std::endl;
+  std::cout << "Output " << output << std::endl;
   return output;
 } 
 
-void DriveToTarget(double *leftPower, double *right, double DistanceInRotations) {
-  leftPower = AutoPID(dt, 
-                              DistanceInRotations, 
-                              _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations(), 
-                              ControlMap::leftKp,
-                              ControlMap::leftKi,
-                              ControlMap::leftKd,
-                              &leftPreviousError,
-                              &leftSum);
-  rightPower = AutoPID(dt, 
-                               DistanceInRotations, 
-                               _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations(),
-                               ControlMap::rightKp,
-                               ControlMap::rightKi,
-                               ControlMap::rightKd,
-                               &rightPreviousError,
-                               &rightSum);
+double TurnToTarget(double input, double goal) {
+  double error = goal - input;
+  double output = error;
+  return output/goal;
 }
 
+double DrivetrainAuto::LeftDriveToTarget(double dt) {
+  double power;
+  power = AutoPID(dt, 
+                  DistanceInRotations,
+                  _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations(), 
+                  ControlMap::leftKp,
+                  ControlMap::leftKi,
+                  ControlMap::leftKd,
+                  &leftPreviousError,
+                  &leftSum);
+
+  return power;
+}
+
+double DrivetrainAuto::RightDriveToTarget(double dt) {
+  double power;
+  power = AutoPID(dt, 
+                  DistanceInRotations,
+                  _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations(), 
+                  ControlMap::rightKp,
+                  ControlMap::rightKi,
+                  ControlMap::rightKd,
+                  &rightPreviousError,
+                  &rightSum);
+
+  return power;
+}
+
+
+
+// ----------------------Auto------------------------
+
+
 void DrivetrainAuto::OnUpdate(double dt) {
-  double leftPower, rightPower;
-  double DistanceInRotations;
+  double LeftPower, RightPower;
+  CurrentHeading = _drivetrain.GetConfig().gyro->GetAngle();
+  DistanceInRotations = Rotation2Point(ControlMap::Strt6Ballx, ControlMap::Strt6Bally, ControlMap::wypt1Ball8x, ControlMap::wypt1Ball8y);
   switch (_autoSelector) {
     case 1: // Auto 1
-      Rotation2Point(&DistanceInRotations, ControlMap::Strt6Ballx, ControlMap::Strt6Bally, ControlMap::wypt1Ball8x, ControlMap::wypt1Ball8y);
-      if (!_strt) {
-        if ((_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() < DistanceInRotations) || (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() < DistanceInRotations)) {
-          leftPower = AutoPID(dt, 
-                              DistanceInRotations, 
-                              _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations(), 
-                              ControlMap::leftKp,
-                              ControlMap::leftKi,
-                              ControlMap::leftKd,
-                              &leftPreviousError,
-                              &leftSum);
-          rightPower = AutoPID(dt, 
-                               DistanceInRotations, 
-                               _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations(),
-                               ControlMap::rightKp,
-                               ControlMap::rightKi,
-                               ControlMap::rightKd,
-                               &rightPreviousError,
-                               &rightSum);
-        } else {
-          _strt = true;
-        }
+      switch (AutoWaypointSwitcher) {
+        case 1: // Start to Waypoint 1
+          DistanceInRotations = Rotation2Point(ControlMap::Strt6Ballx, ControlMap::Strt6Bally, ControlMap::wypt1Ball8x, ControlMap::wypt1Ball8y);
+          if ( (fabs(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations()) < DistanceInRotations) || (fabs(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations()) < DistanceInRotations) ) {
+            LeftPower = LeftDriveToTarget(dt);
+            RightPower = RightDriveToTarget(dt) - CurrentHeading;
+          } else {
+            LeftPower = 0;
+            RightPower = 0;
+            _drivetrain.GetConfig().gyro->Reset();
+            _strt = true;
+            AutoWaypointSwitcher++;
+          }
+        break;
+
+        case 2: // Turn to waypoint 2
+          if (_drivetrain.GetConfig().gyro->GetAngle() < ControlMap::wypt1Ball8Angle) {
+            std::cout << "This is working" << std::endl;
+            LeftPower = TurnToTarget(_drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
+            RightPower = -TurnToTarget(_drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
+          } else {
+            LeftPower = 0;
+            RightPower = 0;
+            _drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
+            _drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
+            _drivetrain.GetConfig().gyro->Reset();
+            _p1 = true;
+            AutoWaypointSwitcher++;
+          }
+        break;
       }
       break;
     case 2: // Auto 2
@@ -102,7 +147,14 @@ void DrivetrainAuto::OnUpdate(double dt) {
 
       break;
     case 5: // Auto 5
+
       break;
   }
-  _drivetrain.Set(leftPower, rightPower);
+  std::cout << "Encoder Left " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  std::cout << "Encoder Right " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl; 
+  std::cout << "Distance In Rotations " << DistanceInRotations << std::endl;
+  std::cout << "Angle " << _drivetrain.GetConfig().gyro->GetAngle() << std::endl;
+  LeftPower = LeftPower >= ControlMap::MaxAutoDrivetrainSpeed ? ControlMap::MaxAutoDrivetrainSpeed : 0;
+  RightPower = RightPower >= ControlMap::MaxAutoDrivetrainSpeed ? ControlMap::MaxAutoDrivetrainSpeed : 0;
+  _drivetrain.Set(-LeftPower, -RightPower);
 }

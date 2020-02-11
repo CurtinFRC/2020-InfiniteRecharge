@@ -39,6 +39,8 @@ class DrivetrainAuto : public wml::Strategy {
                    bool &end);
 
     void OnUpdate(double dt) override;
+    double LeftDriveToTarget(double dt);
+    double RightDriveToTarget(double dt);
 
   private:
     wml::Drivetrain &_drivetrain;
@@ -47,11 +49,15 @@ class DrivetrainAuto : public wml::Strategy {
     double currentSpeed;
 
     int &_autoSelector;
+    int AutoWaypointSwitcher = 1;
     bool &_strt;
     bool &_p1;
     bool &_p2;
     bool &_p3;
     bool &_end;
+
+    double DistanceInRotations;
+    double CurrentHeading;
 };
 
 // Class that Runs in Test Mode

@@ -40,6 +40,7 @@ struct ControlMap {
   static const int Shift2PTOPort1, Shift2PTOPort2;
   static const double ChangeGearTime;
   static const double MaxDrivetrainSpeed;
+  static const double MaxAutoDrivetrainSpeed;
   static const double MaxDrivetrainAcceleration;
   static const double DriveTestCaseRotations;
 
@@ -102,6 +103,7 @@ struct ControlMap {
   // Auto Values
   static const double AutoGearRatio; // 1:AutoGearRatio
   static const double WheelDiameter; // CM
+  static const double WheelCircumference;
   // Drive PID
   static const double leftKp, rightKp, leftKi, rightKi, leftKd, rightKd;
 

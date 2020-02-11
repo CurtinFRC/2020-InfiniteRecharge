@@ -53,10 +53,15 @@ void Robot::RobotInit() {
 }
 
 void Robot::RobotPeriodic() {
+  CurrentTime = frc::Timer::GetFPGATimestamp();
+  dt = CurrentTime - lastTimestamp;
+
   robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
   robotMap.controlSystem.compressor.Update(dt);
   StrategyController::Update(dt);
   NTProvider::Update();
+
+  lastTimestamp = CurrentTime;
 }
 
 void Robot::DisabledInit() {
@@ -72,7 +77,12 @@ void Robot::AutonomousInit() {
                                              robotMap.autonomous.WayPoint2Complete, 
                                              robotMap.autonomous.WayPoint3Complete, 
                                              robotMap.autonomous.EndComplete));
+
+  // Zero Robot For Autonomous
   // turret->ZeroTurret();
+  robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
+  robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
+  robotMap.driveSystem.drivetrain.GetConfig().gyro->Reset();
 }
 void Robot::AutonomousPeriodic() {
   turret->AutoOnUpdate(dt);
@@ -86,16 +96,10 @@ void Robot::TeleopInit() {
   // turret->ZeroTurret();
 }
 void Robot::TeleopPeriodic() {
-  CurrentTime = frc::Timer::GetFPGATimestamp();
-  dt = CurrentTime - lastTimestamp;
-
   turret->TeleopOnUpdate(dt);
   magLoader->TeleopOnUpdate(dt);
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
-
-
-  lastTimestamp = CurrentTime;
 }
 
 void Robot::TestInit() {

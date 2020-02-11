@@ -69,13 +69,21 @@ struct RobotMap {
 
   // Drive System
   struct DriveSystem {
+    // // Front
+    // wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 42 };
+    // wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 42 };
+
+    // // Back
+    // wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 42 };
+    // wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 42 };
+
     // Front
-    wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 42 };
-    wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 42 };
+    wml::TalonSrx FLmax{ ControlMap::DriveMAXportFL, 80 };
+    wml::TalonSrx FRmax{ ControlMap::DriveMAXportFR, 80 };
 
     // Back
-    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 42 };
-    wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 42 };
+    wml::VictorSpx BLmax{ ControlMap::DriveMAXportBL };
+    wml::VictorSpx BRmax{ ControlMap::DriveMAXportBR };
 
     wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);
     wml::actuators::MotorVoltageController rightMotors = wml::actuators::MotorVoltageController::Group(FRmax, BRmax);
@@ -86,8 +94,10 @@ struct RobotMap {
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::PCModule, ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
     wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::PCModule, ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ShiftPTOActuationTime };
 
+    wml::sensors::NavX navx{};
+    wml::sensors::NavXGyro gyro{ navx.Angular(wml::sensors::AngularAxis::YAW) };
 
-    wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
+    wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox, &gyro, 0.56, 0.60, 0.0762, 50 };
     wml::Drivetrain drivetrain{ driveTrainConfig };
     wml::control::PIDGains gainsVelocity{ "Drivetrain Velocity", 1 };
   };
