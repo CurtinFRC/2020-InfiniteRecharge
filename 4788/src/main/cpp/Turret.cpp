@@ -228,7 +228,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	}
 	
 
-	
+if (!_contGroup.Get(ControlMap::R2)) {
 	if (_contGroup.Get(ControlMap::TurretAutoAim)) {
 		if (targetX > imageWidth || targetY > imageHeight) {
 			std::cout << "Error: Target is artifacting" << std::endl;
@@ -240,7 +240,7 @@ void Turret::TeleopOnUpdate(double dt) {
 		Asum = 0;
 		Rsum = 0;
 	}
-
+}
 	// Manual Rotation Control
 	RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 

@@ -102,7 +102,6 @@ double DrivetrainAuto::RightDriveToTarget(double dt) {
 
 
 void DrivetrainAuto::OnUpdate(double dt) {
-  double LeftPower, RightPower;
   CurrentHeading = _drivetrain.GetConfig().gyro->GetAngle() * ControlMap::rightKp; // Current Heading for right drive
   DistanceInRotations = Rotation2Point(ControlMap::Strt6Ballx, ControlMap::Strt6Bally, ControlMap::wypt1Ball8x, ControlMap::wypt1Ball8y);
   switch (_autoSelector) {

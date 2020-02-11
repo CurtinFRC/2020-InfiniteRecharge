@@ -17,7 +17,6 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
                      _contGroup(contGroup) {}
 
 void MagLoader::TeleopOnUpdate(double dt) {
-  double MagazinePower;
 
   // Shifting Mag up
   if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {

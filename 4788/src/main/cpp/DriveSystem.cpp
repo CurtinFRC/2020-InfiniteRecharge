@@ -6,12 +6,14 @@ using namespace wml::controllers;
 
 // Initializes & Defines groups for Manual Control
 DrivetrainManual::DrivetrainManual(std::string name, 
+                                   //actuators::DoubleSolenoid &IntakeDown,
                                    Drivetrain &drivetrain, 
                                    wml::actuators::DoubleSolenoid &ChangeGears, 
                                    actuators::DoubleSolenoid &Shift2PTO, 
                                    SmartControllerGroup &contGroup) : 
                                    
                                    Strategy(name), 
+                                   //_IntakeDown(IntakeDown),
                                    _drivetrain(drivetrain), 
                                    _ChangeGears(ChangeGears), 
                                    _Shift2PTO(Shift2PTO), 
@@ -80,13 +82,22 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   if (_contGroup.Get(ControlMap::ShiftGears)) {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kForward);
-    std::cout << "Shift Gears" << std::endl;
   } else {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kReverse);
-    // std::cout << "Not Shifting Gears" << std::endl;
+  }
+
+  if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONRISE)) {
+    if (!PTOactive) {
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+      PTOactive = true;
+    } else if (PTOactive) {
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
+      PTOactive = false;
+    }
   }
 
   _ChangeGears.Update(dt);
+  _Shift2PTO.Update(dt);
 
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;

@@ -10,6 +10,7 @@
 class DrivetrainManual : public wml::Strategy {
   public:
     DrivetrainManual(std::string name, 
+                     //wml::actuators::DoubleSolenoid &IntakeDown,
                      wml::Drivetrain &drivetrain, 
                      wml::actuators::DoubleSolenoid &ChangeGears, 
                      wml::actuators::DoubleSolenoid &Shift2PTO, 
@@ -19,11 +20,13 @@ class DrivetrainManual : public wml::Strategy {
 
   private:
     wml::Drivetrain &_drivetrain;
+    //wml::actuators::DoubleSolenoid &_IntakeDown;
     wml::actuators::BinaryActuator &_ChangeGears;
     wml::actuators::BinaryActuator &_Shift2PTO;
     wml::controllers::SmartControllerGroup &_contGroup;
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;
+    bool PTOactive = false;
 };
 
 // Class that Runs in Autonomous
@@ -46,7 +49,7 @@ class DrivetrainAuto : public wml::Strategy {
   private:
     wml::Drivetrain &_drivetrain;
     wml::control::PIDController _pid;
-    double leftSpeed = 0, rightSpeed = 0;
+    double LeftPower = 0, RightPower = 0;
     double currentSpeed;
 
     int &_autoSelector;

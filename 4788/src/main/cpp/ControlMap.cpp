@@ -25,6 +25,7 @@ void ControlMap::InitSmartControllerGroup(SmartControllerGroup &contGroup) {
 #else
   const int ControlMap::XboxController1Port = 0;
   const int ControlMap::XboxController2Port = 1;
+  const int ControlMap::JoyController3Port = 2;
 #endif
 
 // Deadzones
@@ -96,6 +97,7 @@ const int ControlMap::IntakeDownPort1 = 99;
 const int ControlMap::IntakeDownPort2 = 99;
 const double ControlMap::PannelActuationTime = 0;
 const double ControlMap::IntakeDownActuationTime = 99;
+const double ControlMap::IntakeTestCaseRotations = 30;
 
 
 // MagLoader
@@ -279,4 +281,22 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tAxis ControlMap::ClimberControl{ CoDriver, XboxController::kLeftYAxis};
   const tButton ControlMap::ClimberUp{ CoDriver, XboxController::kX };
   const tButton ControlMap::Shift2PTO{ CoDriver, XboxController::kBumperRight };
+#endif
+
+//manual override buttons 
+
+#if __CONTROLMAP_USING_JOYSTICK__
+  const tButton ControlMap::R1{ override, 7};
+  const tButton ControlMap::R2{ override, 8};
+  const tButton ControlMap::R3{ override, 9};
+  const tButton ControlMap::G1{ override, 10};
+  const tButton ControlMap::G2{ override, 11};
+  const tButton ControlMap::G3{ override, 12};
+#else
+  const tButton ControlMap::R1{ override, 7};
+  const tButton ControlMap::R2{ override, 8};
+  const tButton ControlMap::R3{ override, 9};
+  const tButton ControlMap::G1{ override, 10};
+  const tButton ControlMap::G2{ override, 11};
+  const tButton ControlMap::G3{ override, 12};
 #endif

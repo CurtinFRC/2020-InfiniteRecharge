@@ -59,12 +59,14 @@ struct RobotMap {
   
   wml::controllers::Joystick joy1{ ControlMap::JoyController1Port };
   wml::controllers::Joystick joy2{ ControlMap::JoyController2Port };
-  wml::controllers::SmartControllerGroup contGroup{ joy1, joy2 };
+  wml::controllers::Joystick override{ ControlMap::JoyController3Port};
+  wml::controllers::SmartControllerGroup contGroup{ joy1, joy2, override };
   #else
 
   wml::controllers::XboxController xbox1{ ControlMap::XboxController1Port };
   wml::controllers::XboxController xbox2{ ControlMap::XboxController2Port };
-  wml::controllers::SmartControllerGroup contGroup{ xbox1, xbox2 };
+  wml::controllers::Joystick override{ ControlMap::JoyController3Port};
+  wml::controllers::SmartControllerGroup contGroup{ xbox1, xbox2, override};
   #endif
 
   // Drive System
@@ -202,6 +204,19 @@ struct RobotMap {
     // Extra Controller
     frc::I2C arduino{ frc::I2C::kOnboard, 8 };
     uint8_t message = 73;
+    // Climber
+
+    // Auto
+    wpi::SmallString<64> deployDirectory;
+    // frc::filesystem::GetDeployDirectory(deployDirectory);
+
+    //Belt intake 
+   std::shared_ptr<nt::NetworkTable> BeltIntakeTable = nt::NetworkTableInstance::GetDefault().GetTable("Belt Intake Encoders");
+
+   //Control Pannel
+   std::shared_ptr<nt::NetworkTable> ControlPannelTable = nt::NetworkTableInstance::GetDefault().GetTable("Control Pannel stuff");
+
+   
   };
   ControlSystem controlSystem;
 };

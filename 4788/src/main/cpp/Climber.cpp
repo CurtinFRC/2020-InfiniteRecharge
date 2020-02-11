@@ -11,17 +11,22 @@ Climber::Climber(actuators::DoubleSolenoid &ClimberActuator,
                  _ClimberActuator(ClimberActuator), 
                  _ClimberElevator(ClimberElevator), 
                  _contGroup(contGroup) {}
+
+
 void Climber::TeleopOnUpdate(double dt) {
-   double liftSpeed;
+  double liftSpeed = 0;
   
   
-  if (_contGroup.Get(ControlMap::ClimberUp, Controller::ONFALL)) {
-    _ClimberActuator.SetTarget(wml::actuators::kForward);
-    ToggleEnabled = false;
-  } else if (!ToggleEnabled) {
-    _ClimberActuator.SetTarget(wml::actuators::kReverse);
-    ToggleEnabled = true;
-  }
+  if (_contGroup.Get(ControlMap::ClimberUp, Controller::ONRISE)) {
+
+    if (ToggleEnabled) {
+      _ClimberActuator.SetTarget(wml::actuators::kForward);
+      ToggleEnabled = false;
+    } else if (!ToggleEnabled) {
+      _ClimberActuator.SetTarget(wml::actuators::kReverse);
+      ToggleEnabled = true;
+    }
+  } 
 
   liftSpeed = _contGroup.Get(ControlMap::ClimberControl) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControl) : 0;
   liftSpeed *= ControlMap::LiftMaxSpeed;
@@ -31,15 +36,31 @@ void Climber::TeleopOnUpdate(double dt) {
 void Climber::AutoOnUpdate(double dt) {}
 
 void Climber::TestOnUpdate(double dt) {
-  double liftSpeed;
-  
-  if (_ClimberElevator.encoder->GetEncoderRotations() <= 6) {
-    _ClimberElevator.transmission->SetVoltage(1);
-  } else {
-    _ClimberElevator.transmission->SetVoltage(0);
+  liftSpeed = 0.25;
+  switch (testType) {
+    case 1:
+      _ClimberActuator.SetTarget(wml::actuators::kForward);
+      if (_ClimberElevator.encoder->GetEncoderRotations() <= 6) {
+        _ClimberElevator.transmission->SetVoltage(12 * liftSpeed);
+      } else {
+        testType++;
+      }
+    break;
+
+    case 2:
+      if (_ClimberElevator.encoder->GetEncoderRotations() >= 6) {
+        _ClimberElevator.transmission->SetVoltage(12 * -liftSpeed);
+      } else {
+        testType++;
+      }
+    break;
+
+    case 3:
+      _ClimberActuator.SetTarget(wml::actuators::kReverse);
+    break;
   }
 
-  _ClimberActuator.SetTarget(wml::actuators::kReverse);
+  _ClimberActuator.Update(dt);
 }
   
 
