@@ -80,7 +80,6 @@ const double ControlMap::FlyWheelVelocity = 500;
 
 // Angle Setpoints (Encoder Values)
 const double ControlMap::AngleSetpoint1 = 100;
-
 const double ControlMap::AngleSetpoint2 = 110;
 const double ControlMap::AngleSetpoint3 = 120;
 const double ControlMap::AngleSetpoint4 = 130;
@@ -188,7 +187,7 @@ const double ControlMap::wypt2Ball8AngleDrift = 0;
 
 const double ControlMap::wypt3Ball8x = 8;
 const double ControlMap::wypt3Ball8y = -0.7;
-const double ControlMap::wypt3Ball8Angle = 0;
+const double ControlMap::wypt3Ball8Angle = -21.801409;
 const double ControlMap::wypt3Ball8EnoderDrift = 0;
 const double ControlMap::wypt3Ball8AngleDrift = 0;
 

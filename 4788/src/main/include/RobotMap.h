@@ -181,6 +181,7 @@ struct RobotMap {
     int AutoSelecter = 1;
 
     // 6 Ball
+    bool StartDoComplete = true;
     bool StartPointComplete = false;
     bool WayPoint1Complete = false;
     bool WayPoint2Complete = false;

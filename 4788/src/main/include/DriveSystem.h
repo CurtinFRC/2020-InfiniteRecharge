@@ -32,6 +32,7 @@ class DrivetrainAuto : public wml::Strategy {
     DrivetrainAuto(wml::Drivetrain &drivetrain, 
                    wml::control::PIDGains gains,
                    int &autoSelector,
+                   bool &StartDoComplete,
                    bool &strt,
                    bool &p1,
                    bool &p2,
@@ -50,6 +51,7 @@ class DrivetrainAuto : public wml::Strategy {
 
     int &_autoSelector;
     int AutoWaypointSwitcher = 1;
+    bool &_StartDoComplete;
     bool &_strt;
     bool &_p1;
     bool &_p2;
