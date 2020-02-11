@@ -11,16 +11,20 @@ Turret::Turret(Gearbox &Rotation,
 							 sensors::LimitSwitch &RightLimit, 
 							 sensors::LimitSwitch &AngleDownLimit, 
 							 SmartControllerGroup &contGroup, 
-							 std::shared_ptr<nt::NetworkTable> &visionTable) : 
+							 std::shared_ptr<nt::NetworkTable> &visionTable,
+							 std::shared_ptr<nt::NetworkTable> &rotationTable) : 
 							 
-							 _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), 
+							 _RotationalAxis(Rotation),
+						   _VerticalAxis(VerticalAxis), 
 							 _FlyWheel(FlyWheel), 
 							 _LeftLimit(LeftLimit), 
 							 _RightLimit(RightLimit), 
 							 _AngleDownLimit(AngleDownLimit), 
 							 _contGroup(contGroup), 
-							 _visionTable(visionTable) {
+							 _visionTable(visionTable),
+							 _rotationTable(rotationTable){
 	table = _visionTable->GetSubTable("Target");
+	table_2 =  _rotationTable->GetSubTable("turretRotation");
 
 	imageHeight = table->GetNumber("ImageHeight", 0); 
 	imageWidth = table->GetNumber("ImageWidth", 0);
@@ -252,6 +256,13 @@ if (!_contGroup.Get(ControlMap::R2)) {
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 
 	AngularPower *= ControlMap::MaxTurretAngularSpeed;
+
+	table_2->PutNumber("Turret_Min", MinRotation);
+	table_2->PutNumber("Turret_Max", MaxRotation);
+
+	//table->GetNumber("Turret_Min", 0);
+
+	//double thing = table->GetNumber(); //tada
 
 	std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
 

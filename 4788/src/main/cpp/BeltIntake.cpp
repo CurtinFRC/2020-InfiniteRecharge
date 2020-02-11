@@ -26,6 +26,8 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 			ToggleEnabled = true;
 		}
 	}
+
+
 	if (_contGroup.Get(ControlMap::Intake)) {
 		IntakePower = 1;
 	} else if (_contGroup.Get(ControlMap::Outake)) {
@@ -51,4 +53,6 @@ void BeltIntake::TestOnUpdate(double dt) {
 	}
 			_BeltIntakeTable->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
 	_IntakeDown.SetTarget(wml::actuators::kReverse);
+
+
 }

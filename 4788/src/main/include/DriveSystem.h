@@ -10,20 +10,26 @@
 class DrivetrainManual : public wml::Strategy {
   public:
     DrivetrainManual(std::string name, 
-                     //wml::actuators::DoubleSolenoid &IntakeDown,
+                     wml::actuators::DoubleSolenoid &IntakeDown,
+                     wml::Gearbox &Rotation,
                      wml::Drivetrain &drivetrain, 
                      wml::actuators::DoubleSolenoid &ChangeGears, 
                      wml::actuators::DoubleSolenoid &Shift2PTO, 
-                     wml::controllers::SmartControllerGroup &contGroup);
+                     wml::controllers::SmartControllerGroup &contGroup,
+                     std::shared_ptr<nt::NetworkTable> &rotationTable
+                     );
 
     void OnUpdate(double dt) override;
+    std::shared_ptr<nt::NetworkTable> table_2;
 
   private:
     wml::Drivetrain &_drivetrain;
-    //wml::actuators::DoubleSolenoid &_IntakeDown;
+    wml::actuators::DoubleSolenoid &_IntakeDown;
+    wml::Gearbox &_Rotation;
     wml::actuators::BinaryActuator &_ChangeGears;
     wml::actuators::BinaryActuator &_Shift2PTO;
     wml::controllers::SmartControllerGroup &_contGroup;
+    std::shared_ptr<nt::NetworkTable> &_rotationTable;
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;
 };

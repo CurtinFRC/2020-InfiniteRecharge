@@ -6,18 +6,25 @@ using namespace wml::controllers;
 
 // Initializes & Defines groups for Manual Control
 DrivetrainManual::DrivetrainManual(std::string name, 
-                                   //actuators::DoubleSolenoid &IntakeDown,
+                                   actuators::DoubleSolenoid &IntakeDown,
+                                   Gearbox &Rotation,
                                    Drivetrain &drivetrain, 
                                    wml::actuators::DoubleSolenoid &ChangeGears, 
                                    actuators::DoubleSolenoid &Shift2PTO, 
-                                   SmartControllerGroup &contGroup) : 
+                                   SmartControllerGroup &contGroup,
+                                   std::shared_ptr<nt::NetworkTable> &rotationTable
+                                   ) : 
                                    
                                    Strategy(name), 
-                                   //_IntakeDown(IntakeDown),
+                                   _IntakeDown(IntakeDown),
+                                   _Rotation(Rotation),
                                    _drivetrain(drivetrain), 
                                    _ChangeGears(ChangeGears), 
                                    _Shift2PTO(Shift2PTO), 
-                                   _contGroup(contGroup) {
+                                   _contGroup(contGroup),
+                                   _rotationTable(rotationTable){
+                                   
+  table_2 = _rotationTable->GetSubTable("turretRotation");
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
@@ -99,13 +106,43 @@ void DrivetrainManual::OnUpdate(double dt) {
     _ChangeGears.SetTarget(wml::actuators::kReverse);
   }
 
-double DanceSpeed;
+//double DanceSpeed;
   //Dance Button
   // if (_contGroup.Get(ControlMap::R3)) { 
   //   DanceSpeed = 0.5;
   // }
   // _drivetrain.SetVoltage((12 * DanceSpeed),0 );
   
+
+
+  //Defence button   
+  if (_contGroup.Get(ControlMap::Defence)) {
+    //Turret, Intake up and shift to low gear 
+    _ChangeGears.SetTarget(wml::actuators::kForward);
+
+    double rotationmexsped = table_2->GetNumber("Turret_Min", 0);
+    double rotationmunsped =  table_2->GetNumber("Turret_Max", 0);
+
+    _Rotation.transmission->SetVoltage(12 * rotationmexsped);
+
+    double kp = 0.5; 
+    double input = _Rotation.encoder->GetEncoderRotations();
+    double goal = ((rotationmexsped/2) + rotationmunsped);
+    
+    double error = goal - input;
+
+    double ouput = kp * error;
+
+    _Rotation.transmission->SetVoltage(12 * ouput);
+
+    //Intake
+    _IntakeDown.SetTarget(wml::actuators::kForward);
+
+  } else {
+    _ChangeGears.SetTarget(wml::actuators::kReverse);
+    _IntakeDown.SetTarget(wml::actuators::kReverse);
+  }
+
 }
 
 // Initializes & Defines groups for Autonomous driving

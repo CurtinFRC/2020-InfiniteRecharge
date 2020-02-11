@@ -86,8 +86,6 @@ struct RobotMap {
 
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
     wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ShiftPTOActuationTime };
-
-
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
     wml::Drivetrain drivetrain{ driveTrainConfig };
     wml::control::PIDGains gainsVelocity{ "Drivetrain Velocity", 1 };
@@ -182,7 +180,8 @@ struct RobotMap {
    //Control Pannel
    std::shared_ptr<nt::NetworkTable> ControlPannelTable = nt::NetworkTableInstance::GetDefault().GetTable("Control Pannel stuff");
 
-   
+   //Turret
+   std::shared_ptr<nt::NetworkTable> rotationTable = nt::NetworkTableInstance::GetDefault().GetTable("Sharing values");
   };
   ControlSystem controlSystem;
 };

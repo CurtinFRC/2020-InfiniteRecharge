@@ -106,6 +106,7 @@ struct ControlMap {
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
   static const wml::controllers::tButton ShiftGears;
+  static const wml::controllers::tButton Defence;
 
   // Turret
   #if __CONTROLMAP_USING_JOYSTICK__

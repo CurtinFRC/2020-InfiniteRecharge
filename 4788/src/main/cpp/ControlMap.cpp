@@ -152,6 +152,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
   const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperLeft };
+  const tButton ControlMap::Defence{ Driver, XboxController::kA};
 #endif
 
 // Turret
