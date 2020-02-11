@@ -6,28 +6,28 @@ using namespace wml::controllers;
 
 ControlPannel::ControlPannel(wml::actuators::DoubleSolenoid &ClimberActuator,
 														 Gearbox &ControlPannelMotor, 
-														 wml::actuators::DoubleSolenoid &ControlPannelUpSol, 
+														 Gearbox &ControlPannelUpMotor, 
 														 SmartControllerGroup &contGroup,
 														 std::shared_ptr<nt::NetworkTable> &ControlPannelTable) : 
 														
 														 _ClimberActuator(ClimberActuator),
 														 _ControlPannelMotor(ControlPannelMotor), 
-														 _ControlPannelUpSol(ControlPannelUpSol), 
+														 _ControlPannelUpMotor(ControlPannelUpMotor), 
 														 _contGroup(contGroup), 
 														 _ControlPannelTable(ControlPannelTable){}
 void ControlPannel::TeleopOnUpdate(double dt) {
-	double ControlPannelPower;
-	
+
 	if (_contGroup.Get(ControlMap::SpinControlPannelLeft)) {
-		ControlPannelPower = 0.5;
+		ControlPannelPower = 0.5; // <- Anna... magic numbers go in ControlMap
 	} else if (_contGroup.Get(ControlMap::SpinControlPannelRight)) {
 		ControlPannelPower = -0.5;
 	} else if (_contGroup.Get(ControlMap::ControlPannelUp)) {
-		_ControlPannelUpSol.SetTarget(wml::actuators::kForward);
+		ControlPannelUpPower = 0.5;
 	} else if (_contGroup.Get(ControlMap::ControlPannelDown)) {
-		_ControlPannelUpSol.SetTarget(wml::actuators::kReverse);
+		ControlPannelUpPower = -0.5;
 	}
 	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelPower);
+	_ControlPannelUpMotor.transmission->SetVoltage(12 * ControlPannelUpPower);
 }
 void ControlPannel::AutoOnUpdate(double dt) {}
 
@@ -50,7 +50,6 @@ void ControlPannel::TestOnUpdate(double dt) {
 
 //if it is in a random space 
 //only have 1 uncommeted 
-	double ControlPannelSpeed;
 	
 
 }

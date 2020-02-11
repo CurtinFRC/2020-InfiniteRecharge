@@ -15,9 +15,8 @@ BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors,
 											 _BeltIntakeTable(BeltIntakeTable){}
 
 void BeltIntake::TeleopOnUpdate(double dt) {
-	double IntakePower;
 
-	if (_contGroup.Get(ControlMap::DownIntake, Controller::ONFALL)) {
+	if (_contGroup.Get(ControlMap::DownIntake, Controller::ONRISE)) {
 		if (ToggleEnabled) {
 			_IntakeDown.SetTarget(wml::actuators::kForward);
 			ToggleEnabled = false;
@@ -27,21 +26,23 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 		}
 	}
 	if (_contGroup.Get(ControlMap::Intake)) {
-		IntakePower = 1;
+		IntakePower = _contGroup.Get(ControlMap::Intake);
 	} else if (_contGroup.Get(ControlMap::Outake)) {
-		IntakePower = -1;
+		IntakePower = -_contGroup.Get(ControlMap::Outake);
 	} 
+	_IntakeDown.Update(dt);
 	_BeltIntakeMotors.transmission->SetVoltage(12 * IntakePower);
 }
 
 void BeltIntake::AutoOnUpdate(double dt) {}
 
+int testType = 1;
 void BeltIntake::TestOnUpdate(double dt) {
 
-			_BeltIntakeTable->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
+	_BeltIntakeTable->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
 	_IntakeDown.SetTarget(wml::actuators::kForward);
   while (_BeltIntakeMotors.encoder->GetEncoderRotations() > 10) {
-			_BeltIntakeTable->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
+		_BeltIntakeTable->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
 	  double Speed = 1;
 		_BeltIntakeMotors.transmission->SetVoltage(12 * Speed);
   } while (_BeltIntakeMotors.encoder->GetEncoderRotations() > 10) {
@@ -49,6 +50,7 @@ void BeltIntake::TestOnUpdate(double dt) {
 		double Speed = -1;
 		_BeltIntakeMotors.transmission->SetVoltage(12 * Speed);
 	}
-			_BeltIntakeTable->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
+	_BeltIntakeTable->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
 	_IntakeDown.SetTarget(wml::actuators::kReverse);
+	_IntakeDown.Update(dt);
 }

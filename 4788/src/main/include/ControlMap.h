@@ -8,6 +8,15 @@
 
 struct ControlMap {
   static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup);
+
+
+  /**
+   * CAN Port Number System We are using (PWM Not Included)
+   * - 0-9 (Control System, e.g Pneumatics, PDP...)
+   * - 10-19 (SparkMax/Brushless Motor Controllers)
+   * - 20- (Regular Motor Controllers)
+  **/
+
   // ---------------- Defined Ports ------------------
 
   // Controllers
@@ -22,12 +31,17 @@ struct ControlMap {
   static const double xboxDeadzone;
   static const double triggerDeadzone;
 
+  // PCM1
+  static const int PCModule;
+
+
   // Drive System
   static const int DriveMAXportFL, DriveMAXportFR, DriveMAXportBL, DriveMAXportBR;
   static const int ChangeGearPort1, ChangeGearPort2;
   static const int Shift2PTOPort1, Shift2PTOPort2;
   static const double ChangeGearTime;
   static const double MaxDrivetrainSpeed;
+  static const double MaxAutoDrivetrainSpeed;
   static const double MaxDrivetrainAcceleration;
   static const double DriveTestCaseRotations;
 
@@ -62,12 +76,13 @@ struct ControlMap {
   static const int IntakeDownPort1, IntakeDownPort2;
   static const double PannelActuationTime;
   static const double IntakeDownActuationTime;
+  static const double IntakeTestCaseRotations;
 
   // MagLoader
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
+  static const double MagazineBallThresh;
   static const double MagTestCaseRotations;
-  //static const double ManualMag;
 
   //Control Pannel
   static const int ControlPannelPort;
@@ -90,6 +105,26 @@ struct ControlMap {
   static const int PressureSensorPort;
   static const int CompressorPort;
   static const int CamFOV;
+
+  // Auto Values
+  static const double AutoGearRatio; // 1:AutoGearRatio
+  static const double WheelDiameter; // CM
+  static const double WheelCircumference;
+  // Drive PID
+  static const double leftKp, rightKp, leftKi, rightKi, leftKd, rightKd;
+
+    // 6 Ball
+  static const double Strt6Ballx, Strt6Bally, Strt6BallAngle, Strt6BallEncoderDrift, Strt6BallAngleDrift;
+  static const double wypt1Ball6x, wypt1Ball6y, wypt1Ball6Angle, wypt1Ball6EncoderDrift, wypt1Ball6AngleDrift;
+  static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
+  static const double End6Ballx, End6Bally, End6BallAngle, End6BallEncoderDrift, End6BallAngleDrift;
+
+    // 8 Ball
+  static const double Strt8Ballx, Strt8Bally, Strt8BallAngle, Strt8BallEncoderDrift, Strt8BallAngleDrift;
+  static const double wypt1Ball8x, wypt1Ball8y, wypt1Ball8Angle, wypt1Ball8EncoderDrift, wypt1Ball8AngleDrift;
+  static const double wypt2Ball8x, wypt2Ball8y, wypt2Ball8Angle, wypt2Ball8EncoderDrift, wypt2Ball8AngleDrift;
+  static const double wypt3Ball8x, wypt3Ball8y, wypt3Ball8Angle, wypt3Ball8EnoderDrift, wypt3Ball8AngleDrift;
+  static const double End8Ballx, End8Bally, End8BallAngle, End8BallEncoderDrift, End8BallAngleDrift;
 
   // --------------- Defined Buttons -----------------
 

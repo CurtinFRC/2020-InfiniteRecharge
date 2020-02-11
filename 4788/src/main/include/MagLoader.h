@@ -6,9 +6,9 @@
 class MagLoader {
   public:
     MagLoader(wml::Gearbox &MagazineMotors, 
-              wml::sensors::LimitSwitch &StartMag, 
-              wml::sensors::LimitSwitch &Position1, 
-              wml::sensors::LimitSwitch &Position5, 
+              frc::AnalogInput &StartMag, 
+              frc::AnalogInput &Position1, 
+              frc::AnalogInput &Position5, 
               wml::controllers::SmartControllerGroup &contGroup); // also need to add the limit switch & indexing math.
 
     void TeleopOnUpdate(double dt);
@@ -17,12 +17,13 @@ class MagLoader {
 
   private:
     wml::Gearbox &_MagazineMotors;
-    wml::sensors::LimitSwitch &_StartMag;
-    wml::sensors::LimitSwitch &_Position1;
-    wml::sensors::LimitSwitch &_Position5;
+    frc::AnalogInput &_StartMag;
+    frc::AnalogInput &_Position1;
+    frc::AnalogInput &_Position5;
     wml::controllers::SmartControllerGroup &_contGroup;
 
     bool ToggleEnabled;
+    bool MagOverride = false;
     double MagazinePower = 0;
 
     bool magtest = true;

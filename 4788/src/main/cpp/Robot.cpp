@@ -26,9 +26,9 @@ void Robot::RobotInit() {
   //robotMap.intake.IntakeDown,
   turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.turret.LeftLimit, robotMap.turret.RightLimit, robotMap.turret.AngleDownLimit, robotMap.contGroup, robotMap.controlSystem.visionTable);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
-  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.controlSystem.BeltIntakeTable );
-  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ShiftPTOSoul, robotMap.climber.ClimberElevator, robotMap.contGroup);
-  controlPannel = new ControlPannel(robotMap.climber.ClimberActuator, robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ControlPannelUpSol, robotMap.contGroup, robotMap.controlSystem.ControlPannelTable);
+  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.controlSystem.BeltIntakeTable);
+  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ClimberElevator, robotMap.contGroup);
+  controlPannel = new ControlPannel(robotMap.climber.ClimberActuator, robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup, robotMap.controlSystem.ControlPannelTable);
 
   // Zero All Encoders
   robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
@@ -44,14 +44,25 @@ void Robot::RobotInit() {
 
   robotMap.turret.rotationMotors.SetInverted(true);
 
+  // Arduino Controller
+  robotMap.controlSystem.arduino.WriteBulk(&robotMap.controlSystem.message, 16);
+  robotMap.controlSystem.message = 78;
+
   // Registering our systems to be called via strategy
   StrategyController::Register(drivetrain);
   NTProvider::Register(drivetrain); // Registers system to networktables
 }
 
 void Robot::RobotPeriodic() {
+  CurrentTime = frc::Timer::GetFPGATimestamp();
+  dt = CurrentTime - lastTimestamp;
+
+  robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+  robotMap.controlSystem.compressor.Update(dt);
   StrategyController::Update(dt);
   NTProvider::Update();
+
+  lastTimestamp = CurrentTime;
 }
 
 void Robot::DisabledInit() {
@@ -59,12 +70,24 @@ void Robot::DisabledInit() {
 }
 
 void Robot::AutonomousInit() {
-  Schedule(std::make_shared<DrivetrainAuto>(*drivetrain, wml::control::PIDGains{ "I am gains", 1, 0, 0 }));
+  Schedule(std::make_shared<DrivetrainAuto>(*drivetrain, 
+                                             wml::control::PIDGains{ "I am gains", 1, 0, 0 }, 
+                                             robotMap.autonomous.AutoSelecter, 
+                                             robotMap.autonomous.StartDoComplete,
+                                             robotMap.autonomous.StartPointComplete, 
+                                             robotMap.autonomous.WayPoint1Complete, 
+                                             robotMap.autonomous.WayPoint2Complete, 
+                                             robotMap.autonomous.WayPoint3Complete, 
+                                             robotMap.autonomous.EndComplete));
+
+  // Zero Robot For Autonomous
   // turret->ZeroTurret();
+  robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
+  robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
+  robotMap.driveSystem.drivetrain.GetConfig().gyro->Reset();
 }
 void Robot::AutonomousPeriodic() {
   turret->AutoOnUpdate(dt);
-  //robotMap.turret.TurretRotation.Set(0.1);
   magLoader->AutoOnUpdate(dt);
   beltIntake->AutoOnUpdate(dt);
   climber->AutoOnUpdate(dt);
@@ -75,16 +98,10 @@ void Robot::TeleopInit() {
   // turret->ZeroTurret();
 }
 void Robot::TeleopPeriodic() {
-  CurrentTime = frc::Timer::GetFPGATimestamp();
-  dt = CurrentTime - lastTimestamp;
-
   turret->TeleopOnUpdate(dt);
   magLoader->TeleopOnUpdate(dt);
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
-
-
-  lastTimestamp = CurrentTime;
 }
 
 void Robot::TestInit() {

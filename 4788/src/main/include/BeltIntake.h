@@ -23,6 +23,7 @@ class BeltIntake {
 
 
     frc::Timer timer;
+    double IntakePower = 0;
 
     bool ToggleEnabled;
 };

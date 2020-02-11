@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <stdint.h>
 
 #include "devices/StateDevice.h"
 #include "control/PIDController.h"
@@ -70,13 +71,21 @@ struct RobotMap {
 
   // Drive System
   struct DriveSystem {
+    // // Front
+    // wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 42 };
+    // wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 42 };
+
+    // // Back
+    // wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 42 };
+    // wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 42 };
+
     // Front
-    wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 42 };
-    wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 42 };
+    wml::TalonSrx FLmax{ ControlMap::DriveMAXportFL, 80 };
+    wml::TalonSrx FRmax{ ControlMap::DriveMAXportFR, 80 };
 
     // Back
-    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 42 };
-    wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 42 };
+    wml::VictorSpx BLmax{ ControlMap::DriveMAXportBL };
+    wml::VictorSpx BRmax{ ControlMap::DriveMAXportBR };
 
     wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);
     wml::actuators::MotorVoltageController rightMotors = wml::actuators::MotorVoltageController::Group(FRmax, BRmax);
@@ -84,11 +93,13 @@ struct RobotMap {
     wml::Gearbox LGearbox{ &leftMotors, &FLmax, 8.45 };
     wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
-    wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
-    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ShiftPTOActuationTime };
+    wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::PCModule, ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
+    wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::PCModule, ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ShiftPTOActuationTime };
 
+    wml::sensors::NavX navx{};
+    wml::sensors::NavXGyro gyro{ navx.Angular(wml::sensors::AngularAxis::YAW) };
 
-    wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox };
+    wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox, &gyro, 0.56, 0.60, 0.0762, 50 };
     wml::Drivetrain drivetrain{ driveTrainConfig };
     wml::control::PIDGains gainsVelocity{ "Drivetrain Velocity", 1 };
   };
@@ -120,7 +131,7 @@ struct RobotMap {
 
   struct Intake {
     wml::TalonSrx IntakeMotor{ ControlMap::IntakeMotorPort, 2048 };
-    wml::actuators::DoubleSolenoid IntakeDown { ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
+    wml::actuators::DoubleSolenoid IntakeDown { ControlMap::PCModule, ControlMap::IntakeDownPort1, ControlMap::IntakeDownPort2 , ControlMap::PannelActuationTime};
     wml::actuators::MotorVoltageController IntakeMotors = wml::actuators::MotorVoltageController::Group(IntakeMotor);
     wml::Gearbox intakeMotor{ &IntakeMotors, &IntakeMotor, 8.45};
     
@@ -128,11 +139,9 @@ struct RobotMap {
   Intake intake;
 
   struct MagLoader {
-    wml::sensors::LimitSwitch StartMagLimit{ ControlMap::StartMagLimitPort };
-    wml::sensors::LimitSwitch Position1Limit{ ControlMap::Position1LimitPort };
-    wml::sensors::LimitSwitch Position5Limit{ ControlMap::Position5LimitPort };
-
-    frc::AnalogInput IRSensor{ 3 };
+    frc::AnalogInput StartMagLimit{ ControlMap::StartMagLimitPort };
+    frc::AnalogInput Position1Limit{ ControlMap::Position1LimitPort };
+    frc::AnalogInput Position5Limit{ ControlMap::Position5LimitPort };
 
     wml::TalonSrx MagLoaderMotor{ ControlMap::MagLoaderMotorPort, 2048 };
     wml::actuators::MotorVoltageController magLoaderMotors = wml::actuators::MotorVoltageController::Group(MagLoaderMotor);
@@ -142,11 +151,10 @@ struct RobotMap {
 
   struct ControlPannel {
     wml::TalonSrx MotorControlPannel{ ControlMap::ControlPannelPort };
-    wml::actuators::DoubleSolenoid ControlPannelUpSol{ ControlMap::ControlPannelUpSolPort1, ControlMap::ControlPannelUpSolPort2, ControlMap::ControlPannelActuationTime};
-
+    wml::TalonSrx ExtendControlPannel{ ControlMap::ControlPannelUpPort };
 
     wml::Gearbox ControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(MotorControlPannel)), nullptr };
-   // wml::Gearbox ControlPannelUpSol { new wml::actuators::DoubleSolenoid(wml::actuators::DoubleSolenoid::Group(ControlPannelUpSol)), nullptr};
+    wml::Gearbox ExtendControlPannelMotor { new wml::actuators::MotorVoltageController(wml::actuators::MotorVoltageController::Group(ExtendControlPannel)), nullptr };
   };
   ControlPannel controlPannel;
 
@@ -157,9 +165,32 @@ struct RobotMap {
     wml::TalonSrx Climber1Motor{ ControlMap::ClimberMotor1Port, 2048};
     wml::actuators::MotorVoltageController Climber1Motors  = wml::actuators::MotorVoltageController::Group(Climber1Motor);
     wml::Gearbox ClimberElevator{ &Climber1Motors, &Climber1Motor, 8.45};
-    wml::actuators::DoubleSolenoid ShiftPTOSoul{ControlMap::Shift1PTOPort, ControlMap::Shift2PTOPort, ControlMap::ShiftPTOActuationTime};
   };
   Climber climber;
+
+  struct Auto {
+
+    /**
+     * Auto Selection
+     * 8 Ball = 1 (Default)
+     * 6 Ball = 2
+     * 3 Ball Left = 3
+     * 3 Ball Mid = 4
+     * 3 Ball Right = 5
+    */ 
+
+    // Selection
+    int AutoSelecter = 1;
+
+    // 6 Ball
+    bool StartDoComplete = true;
+    bool StartPointComplete = false;
+    bool WayPoint1Complete = false;
+    bool WayPoint2Complete = false;
+    bool WayPoint3Complete = false;
+    bool EndComplete = false;
+  };
+  Auto autonomous;
 
   struct ControlSystem {
 
@@ -170,6 +201,9 @@ struct RobotMap {
     // Vision
     std::shared_ptr<nt::NetworkTable> visionTable = nt::NetworkTableInstance::GetDefault().GetTable("VisionTracking");
 
+    // Extra Controller
+    frc::I2C arduino{ frc::I2C::kOnboard, 8 };
+    uint8_t message = 73;
     // Climber
 
     // Auto
