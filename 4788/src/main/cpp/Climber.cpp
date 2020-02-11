@@ -16,8 +16,17 @@ Climber::Climber(actuators::DoubleSolenoid &ClimberActuator,
                  _ClimberElevatorRight(ClimberElevatorRight),
                  _contGroup(contGroup) {}
 void Climber::TeleopOnUpdate(double dt) {
-   double liftSpeed;
-  
+  double liftSpeedleft;
+  double liftSpeedright;
+  if (_contGroup.Get(ControlMap::ClimberToggle, Controller::ONFALL)) {
+    if (ToggleEnabled) {
+      ToggleEnabled = false;
+    } else if (!ToggleEnabled) {
+      ToggleEnabled = true;
+    }
+  } 
+
+
   if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONFALL)) {
     if (ToggleEnabled) {
       _ShiftPTO.SetTarget(wml::actuators::kForward);
@@ -36,10 +45,22 @@ void Climber::TeleopOnUpdate(double dt) {
     ToggleEnabled = true;
   }
 
-  liftSpeed = _contGroup.Get(ControlMap::ClimberControlLeft) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
-  liftSpeed *= ControlMap::LiftMaxSpeed;
-  _ClimberElevatorLeft.transmission->SetVoltage(12 * liftSpeed);
+  if (ToggleEnabled) {
+
+    liftSpeedleft = _contGroup.Get(ControlMap::ClimberControlLeft) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
+    liftSpeedright = _contGroup.Get(ControlMap::ClimberControlRight) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::ClimberControlRight) : 0;
+    liftSpeedright *= ControlMap::LiftMaxSpeed;
+    liftSpeedleft *= ControlMap::LiftMaxSpeed;
+    _ClimberElevatorLeft.transmission->SetVoltage(12 * liftSpeedleft);
+    _ClimberElevatorRight.transmission->SetVoltage(12 * liftSpeedright);
   
+  } else {
+    _ClimberElevatorLeft.transmission->SetVoltage(0);
+    _ClimberElevatorRight.transmission->SetVoltage(0);
+  }
+
+
+
 }
 
 void Climber::AutoOnUpdate(double dt) {}
