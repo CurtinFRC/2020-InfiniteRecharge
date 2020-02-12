@@ -12,7 +12,8 @@ class Turret {
 					 wml::sensors::LimitSwitch &RightLimit, 
 					 wml::sensors::LimitSwitch &AngleDownLimit, 
 					 wml::controllers::SmartControllerGroup &contGroup, 
-					 std::shared_ptr<nt::NetworkTable> &visionTable);
+					 std::shared_ptr<nt::NetworkTable> &visionTable,
+					 std::shared_ptr<nt::NetworkTable> &rotationTable);
 
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
@@ -26,6 +27,8 @@ class Turret {
 
 		void ZeroTurret();
 		std::shared_ptr<nt::NetworkTable> table;
+		std::shared_ptr<nt::NetworkTable> table_2;
+
 
 	private:
 		wml::Gearbox &_RotationalAxis;
@@ -38,6 +41,7 @@ class Turret {
 
 		wml::controllers::SmartControllerGroup &_contGroup;
 		std::shared_ptr<nt::NetworkTable> &_visionTable;
+		std::shared_ptr<nt::NetworkTable> &_rotationTable;
 
 		frc::Timer ZeroTimer;
 
