@@ -49,8 +49,20 @@ void ControlPannel::TestOnUpdate(double dt) {
 	_ClimberActuator.SetTarget(wml::actuators::kReverse);*/
 
 //if it is in a random space 
+
+
 //only have 1 uncommeted 
+
 	double ControlPannelSpeed;
-	
+
+	CringeTimer.Start();
+	if (CringeTimer.Get() <= 5) {
+		ControlPannelSpeed = 0.5;
+	} else {
+		ControlPannelSpeed = 0;
+	}
+	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
+	CringeTimer.Stop();
+	CringeTimer.Reset();
 
 }

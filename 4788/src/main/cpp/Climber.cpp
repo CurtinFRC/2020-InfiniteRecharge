@@ -59,26 +59,24 @@ void Climber::TeleopOnUpdate(double dt) {
     _ClimberElevatorRight.transmission->SetVoltage(0);
   }
 
-
-
 }
 
 void Climber::AutoOnUpdate(double dt) {}
 
 void Climber::TestOnUpdate(double dt) {
-  double liftSpeed;
+  double liftSpeedLeft;
+  double liftSpeedRight;
 
   _ShiftPTO.SetTarget(wml::actuators::kForward);
   _ClimberActuator.SetTarget(wml::actuators::kForward);
+
   if (_ClimberElevatorLeft.encoder->GetEncoderRotations() <= 6) {
-    _ClimberElevatorLeft.transmission->SetVoltage(1);
+    _ClimberElevatorLeft.transmission->SetVoltage(0.5);
+    _ClimberElevatorRight.transmission->SetVoltage(0.5);
   } else {
     _ClimberElevatorLeft.transmission->SetVoltage(0);
+    _ClimberElevatorRight.transmission->SetVoltage(0);
   }
   _ClimberActuator.SetTarget(wml::actuators::kReverse);
   _ShiftPTO.SetTarget(wml::actuators::kReverse);
 }
-  
-
-
-
