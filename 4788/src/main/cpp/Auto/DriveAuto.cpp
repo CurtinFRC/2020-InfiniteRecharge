@@ -26,6 +26,8 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(false);
+
+  // _wayFinder = new WayFinder(ControlMap::leftKp, ControlMap::leftKi, ControlMap::leftKd, &_drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
 }
 
 double Rotation2Point(double p1x, double p1y, double p2x, double p2y) {

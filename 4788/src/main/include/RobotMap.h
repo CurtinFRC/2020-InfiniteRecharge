@@ -50,6 +50,7 @@
 
 // Local Files
 #include "ControlMap.h"
+#include "wayfinder.h"
 
 
 struct RobotMap {

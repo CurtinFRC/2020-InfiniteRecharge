@@ -3,7 +3,9 @@
 #include "controllers/Controllers.h"
 #include "strategy/Strategy.h"
 #include "RobotMap.h"
-#include "Drivetrain.h"
+
+// WayFinder
+#include "wayfinder.h"
 
 
 // Class that Runs In Manual Drive e.g Human Drivers
@@ -51,6 +53,7 @@ class DrivetrainAuto : public wml::Strategy {
 
   private:
     wml::Drivetrain &_drivetrain;
+    WayFinder *_wayFinder;
     wml::control::PIDController _pid;
     double LeftPower = 0, RightPower = 0;
     double currentSpeed;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Drivetrain.h"
-#include <cmath>
 
 class WayFinder {
   public:
@@ -11,7 +10,7 @@ class WayFinder {
      * and i'm not in the mood to build that. Initialize by inputing your PID values & drivetrain along 
      * with your gearbox reduction & wheel diameter. note gearbox reduction is from motor to output rotations on the wheel (12:1). 
      */
-    WayFinder(double kp, double ki, double kd, double &dt, wml::Drivetrain &drivetrain, double gearboxReduction, double WheelDiameter);
+    WayFinder(double kp, double ki, double kd, wml::Drivetrain &drivetrain, double gearboxReduction, double WheelDiameter);
 
 
 
