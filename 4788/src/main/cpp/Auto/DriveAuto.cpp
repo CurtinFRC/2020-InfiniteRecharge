@@ -63,9 +63,11 @@ double InverseNumber (double input) {
   return input;
 }
 
-double TurnToTarget(double input, double goal) {
+double DrivetrainAuto::TurnToTarget(double dt, double input, double goal) {
   double error = goal - input;
-  double output = error;
+  double derror = (error - TurnPreviousError) / dt;
+  TurnSum = TurnSum + error * dt;
+  double output = ControlMap::turnP * error + ControlMap::turnI * TurnSum + ControlMap::turnD * derror;
   output = (output/goal);
   output *= ControlMap::MaxAutoTurnSpeed;
   return output;
@@ -141,8 +143,8 @@ void DrivetrainAuto::OnUpdate(double dt) {
         case 2: // Turn to waypoint 2
           if (_drivetrain.GetConfig().gyro->GetAngle() < ControlMap::wypt1Ball8Angle) {
             std::cout << "This is working" << std::endl;
-            LeftPower = TurnToTarget(_drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
-            RightPower = -TurnToTarget(_drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
+            LeftPower = TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
+            RightPower = -TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
           } else {
             LeftPower = 0;
             RightPower = 0;
@@ -188,8 +190,8 @@ void DrivetrainAuto::OnUpdate(double dt) {
         case 5: // Turn to EndPoint
           if (_drivetrain.GetConfig().gyro->GetAngle() > ControlMap::wypt3Ball8Angle) {
             std::cout << "This is working" << std::endl;
-            LeftPower = -TurnToTarget(_drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
-            RightPower = TurnToTarget(_drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
+            LeftPower = -TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
+            RightPower = TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
           } else {
             LeftPower = 0;
             RightPower = 0;

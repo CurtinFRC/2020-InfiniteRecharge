@@ -136,6 +136,11 @@ const double ControlMap::WheelCircumference = 47.877872040708;
 const double ControlMap::MaxAutoDrivetrainSpeed = 0.3;
 const double ControlMap::MaxAutoTurnSpeed = 0.35;
 
+// Turn PID
+const double ControlMap::turnP = 0.1;
+const double ControlMap::turnI = 0.2;
+const double ControlMap::turnD = 0.006;
+
 
 // LeftDrive
 const double ControlMap::leftKp = 0.06;

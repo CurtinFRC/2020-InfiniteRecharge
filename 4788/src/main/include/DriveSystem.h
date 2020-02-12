@@ -46,6 +46,8 @@ class DrivetrainAuto : public wml::Strategy {
     double LeftDriveToTarget(double dt, double goal);
     double RightDriveToTarget(double dt, double goal);
 
+    double TurnToTarget(double dt, double input, double goal);
+
   private:
     wml::Drivetrain &_drivetrain;
     wml::control::PIDController _pid;
@@ -62,6 +64,8 @@ class DrivetrainAuto : public wml::Strategy {
     bool &_end;
 
     double DistanceInRotations;
+    double TurnPreviousError;
+    double TurnSum;
     double CurrentHeading;
 };
 

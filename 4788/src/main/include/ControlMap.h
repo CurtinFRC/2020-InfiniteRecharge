@@ -114,6 +114,7 @@ struct ControlMap {
   
   // Drive PID
   static const double leftKp, rightKp, leftKi, rightKi, leftKd, rightKd;
+  static const double turnP, turnI, turnD;
 
     // 6 Ball
   static const double Strt6Ballx, Strt6Bally, Strt6BallAngle, Strt6BallEncoderDrift, Strt6BallAngleDrift;
