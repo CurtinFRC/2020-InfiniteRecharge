@@ -123,7 +123,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
   double encoderLeft = _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations();
   double encoderRight = _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations();
   switch (_autoSelector) {
-    case 1: // Auto 1
+    case 1: // Auto 1 (8 Ball)
       switch (AutoWaypointSwitcher) {
         case 1: // Start to Waypoint 1
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet

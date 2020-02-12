@@ -43,6 +43,7 @@ class DrivetrainAuto : public wml::Strategy {
                    bool &end);
 
     void OnUpdate(double dt) override;
+    void GoToWaypoint(double waypoint1x, double waypoint1y, double waypoint2x, double waypoint2y, bool reverse);
     double LeftDriveToTarget(double dt, double goal);
     double RightDriveToTarget(double dt, double goal);
 
