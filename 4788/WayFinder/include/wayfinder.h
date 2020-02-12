@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Drivetrain.h"
+#include <cmath>
 
 class WayFinder {
   public:
@@ -24,39 +25,47 @@ class WayFinder {
     /**
      * Using pathweaver or whatever you choose to calculate your waypoints, input the coords
      * (in meters) of your desired locations, your start x & y, and your ending x & y.
-     * Also your desired starting angle (Usually zero) and your ending angle.  
-     * Also choose to drive reversed or not
+     * Also your desired starting angle (Usually zero) and your ending angle in degrees.  
+     * Also choose to reverse drivetrain or not (Drive backwards)
      */
     void GotoWaypoint(double wypt1x, double wypt1y, double startAngle, double wypt2x, double wypt2y, double endAngle, bool reverse);
+
+    /** 
+     * Test Your Driving PID 
+     * (if it gets to the desired goal with reasonable acuracy then the PID shouldn't need changing)
+     */
+    void TestPID(double dt, double goal);
 
 
   private:
     void LeftDriveToTarget(double dt, double goal);
     void RightDriveToTarget(double dt, double goal);
+    void DriveToTarget(double dt, double goal, bool reverse);
     void TurnToTarget(double dt, double input, double goal);
 
-    double RotationsToTarget();
-
-    double InternalPID(double dt, double goal);
+    double RotationsToTarget(double p1x, double p1y, double p2x, double p2y);
+    double InternalPID(double dt, double goal, double input);
+    double InverseNumber(double input);
 
     // Drivetrain
     wml::Drivetrain &_drivetrain;
     double _MaxSpeed = 0.5;
     double _MaxTurnSpeed = 0.4;
-    double _WheelDiameter;
-    double _GearRatio;
+    double _WheelDiameter = 0;
+    double _GearRatio = 0;
     
     // Target Values
-    double _DistanceInMeters;
-    double _DistanceInCM;
-    double _DistanceInRotations;
+    double _DistanceInMeters = 0;
+    double _DistanceInCM = 0;
+    double _DistanceInRotations = 0;
 
     // PID
-    double _goal;
-    double _previousError;
-    double _kP;
-    double _kI;
-    double _kD;
+    double _goal = 0;
+    double _previousError = 0;
+    double _sum = 0;
+    double _kP = 0;
+    double _kI = 0;
+    double _kD = 0;
     double &_dt;
 
 
