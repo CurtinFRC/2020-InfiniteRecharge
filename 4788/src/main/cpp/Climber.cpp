@@ -15,6 +15,8 @@ Climber::Climber(actuators::DoubleSolenoid &ClimberActuator,
                  _ClimberElevatorLeft(ClimberElevatorLeft), 
                  _ClimberElevatorRight(ClimberElevatorRight),
                  _contGroup(contGroup) {}
+
+
 void Climber::TeleopOnUpdate(double dt) {
   double liftSpeedleft;
   double liftSpeedright;
@@ -29,21 +31,13 @@ void Climber::TeleopOnUpdate(double dt) {
 
   if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONFALL)) {
     if (ToggleEnabled) {
-      _ShiftPTO.SetTarget(wml::actuators::kForward);
+      _ClimberActuator.SetTarget(wml::actuators::kForward);
       ToggleEnabled = false;
     } else if (!ToggleEnabled) {
-      _ShiftPTO.SetTarget(wml::actuators::kReverse);
+      _ClimberActuator.SetTarget(wml::actuators::kReverse);
       ToggleEnabled = true;
     }
-  }
-  
-  if (_contGroup.Get(ControlMap::ClimberUp, Controller::ONFALL)) {
-    _ClimberActuator.SetTarget(wml::actuators::kForward);
-    ToggleEnabled = false;
-  } else if (!ToggleEnabled) {
-    _ClimberActuator.SetTarget(wml::actuators::kReverse);
-    ToggleEnabled = true;
-  }
+  } 
 
   if (ToggleEnabled) {
 
@@ -80,3 +74,33 @@ void Climber::TestOnUpdate(double dt) {
   _ClimberActuator.SetTarget(wml::actuators::kReverse);
   _ShiftPTO.SetTarget(wml::actuators::kReverse);
 }
+  // liftSpeed = 0.25;
+  // switch (testType) {
+  //   case 1:
+  //     _ClimberActuator.SetTarget(wml::actuators::kForward);
+  //     if (_ClimberElevator.encoder->GetEncoderRotations() <= 6) {
+  //       _ClimberElevator.transmission->SetVoltage(12 * liftSpeed);
+  //     } else {
+  //       testType++;
+  //     }
+  //   break;
+
+  //   case 2:
+  //     if (_ClimberElevator.encoder->GetEncoderRotations() >= 6) {
+  //       _ClimberElevator.transmission->SetVoltage(12 * -liftSpeed);
+  //     } else {
+  //       testType++;
+  //     }
+  //   break;
+
+  //   case 3:
+  //     _ClimberActuator.SetTarget(wml::actuators::kReverse);
+  //   break;
+  // }
+
+  //_ClimberActuator.Update(dt);
+//}
+  
+
+
+

@@ -22,6 +22,8 @@ class Climber {
 		wml::controllers::SmartControllerGroup &_contGroup;
  	
 	 	frc::Timer ClimberTimer;
+		double liftSpeed = 0;
+		int testType = 1;
 
  		bool ToggleEnabled;
  };

@@ -33,34 +33,34 @@ const double ControlMap::joyDeadzone = 0.15;
 const double ControlMap::xboxDeadzone = 0.1;
 const double ControlMap::triggerDeadzone = 0.15;
 
+// PCMs
+const int ControlMap::PCModule = 1;
+
 // Drive Left
-const int ControlMap::DriveMAXportFL = 4;
-const int ControlMap::DriveMAXportBL = 3;
+const int ControlMap::DriveMAXportFL = 1; // 10
+const int ControlMap::DriveMAXportBL = 8; // 11
 // Drive Right
-const int ControlMap::DriveMAXportFR = 1;
-const int ControlMap::DriveMAXportBR = 2;
+const int ControlMap::DriveMAXportFR = 2; // 12
+const int ControlMap::DriveMAXportBR = 9; // 13
 // Drive Gearing
-const int ControlMap::ChangeGearPort1 = 99;
-const int ControlMap::ChangeGearPort2 = 99;
+const int ControlMap::ChangeGearPort1 = 6;
+const int ControlMap::ChangeGearPort2 = 7;
 const int ControlMap::Shift2PTOPort1 = 99;
 const int ControlMap::Shift2PTOPort2 = 99;
 const double ControlMap::ChangeGearTime = 0;
 // Drive General Values
-const double ControlMap::MaxDrivetrainAcceleration = 0.015;
+const double ControlMap::MaxDrivetrainAcceleration = 1; // 0.015
 const double ControlMap::MaxDrivetrainSpeed = 1;
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.4;
 const double ControlMap::DriveTestCaseRotations = 50;
 
 // Turret
-const int ControlMap::TurretFlyWheelPort = 5;
-const int ControlMap::TurretFlyWheelPort2 = 6;
+const int ControlMap::TurretFlyWheelPort = 21;
+const int ControlMap::TurretFlyWheelPort2 = 22;
 const int ControlMap::TurretAnglePort = 99;
-const int ControlMap::TurretRotationPort = 8;
+const int ControlMap::TurretRotationPort = 20;
 const bool ControlMap::TuneTurretPID = false;
-const bool ControlMap::TuneAnglePID = true;
-
-const double ControlMap::TurretDistanceSetpoint1 = 0; // Close
-const double ControlMap::TurretDistanceSetpoint2 = 0; // Mid
-const double ControlMap::TurretDistanceSetpoint3 = 0; // Far
+const bool ControlMap::TuneAnglePID = false;
 
 const int ControlMap::TurretLeftLimitPort = 99;
 const int ControlMap::TurretRightLimitPort = 99;
@@ -75,7 +75,7 @@ const double ControlMap::TurretEncoderSafeZone = 5;
 const double ControlMap::TurretEncoderRotations = 500;
 const double ControlMap::MaxAngleEncoderRotations = 500;
 const double ControlMap::TurretRatio = 7;
-const double ControlMap::MaxTurretSpeed = 0.5;
+const double ControlMap::MaxTurretSpeed = 0.3;
 const double ControlMap::MaxTurretAngularSpeed = 0.5;
 const double ControlMap::FlyWheelVelocity = 500;
 
@@ -97,13 +97,15 @@ const int ControlMap::IntakeDownPort1 = 99;
 const int ControlMap::IntakeDownPort2 = 99;
 const double ControlMap::PannelActuationTime = 0;
 const double ControlMap::IntakeDownActuationTime = 99;
+const double ControlMap::IntakeTestCaseRotations = 30;
 
 
 // MagLoader
 const int ControlMap::MagLoaderMotorPort = 99;
-const int ControlMap::StartMagLimitPort = 99;
-const int ControlMap::Position1LimitPort = 99;
-const int ControlMap::Position5LimitPort = 99;
+const int ControlMap::StartMagLimitPort = 1;
+const int ControlMap::Position1LimitPort = 2;
+const int ControlMap::Position5LimitPort = 3;
+const double ControlMap::MagazineBallThresh = 3000;
 const double ControlMap::MagTestCaseRotations = 5;
 
 // Climber 
@@ -120,15 +122,84 @@ const double ControlMap::LiftMaxSpeed = 0.5;
 
 // Control System
 const int ControlMap::PressureSensorPort = 99;
-const int ControlMap::CompressorPort = 99;
+const int ControlMap::CompressorPort = 0;
 const int ControlMap::CamFOV = 60;
 
 //Control Pannel
 const int ControlMap::ControlPannelPort = 99;
 const int ControlMap::ControlPannelUpPort = 99;
-const int ControlMap::ControlPannelUpSolPort1 = 99;
-const int ControlMap::ControlPannelUpSolPort2 = 99;
-const double ControlMap::ControlPannelActuationTime = 99;
+
+// Auto Values (In Meters)
+const double ControlMap::AutoGearRatio = 15; // AutoGearRatio:1/output roation
+const double ControlMap::WheelDiameter = 15.24; // CM
+const double ControlMap::WheelCircumference = 47.877872040708;
+
+// LeftDrive
+const double ControlMap::leftKp = 0.15;
+const double ControlMap::leftKi = 0.005;
+const double ControlMap::leftKd = 0.006;
+
+// RightDrive
+const double ControlMap::rightKp = 0.15;
+const double ControlMap::rightKi = 0.005;
+const double ControlMap::rightKd = 0.006;
+
+// 6 Ball
+const double ControlMap::Strt6Ballx = 3.2;
+const double ControlMap::Strt6Bally = -2.4;
+const double ControlMap::Strt6BallAngle = -54.46232221; // Kinda Doesn't Matter
+const double ControlMap::Strt6BallEncoderDrift = 0;
+const double ControlMap::Strt6BallAngleDrift = 0;
+
+const double ControlMap::wypt1Ball6x = 5.4;
+const double ControlMap::wypt1Ball6y = -0.7;
+const double ControlMap::wypt1Ball6Angle = 0;
+const double ControlMap::wypt1Ball6EncoderDrift = 0;
+const double ControlMap::wypt1Ball6AngleDrift = 0;
+
+const double ControlMap::wypt2Ball6x = 8;
+const double ControlMap::wypt2Ball6y = -0.7;
+const double ControlMap::wypt2Ball6Angle = -21.80140949;
+const double ControlMap::wypt2Ball6EncoderDrift = 0;
+const double ControlMap::wypt2Ball6AngleDrift = 0;
+
+const double ControlMap::End6Ballx = 4.2;
+const double ControlMap::End6Bally = -2.4;
+const double ControlMap::End6BallAngle = 0;
+const double ControlMap::End6BallEncoderDrift = 0;
+const double ControlMap::End6BallAngleDrift = 0;
+
+// 8 Ball
+const double ControlMap::Strt8Ballx = 3.2;
+const double ControlMap::Strt8Bally = -2.4;
+const double ControlMap::Strt8BallAngle = 0; // Kinda Doesn't Matter
+const double ControlMap::Strt8BallEncoderDrift = 0;
+const double ControlMap::Strt8BallAngleDrift = 0;
+
+const double ControlMap::wypt1Ball8x = 5.4;
+const double ControlMap::wypt1Ball8y = -0.7;
+const double ControlMap::wypt1Ball8Angle = 54.46232221;
+const double ControlMap::wypt1Ball8EncoderDrift = 0;
+const double ControlMap::wypt1Ball8AngleDrift = 0;
+
+const double ControlMap::wypt2Ball8x = 9.7;
+const double ControlMap::wypt2Ball8y = -0.7;
+const double ControlMap::wypt2Ball8Angle = 0;
+const double ControlMap::wypt2Ball8EncoderDrift = 0;
+const double ControlMap::wypt2Ball8AngleDrift = 0;
+
+const double ControlMap::wypt3Ball8x = 8;
+const double ControlMap::wypt3Ball8y = -0.7;
+const double ControlMap::wypt3Ball8Angle = -21.801409;
+const double ControlMap::wypt3Ball8EnoderDrift = 0;
+const double ControlMap::wypt3Ball8AngleDrift = 0;
+
+const double ControlMap::End8Ballx = 4.2;
+const double ControlMap::End8Bally = -2.4;
+const double ControlMap::End8BallAngle = 0;
+const double ControlMap::End8BallEncoderDrift = 0;
+const double ControlMap::End8BallAngleDrift = 0;
+
 
 
 // -------------Defined Buttons-------------------

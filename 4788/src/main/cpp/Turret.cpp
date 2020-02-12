@@ -38,6 +38,8 @@ void Turret::ZeroTurret() {
 			_RotationalAxis.transmission->SetVoltage(12 * -0.3);
 		} else {
 			std::cout << "Turret Zero Timed Out" << std::endl;
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
 			_RotationalAxis.transmission->SetVoltage(0);
 			break;
 		}
@@ -49,6 +51,8 @@ void Turret::ZeroTurret() {
 			_RotationalAxis.transmission->SetVoltage(12 * 0.3);
 		} else {
 			std::cout << "Turret Zero Timed Out" << std::endl;
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
 			_RotationalAxis.transmission->SetVoltage(0);
 			break;
 		}
@@ -59,6 +63,8 @@ void Turret::ZeroTurret() {
 			_VerticalAxis.transmission->SetVoltage(12 * 0.2);
 		} else {
 			_VerticalAxis.transmission->SetVoltage(0);
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
 			std::cout << "Turret Zero Timed Out" << std::endl;
 			break;
 		}
@@ -218,12 +224,13 @@ void Turret::TeleopOnUpdate(double dt) {
 
 
 	if (ControlMap::TuneTurretPID && ControlMap::TuneAnglePID) {
-		std::cout << "Can't Have Both Turret & Angle PID tuning at the same time" << std::endl;
+		std::cout << "Conflict Turret/Angle Tuning" << std::endl;
 	}	else if (ControlMap::TuneTurretPID) {
 		TuneTurretPID();
 	} else if (ControlMap::TuneAnglePID) {
 		TuneAnglePID();
 	}
+	
 
 if (!_contGroup.Get(ControlMap::R2)) {
 	if (_contGroup.Get(ControlMap::TurretAutoAim)) {
@@ -253,6 +260,15 @@ if (!_contGroup.Get(ControlMap::R2)) {
 		FlyWheelPower = 0;
 	}
 
+	// Flywheel Feedback
+	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
+		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
+	} else {
+		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 0);
+		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 0);
+	}
+
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 
 	AngularPower *= ControlMap::MaxTurretAngularSpeed;
@@ -275,6 +291,8 @@ if (!_contGroup.Get(ControlMap::R2)) {
 void Turret::AutoOnUpdate(double dt) {
 
 }
+
+// @TODO Turret Test
 
 void Turret::TestOnUpdate(double dt) {
 	if (!leftEncoderTest && !rightEncoderTest) {

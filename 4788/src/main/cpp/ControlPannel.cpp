@@ -6,63 +6,77 @@ using namespace wml::controllers;
 
 ControlPannel::ControlPannel(wml::actuators::DoubleSolenoid &ClimberActuator,
 														 Gearbox &ControlPannelMotor, 
-														 wml::actuators::DoubleSolenoid &ControlPannelUpSol, 
+														 Gearbox &ControlPannelUpMotor, 
 														 SmartControllerGroup &contGroup,
 														 std::shared_ptr<nt::NetworkTable> &ControlPannelTable) : 
 														
 														 _ClimberActuator(ClimberActuator),
 														 _ControlPannelMotor(ControlPannelMotor), 
-														 _ControlPannelUpSol(ControlPannelUpSol), 
+														 _ExtendControlPannelMotor(_ExtendControlPannelMotor), 
 														 _contGroup(contGroup), 
 														 _ControlPannelTable(ControlPannelTable){}
 void ControlPannel::TeleopOnUpdate(double dt) {
-	double ControlPannelPower;
-	
+
 	if (_contGroup.Get(ControlMap::SpinControlPannelLeft)) {
 		ControlPannelPower = 0.5;
 	} else if (_contGroup.Get(ControlMap::SpinControlPannelRight)) {
 		ControlPannelPower = -0.5;
 	} else if (_contGroup.Get(ControlMap::ControlPannelUp)) {
-		_ControlPannelUpSol.SetTarget(wml::actuators::kForward);
+		ControlPannelUpPower = 0.5;
 	} else if (_contGroup.Get(ControlMap::ControlPannelDown)) {
-		_ControlPannelUpSol.SetTarget(wml::actuators::kReverse);
+		ControlPannelUpPower = -0.5;
 	}
 	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelPower);
+	_ExtendControlPannelMotor.transmission->SetVoltage(12 * ControlPannelUpPower);
 }
 void ControlPannel::AutoOnUpdate(double dt) {}
 
 void ControlPannel::TestOnUpdate(double dt) {
-
-//if the ControlPannel Mechanism is on the turret 
-	/*double ControlPannelSpeed;
-	_ClimberActuator.SetTarget(wml::actuators::kForward);
-
-	CringeTimer.Start();
-	while (CringeTimer.Get() <= 5) {
-		ControlPannelSpeed = 0.5;
-	} while (CringeTimer.Get() <= 10) {
-		ControlPannelSpeed = -0.5;
-	}
-	CringeTimer.Stop();
-	CringeTimer.Reset();
-	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
-	_ClimberActuator.SetTarget(wml::actuators::kReverse);*/
-
-//if it is in a random space 
-
-
-//only have 1 uncommeted 
-
 	double ControlPannelSpeed;
+	double ControlPannelUpSpeed;
+	double Timeout = 3;
 
-	CringeTimer.Start();
-	if (CringeTimer.Get() <= 5) {
-		ControlPannelSpeed = 0.5;
-	} else {
-		ControlPannelSpeed = 0;
+	switch (TestSelector) {
+		CringeTimer.Start();
+		
+		case 1:
+		if (CringeTimer.Get() <= Timeout) {
+			ControlPannelUpSpeed = 0.5;
+		} else {
+			ControlPannelUpSpeed = 0;
+			CringeTimer.Reset();
+			TestSelector++;
+		}
+		break;
+
+		case 2:
+		if (CringeTimer.Get() <= Timeout) {
+			ControlPannelSpeed = 0.5;
+		} else {
+			ControlPannelSpeed = 0;
+			CringeTimer.Reset();
+			TestSelector++;
+		}
+		break;
+
+		case 3:
+		if (CringeTimer.Get() <= Timeout) {
+			ControlPannelSpeed = -0.5;
+		} else {
+			ControlPannelSpeed = 0;
+			CringeTimer.Reset();
+			TestSelector++;
+		}
+		break;
+
+		case 4:
+		if (CringeTimer.Get() <= Timeout) {
+			ControlPannelUpSpeed = -0.5;
+		} else {
+			ControlPannelUpSpeed = 0;
+		}
+		break;
+		CringeTimer.Stop();
+		CringeTimer.Reset();
 	}
-	_ControlPannelMotor.transmission->SetVoltage(12 * ControlPannelSpeed);
-	CringeTimer.Stop();
-	CringeTimer.Reset();
-
 }

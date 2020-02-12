@@ -32,21 +32,43 @@ class DrivetrainManual : public wml::Strategy {
     std::shared_ptr<nt::NetworkTable> &_rotationTable;
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;
+    bool PTOactive = false;
 };
 
 // Class that Runs in Autonomous
 class DrivetrainAuto : public wml::Strategy {
   public:
     DrivetrainAuto(wml::Drivetrain &drivetrain, 
-                   wml::control::PIDGains gains);
+                   wml::control::PIDGains gains,
+                   int &autoSelector,
+                   bool &StartDoComplete,
+                   bool &strt,
+                   bool &p1,
+                   bool &p2,
+                   bool &p3,
+                   bool &end);
 
     void OnUpdate(double dt) override;
+    double LeftDriveToTarget(double dt);
+    double RightDriveToTarget(double dt);
 
   private:
     wml::Drivetrain &_drivetrain;
     wml::control::PIDController _pid;
-    double leftSpeed = 0, rightSpeed = 0;
+    double LeftPower = 0, RightPower = 0;
     double currentSpeed;
+
+    int &_autoSelector;
+    int AutoWaypointSwitcher = 1;
+    bool &_StartDoComplete;
+    bool &_strt;
+    bool &_p1;
+    bool &_p2;
+    bool &_p3;
+    bool &_end;
+
+    double DistanceInRotations;
+    double CurrentHeading;
 };
 
 // Class that Runs in Test Mode

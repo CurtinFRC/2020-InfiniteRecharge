@@ -83,8 +83,6 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   #endif
 
-  // _contGroup.GetController(ControlMap::Driver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
-
   if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE)) {
     _drivetrain.SetInverted(!_drivetrain.GetInverted());
   }
@@ -95,68 +93,28 @@ void DrivetrainManual::OnUpdate(double dt) {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kReverse);
   }
 
+  if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONRISE)) {
+    if (!PTOactive) {
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+      PTOactive = true;
+    } else if (PTOactive) {
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
+      PTOactive = false;
+    }
+  }
+
+  _ChangeGears.Update(dt);
+  _Shift2PTO.Update(dt);
+
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
-  _drivetrain.Set(leftSpeed, rightSpeed);
-
-  if (_contGroup.Get(ControlMap::ShiftGears)) {
-    _ChangeGears.SetTarget(wml::actuators::kForward);
-  } else {
-    _ChangeGears.SetTarget(wml::actuators::kReverse);
-  }
-
-//double DanceSpeed;
-  //Dance Button
-  // if (_contGroup.Get(ControlMap::R3)) { 
-  //   DanceSpeed = 0.5;
-  // }
-  // _drivetrain.SetVoltage((12 * DanceSpeed),0 );
   
+  std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
-
-  //Defence button   
-  if (_contGroup.Get(ControlMap::Defence)) {
-    //Turret, Intake up and shift to low gear 
-    _ChangeGears.SetTarget(wml::actuators::kForward);
-
-    double rotationmexsped = table_2->GetNumber("Turret_Min", 0);
-    double rotationmunsped =  table_2->GetNumber("Turret_Max", 0);
-
-    _Rotation.transmission->SetVoltage(12 * rotationmexsped);
-
-    double kp = 0.5; 
-    double input = _Rotation.encoder->GetEncoderRotations();
-    double goal = ((rotationmexsped/2) + rotationmunsped);
-    
-    double error = goal - input;
-
-    double ouput = kp * error;
-
-    _Rotation.transmission->SetVoltage(12 * ouput);
-
-    //Intake
-    _IntakeDown.SetTarget(wml::actuators::kForward);
-
-  } else {
-    _ChangeGears.SetTarget(wml::actuators::kReverse);
-    _IntakeDown.SetTarget(wml::actuators::kReverse);
-  }
-
+  _drivetrain.Set(leftSpeed, rightSpeed);
 }
-
-// Initializes & Defines groups for Autonomous driving
-DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain, control::PIDGains gains) : _drivetrain(drivetrain), _pid(gains) {
-  Requires(&drivetrain);
-  SetCanBeInterrupted(true);
-  SetCanBeReused(false);
-}
-
-void DrivetrainAuto::OnUpdate(double dt) {
-  //@TODO, Everthing to do with autonomous basically... so yea, i'm looking forward to that
-}
-
-
 
 
 // Initializes & Defines groups for Test Mode
