@@ -13,7 +13,8 @@ class Turret {
 					 wml::sensors::LimitSwitch &AngleDownLimit, 
 					 wml::controllers::SmartControllerGroup &contGroup, 
 					 std::shared_ptr<nt::NetworkTable> &visionTable,
-					 std::shared_ptr<nt::NetworkTable> &rotationTable);
+					 std::shared_ptr<nt::NetworkTable> &rotationTable, 
+					 bool &TurretDisable);
 
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
@@ -44,6 +45,7 @@ class Turret {
 		std::shared_ptr<nt::NetworkTable> &_rotationTable;
 
 		frc::Timer ZeroTimer;
+		bool &_TurretDisable;
 
 		// PID Calculations X axis (Rotation R)
 		double RkP = 0;
@@ -96,4 +98,7 @@ class Turret {
 		double RotationPower = 0;
 		double AngularPower = 0;
 		double FlyWheelPower = 0;
+
+		//dissable for climber 
+
 };

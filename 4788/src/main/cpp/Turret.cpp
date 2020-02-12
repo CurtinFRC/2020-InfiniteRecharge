@@ -12,7 +12,9 @@ Turret::Turret(Gearbox &Rotation,
 							 sensors::LimitSwitch &AngleDownLimit, 
 							 SmartControllerGroup &contGroup, 
 							 std::shared_ptr<nt::NetworkTable> &visionTable,
-							 std::shared_ptr<nt::NetworkTable> &rotationTable) : 
+							 std::shared_ptr<nt::NetworkTable> &rotationTable, 
+							 bool &TurretDisable) : 
+
 							 
 							 _RotationalAxis(Rotation),
 						   _VerticalAxis(VerticalAxis), 
@@ -22,7 +24,8 @@ Turret::Turret(Gearbox &Rotation,
 							 _AngleDownLimit(AngleDownLimit), 
 							 _contGroup(contGroup), 
 							 _visionTable(visionTable),
-							 _rotationTable(rotationTable){
+							 _rotationTable(rotationTable),
+							 _TurretDisable(TurretDisable){
 	table = _visionTable->GetSubTable("Target");
 	table_2 =  _rotationTable->GetSubTable("turretRotation");
 
@@ -248,8 +251,10 @@ if (!_contGroup.Get(ControlMap::R2)) {
 	// Manual Rotation Control
 	RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 
+if (_TurretDisable) {
 	// Manual Angle Control
 	AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
+} 
 
 	// FlyWheel Code
 	if ((_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) && (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone)) {

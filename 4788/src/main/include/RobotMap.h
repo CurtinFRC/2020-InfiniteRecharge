@@ -229,6 +229,8 @@ struct RobotMap {
 
    //Turret
    std::shared_ptr<nt::NetworkTable> rotationTable = nt::NetworkTableInstance::GetDefault().GetTable("Sharing values");
+
+   bool TurretDisable = false;
   };
   ControlSystem controlSystem;
 };

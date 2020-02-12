@@ -284,7 +284,7 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tAxis ControlMap::ClimberControlRight{ CoDriver, XboxController::kRightYAxis};
   const tButton ControlMap::ClimberToggle{ CoDriver, XboxController::kY};
   const tButton ControlMap::ClimberUp{ CoDriver, XboxController::kX };
-  const tButton ControlMap::Shift2PTO{ CoDriver, XboxController::kBumperRight };
+  const tButton ControlMap::Shift2PTO{ Driver, XboxController::kBumperRight };
 #endif
 
 //manual override buttons 
