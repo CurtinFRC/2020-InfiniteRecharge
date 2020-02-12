@@ -43,8 +43,8 @@ class DrivetrainAuto : public wml::Strategy {
                    bool &end);
 
     void OnUpdate(double dt) override;
-    double LeftDriveToTarget(double dt);
-    double RightDriveToTarget(double dt);
+    double LeftDriveToTarget(double dt, double goal);
+    double RightDriveToTarget(double dt, double goal);
 
   private:
     wml::Drivetrain &_drivetrain;

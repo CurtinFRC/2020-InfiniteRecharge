@@ -51,7 +51,6 @@ const double ControlMap::ChangeGearTime = 0;
 // Drive General Values
 const double ControlMap::MaxDrivetrainAcceleration = 1; // 0.015
 const double ControlMap::MaxDrivetrainSpeed = 1;
-const double ControlMap::MaxAutoDrivetrainSpeed = 0.4;
 const double ControlMap::DriveTestCaseRotations = 50;
 
 // Turret
@@ -129,17 +128,22 @@ const int ControlMap::ControlPannelPort = 99;
 const int ControlMap::ControlPannelUpPort = 99;
 
 // Auto Values (In Meters)
-const double ControlMap::AutoGearRatio = 15; // AutoGearRatio:1/output roation
+const double ControlMap::AutoGearRatio = 12; // AutoGearRatio:1/output roation (15 = Neo Drive)
 const double ControlMap::WheelDiameter = 15.24; // CM
 const double ControlMap::WheelCircumference = 47.877872040708;
 
+// Auto Speed
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.3;
+const double ControlMap::MaxAutoTurnSpeed = 0.35;
+
+
 // LeftDrive
-const double ControlMap::leftKp = 0.15;
+const double ControlMap::leftKp = 0.06;
 const double ControlMap::leftKi = 0.005;
 const double ControlMap::leftKd = 0.006;
 
 // RightDrive
-const double ControlMap::rightKp = 0.15;
+const double ControlMap::rightKp = 0.06;
 const double ControlMap::rightKi = 0.005;
 const double ControlMap::rightKd = 0.006;
 
