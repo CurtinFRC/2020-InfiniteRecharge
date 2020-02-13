@@ -6,13 +6,11 @@ using namespace wml::controllers;
 
 ControlPannel::ControlPannel(Gearbox &ControlPannelMotor, 
 														 Gearbox &ExtendControlPannelMotor, 
-														 SmartControllerGroup &contGroup,
-														 std::shared_ptr<nt::NetworkTable> &ControlPannelTable) : 
+														 SmartControllerGroup &contGroup) : 
 							
 														 _ControlPannelMotor(ControlPannelMotor), 
 														 _ExtendControlPannelMotor(ExtendControlPannelMotor), 
-														 _contGroup(contGroup), 
-														 _ControlPannelTable(ControlPannelTable){}
+														 _contGroup(contGroup){}
 void ControlPannel::TeleopOnUpdate(double dt) {
 
 	if (_contGroup.Get(ControlMap::SpinControlPannelLeft)) {

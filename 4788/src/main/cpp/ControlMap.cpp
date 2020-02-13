@@ -131,7 +131,6 @@ const int ControlMap::ControlPannelUpPort = 99;
 // Auto Values (In Meters)
 const double ControlMap::AutoGearRatio = 12; // AutoGearRatio:1/output roation (15 = Neo Drive)
 const double ControlMap::WheelDiameter = 15.24; // CM
-const double ControlMap::WheelCircumference = 47.877872040708;
 
 // Auto Speed
 const double ControlMap::MaxAutoDrivetrainSpeed = 0.3;
@@ -196,13 +195,11 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tAxis ControlMap::DrivetrainTurn{ Driver, Joystick::kZAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, 2 };
   const tButton ControlMap::ShiftGears{ Driver, 99 };
-  const tButton ControlMap::Shift2PTO{ CoDriver, 99 };
 #else
   const tAxis ControlMap::DrivetrainLeft{ Driver, XboxController::kLeftYAxis };
   const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
   const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperLeft };
-  const tButton ControlMap::Defence{ Driver, XboxController::kA};
 #endif
 
 // Turret
@@ -261,7 +258,6 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tAxis ControlMap::ClimberControlLeft{ CoDriver, XboxController::kLeftYAxis};
   const tAxis ControlMap::ClimberControlRight{ CoDriver, XboxController::kRightYAxis};
   const tButton ControlMap::ClimberToggle{ CoDriver, XboxController::kY};
-  const tButton ControlMap::ClimberUp{ CoDriver, XboxController::kX };
   const tButton ControlMap::Shift2PTO{ Driver, XboxController::kBumperRight };
 #endif
 
