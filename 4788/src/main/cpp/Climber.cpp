@@ -8,13 +8,15 @@ Climber::Climber(actuators::DoubleSolenoid &ClimberActuator,
                  actuators::DoubleSolenoid &ShiftPTO, 
                  Gearbox &ClimberElevatorLeft, 
                  Gearbox &ClimberElevatorRight,
-                 SmartControllerGroup &contGroup) : 
+                 SmartControllerGroup &contGroup,
+                 bool &TurretDisable) : 
 
                  _ClimberActuator(ClimberActuator), 
                  _ShiftPTO(ShiftPTO), 
                  _ClimberElevatorLeft(ClimberElevatorLeft), 
                  _ClimberElevatorRight(ClimberElevatorRight),
-                 _contGroup(contGroup) {}
+                 _contGroup(contGroup),
+                 _TurretDisable(TurretDisable) {}
 
 
 void Climber::TeleopOnUpdate(double dt) {
@@ -36,7 +38,7 @@ void Climber::TeleopOnUpdate(double dt) {
       ToggleEnabled = true;
     }
   } 
-
+ 
   if (ToggleEnabled) {
 
     liftSpeedleft = _contGroup.Get(ControlMap::ClimberControlLeft) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
@@ -50,7 +52,6 @@ void Climber::TeleopOnUpdate(double dt) {
     _ClimberElevatorLeft.transmission->SetVoltage(0);
     _ClimberElevatorRight.transmission->SetVoltage(0);
   }
-
 }
 
 void Climber::AutoOnUpdate(double dt) {}

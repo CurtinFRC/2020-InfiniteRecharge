@@ -218,18 +218,10 @@ struct RobotMap {
     uint8_t message = 73;
     // Climber
 
-    // Auto
-    wpi::SmallString<64> deployDirectory;
-    // frc::filesystem::GetDeployDirectory(deployDirectory);
-
-    //Belt intake 
-   std::shared_ptr<nt::NetworkTable> BeltIntakeTable = nt::NetworkTableInstance::GetDefault().GetTable("Belt Intake Encoders");
-
-   //Control Pannel
-   std::shared_ptr<nt::NetworkTable> ControlPannelTable = nt::NetworkTableInstance::GetDefault().GetTable("Control Pannel stuff");
-
    //Turret
    std::shared_ptr<nt::NetworkTable> rotationTable = nt::NetworkTableInstance::GetDefault().GetTable("Sharing values");
+
+   bool TurretDisable = false;
   };
   ControlSystem controlSystem;
 };
