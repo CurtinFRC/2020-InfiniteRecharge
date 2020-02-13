@@ -28,6 +28,8 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(false);
+
+  _wayFinder.AutoConfig(ControlMap::MaxAutoDrivetrainSpeed, ControlMap::MaxAutoTurnSpeed);
 }
 
 double Rotation2Point(double p1x, double p1y, double p2x, double p2y) {

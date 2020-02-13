@@ -27,7 +27,7 @@ class WayFinder {
      * Also your desired starting angle (Usually zero) and your ending angle in degrees.  
      * Also choose to reverse drivetrain or not (Drive backwards)
      */
-    void GotoWaypoint(double wypt1x, double wypt1y, double startAngle, double wypt2x, double wypt2y, double endAngle, bool reverse);
+    void GotoWaypoint(double wypt1x, double wypt1y, double startAngle, double wypt2x, double wypt2y, double endAngle, bool reverse, double dt);
 
     /** 
      * Test Your Driving PID 
@@ -65,7 +65,6 @@ class WayFinder {
     double _kP = 0;
     double _kI = 0;
     double _kD = 0;
-    double _dt;
 
 
 };

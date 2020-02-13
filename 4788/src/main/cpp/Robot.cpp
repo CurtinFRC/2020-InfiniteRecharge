@@ -29,6 +29,7 @@ void Robot::RobotInit() {
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ClimberElevator, robotMap.contGroup);
   controlPannel = new ControlPannel(robotMap.climber.ClimberActuator, robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup, robotMap.controlSystem.ControlPannelTable);
 
+  // WayFinder
   wayFinder = new WayFinder(ControlMap::leftKp, ControlMap::leftKi, ControlMap::leftKd, *drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
 
   // Zero All Encoders

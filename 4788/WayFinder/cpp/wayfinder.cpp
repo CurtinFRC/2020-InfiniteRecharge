@@ -3,6 +3,7 @@
 using namespace std;
 using namespace wml;
 
+// Initilize way finder
 WayFinder::WayFinder(double kp, double ki, double kd, wml::Drivetrain &drivetrain, double gearboxReduction, double WheelDiameter) : _drivetrain(drivetrain) {
   _kP = kp;
   _kI = ki;
@@ -12,6 +13,7 @@ WayFinder::WayFinder(double kp, double ki, double kd, wml::Drivetrain &drivetrai
   _WheelDiameter = WheelDiameter;
 }
 
+// Calculate rotations to the waypoint target
 double WayFinder::RotationsToTarget(double p1x, double p1y, double p2x, double p2y) {
   _DistanceInMeters = sqrt(pow(p2x - p1x, 2) + pow(p2y - p1y, 2) * 1.0);
   _DistanceInCM = _DistanceInMeters*100;
@@ -21,11 +23,13 @@ double WayFinder::RotationsToTarget(double p1x, double p1y, double p2x, double p
   return DistanceInRotations;
 }
 
+// Config for speed
 void WayFinder::AutoConfig(double MaxSpeed, double MaxTurnSpeed) {
   _MaxSpeed = MaxSpeed;
   _MaxTurnSpeed = MaxTurnSpeed;
 }
 
+// Way finders internal PID
 double WayFinder::InternalPID(double dt, double goal, double input) {
   double error = goal - input;
   double derror = (error - _previousError)/dt;
@@ -50,6 +54,7 @@ void WayFinder::TurnToTarget(double dt, double input, double goal) {
 }
 
 
+// Drive to the target waypoint
 void WayFinder::DriveToTarget(double dt, double goal , bool reverse) {
 
   // Add power using PID
@@ -91,24 +96,24 @@ void WayFinder::TestPID(double dt, double goal) {
   _drivetrain.Set(LeftSpeed, RightSpeed);
 }
 
-void WayFinder::GotoWaypoint(double wypt1x, double wypt1y, double startAngle, double wypt2x, double wypt2y, double endAngle, bool reverse) {
+void WayFinder::GotoWaypoint(double wypt1x, double wypt1y, double startAngle, double wypt2x, double wypt2y, double endAngle, bool reverse, double dt) {
   // Get the distance to the target in rotations
   _DistanceInRotations = RotationsToTarget(wypt1x, wypt1y, wypt2x, wypt2y);
 
   // Turn to Start Angle
   if (abs(startAngle) > 0) {
-    TurnToTarget(_dt, _drivetrain.GetConfig().gyro->GetAngle(), startAngle);
+    TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), startAngle);
   }
 
   // Drive to target
   if (abs(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations()) < _DistanceInRotations || abs(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations()) < _DistanceInRotations) {
     if (reverse) {
-      DriveToTarget(_dt, _DistanceInRotations, reverse);
+      DriveToTarget(dt, _DistanceInRotations, reverse);
     }
   }
 
   // Turn to End Angle
   if (abs(endAngle) > 0) {
-    TurnToTarget(_dt, _drivetrain.GetConfig().gyro->GetAngle(), endAngle);
+    TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), endAngle);
   }
 }
