@@ -28,7 +28,8 @@ void Robot::RobotInit() {
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.controlSystem.BeltIntakeTable);
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.climber.ClimberElevator, robotMap.contGroup);
   controlPannel = new ControlPannel(robotMap.climber.ClimberActuator, robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup, robotMap.controlSystem.ControlPannelTable);
-  
+
+  wayFinder = new WayFinder(ControlMap::leftKp, ControlMap::leftKi, ControlMap::leftKd, *drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
 
   // Zero All Encoders
   robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
@@ -71,14 +72,16 @@ void Robot::DisabledInit() {
 
 void Robot::AutonomousInit() {
   Schedule(std::make_shared<DrivetrainAuto>(*drivetrain, 
-                                             wml::control::PIDGains{ "I am gains", 1, 0, 0 }, 
-                                             robotMap.autonomous.AutoSelecter, 
-                                             robotMap.autonomous.StartDoComplete,
-                                             robotMap.autonomous.StartPointComplete, 
-                                             robotMap.autonomous.WayPoint1Complete, 
-                                             robotMap.autonomous.WayPoint2Complete, 
-                                             robotMap.autonomous.WayPoint3Complete, 
-                                             robotMap.autonomous.EndComplete));
+                                            *wayFinder,
+                                            wml::control::PIDGains{ "I am gains", 1, 0, 0 }, 
+                                            robotMap.autonomous.AutoSelecter, 
+                                            robotMap.autonomous.StartDoComplete,
+                                            robotMap.autonomous.StartPointComplete, 
+                                            robotMap.autonomous.WayPoint1Complete, 
+                                            robotMap.autonomous.WayPoint2Complete, 
+                                            robotMap.autonomous.WayPoint3Complete, 
+                                            robotMap.autonomous.EndComplete));
+
 
   // Zero Robot For Autonomous
   // turret->ZeroTurret();

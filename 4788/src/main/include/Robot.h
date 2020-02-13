@@ -68,4 +68,5 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     BeltIntake *beltIntake;
     Climber *climber;
     ControlPannel *controlPannel;
+    WayFinder *wayFinder;
 };

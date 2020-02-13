@@ -35,6 +35,7 @@ class DrivetrainManual : public wml::Strategy {
 class DrivetrainAuto : public wml::Strategy {
   public:
     DrivetrainAuto(wml::Drivetrain &drivetrain, 
+                   WayFinder &wayFinder,
                    wml::control::PIDGains gains,
                    int &autoSelector,
                    bool &StartDoComplete,
@@ -53,7 +54,7 @@ class DrivetrainAuto : public wml::Strategy {
 
   private:
     wml::Drivetrain &_drivetrain;
-    WayFinder *_wayFinder;
+    WayFinder &_wayFinder;
     wml::control::PIDController _pid;
     double LeftPower = 0, RightPower = 0;
     double currentSpeed;

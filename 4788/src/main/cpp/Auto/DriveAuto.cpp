@@ -5,6 +5,7 @@ using namespace wml::controllers;
 
 // Initializes & Defines groups for Autonomous driving
 DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain, 
+                               WayFinder &wayFinder,
                                control::PIDGains gains,
                                int &autoSelector,
                                bool &StartDoComplete,
@@ -15,6 +16,7 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
                                bool &end) : 
                                
                                _drivetrain(drivetrain), 
+                               _wayFinder(wayFinder),
                                _pid(gains),
                                _autoSelector(autoSelector),
                                _StartDoComplete(StartDoComplete),
@@ -26,8 +28,6 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(false);
-
-  // _wayFinder = new WayFinder(ControlMap::leftKp, ControlMap::leftKi, ControlMap::leftKd, &_drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
 }
 
 double Rotation2Point(double p1x, double p1y, double p2x, double p2y) {

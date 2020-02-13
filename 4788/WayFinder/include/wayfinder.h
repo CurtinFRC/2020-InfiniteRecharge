@@ -65,7 +65,7 @@ class WayFinder {
     double _kP = 0;
     double _kI = 0;
     double _kD = 0;
-    double &_dt;
+    double _dt;
 
 
 };
