@@ -95,7 +95,7 @@ struct ControlMap {
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
   static const double ClimberActuationTime;
   static const int Shift1PTOPort, Shift2PTOPort;
-  static const int ClimberMotor1Port;
+  static const int ClimberMotor1Port, ClimberMotor2Port;
   static const double LiftMaxSpeed;
   static const double ShiftPTOActuationTime;
 
@@ -137,6 +137,7 @@ struct ControlMap {
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
   static const wml::controllers::tButton ShiftGears;
+  static const wml::controllers::tButton Defence;
 
   // Turret
   #if __CONTROLMAP_USING_JOYSTICK__
@@ -182,10 +183,12 @@ struct ControlMap {
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else
-  static const wml::controllers::tAxis ClimberControl;
+  static const wml::controllers::tAxis ClimberControlRight;
   static const wml::controllers::tButton ClimberUp;
   static const wml::controllers::tButton ClimberDown;
   static const wml::controllers::tButton Shift2PTO; // Toggle
+  static const wml::controllers::tAxis ClimberControlLeft;
+  static const wml::controllers::tButton ClimberToggle;
   #endif
 
   //override buttons 

@@ -6,18 +6,25 @@ using namespace wml::controllers;
 
 // Initializes & Defines groups for Manual Control
 DrivetrainManual::DrivetrainManual(std::string name, 
-                                   //actuators::DoubleSolenoid &IntakeDown,
+                                   actuators::DoubleSolenoid &IntakeDown,
+                                   Gearbox &Rotation,
                                    Drivetrain &drivetrain, 
                                    wml::actuators::DoubleSolenoid &ChangeGears, 
                                    actuators::DoubleSolenoid &Shift2PTO, 
-                                   SmartControllerGroup &contGroup) : 
+                                   SmartControllerGroup &contGroup,
+                                   std::shared_ptr<nt::NetworkTable> &rotationTable
+                                   ) : 
                                    
                                    Strategy(name), 
-                                   //_IntakeDown(IntakeDown),
+                                   _IntakeDown(IntakeDown),
+                                   _Rotation(Rotation),
                                    _drivetrain(drivetrain), 
                                    _ChangeGears(ChangeGears), 
                                    _Shift2PTO(Shift2PTO), 
-                                   _contGroup(contGroup) {
+                                   _contGroup(contGroup),
+                                   _rotationTable(rotationTable){
+                                   
+  table_2 = _rotationTable->GetSubTable("turretRotation");
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
