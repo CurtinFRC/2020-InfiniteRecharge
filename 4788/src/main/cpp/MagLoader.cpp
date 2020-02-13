@@ -65,35 +65,16 @@ void MagLoader::AutoOnUpdate(double dt) {
 
 void MagLoader::TestOnUpdate(double dt) {
 
-  if (!LimitTest) {
-    if (magtest) {
-      std::cout << "Magazine Test Succesful" << std::endl;
-      magtest = false;
-    }
-  } else {
-    // Forward Test
-    if (FwdTest) {
+  //@TODO add more test cases when you know what the mag will do
+  switch (testType) {
+    case 1:
       if (_MagazineMotors.encoder->GetEncoderRotations() < ControlMap::MagTestCaseRotations) {
-        MagazinePower = 0.5;
+        MagazinePower = 1;
       } else {
         MagazinePower = 0;
-        FwdTest = false;
+        testType++;
       }
-    }
-    // Backward Test
-    if (!FwdTest) {
-      if (_MagazineMotors.encoder->GetEncoderRotations() > 0) {
-        MagazinePower = -1;
-      } else {
-        MagazinePower = 0;
-        BckwdTest = false;
-      }
-    }
-
-    // Limit Test
-    if (!BckwdTest) {
-
-    }
+    break;
   }
 
   _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);

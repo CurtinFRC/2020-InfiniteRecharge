@@ -191,16 +191,4 @@ struct ControlMap {
   static const wml::controllers::tButton ClimberToggle;
   #endif
 
-  //override buttons 
-  #if __CONTROLMAP_USING_JOYSTICK__
-
-  #else
-  static const wml::controllers::tButton R1;
-  static const wml::controllers::tButton R2;
-  static const wml::controllers::tButton R3;
-  static const wml::controllers::tButton G1;
-  static const wml::controllers::tButton G2;
-  static const wml::controllers::tButton G3;
-  #endif
-
 };

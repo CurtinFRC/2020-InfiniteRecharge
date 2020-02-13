@@ -37,7 +37,7 @@ void Robot::RobotInit() {
   robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
 
   // Strategy controllers
-  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", robotMap.intake.IntakeDown, robotMap.turret.turretRotation, *drivetrain,  robotMap.driveSystem.ChangeGearing, robotMap.driveSystem.Shift2PTO, robotMap.contGroup, robotMap.controlSystem.rotationTable));
+  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain,  robotMap.driveSystem.ChangeGearing, robotMap.driveSystem.Shift2PTO, robotMap.contGroup));
   drivetrain->StartLoop(100);
 
   // Inverts one side of our drivetrain

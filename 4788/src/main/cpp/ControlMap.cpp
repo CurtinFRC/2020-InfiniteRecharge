@@ -260,21 +260,3 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tButton ControlMap::ClimberToggle{ CoDriver, XboxController::kY};
   const tButton ControlMap::Shift2PTO{ Driver, XboxController::kBumperRight };
 #endif
-
-//manual override buttons 
-
-#if __CONTROLMAP_USING_JOYSTICK__
-  const tButton ControlMap::R1{ override, 7};
-  const tButton ControlMap::R2{ override, 8};
-  const tButton ControlMap::R3{ override, 9};
-  const tButton ControlMap::G1{ override, 10};
-  const tButton ControlMap::G2{ override, 11};
-  const tButton ControlMap::G3{ override, 12};
-#else
-  const tButton ControlMap::R1{ override, 7};
-  const tButton ControlMap::R2{ override, 8};
-  const tButton ControlMap::R3{ override, 9};
-  const tButton ControlMap::G1{ override, 10};
-  const tButton ControlMap::G2{ override, 11};
-  const tButton ControlMap::G3{ override, 12};
-#endif

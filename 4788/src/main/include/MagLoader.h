@@ -26,13 +26,5 @@ class MagLoader {
     bool MagOverride = false;
     double MagazinePower = 0;
 
-    bool magtest = true;
-
-    bool FwdTest = true;
-    bool BckwdTest = true;
-    bool LimitTest = true;
-    bool limit1;
-    bool limit2;
-    bool limit3;
-    bool EncoderTest = true;
+    int testType = 1;
 };

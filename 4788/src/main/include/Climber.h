@@ -25,7 +25,6 @@ class Climber {
 	 	frc::Timer ClimberTimer;
 		double liftSpeedleft = 0;
   	double liftSpeedright = 0;
-		double liftSpeed = 0;
 		int testType = 1;
 		bool &_TurretDisable;
 
