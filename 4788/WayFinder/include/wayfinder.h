@@ -36,6 +36,20 @@ class WayFinder {
     void TestPID(double dt, double goal);
 
 
+    /**
+     * Get's the static distance of the goal in rotations
+     */
+    double GetDistanceInRotations();
+
+
+    /**
+     * Get's the average location between the left and riht encoders
+     * to grab the location of the drivetrain
+     */
+    double GetDrivetrainCurrentLocation();
+
+
+
   private:
     void LeftDriveToTarget(double dt, double goal);
     void RightDriveToTarget(double dt, double goal);

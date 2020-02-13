@@ -32,6 +32,13 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
   _wayFinder.AutoConfig(ControlMap::MaxAutoDrivetrainSpeed, ControlMap::MaxAutoTurnSpeed);
 }
 
+void DrivetrainAuto::WayPointSwitch() {
+  _drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
+  _drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
+  _drivetrain.GetConfig().gyro->Reset();
+  AutoWaypointSwitcher++;
+}
+
 
 // ----------------------Auto------------------------
 
@@ -44,87 +51,36 @@ void DrivetrainAuto::OnUpdate(double dt) {
       switch (AutoWaypointSwitcher) {
         case 1: // Start to Waypoint 1
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet
-          _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
-        break;
-
-        case 2: // Turn to waypoint 2
-          if (_drivetrain.GetConfig().gyro->GetAngle() < ControlMap::wypt1Ball8Angle) {
-            std::cout << "This is working" << std::endl;
-            LeftPower = TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
-            RightPower = -TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
+          if (_wayFinder.GetDrivetrainCurrentLocation() < _wayFinder.GetDistanceInRotations()) {
+            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
           } else {
-            LeftPower = 0;
-            RightPower = 0;
-            _drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().gyro->Reset();
-            AutoWaypointSwitcher++;
+            WayPointSwitch();
           }
         break;
 
-        case 3: // Drive From waypoint 1 to 2
-          DistanceInRotations = Rotation2Point(ControlMap::wypt1Ball8x, ControlMap::wypt1Ball8y, ControlMap::wypt2Ball8x, ControlMap::wypt2Ball8y);
-          if ( (fabs(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations()) < DistanceInRotations) || ( fabs(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations()) < DistanceInRotations) ) {
-            LeftPower = LeftDriveToTarget(dt, fabs(encoderLeft));
-            RightPower = RightDriveToTarget(dt, fabs(encoderRight)) + CurrentHeading;
+        case 2: // Drive from waypoint 1 to 2
+          if (_wayFinder.GetDrivetrainCurrentLocation() < _wayFinder.GetDistanceInRotations()) {
+            _wayFinder.GotoWaypoint(5.4, -0.7, 0, 9.7, -0.7, 0, false, dt);
           } else {
-            LeftPower = 0;
-            RightPower = 0;
-            _drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().gyro->Reset();
-            _p1 = true;
-            AutoWaypointSwitcher++;
+            WayPointSwitch();
           }
         break;
 
-        case 4: // Drive from waypoint 2 to 3 (Backwards)
-          DistanceInRotations = Rotation2Point(ControlMap::wypt2Ball8x, ControlMap::wypt2Ball8y, ControlMap::wypt3Ball8x, ControlMap::wypt3Ball8y);
-          if ( (fabs(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations()) < DistanceInRotations) || ( fabs(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations()) < DistanceInRotations) ) {
-            LeftPower = -LeftDriveToTarget(dt, encoderLeft) - CurrentHeading;
-            RightPower = -RightDriveToTarget(dt, encoderRight);
+        case 3: // Drive From waypoint 2 to 3 (Backwards)
+          if (_wayFinder.GetDrivetrainCurrentLocation() < _wayFinder.GetDistanceInRotations()) {
+            _wayFinder.GotoWaypoint(9.7, -0.7, 0, 8, -0.7, -21.801, true, dt);
           } else {
-            LeftPower = 0;
-            RightPower = 0;
-            _drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().gyro->Reset();
-            _p2 = true;
-            AutoWaypointSwitcher++;
+            WayPointSwitch();
           }
         break;
 
-        case 5: // Turn to EndPoint
-          if (_drivetrain.GetConfig().gyro->GetAngle() > ControlMap::wypt3Ball8Angle) {
-            std::cout << "This is working" << std::endl;
-            LeftPower = -TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
-            RightPower = TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), ControlMap::wypt1Ball8Angle);
+        case 4: // Drive to endpoint (backwards)
+          if (_wayFinder.GetDrivetrainCurrentLocation() < _wayFinder.GetDistanceInRotations()) {
+            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
           } else {
-            LeftPower = 0;
-            RightPower = 0;
-            _drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().gyro->Reset();
-            _p3 = true;
-            AutoWaypointSwitcher++;
+            WayPointSwitch();
           }
-        break;
-          
-        case 6: // Drive to Endpoint (Backwards)
-          DistanceInRotations = Rotation2Point(ControlMap::wypt3Ball8x, ControlMap::wypt3Ball8y, ControlMap::End8Ballx, ControlMap::End8Bally);
-          if ( (fabs(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations()) < DistanceInRotations) || ( fabs(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations()) < DistanceInRotations) ) {
-            LeftPower = -LeftDriveToTarget(dt, encoderLeft) - CurrentHeading;
-            RightPower = -RightDriveToTarget(dt, encoderRight);
-          } else {
-            LeftPower = 0;
-            RightPower = 0;
-            _drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
-            _drivetrain.GetConfig().gyro->Reset();
-            _end = true;
-            AutoWaypointSwitcher++;
-          }
-        break;
+        break;  
       }
       break;
     case 2: // Auto 2

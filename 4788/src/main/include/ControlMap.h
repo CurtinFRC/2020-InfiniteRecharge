@@ -122,13 +122,6 @@ struct ControlMap {
   static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
   static const double End6Ballx, End6Bally, End6BallAngle, End6BallEncoderDrift, End6BallAngleDrift;
 
-    // 8 Ball
-  static const double Strt8Ballx, Strt8Bally, Strt8BallAngle, Strt8BallEncoderDrift, Strt8BallAngleDrift;
-  static const double wypt1Ball8x, wypt1Ball8y, wypt1Ball8Angle, wypt1Ball8EncoderDrift, wypt1Ball8AngleDrift;
-  static const double wypt2Ball8x, wypt2Ball8y, wypt2Ball8Angle, wypt2Ball8EncoderDrift, wypt2Ball8AngleDrift;
-  static const double wypt3Ball8x, wypt3Ball8y, wypt3Ball8Angle, wypt3Ball8EnoderDrift, wypt3Ball8AngleDrift;
-  static const double End8Ballx, End8Bally, End8BallAngle, End8BallEncoderDrift, End8BallAngleDrift;
-
   // --------------- Defined Buttons -----------------
 
   // Turret PID Tuner

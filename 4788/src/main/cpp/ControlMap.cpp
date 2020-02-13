@@ -177,37 +177,6 @@ const double ControlMap::End6BallAngle = 0;
 const double ControlMap::End6BallEncoderDrift = 0;
 const double ControlMap::End6BallAngleDrift = 0;
 
-// 8 Ball
-const double ControlMap::Strt8Ballx = 3.2;
-const double ControlMap::Strt8Bally = -2.4;
-const double ControlMap::Strt8BallAngle = 0; // Kinda Doesn't Matter
-const double ControlMap::Strt8BallEncoderDrift = 0;
-const double ControlMap::Strt8BallAngleDrift = 0;
-
-const double ControlMap::wypt1Ball8x = 5.4;
-const double ControlMap::wypt1Ball8y = -0.7;
-const double ControlMap::wypt1Ball8Angle = 54.46232221;
-const double ControlMap::wypt1Ball8EncoderDrift = 0;
-const double ControlMap::wypt1Ball8AngleDrift = 0;
-
-const double ControlMap::wypt2Ball8x = 9.7;
-const double ControlMap::wypt2Ball8y = -0.7;
-const double ControlMap::wypt2Ball8Angle = 0;
-const double ControlMap::wypt2Ball8EncoderDrift = 0;
-const double ControlMap::wypt2Ball8AngleDrift = 0;
-
-const double ControlMap::wypt3Ball8x = 8;
-const double ControlMap::wypt3Ball8y = -0.7;
-const double ControlMap::wypt3Ball8Angle = -21.801409;
-const double ControlMap::wypt3Ball8EnoderDrift = 0;
-const double ControlMap::wypt3Ball8AngleDrift = 0;
-
-const double ControlMap::End8Ballx = 4.2;
-const double ControlMap::End8Bally = -2.4;
-const double ControlMap::End8BallAngle = 0;
-const double ControlMap::End8BallEncoderDrift = 0;
-const double ControlMap::End8BallAngleDrift = 0;
-
 
 
 // -------------Defined Buttons-------------------

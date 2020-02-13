@@ -53,6 +53,18 @@ void WayFinder::TurnToTarget(double dt, double input, double goal) {
   _drivetrain.Set(turnSpeed, -turnSpeed);
 }
 
+// Get Average distance
+double WayFinder::GetDistanceInRotations() {
+  return _DistanceInRotations;
+}
+
+
+// Get Average Location
+double WayFinder::GetDrivetrainCurrentLocation() {
+  double CombinedLocation = (fabs(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations()) + fabs(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations()));
+  return CombinedLocation/2;
+}
+
 
 // Drive to the target waypoint
 void WayFinder::DriveToTarget(double dt, double goal , bool reverse) {
