@@ -32,116 +32,19 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
   _wayFinder.AutoConfig(ControlMap::MaxAutoDrivetrainSpeed, ControlMap::MaxAutoTurnSpeed);
 }
 
-double Rotation2Point(double p1x, double p1y, double p2x, double p2y) {
-
-  double distanceInMeters = sqrt(pow(p2x - p1x, 2) + pow(p2y - p1y, 2) * 1.0);
-  double DistanceInCM = distanceInMeters*100;
-
-  double DistanceInRotations = ControlMap::AutoGearRatio * (DistanceInCM/ControlMap::WheelCircumference);
-
-  return DistanceInRotations;
-}
-
-double leftPreviousError = 0;
-double rightPreviousError = 0;
-double leftSum = 0;
-double rightSum = 0;
-
-
-
-double AutoPID(double dt, double goal, double input, double kp, double ki, double kd, double *previousError, double *sum) {
-  double error = goal - input;
-  double derror = (error - *previousError) / dt;
-  *sum = *sum + error * dt;  
-
-  double output = kp * error + ki * *sum + kd * derror;
-
-  *previousError = error;
-  std::cout << "Goal " << goal << std::endl;
-  std::cout << "Output " << output << std::endl;
-  return output;
-} 
-
-double InverseNumber (double input) {
-  input = input <= 0 ? abs(input) : -input;
-  return input;
-}
-
-double DrivetrainAuto::TurnToTarget(double dt, double input, double goal) {
-  double error = goal - input;
-  double derror = (error - TurnPreviousError) / dt;
-  TurnSum = TurnSum + error * dt;
-  double output = ControlMap::turnP * error + ControlMap::turnI * TurnSum + ControlMap::turnD * derror;
-  output = (output/goal);
-  output *= ControlMap::MaxAutoTurnSpeed;
-  return output;
-}
-
-double DrivetrainAuto::LeftDriveToTarget(double dt, double goal) {
-  double power;
-  power = AutoPID(dt, 
-                  DistanceInRotations,
-                  goal, 
-                  ControlMap::leftKp,
-                  ControlMap::leftKi,
-                  ControlMap::leftKd,
-                  &leftPreviousError,
-                  &leftSum);
-  // double error = DistanceInRotations - fabs(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations());
-  // double output = error;
-  // output /= DistanceInRotations;
-  // output *= ControlMap::MaxAutoDrivetrainSpeed;
-  // power /= fabs(DistanceInRotations);
-  power = power < -ControlMap::MaxAutoDrivetrainSpeed ? -ControlMap::MaxAutoDrivetrainSpeed : 
-  power > ControlMap::MaxAutoDrivetrainSpeed ? ControlMap::MaxAutoDrivetrainSpeed : 0;
-  return power;
-}
-
-double DrivetrainAuto::RightDriveToTarget(double dt, double goal) {
-
-  double power;
-  power = AutoPID(dt, 
-                  DistanceInRotations,
-                  goal, 
-                  ControlMap::rightKp,
-                  ControlMap::rightKi,
-                  ControlMap::rightKd,
-                  &rightPreviousError,
-                  &rightSum);
-  // double error = DistanceInRotations - fabs(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations());
-  // double output = error;
-  // output /= DistanceInRotations;
-  // power /= fabs(DistanceInRotations);
-  power = power < -ControlMap::MaxAutoDrivetrainSpeed ? -ControlMap::MaxAutoDrivetrainSpeed : 
-  power > ControlMap::MaxAutoDrivetrainSpeed ? ControlMap::MaxAutoDrivetrainSpeed : 0;
-  return power;
-}
-
-
 
 // ----------------------Auto------------------------
 
 
 void DrivetrainAuto::OnUpdate(double dt) {
-  CurrentHeading = (_drivetrain.GetConfig().gyro->GetAngle() * (ControlMap::rightKp/2));
-  double encoderLeft = _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations();
-  double encoderRight = _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations();
+  
+
   switch (_autoSelector) {
     case 1: // Auto 1 (8 Ball)
       switch (AutoWaypointSwitcher) {
         case 1: // Start to Waypoint 1
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet
-          DistanceInRotations = Rotation2Point(ControlMap::Strt8Ballx, ControlMap::Strt8Bally, ControlMap::wypt1Ball8x, ControlMap::wypt1Ball8y);
-          if ( (fabs(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations()) < DistanceInRotations) || ( fabs(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations()) < DistanceInRotations) ) {
-            LeftPower = LeftDriveToTarget(dt, fabs(encoderLeft));
-            RightPower = LeftDriveToTarget(dt, fabs(encoderRight)) + CurrentHeading;
-          } else {
-            LeftPower = 0;
-            RightPower = 0;
-            _drivetrain.GetConfig().gyro->Reset();
-            _strt = true;
-            AutoWaypointSwitcher++;
-          }
+          _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
         break;
 
         case 2: // Turn to waypoint 2
