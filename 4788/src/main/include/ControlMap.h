@@ -41,7 +41,6 @@ struct ControlMap {
   static const int Shift2PTOPort1, Shift2PTOPort2;
   static const double ChangeGearTime;
   static const double MaxDrivetrainSpeed;
-  static const double MaxAutoDrivetrainSpeed;
   static const double MaxDrivetrainAcceleration;
   static const double DriveTestCaseRotations;
 
@@ -110,21 +109,18 @@ struct ControlMap {
   static const double AutoGearRatio; // 1:AutoGearRatio
   static const double WheelDiameter; // CM
   static const double WheelCircumference;
+
+  static const double MaxAutoDrivetrainSpeed, MaxAutoTurnSpeed;
+  
   // Drive PID
   static const double leftKp, rightKp, leftKi, rightKi, leftKd, rightKd;
+  static const double turnP, turnI, turnD;
 
     // 6 Ball
   static const double Strt6Ballx, Strt6Bally, Strt6BallAngle, Strt6BallEncoderDrift, Strt6BallAngleDrift;
   static const double wypt1Ball6x, wypt1Ball6y, wypt1Ball6Angle, wypt1Ball6EncoderDrift, wypt1Ball6AngleDrift;
   static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
   static const double End6Ballx, End6Bally, End6BallAngle, End6BallEncoderDrift, End6BallAngleDrift;
-
-    // 8 Ball
-  static const double Strt8Ballx, Strt8Bally, Strt8BallAngle, Strt8BallEncoderDrift, Strt8BallAngleDrift;
-  static const double wypt1Ball8x, wypt1Ball8y, wypt1Ball8Angle, wypt1Ball8EncoderDrift, wypt1Ball8AngleDrift;
-  static const double wypt2Ball8x, wypt2Ball8y, wypt2Ball8Angle, wypt2Ball8EncoderDrift, wypt2Ball8AngleDrift;
-  static const double wypt3Ball8x, wypt3Ball8y, wypt3Ball8Angle, wypt3Ball8EnoderDrift, wypt3Ball8AngleDrift;
-  static const double End8Ballx, End8Bally, End8BallAngle, End8BallEncoderDrift, End8BallAngleDrift;
 
   // --------------- Defined Buttons -----------------
 
@@ -193,18 +189,6 @@ struct ControlMap {
   static const wml::controllers::tButton Shift2PTO; // Toggle
   static const wml::controllers::tAxis ClimberControlLeft;
   static const wml::controllers::tButton ClimberToggle;
-  #endif
-
-  //override buttons 
-  #if __CONTROLMAP_USING_JOYSTICK__
-
-  #else
-  static const wml::controllers::tButton R1;
-  static const wml::controllers::tButton R2;
-  static const wml::controllers::tButton R3;
-  static const wml::controllers::tButton G1;
-  static const wml::controllers::tButton G2;
-  static const wml::controllers::tButton G3;
   #endif
 
 };

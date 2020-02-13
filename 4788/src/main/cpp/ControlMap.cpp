@@ -51,7 +51,6 @@ const double ControlMap::ChangeGearTime = 0;
 // Drive General Values
 const double ControlMap::MaxDrivetrainAcceleration = 1; // 0.015
 const double ControlMap::MaxDrivetrainSpeed = 1;
-const double ControlMap::MaxAutoDrivetrainSpeed = 0.4;
 const double ControlMap::DriveTestCaseRotations = 50;
 
 // Turret
@@ -130,17 +129,26 @@ const int ControlMap::ControlPannelPort = 99;
 const int ControlMap::ControlPannelUpPort = 99;
 
 // Auto Values (In Meters)
-const double ControlMap::AutoGearRatio = 15; // AutoGearRatio:1/output roation
+const double ControlMap::AutoGearRatio = 12; // AutoGearRatio:1/output roation (15 = Neo Drive)
 const double ControlMap::WheelDiameter = 15.24; // CM
-const double ControlMap::WheelCircumference = 47.877872040708;
+
+// Auto Speed
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.3;
+const double ControlMap::MaxAutoTurnSpeed = 0.35;
+
+// Turn PID
+const double ControlMap::turnP = 0.1;
+const double ControlMap::turnI = 0.2;
+const double ControlMap::turnD = 0.006;
+
 
 // LeftDrive
-const double ControlMap::leftKp = 0.15;
+const double ControlMap::leftKp = 0.06;
 const double ControlMap::leftKi = 0.005;
 const double ControlMap::leftKd = 0.006;
 
 // RightDrive
-const double ControlMap::rightKp = 0.15;
+const double ControlMap::rightKp = 0.06;
 const double ControlMap::rightKi = 0.005;
 const double ControlMap::rightKd = 0.006;
 
@@ -169,37 +177,6 @@ const double ControlMap::End6BallAngle = 0;
 const double ControlMap::End6BallEncoderDrift = 0;
 const double ControlMap::End6BallAngleDrift = 0;
 
-// 8 Ball
-const double ControlMap::Strt8Ballx = 3.2;
-const double ControlMap::Strt8Bally = -2.4;
-const double ControlMap::Strt8BallAngle = 0; // Kinda Doesn't Matter
-const double ControlMap::Strt8BallEncoderDrift = 0;
-const double ControlMap::Strt8BallAngleDrift = 0;
-
-const double ControlMap::wypt1Ball8x = 5.4;
-const double ControlMap::wypt1Ball8y = -0.7;
-const double ControlMap::wypt1Ball8Angle = 54.46232221;
-const double ControlMap::wypt1Ball8EncoderDrift = 0;
-const double ControlMap::wypt1Ball8AngleDrift = 0;
-
-const double ControlMap::wypt2Ball8x = 9.7;
-const double ControlMap::wypt2Ball8y = -0.7;
-const double ControlMap::wypt2Ball8Angle = 0;
-const double ControlMap::wypt2Ball8EncoderDrift = 0;
-const double ControlMap::wypt2Ball8AngleDrift = 0;
-
-const double ControlMap::wypt3Ball8x = 8;
-const double ControlMap::wypt3Ball8y = -0.7;
-const double ControlMap::wypt3Ball8Angle = -21.801409;
-const double ControlMap::wypt3Ball8EnoderDrift = 0;
-const double ControlMap::wypt3Ball8AngleDrift = 0;
-
-const double ControlMap::End8Ballx = 4.2;
-const double ControlMap::End8Bally = -2.4;
-const double ControlMap::End8BallAngle = 0;
-const double ControlMap::End8BallEncoderDrift = 0;
-const double ControlMap::End8BallAngleDrift = 0;
-
 
 
 // -------------Defined Buttons-------------------
@@ -218,13 +195,11 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tAxis ControlMap::DrivetrainTurn{ Driver, Joystick::kZAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, 2 };
   const tButton ControlMap::ShiftGears{ Driver, 99 };
-  const tButton ControlMap::Shift2PTO{ CoDriver, 99 };
 #else
   const tAxis ControlMap::DrivetrainLeft{ Driver, XboxController::kLeftYAxis };
   const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
   const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperLeft };
-  const tButton ControlMap::Defence{ Driver, XboxController::kA};
 #endif
 
 // Turret
@@ -283,24 +258,5 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tAxis ControlMap::ClimberControlLeft{ CoDriver, XboxController::kLeftYAxis};
   const tAxis ControlMap::ClimberControlRight{ CoDriver, XboxController::kRightYAxis};
   const tButton ControlMap::ClimberToggle{ CoDriver, XboxController::kY};
-  const tButton ControlMap::ClimberUp{ CoDriver, XboxController::kX };
   const tButton ControlMap::Shift2PTO{ Driver, XboxController::kBumperRight };
-#endif
-
-//manual override buttons 
-
-#if __CONTROLMAP_USING_JOYSTICK__
-  const tButton ControlMap::R1{ override, 7};
-  const tButton ControlMap::R2{ override, 8};
-  const tButton ControlMap::R3{ override, 9};
-  const tButton ControlMap::G1{ override, 10};
-  const tButton ControlMap::G2{ override, 11};
-  const tButton ControlMap::G3{ override, 12};
-#else
-  const tButton ControlMap::R1{ override, 7};
-  const tButton ControlMap::R2{ override, 8};
-  const tButton ControlMap::R3{ override, 9};
-  const tButton ControlMap::G1{ override, 10};
-  const tButton ControlMap::G2{ override, 11};
-  const tButton ControlMap::G3{ override, 12};
 #endif

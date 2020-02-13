@@ -6,7 +6,7 @@
 class Climber {
   public:
     Climber(wml::actuators::DoubleSolenoid &ClimberActuator, 
-						wml::actuators::DoubleSolenoid &ShiftPTO, 
+						wml::actuators::DoubleSolenoid &BeltActuator,
 						wml::Gearbox &ClimberElevatorLeft, 
 						wml::Gearbox &ClimberElavatorRight,
 						wml::controllers::SmartControllerGroup &contGroup, 
@@ -17,15 +17,16 @@ class Climber {
 
 	private:
  		wml::actuators::DoubleSolenoid &_ClimberActuator;
- 		wml::actuators::DoubleSolenoid &_ShiftPTO;
+		wml::actuators::DoubleSolenoid &_BeltActuator;
  		wml::Gearbox &_ClimberElevatorLeft;
 		wml::Gearbox &_ClimberElevatorRight;
 		wml::controllers::SmartControllerGroup &_contGroup;
  	
 	 	frc::Timer ClimberTimer;
-		double liftSpeed = 0;
+		double liftSpeedleft = 0;
+  	double liftSpeedright = 0;
 		int testType = 1;
 		bool &_TurretDisable;
 
- 		bool ToggleEnabled;
+ 		bool ToggleEnabled = false;
  };

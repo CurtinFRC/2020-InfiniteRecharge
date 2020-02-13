@@ -3,33 +3,27 @@
 #include "controllers/Controllers.h"
 #include "strategy/Strategy.h"
 #include "RobotMap.h"
-#include "Drivetrain.h"
+
+// WayFinder
+#include "wayfinder.h"
 
 
 // Class that Runs In Manual Drive e.g Human Drivers
 class DrivetrainManual : public wml::Strategy {
   public:
     DrivetrainManual(std::string name, 
-                     wml::actuators::DoubleSolenoid &IntakeDown,
-                     wml::Gearbox &Rotation,
-                     wml::Drivetrain &drivetrain, 
+                     wml::Drivetrain &drivetrain,
                      wml::actuators::DoubleSolenoid &ChangeGears, 
                      wml::actuators::DoubleSolenoid &Shift2PTO, 
-                     wml::controllers::SmartControllerGroup &contGroup,
-                     std::shared_ptr<nt::NetworkTable> &rotationTable
-                     );
+                     wml::controllers::SmartControllerGroup &contGroup);
 
     void OnUpdate(double dt) override;
-    std::shared_ptr<nt::NetworkTable> table_2;
 
   private:
     wml::Drivetrain &_drivetrain;
-    wml::actuators::DoubleSolenoid &_IntakeDown;
-    wml::Gearbox &_Rotation;
     wml::actuators::BinaryActuator &_ChangeGears;
     wml::actuators::BinaryActuator &_Shift2PTO;
     wml::controllers::SmartControllerGroup &_contGroup;
-    std::shared_ptr<nt::NetworkTable> &_rotationTable;
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;
     bool PTOactive = false;
@@ -39,6 +33,7 @@ class DrivetrainManual : public wml::Strategy {
 class DrivetrainAuto : public wml::Strategy {
   public:
     DrivetrainAuto(wml::Drivetrain &drivetrain, 
+                   WayFinder &wayFinder,
                    wml::control::PIDGains gains,
                    int &autoSelector,
                    bool &StartDoComplete,
@@ -49,11 +44,11 @@ class DrivetrainAuto : public wml::Strategy {
                    bool &end);
 
     void OnUpdate(double dt) override;
-    double LeftDriveToTarget(double dt);
-    double RightDriveToTarget(double dt);
+    void WayPointSwitch();
 
   private:
     wml::Drivetrain &_drivetrain;
+    WayFinder &_wayFinder;
     wml::control::PIDController _pid;
     double LeftPower = 0, RightPower = 0;
     double currentSpeed;
@@ -68,6 +63,8 @@ class DrivetrainAuto : public wml::Strategy {
     bool &_end;
 
     double DistanceInRotations;
+    double TurnPreviousError;
+    double TurnSum;
     double CurrentHeading;
 };
 
@@ -83,11 +80,5 @@ class DrivetrainTest : public wml::Strategy {
     wml::Drivetrain &_drivetrain;
     wml::control::PIDController _pid;
     double leftSpeed = 0, rightSpeed = 0;
-
-    bool drivetest = true;
-
-    bool leftFwdTest = true;
-    bool rightFwdTest = true;
-    bool leftRevTest = true;
-    bool rightRevTest = true;
+    int testSelect = 1;
 };
