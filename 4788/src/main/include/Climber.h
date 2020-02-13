@@ -9,7 +9,8 @@ class Climber {
 						wml::actuators::DoubleSolenoid &ShiftPTO, 
 						wml::Gearbox &ClimberElevatorLeft, 
 						wml::Gearbox &ClimberElavatorRight,
-						wml::controllers::SmartControllerGroup &contGroup);		
+						wml::controllers::SmartControllerGroup &contGroup, 
+						bool &TurretDisable);		
     void TeleopOnUpdate(double dt);
  		void AutoOnUpdate(double dt);
  		void TestOnUpdate(double dt);
@@ -24,6 +25,7 @@ class Climber {
 	 	frc::Timer ClimberTimer;
 		double liftSpeed = 0;
 		int testType = 1;
+		bool &_TurretDisable;
 
  		bool ToggleEnabled;
  };
