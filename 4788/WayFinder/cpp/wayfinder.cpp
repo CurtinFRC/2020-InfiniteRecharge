@@ -51,16 +51,12 @@ double WayFinder::InverseNumber(double input) {
 // Using the provided PID and gyro, turn to the target
 void WayFinder::TurnToTarget(double dt, double input, double goal, bool reverse) {
   double turnSpeed = (InternalPID(dt, goal, input) * _MaxTurnSpeed);
-  if (goal < 0) {
-    _drivetrain.Set(-turnSpeed, turnSpeed);
-  } else if (goal > 0) {
-    _drivetrain.Set(turnSpeed, -turnSpeed);
-  }
-  // if (reverse) {
+  // if (goal < 0) {
   //   _drivetrain.Set(-turnSpeed, turnSpeed);
-  // } else {
-  //   _drivetrain.Set(turnSpeed, -turnSpeed);
+  // } else if (goal > 0) {
+    
   // }
+  _drivetrain.Set(turnSpeed, -turnSpeed);
 }
 
 // Get Average distance
