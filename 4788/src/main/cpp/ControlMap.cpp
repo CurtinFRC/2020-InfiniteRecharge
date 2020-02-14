@@ -133,8 +133,8 @@ const double ControlMap::AutoGearRatio = 12; // AutoGearRatio:1/output roation (
 const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
-const double ControlMap::MaxAutoDrivetrainSpeed = 0.3;
-const double ControlMap::MaxAutoTurnSpeed = 0.35;
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.6;
+const double ControlMap::MaxAutoTurnSpeed = 0.3;
 
 // Turn PID
 const double ControlMap::turnP = 0.1;
@@ -143,14 +143,14 @@ const double ControlMap::turnD = 0.006;
 
 
 // LeftDrive
-const double ControlMap::leftKp = 0.06;
-const double ControlMap::leftKi = 0.005;
-const double ControlMap::leftKd = 0.006;
+const double ControlMap::leftKp = 0.02;
+const double ControlMap::leftKi = 0.01;
+const double ControlMap::leftKd = 0;
 
 // RightDrive
-const double ControlMap::rightKp = 0.06;
-const double ControlMap::rightKi = 0.005;
-const double ControlMap::rightKd = 0.006;
+const double ControlMap::rightKp = 0.02;
+const double ControlMap::rightKi = 0.01;
+const double ControlMap::rightKd = 0;
 
 // 6 Ball
 const double ControlMap::Strt6Ballx = 3.2;
