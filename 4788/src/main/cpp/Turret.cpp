@@ -234,8 +234,6 @@ void Turret::TeleopOnUpdate(double dt) {
 		TuneAnglePID();
 	}
 	
-
-if (!_contGroup.Get(ControlMap::R2)) {
 	if (_contGroup.Get(ControlMap::TurretAutoAim)) {
 		if (targetX > imageWidth || targetY > imageHeight) {
 			std::cout << "Error: Target is artifacting" << std::endl;
@@ -243,18 +241,17 @@ if (!_contGroup.Get(ControlMap::R2)) {
 			RotationPower = XAutoAimCalc(dt, targetX);
 			AngularPower = YAutoAimCalc(dt, targetY);
 		}
-	}	else {
-		Asum = 0;
-		Rsum = 0;
 	}
-}
-	// Manual Rotation Control
-	RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 
-if (_TurretDisable) {
-	// Manual Angle Control
-	AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
-} 
+
+	if (!_TurretDisable) {
+
+		// Manual Angle Control
+		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
+
+		// Manual Rotation Control
+		RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
+	} 
 
 	// FlyWheel Code
 	if ((_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) && (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone)) {
@@ -281,11 +278,8 @@ if (_TurretDisable) {
 	table_2->PutNumber("Turret_Min", MinRotation);
 	table_2->PutNumber("Turret_Max", MaxRotation);
 
-	//table->GetNumber("Turret_Min", 0);
-
-	//double thing = table->GetNumber(); //tada
-
-	std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+	// temp
+	// std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);
@@ -300,16 +294,6 @@ void Turret::AutoOnUpdate(double dt) {
 // @TODO Turret Test
 
 void Turret::TestOnUpdate(double dt) {
-	if (!leftEncoderTest && !rightEncoderTest) {
-		if (turretTest) {
-			std::cout << "Turret Test Succesful" << std::endl;
-			turretTest = false;
-		}
-	} else {
-		if (leftLimitTest) {
-
-		}
-	}
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);

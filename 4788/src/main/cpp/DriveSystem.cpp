@@ -6,25 +6,17 @@ using namespace wml::controllers;
 
 // Initializes & Defines groups for Manual Control
 DrivetrainManual::DrivetrainManual(std::string name, 
-                                   actuators::DoubleSolenoid &IntakeDown,
-                                   Gearbox &Rotation,
-                                   Drivetrain &drivetrain, 
+                                   Drivetrain &drivetrain,
                                    wml::actuators::DoubleSolenoid &ChangeGears, 
                                    actuators::DoubleSolenoid &Shift2PTO, 
-                                   SmartControllerGroup &contGroup,
-                                   std::shared_ptr<nt::NetworkTable> &rotationTable
-                                   ) : 
+                                   SmartControllerGroup &contGroup) : 
                                    
                                    Strategy(name), 
-                                   _IntakeDown(IntakeDown),
-                                   _Rotation(Rotation),
-                                   _drivetrain(drivetrain), 
+                                   _drivetrain(drivetrain),
                                    _ChangeGears(ChangeGears), 
                                    _Shift2PTO(Shift2PTO), 
-                                   _contGroup(contGroup),
-                                   _rotationTable(rotationTable){
+                                   _contGroup(contGroup) {
                                    
-  table_2 = _rotationTable->GetSubTable("turretRotation");
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
@@ -110,8 +102,8 @@ void DrivetrainManual::OnUpdate(double dt) {
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
   
-  std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-  std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
   _drivetrain.Set(leftSpeed, rightSpeed);
 }
@@ -126,53 +118,48 @@ DrivetrainTest::DrivetrainTest(Drivetrain &drivetrain, control::PIDGains gains) 
 
 void DrivetrainTest::OnUpdate(double dt) {
 
-  if (!leftRevTest && !rightRevTest) {
-    if (drivetest) {
-      std::cout << "Drivetrain Test Successful" << std::endl;
-      drivetest = false;
-    }
-  } else {
-    // Left Test
-    if (leftFwdTest) {
+  switch (testSelect) {
+    case 1:
       if (_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() < ControlMap::DriveTestCaseRotations) {
         leftSpeed = 0.25;
       } else {
         leftSpeed = 0;
-        leftFwdTest = false;
+        testSelect++;
       }
-    }
-    if (!leftFwdTest) {
+    break;
+
+    case 2:
       if (_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() > 0) {
         leftSpeed = -0.25;
       } else {
         leftSpeed = 0;
         std::cout << "LeftDrive Return Successful" << std::endl;
-        leftRevTest = false;
+        testSelect++;
       }
-    } 
+    break;
 
-    // Right Test
-    if (rightFwdTest) {
+    case 3:
       if (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() > -ControlMap::DriveTestCaseRotations) {
         rightSpeed = 0.25;
       } else {
         rightSpeed = 0;
-        rightFwdTest = false;
+        testSelect++;
       }
-    }
-    if (!rightFwdTest) {
+    break;
+
+    case 4:
       if (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() < 0) {
         rightSpeed = -0.25;
       } else {
         rightSpeed = 0;
         std::cout << "RightDrive Return Successful" << std::endl;
-        rightRevTest = false;
+        testSelect++;
       }
-    } 
-
-    std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-    std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
-
+    break;
   }
+
+  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+
   _drivetrain.Set(leftSpeed, rightSpeed);
 }

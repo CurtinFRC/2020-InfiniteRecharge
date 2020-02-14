@@ -31,7 +31,6 @@
 #include <frc/DriverStation.h> 
 
 #include "Toggle.h"
-#include "NTUtil.h"
 
 // Local Files
 #include "ControlMap.h"
@@ -68,4 +67,5 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     BeltIntake *beltIntake;
     Climber *climber;
     ControlPannel *controlPannel;
+    WayFinder *wayFinder;
 };

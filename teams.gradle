@@ -50,11 +50,13 @@ model {
       sources.cpp {
         source {
           srcDir 'src/main/cpp'
+          srcDir 'WayFinder/cpp' 
           srcDir rootProject.file('wml/src/main/cpp')
           include '**/*.cpp', '**/*.cc'
         }
         exportedHeaders {
           srcDir 'src/main/include'
+          srcDir 'WayFinder/include'
           srcDir rootProject.file('wml/src/main/include')
           if (includeSrcInIncludeRoot) {
             srcDir 'src/main/cpp'
