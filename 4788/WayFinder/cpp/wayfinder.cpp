@@ -51,11 +51,16 @@ double WayFinder::InverseNumber(double input) {
 // Using the provided PID and gyro, turn to the target
 void WayFinder::TurnToTarget(double dt, double input, double goal, bool reverse) {
   double turnSpeed = (InternalPID(dt, goal, input) * _MaxTurnSpeed);
-  if (reverse) {
+  if (goal < 0) {
     _drivetrain.Set(-turnSpeed, turnSpeed);
-  } else {
+  } else if (goal > 0) {
     _drivetrain.Set(turnSpeed, -turnSpeed);
   }
+  // if (reverse) {
+  //   _drivetrain.Set(-turnSpeed, turnSpeed);
+  // } else {
+  //   _drivetrain.Set(turnSpeed, -turnSpeed);
+  // }
 }
 
 // Get Average distance
@@ -139,6 +144,7 @@ void WayFinder::GotoWaypoint(double wypt1x, double wypt1y, double startAngle, do
         }
       } else {
         CaseNumber++;
+        _drivetrain.GetConfig().gyro->Reset();
         WayPointComplete = false;
       }
     break;
@@ -149,6 +155,7 @@ void WayFinder::GotoWaypoint(double wypt1x, double wypt1y, double startAngle, do
         DriveToTarget(dt, _DistanceInRotations, reverse);
       } else {
         CaseNumber++;
+        _drivetrain.GetConfig().gyro->Reset();
         WayPointComplete = false;
       }
     break;
@@ -160,11 +167,14 @@ void WayFinder::GotoWaypoint(double wypt1x, double wypt1y, double startAngle, do
           TurnToTarget(dt, _drivetrain.GetConfig().gyro->GetAngle(), endAngle, reverse);
         } else {
           CaseNumber = 1;
+          _drivetrain.Set(0, 0);
+          _drivetrain.GetConfig().gyro->Reset();
           WayPointComplete = true;
         }
       } else {
         CaseNumber = 1;
         _drivetrain.Set(0, 0);
+        _drivetrain.GetConfig().gyro->Reset();
         WayPointComplete = true;
       }
     break;

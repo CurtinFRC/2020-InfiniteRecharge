@@ -82,9 +82,36 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;  
       }
       break;
-    case 2: // Auto 2
+      case 2: // auto 2, 6 ball 
+      switch(AutoWaypointSwitcher) {
+        case 1:
+          if (!_StartDoComplete) {break;}
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+        
+        case 2:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(5.4, -0.7, 0, 8, -0.7, -21, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
 
+        case 3:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
+            //4.2
+          } else {
+            WayPointSwitch();
+          }
+        break;
+      }
       break;
+
     case 3: // Auto 3
 
       break;
