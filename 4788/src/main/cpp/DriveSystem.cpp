@@ -102,8 +102,8 @@ void DrivetrainManual::OnUpdate(double dt) {
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
   
-  std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-  std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
   _drivetrain.Set(leftSpeed, rightSpeed);
 }
@@ -158,8 +158,8 @@ void DrivetrainTest::OnUpdate(double dt) {
     break;
   }
 
-  std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-  std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
   _drivetrain.Set(leftSpeed, rightSpeed);
 }

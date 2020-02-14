@@ -49,12 +49,15 @@ class WayFinder {
     double GetDrivetrainCurrentLocation();
 
 
+    bool GetWayPointComplete();
+
+
 
   private:
     void LeftDriveToTarget(double dt, double goal);
     void RightDriveToTarget(double dt, double goal);
     void DriveToTarget(double dt, double goal, bool reverse);
-    void TurnToTarget(double dt, double input, double goal);
+    void TurnToTarget(double dt, double input, double goal, bool reverse);
 
     double RotationsToTarget(double p1x, double p1y, double p2x, double p2y);
     double InternalPID(double dt, double goal, double input);
@@ -70,7 +73,7 @@ class WayFinder {
     // Target Values
     double _DistanceInMeters = 0;
     double _DistanceInCM = 0;
-    double _DistanceInRotations = 0;
+    double _DistanceInRotations = 1; // For first time use, the start point might conflict
 
     // PID
     double _goal = 0;
@@ -80,5 +83,6 @@ class WayFinder {
     double _kI = 0;
     double _kD = 0;
 
-
+    int CaseNumber = 1;
+    bool WayPointComplete = false;
 };

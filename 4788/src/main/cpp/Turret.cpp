@@ -279,7 +279,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	table_2->PutNumber("Turret_Max", MaxRotation);
 
 	// temp
-	std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+	// std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);
