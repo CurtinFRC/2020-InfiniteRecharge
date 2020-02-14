@@ -133,7 +133,7 @@ const double ControlMap::AutoGearRatio = 12; // AutoGearRatio:1/output roation (
 const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
-const double ControlMap::MaxAutoDrivetrainSpeed = 1;
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.6;
 const double ControlMap::MaxAutoTurnSpeed = 0.3;
 
 // Turn PID
