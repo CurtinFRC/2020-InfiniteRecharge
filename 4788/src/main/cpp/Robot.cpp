@@ -44,6 +44,9 @@ void Robot::RobotInit() {
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(true);
   drivetrain->GetConfig().leftDrive.transmission->SetInverted(false);
 
+  // Inverts FlyWheel Motors
+  robotMap.turret.turretFlyWheel.transmission->SetInverted(true);
+
   robotMap.turret.rotationMotors.SetInverted(true);
 
   // Arduino Controller
@@ -58,6 +61,10 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   CurrentTime = frc::Timer::GetFPGATimestamp();
   dt = CurrentTime - lastTimestamp;
+
+  std::cout << "Angle: " << robotMap.driveSystem.drivetrain.GetConfig().gyro->GetAngle() << std::endl;
+  std::cout << "Encoder Left: " << robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  std::cout << "Encoder Right: " << robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
   robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
   robotMap.controlSystem.compressor.Update(dt);

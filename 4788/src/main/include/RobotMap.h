@@ -72,21 +72,14 @@ struct RobotMap {
 
   // Drive System
   struct DriveSystem {
-    // // Front
-    // wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 42 };
-    // wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 42 };
-
-    // // Back
-    // wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 42 };
-    // wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 42 };
-
     // Front
-    wml::TalonSrx FLmax{ ControlMap::DriveMAXportFL, 80 };
-    wml::TalonSrx FRmax{ ControlMap::DriveMAXportFR, 80 };
+    wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 42 };
+    wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 42 };
 
     // Back
-    wml::VictorSpx BLmax{ ControlMap::DriveMAXportBL };
-    wml::VictorSpx BRmax{ ControlMap::DriveMAXportBR };
+    wml::SparkMax BLmax{ ControlMap::DriveMAXportBL, wml::SparkMax::MotorType::kNEO, 42 };
+    wml::SparkMax BRmax{ ControlMap::DriveMAXportBR, wml::SparkMax::MotorType::kNEO, 42 };
+
 
     wml::actuators::MotorVoltageController leftMotors = wml::actuators::MotorVoltageController::Group(FLmax, BLmax);
     wml::actuators::MotorVoltageController rightMotors = wml::actuators::MotorVoltageController::Group(FRmax, BRmax);
@@ -184,7 +177,7 @@ struct RobotMap {
     */ 
 
     // Selection
-    int AutoSelecter = 1;
+    int AutoSelecter = 3;
 
     // 6 Ball
     bool StartDoComplete = true;
