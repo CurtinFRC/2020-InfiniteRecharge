@@ -81,23 +81,109 @@ void DrivetrainAuto::OnUpdate(double dt) {
           }
         break;  
       }
-      break;
-    case 2: // Auto 2
+    break;
 
-      break;
-    case 3: // Auto 3
 
-      break;
-    case 4: // Auto 4
 
-      break;
-    case 5: // Auto 5
+    case 2: // auto 2, 6 ball 
+      switch(AutoWaypointSwitcher) {
+        case 1:
+          if (!_StartDoComplete) {break;}
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+          
+        case 2:
+          if (!_wayFinder.GetWayPointComplete()) {
+              _wayFinder.GotoWaypoint(5.4, -0.7, 0, 8, -0.7, -21, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
 
-      break;
+        case 3:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+      }
+    break;
+
+
+    case 3: // Auto 3, 3 ball at middle posision
+      switch(AutoWaypointSwitcher) {
+        case 1:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint( 3.2, -4, 0, 4.3, -4, -90, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+        
+        case 2:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint( 4.3, -4, 0, 4.3, -2.3, -90, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+
+        case 3:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint( 4.3, -2.3, 0, 3, -2.3, 0, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+      }
+    break;
+
+
+    case 4: // Auto 4, 3 ball left posision 
+      switch(AutoWaypointSwitcher) {
+        case 1:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(3.2 , -2.4, 0, 4.1, -2.3, -180 ,  true, dt);
+          } else {
+             WayPointSwitch();
+          }
+        break;
+      }
+    break;
+
+
+    case 5: // Auto 5, 3 ball posison righht
+      switch(AutoWaypointSwitcher) {
+        case 1:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint( 3.2, -6, 0, 4.3, -6 , -90, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+
+        case 2: 
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint( 4.3, -6, 0, 4.3, -2.4, -90, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+
+        case 3:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint( 4.3, -2.4, 0, 3.4, -2.4, 0, false, dt);
+          } else {
+            WayPointSwitch();
+          }
+        break;
+      }
+    break;
+
   }
-  std::cout << "Encoder Left " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-  std::cout << "Encoder Right " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl; 
-  // std::cout << "Distance In Rotations " << DistanceInRotations << std::endl;
-  // std::cout << "Angle " << _drivetrain.GetConfig().gyro->GetAngle() << std::endl;
-  // _drivetrain.Set(LeftPower, RightPower);
 }
