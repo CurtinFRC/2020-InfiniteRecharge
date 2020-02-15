@@ -134,7 +134,7 @@ const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
 const double ControlMap::MaxAutoDrivetrainSpeed = 0.6;
-const double ControlMap::MaxAutoTurnSpeed = 0.3;
+const double ControlMap::MaxAutoTurnSpeed = 0.4;
 
 // Turn PID
 const double ControlMap::turnP = 0.1;
