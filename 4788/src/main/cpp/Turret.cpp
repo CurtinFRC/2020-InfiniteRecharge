@@ -4,8 +4,30 @@
 using namespace wml;
 using namespace wml::controllers;
 
-Turret::Turret(Gearbox &Rotation, Gearbox &VerticalAxis, Gearbox &FlyWheel, sensors::LimitSwitch &LeftLimit, sensors::LimitSwitch &RightLimit, sensors::LimitSwitch &AngleDownLimit, SmartControllerGroup &contGroup, std::shared_ptr<nt::NetworkTable> &visionTable) : _RotationalAxis(Rotation), _VerticalAxis(VerticalAxis), _FlyWheel(FlyWheel), _LeftLimit(LeftLimit), _RightLimit(RightLimit), _AngleDownLimit(AngleDownLimit), _contGroup(contGroup), _visionTable(visionTable) {
+Turret::Turret(Gearbox &Rotation,
+ 							 Gearbox &VerticalAxis, 
+							 Gearbox &FlyWheel, 
+							 sensors::LimitSwitch &LeftLimit, 
+							 sensors::LimitSwitch &RightLimit, 
+							 sensors::LimitSwitch &AngleDownLimit, 
+							 SmartControllerGroup &contGroup, 
+							 std::shared_ptr<nt::NetworkTable> &visionTable,
+							 std::shared_ptr<nt::NetworkTable> &rotationTable, 
+							 bool &TurretDisable) : 
+
+							 
+							 _RotationalAxis(Rotation),
+						   _VerticalAxis(VerticalAxis), 
+							 _FlyWheel(FlyWheel), 
+							 _LeftLimit(LeftLimit), 
+							 _RightLimit(RightLimit), 
+							 _AngleDownLimit(AngleDownLimit), 
+							 _contGroup(contGroup), 
+							 _visionTable(visionTable),
+							 _rotationTable(rotationTable),
+							 _TurretDisable(TurretDisable){
 	table = _visionTable->GetSubTable("Target");
+	table_2 =  _rotationTable->GetSubTable("turretRotation");
 
 	imageHeight = table->GetNumber("ImageHeight", 0); 
 	imageWidth = table->GetNumber("ImageWidth", 0);
@@ -19,6 +41,8 @@ void Turret::ZeroTurret() {
 			_RotationalAxis.transmission->SetVoltage(12 * -0.3);
 		} else {
 			std::cout << "Turret Zero Timed Out" << std::endl;
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
 			_RotationalAxis.transmission->SetVoltage(0);
 			break;
 		}
@@ -30,6 +54,8 @@ void Turret::ZeroTurret() {
 			_RotationalAxis.transmission->SetVoltage(12 * 0.3);
 		} else {
 			std::cout << "Turret Zero Timed Out" << std::endl;
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
 			_RotationalAxis.transmission->SetVoltage(0);
 			break;
 		}
@@ -40,6 +66,8 @@ void Turret::ZeroTurret() {
 			_VerticalAxis.transmission->SetVoltage(12 * 0.2);
 		} else {
 			_VerticalAxis.transmission->SetVoltage(0);
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
 			std::cout << "Turret Zero Timed Out" << std::endl;
 			break;
 		}
@@ -53,35 +81,97 @@ void Turret::ZeroTurret() {
 
 
 
-double Turret::XAutoAimCalc(double dt, double input)  {
+double Turret::XAutoAimCalc(double dt, double targetx)  {
+
+	double TurretFullRotation = (ControlMap::TurretEncoderRotations * ControlMap::TurretRatio);
+	double Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
+	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
+
+	Rgoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
+	double input = _RotationalAxis.encoder->GetEncoderRotations();
 
 	// Calculate PID
-	error = goal - input;
+	Rerror = Rgoal - input;
 
-	double derror = (error - previousError) / dt;
-	sum = sum + error * dt;
+	double derror = (Rerror - RpreviousError) / dt;
+	Rsum = Rsum + Rerror * dt;
 
-	if (sum > (imageWidth/2)) {
-		sum = imageWidth;
-	} else if (sum < -(imageWidth/2)) {
-		sum = -imageWidth;
+	if (Rsum > (imageWidth/2)) {
+		Rsum = imageWidth;
+	} else if (Rsum < -(imageWidth/2)) {
+		Rsum = -imageWidth;
 	}
 
-	double output = kP * error + kI * sum + kD * derror;
+	double output = RkP * Rerror + RkI * Rsum + RkD * derror;
 
-	table->PutNumber("DError", derror);
-	table->PutNumber("Error", error);
-	table->PutNumber("Delta Time", dt);
-	table->PutNumber("Output", output);
+	// Convert to -1 - 1 for motor
+	output /= Rotations2FOV;
 
-	previousError = error;
+	table->PutNumber("RoationDError", derror);
+	table->PutNumber("RotationError", Rerror);
+	table->PutNumber("RotationDelta Time", dt);
+	table->PutNumber("RotationOutput", output);
+
+	RpreviousError = Rerror;
 	return -output;
 }
 
-double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, double ImageHeight) {
+// Using Setpoints
+double Turret::YAutoAimCalc(double dt, double TargetInput) {
 
-	double output = 0;
+	double targetEncoderValue;
+	int LowPoint = 10;
+	int MaxPoint = 50;
+	int PixleMount = 2;
 
+	// Setpoint Selection.
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint1 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint2 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint3 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint4 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint5 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint6 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint7 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint8 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint9 : MaxPoint;
+	LowPoint += PixleMount;
+	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleMount) ? ControlMap::AngleSetpoint10 : MaxPoint;
+	LowPoint += PixleMount;
+
+
+	// Calculate PID
+	double input = _RotationalAxis.encoder->GetEncoderRotations();
+	Aerror = targetEncoderValue - input;
+
+	double derror = (Aerror - ApreviousError) / dt;
+	Asum = Asum + Aerror * dt;
+
+	if (Asum > (imageHeight/2)) {
+		Asum = imageHeight;
+	} else if (Asum < -(imageHeight/2)) {
+		Asum = -imageHeight;
+	}
+
+	
+	double output = AkP * Aerror + AkI * Asum + AkD * derror;
+
+	// Convert to -1 - 1 for motor
+	output /= ControlMap::MaxAngleEncoderRotations;
+
+	table->PutNumber("AngleDError", derror);
+	table->PutNumber("AngleError", Aerror);
+	table->PutNumber("AngleDelta Time", dt);
+	table->PutNumber("AngleOutput", output);
+
+	ApreviousError = Aerror;
 
 	return output;
 }
@@ -89,22 +179,45 @@ double Turret::YAutoAimCalc(double dt, double TargetInput, double EncoderInput, 
 void Turret::TuneTurretPID() {
 
 	if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
-		kP = kP + 0.01;
+		RkP += 0.01;
 	} else if (_contGroup.Get(ControlMap::kpDOWN, Controller::ONRISE)) {
-		kP = kP - 0.001;
+		RkP -= 0.001;
 	} else if (_contGroup.Get(ControlMap::kiUP, Controller::ONRISE)) {
-		kI = kI + 0.001;
+		RkI += 0.001;
 	} else if (_contGroup.Get(ControlMap::kiDOWN, Controller::ONRISE)) {
-		kI = kI - 0.001;
+		RkI -= 0.001;
 	} else if (_contGroup.Get(ControlMap::kdUP, Controller::ONRISE)) {
-		kD = kD + 0.001;
+		RkD += 0.001;
 	}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
-		kD = kD - 0.001;
+		RkD -= 0.001;
 	}
 
-	table->PutNumber("kP", kP);
-	table->PutNumber("kI", kI);
-	table->PutNumber("kD", kD);
+	table->PutNumber("kP", RkP);
+	table->PutNumber("kI", RkI);
+	table->PutNumber("kD", RkD);
+	table->PutNumber("Sum", Rsum);
+}
+
+void Turret::TuneAnglePID() {
+
+	if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
+		AkP += 0.01;
+	} else if (_contGroup.Get(ControlMap::kpDOWN, Controller::ONRISE)) {
+		AkP -= 0.001;
+	} else if (_contGroup.Get(ControlMap::kiUP, Controller::ONRISE)) {
+		AkI += 0.001;
+	} else if (_contGroup.Get(ControlMap::kiDOWN, Controller::ONRISE)) {
+		AkI -= 0.001;
+	} else if (_contGroup.Get(ControlMap::kdUP, Controller::ONRISE)) {
+		AkD += 0.001;
+	}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
+		AkD -= 0.001;
+	}
+
+	table->PutNumber("kP", AkP);
+	table->PutNumber("kI", AkI);
+	table->PutNumber("kD", AkD);
+	table->PutNumber("Sum", Asum);
 }
 
 void Turret::TeleopOnUpdate(double dt) {
@@ -113,56 +226,76 @@ void Turret::TeleopOnUpdate(double dt) {
 	targetY = table->GetNumber("Target_Y", 0)/imageHeight;
 
 
-	if (ControlMap::TuneTurretPID) {
+	if (ControlMap::TuneTurretPID && ControlMap::TuneAnglePID) {
+		std::cout << "Conflict Turret/Angle Tuning" << std::endl;
+	}	else if (ControlMap::TuneTurretPID) {
 		TuneTurretPID();
+	} else if (ControlMap::TuneAnglePID) {
+		TuneAnglePID();
 	}
-
 	
 	if (_contGroup.Get(ControlMap::TurretAutoAim)) {
 		if (targetX > imageWidth || targetY > imageHeight) {
 			std::cout << "Error: Target is artifacting" << std::endl;
 		} else {
 			RotationPower = XAutoAimCalc(dt, targetX);
+			AngularPower = YAutoAimCalc(dt, targetY);
 		}
-	}	else {
-		sum = 0;
 	}
-	table->PutNumber("Sum", sum);
 
-	// Manual Rotation Control
-	RotationPower = std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 
-	// Manual Fly Wheel Code
-	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::TurretFlyWheelSpinUp) : 0;
+	if (!_TurretDisable) {
+
+		// Manual Angle Control
+		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
+
+		// Manual Rotation Control
+		RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
+	} 
+
+	// FlyWheel Code
+	if ((_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) && (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone)) {
+		FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
+	} else if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
+		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+	} else {
+		FlyWheelPower = 0;
+	}
+
+	// Flywheel Feedback
+	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
+		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
+	} else {
+		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 0);
+		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 0);
+	}
 
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 
 	AngularPower *= ControlMap::MaxTurretAngularSpeed;
 
+	table_2->PutNumber("Turret_Min", MinRotation);
+	table_2->PutNumber("Turret_Max", MaxRotation);
+
+	// temp
+	// std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * 0);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+
 }
 
 void Turret::AutoOnUpdate(double dt) {
 
 }
 
-void Turret::TestOnUpdate(double dt) {
-	if (!leftEncoderTest && !rightEncoderTest) {
-		if (turretTest) {
-			std::cout << "Turret Test Succesful" << std::endl;
-			turretTest = false;
-		}
-	} else {
-		if (leftLimitTest) {
+// @TODO Turret Test
 
-		}
-	}
+void Turret::TestOnUpdate(double dt) {
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
 }
-
-

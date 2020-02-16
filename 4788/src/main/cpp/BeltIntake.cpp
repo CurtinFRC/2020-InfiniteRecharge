@@ -4,13 +4,19 @@
 using namespace wml;
 using namespace wml::controllers;
 
-BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors, actuators::DoubleSolenoid &IntakeDown, SmartControllerGroup &contGroup) : _BeltIntakeMotors(BeltIntakeMotors), _IntakeDown(IntakeDown),  _contGroup(contGroup){}
+BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors, 
+											 actuators::DoubleSolenoid &IntakeDown, 
+											 SmartControllerGroup &contGroup) : 
+											 
+											 _BeltIntakeMotors(BeltIntakeMotors), 
+											 _IntakeDown(IntakeDown),  
+											 _contGroup(contGroup) {}
 
-//table = &_pancakes->GetSubTable("Encoder Value");
 void BeltIntake::TeleopOnUpdate(double dt) {
-	double IntakePower;
 
-	if (_contGroup.Get(ControlMap::DownIntake, Controller::ONFALL)) {
+	_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+
+	if (_contGroup.Get(ControlMap::DownIntake, Controller::ONRISE)) {
 		if (ToggleEnabled) {
 			_IntakeDown.SetTarget(wml::actuators::kForward);
 			ToggleEnabled = false;
@@ -18,12 +24,13 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 			_IntakeDown.SetTarget(wml::actuators::kReverse);
 			ToggleEnabled = true;
 		}
-	}
-	if (_contGroup.Get(ControlMap::Intake)) {
-		IntakePower = 1;
-	} else if (_contGroup.Get(ControlMap::Outake)) {
-		IntakePower = -1;
 	} 
+	
+
+	IntakePower = _contGroup.Get(ControlMap::Intake) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::Intake) :
+	_contGroup.Get(ControlMap::Outake) > ControlMap::triggerDeadzone ? -_contGroup.Get(ControlMap::Outake) : 0;
+
+	_IntakeDown.Update(dt);
 	_BeltIntakeMotors.transmission->SetVoltage(12 * IntakePower);
 }
 
@@ -31,17 +38,30 @@ void BeltIntake::AutoOnUpdate(double dt) {}
 
 void BeltIntake::TestOnUpdate(double dt) {
 
-//_pancakes->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
-	_IntakeDown.SetTarget(wml::actuators::kForward);
-  while (_BeltIntakeMotors.encoder->GetEncoderRotations() > 10) {
-//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
-	  double Speed = 1;
-		_BeltIntakeMotors.transmission->SetVoltage(12 * Speed);
-  } while (_BeltIntakeMotors.encoder->GetEncoderRotations() > 10) {
-//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
-		double Speed = -1;
-		_BeltIntakeMotors.transmission->SetVoltage(12 * Speed);
+	timer.Start();
+
+	switch (TestType) {
+		case 1: // forwards
+			if (timer.Get() < timeout) {
+				_IntakeDown.SetTarget(wml::actuators::kForward);
+				IntakePower = 1;
+			} else {
+				IntakePower = 0;
+				TestType++;
+				timer.Reset();
+			}
+		break;
+
+		case 2:
+			if (timer.Get() < timeout) {
+				IntakePower = -1;
+			} else {
+				timer.Reset();
+				TestType++;
+				_IntakeDown.SetTarget(wml::actuators::kReverse);
+			}
+		break;
 	}
-//	table2->PutNumber("Belt Intake encoder value ", _BeltIntakeMotors.encoder->GetEncoderRotations());
-	_IntakeDown.SetTarget(wml::actuators::kReverse);
+	_BeltIntakeMotors.transmission->SetVoltage(12 * IntakePower);
+	_IntakeDown.Update(dt);
 }

@@ -1,0 +1,22 @@
+See file:///D:/Users/Conno/Desktop/Code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling DriveAuto.cpp successful.
+
+compiling ControlPannel.cpp successful.
+
+compiling BeltIntake.cpp successful.
+
+compiling DriveSystem.cpp successful.
+
+compiling Climber.cpp successful.
+
+compiling MagLoader.cpp successful.
+
+compiling Main.cpp successful.
+
+compiling WMLRev.cpp successful.
+
+compiling Turret.cpp successful.
+
+compiling Robot.cpp successful.
+
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///D:/Users/Conno/Desktop/Code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

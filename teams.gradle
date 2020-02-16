@@ -64,27 +64,30 @@ model {
             sources.cpp {
                 source {
                     srcDir 'src/main/cpp'
+                    srcDir 'WayFinder/cpp' 
                     include '**/*.cpp', '**/*.cc'
 
-                    srcDir '../WML/src/main/cpp'
+                    srcDir rootProject.file('wml/src/main/cpp')
                     if (includeWMLRevSupport) {
-                        srcDir '../WML/src/rev/cpp'
+                        srcDir rootProject.file('wml/src/rev/cpp')
                     }
                 }
                 exportedHeaders {
                     srcDir 'src/main/include'
+                    srcDir 'WayFinder/include'
 
-                    srcDir '../WML/src/main/include'
+                    srcDir rootProject.file('wml/src/main/include')
                     if (includeWMLRevSupport) {
-                        srcDir '../WML/src/rev/include'
+                        srcDir rootProject.file('wml/src/rev/include')
                     }
 
                     if (includeSrcInIncludeRoot) {
                         srcDir 'src/main/cpp'
+                        srcDir 'WayFinder/cpp' 
 
-                        srcDir '../WML/src/main/cpp'
+                        srcDir rootProject.file('wml/src/main/cpp')
                         if (includeWMLRevSupport) {
-                            srcDir '../WML/src/rev/cpp'
+                            srcDir rootProject.file('wml/src/rev/cpp')
                         }
                     }
                 }

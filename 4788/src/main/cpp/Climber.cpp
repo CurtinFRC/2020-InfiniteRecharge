@@ -4,32 +4,90 @@
 using namespace wml;
 using namespace wml::controllers;
 
-Climber::Climber(actuators::DoubleSolenoid &ClimberActuator, actuators::BinaryServo &ShiftPTO, Gearbox &ClimberElevator, SmartControllerGroup &contGroup) : _ClimberActuator(ClimberActuator), _ShiftPTO(ShiftPTO), _ClimberElevator(ClimberElevator), _contGroup(contGroup) {}
+Climber::Climber(actuators::DoubleSolenoid &ClimberActuator,
+                 actuators::DoubleSolenoid &BeltActuator,
+                 Gearbox &ClimberElevatorLeft, 
+                 Gearbox &ClimberElevatorRight,
+                 SmartControllerGroup &contGroup,
+                 bool &TurretDisable) : 
+
+                 _ClimberActuator(ClimberActuator), 
+                 _BeltActuator(BeltActuator),
+                 _ClimberElevatorLeft(ClimberElevatorLeft), 
+                 _ClimberElevatorRight(ClimberElevatorRight),
+                 _contGroup(contGroup),
+                 _TurretDisable(TurretDisable) {}
+
 
 void Climber::TeleopOnUpdate(double dt) {
-  double liftSpeed;
+  if (_contGroup.Get(ControlMap::ClimberToggle, Controller::ONRISE)) {
 
-  liftSpeed = _contGroup.Get(ControlMap::ClimberControl);
-  _ClimberElevator.transmission->SetVoltage(12 * liftSpeed);
-  
+    // Put Intake down if up
+    if (_BeltActuator.GetState() == wml::actuators::BinaryActuatorState::kReverse) {
+      _BeltActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+    }
+
+    if (ToggleEnabled) {
+      ToggleEnabled = false;
+      _TurretDisable = false;
+    } else if (!ToggleEnabled) {
+      ToggleEnabled = true;
+      _TurretDisable = true;
+    }
+  } 
+ 
+  if (ToggleEnabled) {
+    liftSpeedleft = _contGroup.Get(ControlMap::ClimberControlLeft) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
+    liftSpeedright = _contGroup.Get(ControlMap::ClimberControlRight) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::ClimberControlRight) : 0;
+    liftSpeedright *= ControlMap::LiftMaxSpeed;
+    liftSpeedleft *= ControlMap::LiftMaxSpeed;
+  } else {
+    // _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+    _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+  }
+
+  _ClimberElevatorLeft.transmission->SetVoltage(0);
+  _ClimberElevatorRight.transmission->SetVoltage(0);
+  _ClimberActuator.Update(dt);
+  _BeltActuator.Update(dt);
 }
+
 void Climber::AutoOnUpdate(double dt) {}
 
 void Climber::TestOnUpdate(double dt) {
-  // double liftSpeed;
-  // int i = 0;
-  // while( i >= 2){
-  //   timer.Start();
-  //   _ClimberElevator.transmission->SetVoltage(1);
-  //   while (timer < 45)  {
-  //     _ClimberElevator.transmission->SetVoltage(0);
-  //   }
-  //   timer.Stop();
-  //   timer.Reset();
-  //   i = i + 1;
-  // }
+
+  switch (testType) {
+    case 1:
+      if (_ClimberElevatorLeft.encoder->GetEncoderRotations() <= 6) {
+        _ClimberActuator.SetTarget(wml::actuators::kForward);
+        liftSpeedleft = 0.5;
+        liftSpeedright = 0.5;
+      } else {
+        liftSpeedleft = 0;
+        liftSpeedright = 0;
+        testType++;
+      }
+    break;
+
+    case 2:
+      if (_ClimberElevatorLeft.encoder->GetEncoderRotations() >= 6) {
+        _ClimberActuator.SetTarget(wml::actuators::kForward);
+        liftSpeedleft = -0.5;
+        liftSpeedright = -0.5;
+      } else if (_ClimberElevatorLeft.encoder->GetEncoderRotations() <= 0) {
+        liftSpeedleft = 0;
+        liftSpeedright = 0;
+        testType++;
+      }
+    break;
+
+    case 3:
+      _ClimberActuator.SetTarget(wml::actuators::kReverse);
+      testType++;
+    break;
+  }
+
+  _ClimberElevatorLeft.transmission->SetVoltage(liftSpeedleft);
+  _ClimberElevatorRight.transmission->SetVoltage(liftSpeedright);
+  _ClimberActuator.Update(dt);
 }
-  
-
-
-

@@ -5,7 +5,18 @@ using namespace wml::controllers;
 
 
 // Initializes & Defines groups for Manual Control
-DrivetrainManual::DrivetrainManual(std::string name, Drivetrain &drivetrain, wml::actuators::DoubleSolenoid &ChangeGears, SmartControllerGroup &contGroup) : Strategy(name), _drivetrain(drivetrain), _ChangeGears(ChangeGears), _contGroup(contGroup) {
+DrivetrainManual::DrivetrainManual(std::string name, 
+                                   Drivetrain &drivetrain,
+                                   wml::actuators::DoubleSolenoid &ChangeGears, 
+                                   actuators::DoubleSolenoid &Shift2PTO, 
+                                   SmartControllerGroup &contGroup) : 
+                                   
+                                   Strategy(name), 
+                                   _drivetrain(drivetrain),
+                                   _ChangeGears(ChangeGears), 
+                                   _Shift2PTO(Shift2PTO), 
+                                   _contGroup(contGroup) {
+                                   
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
@@ -64,34 +75,38 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   #endif
 
-  // _contGroup.GetController(ControlMap::Driver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
-
   if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE)) {
     _drivetrain.SetInverted(!_drivetrain.GetInverted());
   }
 
+  if (_contGroup.Get(ControlMap::ShiftGears)) {
+    _ChangeGears.SetTarget(actuators::BinaryActuatorState::kForward);
+  } else {
+    _ChangeGears.SetTarget(actuators::BinaryActuatorState::kReverse);
+  }
+
+  if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONRISE)) {
+    if (!PTOactive) {
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+      PTOactive = true;
+    } else if (PTOactive) {
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
+      PTOactive = false;
+    }
+  }
+
+  _ChangeGears.Update(dt);
+  _Shift2PTO.Update(dt);
+
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
+  
+  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+
   _drivetrain.Set(leftSpeed, rightSpeed);
 }
-
-
-
-
-
-// Initializes & Defines groups for Autonomous driving
-DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain, control::PIDGains gains) : _drivetrain(drivetrain), _pid(gains) {
-  Requires(&drivetrain);
-  SetCanBeInterrupted(true);
-  SetCanBeReused(false);
-}
-
-void DrivetrainAuto::OnUpdate(double dt) {
-  //@TODO, Everthing to do with autonomous basically... so yea, i'm looking forward to that
-}
-
-
 
 
 // Initializes & Defines groups for Test Mode
@@ -103,53 +118,48 @@ DrivetrainTest::DrivetrainTest(Drivetrain &drivetrain, control::PIDGains gains) 
 
 void DrivetrainTest::OnUpdate(double dt) {
 
-  if (!leftRevTest && !rightRevTest) {
-    if (drivetest) {
-      std::cout << "Drivetrain Test Successful" << std::endl;
-      drivetest = false;
-    }
-  } else {
-    // Left Test
-    if (leftFwdTest) {
+  switch (testSelect) {
+    case 1:
       if (_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() < ControlMap::DriveTestCaseRotations) {
         leftSpeed = 0.25;
       } else {
         leftSpeed = 0;
-        leftFwdTest = false;
+        testSelect++;
       }
-    }
-    if (!leftFwdTest) {
+    break;
+
+    case 2:
       if (_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() > 0) {
         leftSpeed = -0.25;
       } else {
         leftSpeed = 0;
         std::cout << "LeftDrive Return Successful" << std::endl;
-        leftRevTest = false;
+        testSelect++;
       }
-    } 
+    break;
 
-    // Right Test
-    if (rightFwdTest) {
+    case 3:
       if (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() > -ControlMap::DriveTestCaseRotations) {
         rightSpeed = 0.25;
       } else {
         rightSpeed = 0;
-        rightFwdTest = false;
+        testSelect++;
       }
-    }
-    if (!rightFwdTest) {
+    break;
+
+    case 4:
       if (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() < 0) {
         rightSpeed = -0.25;
       } else {
         rightSpeed = 0;
         std::cout << "RightDrive Return Successful" << std::endl;
-        rightRevTest = false;
+        testSelect++;
       }
-    } 
-
-    std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-    std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
-
+    break;
   }
+
+  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+
   _drivetrain.Set(leftSpeed, rightSpeed);
 }
