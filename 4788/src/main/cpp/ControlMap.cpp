@@ -127,28 +127,18 @@ const int ControlMap::ControlPannelPort = 28; // 28
 const int ControlMap::ControlPannelUpPort = 29; // 29
 
 // Auto Values (In Meters)
-const double ControlMap::AutoGearRatio = 12; // AutoGearRatio:1/output roation (15 = Neo Drive)
+const double ControlMap::AutoGearRatio = 15; // AutoGearRatio:1/output roation (15 = Neo Drive)
 const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
 const double ControlMap::MaxAutoDrivetrainSpeed = 0.6;
 const double ControlMap::MaxAutoTurnSpeed = 0.3;
 
-// Turn PID
-const double ControlMap::turnP = 0.1;
-const double ControlMap::turnI = 0.2;
-const double ControlMap::turnD = 0.006;
-
 
 // LeftDrive
-const double ControlMap::leftKp = 0.02;
-const double ControlMap::leftKi = 0.01;
-const double ControlMap::leftKd = 0;
-
-// RightDrive
-const double ControlMap::rightKp = 0.02;
-const double ControlMap::rightKi = 0.01;
-const double ControlMap::rightKd = 0;
+const double ControlMap::DriveKp = 0.02;
+const double ControlMap::DriveKi = 0.01;
+const double ControlMap::DriveKd = 0;
 
 // 6 Ball
 const double ControlMap::Strt6Ballx = 3.2;
