@@ -30,7 +30,7 @@ void Robot::RobotInit() {
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup);
 
   // WayFinder
-  wayFinder = new WayFinder(ControlMap::leftKp, ControlMap::leftKi, ControlMap::leftKd, *drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
+  wayFinder = new WayFinder(ControlMap::DriveKp, ControlMap::DriveKi, ControlMap::DriveKd, *drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
 
   // Zero All Encoders
   robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
@@ -43,6 +43,9 @@ void Robot::RobotInit() {
   // Inverts one side of our drivetrain
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(true);
   drivetrain->GetConfig().leftDrive.transmission->SetInverted(false);
+
+  // Inverts FlyWheel Motors
+  robotMap.turret.turretFlyWheel.transmission->SetInverted(true);
 
   robotMap.turret.rotationMotors.SetInverted(true);
 
@@ -58,6 +61,10 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   CurrentTime = frc::Timer::GetFPGATimestamp();
   dt = CurrentTime - lastTimestamp;
+
+  std::cout << "Angle: " << robotMap.driveSystem.drivetrain.GetConfig().gyro->GetAngle() << std::endl;
+  std::cout << "Encoder Left: " << robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  std::cout << "Encoder Right: " << robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
   robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
   robotMap.controlSystem.compressor.Update(dt);
