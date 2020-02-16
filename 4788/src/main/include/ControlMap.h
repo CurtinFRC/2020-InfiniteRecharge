@@ -113,10 +113,9 @@ struct ControlMap {
   static const double MaxAutoDrivetrainSpeed, MaxAutoTurnSpeed;
   
   // Drive PID
-  static const double leftKp, rightKp, leftKi, rightKi, leftKd, rightKd;
-  static const double turnP, turnI, turnD;
+  static const double DriveKp, DriveKi, DriveKd;
 
-    // 6 Ball
+  // 6 Ball
   static const double Strt6Ballx, Strt6Bally, Strt6BallAngle, Strt6BallEncoderDrift, Strt6BallAngleDrift;
   static const double wypt1Ball6x, wypt1Ball6y, wypt1Ball6Angle, wypt1Ball6EncoderDrift, wypt1Ball6AngleDrift;
   static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
