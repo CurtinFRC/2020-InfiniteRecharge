@@ -4,11 +4,10 @@
 using namespace wml;
 using namespace wml::controllers;
 
-// Bulk of all the algorithms
+// Bulk of the code that is used but never looked at... unless you look at it
 
 
-
-
+// Distance Setpoints for Turret Angle
 double Turret::SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput) {
   double targetEncoderValue;
 
