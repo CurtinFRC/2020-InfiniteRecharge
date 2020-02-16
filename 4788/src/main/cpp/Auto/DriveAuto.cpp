@@ -44,14 +44,14 @@ void DrivetrainAuto::WayPointSwitch() {
 
 
 void DrivetrainAuto::OnUpdate(double dt) {
-  std::cout << "Current Location: " << _wayFinder.GetDrivetrainCurrentLocation() << std::endl;
+  std::cout << "Distance to target: " << _wayFinder.GetDistanceInRotations() << std::endl;
   switch (_autoSelector) {
     case 1: // Auto 1 (8 Ball)
       switch (AutoWaypointSwitcher) {
         case 1: // Start to Waypoint 1
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
+            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, -90, false, dt);
           } else {
             WayPointSwitch();
           }
@@ -74,15 +74,10 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;
 
         case 4: // Drive to endpoint (backwards)
-          if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
-          } else {
-            WayPointSwitch();
-          }
+      
         break;  
       }
     break;
-
 
 
     case 2: // auto 2, 6 ball 
