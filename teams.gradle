@@ -4,96 +4,120 @@ apply plugin: 'cpp'
 apply plugin: 'google-test-test-suite'
 apply plugin: 'edu.wpi.first.GradleRIO'
 
+// Define my targets (RoboRIO) and artifacts (deployable files)
+// This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
-  targets {
-    roboRIO('roborio') {
-      team = frc.getTeamNumber()
+    targets {
+        roboRIO("roborio") {
+            // Team number is loaded either from the .wpilib/wpilib_preferences.json
+            // or from command line. If not found an exception will be thrown.
+            // You can use getTeamOrDefault(team) instead of getTeamNumber if you
+            // want to store a team number in this file.
+            team = frc.getTeamNumber()
+        }
     }
-  }
-
-  artifacts {
-    frcNativeArtifact('frcCpp') {
-      targets << 'roborio'
-      component = "frcUserProgram"
-      // Debug can be overridden by command line, for use with VSCode (with -PdebugMode)
-      debug = frc.getDebugOrDefault(false)
+    artifacts {
+        frcNativeArtifact('frcCpp') {
+            targets << "roborio"
+            component = 'frcUserProgram'
+            // Debug can be overridden by command line, for use with VSCode
+            debug = frc.getDebugOrDefault(false)
+        }
+        // Built in artifact to deploy arbitrary files to the roboRIO.
+        fileTreeArtifact('frcStaticFileDeploy') {
+            // The directory below is the local directory to deploy
+            files = fileTree(dir: 'src/main/deploy')
+            // Deploy to RoboRIO target, into /home/lvuser/deploy
+            targets << "roborio"
+            directory = '/home/lvuser/deploy'
+        }
     }
-    fileTreeArtifact('frcStaticFileDeploy') {
-      files = fileTree(dir: 'src/main/deploy')
-      // Deploy to RoboRIO target, into /home/lvuser/deploy
-      targets << 'roborio'
-      directory = '/home/lvuser/deploy'
-    }
-  }
 }
 
+// Set this to true to include the src folder in the include directories passed
+// to the compiler. Some eclipse project imports depend on this behavior.
+// We recommend leaving this disabled if possible. Note for eclipse project
+// imports this is enabled by default. For new projects, its disabled
 def includeSrcInIncludeRoot = false
 
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
+def includeWMLRevSupport = false
+
+// Enable simulation gui support. Must check the box in vscode to enable support
+// upon debugging
 dependencies {
-  simulation wpi.deps.sim.gui(wpi.platforms.desktop, true)
+    simulation wpi.deps.sim.gui(wpi.platforms.desktop, true)
 }
 
-
-//wpi.deps.vendor.loadFrom(project(':wml'))
+// wpi.deps.vendor.loadFrom(project(':wml'))
 
 model {
-  components {
-    frcUserProgram(NativeExecutableSpec) {
-      targetPlatform wpi.platforms.roborio
-      if (includeDesktopSupport) {
-        targetPlatform wpi.platforms.desktop
-      }
+    components {
+        frcUserProgram(NativeExecutableSpec) {
+            targetPlatform wpi.platforms.roborio
+            if (includeDesktopSupport) {
+                targetPlatform wpi.platforms.desktop
+            }
 
-      sources.cpp {
-        source {
-          srcDir 'src/main/cpp'
-          srcDir rootProject.file('wml/src/main/cpp')
-          include '**/*.cpp', '**/*.cc'
+            sources.cpp {
+                source {
+                    srcDir 'src/main/cpp'
+                    include '**/*.cpp', '**/*.cc'
+
+                    srcDir '../WML/src/main/cpp'
+                    if (includeWMLRevSupport) {
+                        srcDir '../WML/src/rev/cpp'
+                    }
+                }
+                exportedHeaders {
+                    srcDir 'src/main/include'
+
+                    srcDir '../WML/src/main/include'
+                    if (includeWMLRevSupport) {
+                        srcDir '../WML/src/rev/include'
+                    }
+
+                    if (includeSrcInIncludeRoot) {
+                        srcDir 'src/main/cpp'
+
+                        srcDir '../WML/src/main/cpp'
+                        if (includeWMLRevSupport) {
+                            srcDir '../WML/src/rev/cpp'
+                        }
+                    }
+                }
+                // binaries.all {
+                //     lib project: ':wml', library: 'wml', linkage: 'static'
+                // }
+            }
+
+            // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
+            wpi.deps.wpilib(it)
+            wpi.deps.vendor.cpp(it)
         }
-        exportedHeaders {
-          srcDir 'src/main/include'
-          srcDir rootProject.file('wml/src/main/include')
-          if (includeSrcInIncludeRoot) {
-            srcDir 'src/main/cpp'
-            srcDir rootProject.file('wml/src/main/cpp')
-          }
-        }
-      }
-
-      // binaries.all {
-      //   lib project: ':common', library: 'curtinFrcCommon', linkage: 'static'
-      //   lib project: ':wml', library: 'wml', linkage: 'static'
-      // }
-
-      // useLibrary(it, "wpilib")
-      wpi.deps.wpilib(it)
-      wpi.deps.vendor.cpp(it)
     }
-  }
+    testSuites {
+        frcUserProgramTest(GoogleTestTestSuiteSpec) {
+            testing $.components.frcUserProgram
 
-  testSuites {
-    frcUserProgramTest(GoogleTestTestSuiteSpec) {
-      testing $.components.frcUserProgram
+            sources.cpp {
+                source {
+                    srcDir 'src/test/cpp'
+                    include '**/*.cpp'
+                }
+            }
 
-      sources.cpp {
-        source {
-          srcDir 'src/test/cpp'
-          include '**/*.cpp'
+            // binaries.all {
+            //     lib project: ':wml', library: 'wml', linkage: 'static'
+            // }
+
+            wpi.deps.wpilib(it)
+            wpi.deps.googleTest(it)
+            wpi.deps.vendor.cpp(it)
         }
-      }
-
-      // binaries.all {
-      //     lib project: ':wml', library: 'wml', linkage: 'static'
-      // }
-
-      wpi.deps.wpilib(it)
-      wpi.deps.googleTest(it)
-      wpi.deps.vendor.cpp(it)
     }
-  }
 }
 
 // task "sim${project.name}"(dependsOn: "simulateFrcUserProgram${project.name}${wpi.platforms.desktop.capitalize()}DebugExecutable")
