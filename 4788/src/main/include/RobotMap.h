@@ -1,5 +1,7 @@
 #pragma once
 
+#define __WML__REV__ true
+
 #include <string>
 #include <stdint.h>
 
