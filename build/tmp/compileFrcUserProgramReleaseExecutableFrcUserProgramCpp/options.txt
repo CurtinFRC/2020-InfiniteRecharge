@@ -22,6 +22,16 @@ D:\\Users\\Conno\\Desktop\\Code\\2020-InfiniteRecharge\\4788\\WayFinder\\include
 -I
 D:\\Users\\Conno\\Desktop\\Code\\2020-InfiniteRecharge\\wml\\src\\main\\include
 -I
+D:\\Users\\Conno\\Desktop\\Code\\2020-InfiniteRecharge\\wml\\src\\rev\\include
+-I
+D:\\Users\\Conno\\Desktop\\Code\\2020-InfiniteRecharge\\4788\\src\\main\\cpp
+-I
+D:\\Users\\Conno\\Desktop\\Code\\2020-InfiniteRecharge\\4788\\WayFinder\\cpp
+-I
+D:\\Users\\Conno\\Desktop\\Code\\2020-InfiniteRecharge\\wml\\src\\main\\cpp
+-I
+D:\\Users\\Conno\\Desktop\\Code\\2020-InfiniteRecharge\\wml\\src\\rev\\cpp
+-I
 C:\\Users\\Conno\\.gradle\\caches\\transforms-2\\files-2.1\\f78589b1f173909e18ca9d5419a0a5fa\\wpilibc-cpp-2020.2.2-headers
 -I
 C:\\Users\\Conno\\.gradle\\caches\\transforms-2\\files-2.1\\82b2ae57b3c67c1c32144726a4d5fc3e\\ntcore-cpp-2020.2.2-headers
