@@ -10,11 +10,12 @@ BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors,
 											 
 											 _BeltIntakeMotors(BeltIntakeMotors), 
 											 _IntakeDown(IntakeDown),  
-											 _contGroup(contGroup) {}
+											 _contGroup(contGroup) {
+	_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward); // Default State
+}
 
 void BeltIntake::TeleopOnUpdate(double dt) {
 
-	_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward);
 
 	if (_contGroup.Get(ControlMap::DownIntake, Controller::ONRISE)) {
 		if (ToggleEnabled) {

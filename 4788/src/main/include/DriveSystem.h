@@ -35,6 +35,8 @@ class DrivetrainAuto : public wml::Strategy {
     DrivetrainAuto(wml::Drivetrain &drivetrain, 
                    WayFinder &wayFinder,
                    wml::control::PIDGains gains,
+                   wml::actuators::DoubleSolenoid &ChangeGears, 
+                   wml::actuators::DoubleSolenoid &Shift2PTO, 
                    int &autoSelector,
                    bool &StartDoComplete,
                    bool &strt,
@@ -50,6 +52,8 @@ class DrivetrainAuto : public wml::Strategy {
     wml::Drivetrain &_drivetrain;
     WayFinder &_wayFinder;
     wml::control::PIDController _pid;
+    wml::actuators::DoubleSolenoid &_ChangeGears;
+    wml::actuators::DoubleSolenoid &_Shift2PTO;
     double LeftPower = 0, RightPower = 0;
     double currentSpeed;
 
