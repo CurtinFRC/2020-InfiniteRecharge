@@ -8,22 +8,37 @@
 
 struct ControlMap {
   static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup);
+
+
+  /**
+   * CAN Port Number System We are using (PWM Not Included)
+   * - 0-9 (Control System, e.g Pneumatics, PDP...)
+   * - 10-19 (SparkMax/Brushless Motor Controllers)
+   * - 20- (Regular Motor Controllers)
+  **/
+
   // ---------------- Defined Ports ------------------
 
   // Controllers
   static const int XboxController1Port, XboxController2Port;
-  static const int JoyController1Port, JoyController2Port;
+  static const int JoyController1Port, JoyController2Port, JoyController3Port;
 
   static const int Driver = 1;
   static const int CoDriver = 2;
+  static const int override = 3;
 
   static const double joyDeadzone;
   static const double xboxDeadzone;
   static const double triggerDeadzone;
 
+  // PCM1
+  static const int PCModule;
+
+
   // Drive System
   static const int DriveMAXportFL, DriveMAXportFR, DriveMAXportBL, DriveMAXportBR;
   static const int ChangeGearPort1, ChangeGearPort2;
+  static const int Shift2PTOPort1, Shift2PTOPort2;
   static const double ChangeGearTime;
   static const double MaxDrivetrainSpeed;
   static const double MaxDrivetrainAcceleration;
@@ -31,23 +46,41 @@ struct ControlMap {
 
   // Turret
   static const bool TuneTurretPID;
-  static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort;
+  static const bool TuneAnglePID;
+  static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort, TurretFlyWheelPort2;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
   static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;
   static const double TurretZeroTimeoutSeconds;
   static const double TurretEncoderSafeZone;
   static const double MaxTurretSpeed, MaxTurretAngularSpeed, FlyWheelVelocity;
+  static const double TurretEncoderRotations;
+  static const double MaxAngleEncoderRotations;
+  static const double TurretRatio;
+
+  // Y Axis Setpoints
+  static const double AngleSetpoint1;
+  static const double AngleSetpoint2;
+  static const double AngleSetpoint3;
+  static const double AngleSetpoint4;
+  static const double AngleSetpoint5;
+  static const double AngleSetpoint6;
+  static const double AngleSetpoint7;
+  static const double AngleSetpoint8;
+  static const double AngleSetpoint9;
+  static const double AngleSetpoint10;
 
   // Intake
   static const int IntakeMotorPort;
   static const int IntakeDownPort1, IntakeDownPort2;
   static const double PannelActuationTime;
   static const double IntakeDownActuationTime;
+  static const double IntakeTestCaseRotations;
 
   // MagLoader
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
+  static const double MagazineBallThresh;
   static const double MagTestCaseRotations;
 
   //Control Pannel
@@ -56,20 +89,41 @@ struct ControlMap {
   static const int ControlPannelUpSolPort1;
   static const int ControlPannelUpSolPort2;
   static const double ControlPannelActuationTime;
+  static const bool ControlClimb;
 
   // Climber
   static const int ClimberActuatorPort1, ClimberActuatorPort2;
   static const double ClimberActuationTime;
-  static const int Shift2PTOPort, Shift2PTOForwardPosition, Shift2PTOReversePosition;
+  static const int Shift1PTOPort, Shift2PTOPort;
   static const int ClimberMotor1Port, ClimberMotor2Port;
+  static const double LiftMaxSpeed;
+  static const double ShiftPTOActuationTime;
+
 
   // Control System
   static const int PressureSensorPort;
   static const int CompressorPort;
+  static const int CamFOV;
+
+  // Auto Values
+  static const double AutoGearRatio; // 1:AutoGearRatio
+  static const double WheelDiameter; // CM
+  static const double WheelCircumference;
+
+  static const double MaxAutoDrivetrainSpeed, MaxAutoTurnSpeed;
+  
+  // Drive PID
+  static const double DriveKp, DriveKi, DriveKd;
+
+  // 6 Ball
+  static const double Strt6Ballx, Strt6Bally, Strt6BallAngle, Strt6BallEncoderDrift, Strt6BallAngleDrift;
+  static const double wypt1Ball6x, wypt1Ball6y, wypt1Ball6Angle, wypt1Ball6EncoderDrift, wypt1Ball6AngleDrift;
+  static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
+  static const double End6Ballx, End6Bally, End6BallAngle, End6BallEncoderDrift, End6BallAngleDrift;
 
   // --------------- Defined Buttons -----------------
 
-  // PID Controller
+  // Turret PID Tuner
   static const wml::controllers::tButton kpUP, kpDOWN;
   static const wml::controllers::tButton kiUP, kiDOWN;
   static const wml::controllers::tButton kdUP, kdDOWN;
@@ -82,6 +136,7 @@ struct ControlMap {
   #endif
   static const wml::controllers::tButton ReverseDrivetrain;
   static const wml::controllers::tButton ShiftGears;
+  static const wml::controllers::tButton Defence;
 
   // Turret
   #if __CONTROLMAP_USING_JOYSTICK__
@@ -96,6 +151,7 @@ struct ControlMap {
   static const wml::controllers::tButton TurretFire; // Might get rid of, if i automate Max speed of flywheel to fire.
   #endif
 
+
   // Intake
   #if __CONTROLMAP_USING_JOYSTICK__
 
@@ -105,7 +161,7 @@ struct ControlMap {
   static const wml::controllers::tButton DownIntake;
   #endif
 
-  //Wheel of Cringe 
+  //Control Pannel
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else 
@@ -121,14 +177,17 @@ struct ControlMap {
 
   static const wml::controllers::tButton ShiftUpMagazine;
   static const wml::controllers::tButton ShiftDownMagazine;
-
-  // Climber
+  static const wml::controllers::tButton ManualMag;
+  //Climber
   #if __CONTROLMAP_USING_JOYSTICK__
 
   #else
-  static const wml::controllers::tAxis ClimberControl;
+  static const wml::controllers::tAxis ClimberControlRight;
   static const wml::controllers::tButton ClimberUp;
   static const wml::controllers::tButton ClimberDown;
-  static const wml::controllers::tButton Shift2PTO;
+  static const wml::controllers::tButton Shift2PTO; // Toggle
+  static const wml::controllers::tAxis ClimberControlLeft;
+  static const wml::controllers::tButton ClimberToggle;
   #endif
-}; 
+
+};

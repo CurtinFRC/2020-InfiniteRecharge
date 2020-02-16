@@ -5,8 +5,9 @@
 
 class BeltIntake {
   public:
-    BeltIntake(wml::Gearbox &BeltIntakeMotors, wml::actuators::DoubleSolenoid &IntakeDown, wml::controllers::SmartControllerGroup &contGroup);
-    // std::shared_ptr<nt::NetworkTable> &pancakes);
+    BeltIntake(wml::Gearbox &BeltIntakeMotors, 
+               wml::actuators::DoubleSolenoid &IntakeDown, 
+               wml::controllers::SmartControllerGroup &contGroup);
     
     void TeleopOnUpdate(double dt);
     void AutoOnUpdate(double dt);
@@ -16,10 +17,12 @@ class BeltIntake {
     wml::Gearbox &_BeltIntakeMotors;
     wml::actuators::DoubleSolenoid &_IntakeDown;
     wml::controllers::SmartControllerGroup &_contGroup;
-    //std::shared_ptr<nt::NetworkTable> &_pancakes;
 
 
     frc::Timer timer;
+    double IntakePower = 0;
+    int TestType = 1;
+    int timeout = 3;
 
     bool ToggleEnabled;
 };
