@@ -37,12 +37,13 @@ void Climber::TeleopOnUpdate(double dt) {
   } 
  
   if (ToggleEnabled) {
+    _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+
     liftSpeedleft = abs(_contGroup.Get(ControlMap::ClimberControlLeft)) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
     liftSpeedright = abs(_contGroup.Get(ControlMap::ClimberControlRight)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::ClimberControlRight) : 0;
     liftSpeedright *= ControlMap::LiftMaxSpeed;
     liftSpeedleft *= ControlMap::LiftMaxSpeed;
   } else {
-    // _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
     _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
   }
 

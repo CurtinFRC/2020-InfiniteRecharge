@@ -78,16 +78,20 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   #endif
 
+  // Invert Drivebase
   if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE)) {
     _drivetrain.SetInverted(!_drivetrain.GetInverted());
   }
 
+  // Shift Gear 
   if (_contGroup.Get(ControlMap::ShiftGears)) {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kForward);
   } else {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kReverse);
   }
 
+
+  // PTO Toggle
   if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONRISE)) {
     if (!PTOactive) {
       PTOactive = true;
@@ -96,6 +100,7 @@ void DrivetrainManual::OnUpdate(double dt) {
     }
   }
 
+  // PTO Shifter
   if (!PTOactive) {
     _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
   } else if (PTOactive) {
@@ -103,16 +108,12 @@ void DrivetrainManual::OnUpdate(double dt) {
   }
 
   
-
+  // Update pneumatics
   _ChangeGears.Update(dt);
   _Shift2PTO.Update(dt);
 
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
-
-  
-  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
   _drivetrain.Set(leftSpeed, rightSpeed);
 }

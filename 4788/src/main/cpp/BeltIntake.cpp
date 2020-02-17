@@ -11,7 +11,7 @@ BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors,
 											 _BeltIntakeMotors(BeltIntakeMotors), 
 											 _IntakeDown(IntakeDown),  
 											 _contGroup(contGroup) {
-	_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward); // Default State
+	_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse); // Default State
 }
 
 void BeltIntake::TeleopOnUpdate(double dt) {
