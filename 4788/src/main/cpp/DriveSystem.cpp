@@ -22,7 +22,7 @@ DrivetrainManual::DrivetrainManual(std::string name,
   SetCanBeReused(true);
 
   _ChangeGears.SetTarget(wml::actuators::BinaryActuatorState::kForward); // Default State High Gear
-  _Shift2PTO.SetTarget(wml::actuators::BinaryActuatorState::kReverse); // Default State Offline
+  _Shift2PTO.SetTarget(wml::actuators::BinaryActuatorState::kForward); // Default State Offline
 }
 
 // On Loop Update, this code runs (Just a drivebase)
@@ -90,13 +90,19 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONRISE)) {
     if (!PTOactive) {
-      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
       PTOactive = true;
     } else if (PTOactive) {
-      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
       PTOactive = false;
     }
   }
+
+  if (!PTOactive) {
+    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+  } else if (PTOactive) {
+    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
+  }
+
+  
 
   _ChangeGears.Update(dt);
   _Shift2PTO.Update(dt);
