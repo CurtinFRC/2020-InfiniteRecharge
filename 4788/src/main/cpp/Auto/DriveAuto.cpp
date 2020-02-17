@@ -49,7 +49,7 @@ void DrivetrainAuto::WayPointSwitch() {
 
 
 void DrivetrainAuto::OnUpdate(double dt) {
-  
+
   // Default State for gearing
   _ChangeGears.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
   _Shift2PTO.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
@@ -61,7 +61,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
         case 1: // Start to Waypoint 1
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, -90, false, dt);
+            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
           } else {
             WayPointSwitch();
           }
@@ -84,7 +84,11 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;
 
         case 4: // Drive to endpoint (backwards)
-      
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
+          } else {
+            WayPointSwitch();
+          }
         break;  
       }
     break;

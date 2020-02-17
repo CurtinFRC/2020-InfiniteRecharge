@@ -1,47 +1,55 @@
 See file:///D:/Users/Conno/Desktop/Code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
 compiling ControlMap.cpp successful.
 
-compiling DriveAuto.cpp successful.
-
 compiling BeltIntake.cpp successful.
 
-compiling ControlPannel.cpp successful.
+compiling DriveAuto.cpp successful.
 
-compiling DriveSystem.cpp successful.
+compiling ControlPannel.cpp successful.
 
 compiling TurretBackend.cpp successful.
 
 compiling Climber.cpp successful.
 
+compiling DriveSystem.cpp successful.
+
 compiling Robot.cpp successful.
-
-compiling wayfinder.cpp successful.
-
-compiling Turret.cpp successful.
 
 compiling BinaryEncoderMotor.cpp successful.
 
+compiling Turret.cpp failed.
+D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp: In member function 'void Turret::TeleopOnUpdate(double)':
+D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:125:7: error: '_TurretDisable' was not declared in this scope
+  if (!_TurretDisable) {
+       ^~~~~~~~~~~~~~
+D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:125:7: note: suggested alternative: '_TurretDissable'
+  if (!_TurretDisable) {
+       ^~~~~~~~~~~~~~
+       _TurretDissable
+
 compiling BinaryLimitMotor.cpp successful.
+
+compiling wayfinder.cpp successful.
+
+compiling Compressor.cpp successful.
 
 compiling BinaryServo.cpp successful.
 
 compiling Filter.cpp successful.
 
-compiling Compressor.cpp successful.
-
 compiling Controllers.cpp successful.
 
-compiling PIDController.cpp successful.
-
 compiling Inputs.cpp successful.
+
+compiling PIDController.cpp successful.
 
 compiling DoubleSolenoid.cpp successful.
 
 compiling SmartController.cpp successful.
 
-compiling VoltageController.cpp successful.
-
 compiling PneumaticIntake.cpp successful.
+
+compiling VoltageController.cpp successful.
 
 compiling WheeledIntake.cpp successful.
 
@@ -57,42 +65,20 @@ compiling Encoder.cpp successful.
 
 compiling DeployableDevice.cpp successful.
 
-compiling Drivetrain.cpp successful.
+compiling Elevator.cpp successful.
 
 compiling EncoderSwitch.cpp successful.
 
-compiling LimitSwitch.cpp successful.
-
-compiling Elevator.cpp successful.
+compiling Drivetrain.cpp successful.
 
 compiling MPStrategy.cpp successful.
+
+compiling LimitSwitch.cpp successful.
 
 compiling LoopSystem.cpp successful.
 
 compiling PressureSensor.cpp successful.
 
 compiling Toggle.cpp successful.
-
-compiling NTProvider.cpp successful.
-
-compiling NavX.cpp successful.
-
-compiling StrategySystem.cpp successful.
-
-compiling StrategyController.cpp successful.
-
-compiling NavX.robot.cpp successful.
-
-compiling StrategyBuilder.cpp successful.
-
-compiling WMLCtre.cpp successful.
-
-compiling WMLCtre.robot.cpp successful.
-
-compiling WMLRev.cpp successful.
-
-compiling MagLoader.cpp successful.
-
-compiling Main.cpp successful.
 
 Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///D:/Users/Conno/Desktop/Code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.

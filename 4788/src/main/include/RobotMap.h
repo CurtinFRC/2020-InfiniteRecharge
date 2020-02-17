@@ -92,6 +92,8 @@ struct RobotMap {
 
     wml::sensors::NavX navx{};
     wml::sensors::NavXGyro gyro{ navx.Angular(wml::sensors::AngularAxis::YAW) };
+    wml::sensors::NavXGyro gyro1{ navx.Angular(wml::sensors::AngularAxis::PITCH) };
+    wml::sensors::NavXGyro gyro2{ navx.Angular(wml::sensors::AngularAxis::ROLL) };
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox, &gyro, 0.56, 0.60, 0.0762, 50 };
     wml::Drivetrain drivetrain{ driveTrainConfig };
@@ -176,7 +178,7 @@ struct RobotMap {
     */ 
 
     // Selection
-    int AutoSelecter = 3;
+    int AutoSelecter = 1;
 
     // 6 Ball
     bool StartDoComplete = true;

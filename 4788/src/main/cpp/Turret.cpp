@@ -13,7 +13,7 @@ Turret::Turret(Gearbox &Rotation,
 							 SmartControllerGroup &contGroup, 
 							 std::shared_ptr<nt::NetworkTable> &visionTable,
 							 std::shared_ptr<nt::NetworkTable> &rotationTable, 
-							 bool &TurretDisable) : 
+							 bool &TurretDissable) : 
 
 							 
 							 _RotationalAxis(Rotation),
@@ -25,7 +25,7 @@ Turret::Turret(Gearbox &Rotation,
 							 _contGroup(contGroup), 
 							 _visionTable(visionTable),
 							 _rotationTable(rotationTable),
-							 _TurretDisable(TurretDisable){
+							 _TurretDissable(TurretDissable) {
 	table = _visionTable->GetSubTable("Target");
 	table_2 =  _rotationTable->GetSubTable("turretRotation");
 
@@ -122,7 +122,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	}
 
 
-	if (!_TurretDisable) {
+	if (!_TurretDissable) {
 		// Manual Angle Control
 		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
 
@@ -141,6 +141,7 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	// Flywheel Feedback
 	ContFlywheelFeedback();
+	
 
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 

@@ -14,7 +14,7 @@ class Turret {
 					 wml::controllers::SmartControllerGroup &contGroup, 
 					 std::shared_ptr<nt::NetworkTable> &visionTable,
 					 std::shared_ptr<nt::NetworkTable> &rotationTable, 
-					 bool &TurretDisable);
+					 bool &TurretDissable);
 
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
@@ -45,7 +45,7 @@ class Turret {
 		std::shared_ptr<nt::NetworkTable> &_rotationTable;
 
 		frc::Timer ZeroTimer;
-		bool &_TurretDisable;
+		bool &_TurretDissable;
 
 		// Backend Functions
 		double SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput);

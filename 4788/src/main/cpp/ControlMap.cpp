@@ -110,7 +110,7 @@ const double ControlMap::MagTestCaseRotations = 5;
 // Climber 
 const int ControlMap::ClimberActuatorPort1 = 2; // 2
 const int ControlMap::ClimberActuatorPort2 = 3; // 3
-const double ControlMap::ClimberActuationTime = 0;
+const double ControlMap::ClimberActuationTime = 2;
 
 const int ControlMap::ClimberMotor1Port = 27; // 27
 const int ControlMap::ClimberMotor2Port = 26; // 26
@@ -127,11 +127,11 @@ const int ControlMap::ControlPannelPort = 28; // 28
 const int ControlMap::ControlPannelUpPort = 29; // 29
 
 // Auto Values (In Meters)
-const double ControlMap::AutoGearRatio = 15; // AutoGearRatio:1/output roation (15 = Neo Drive)
+const double ControlMap::AutoGearRatio = 7; // AutoGearRatio:1/output roation (15 = Neo Drive)
 const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
-const double ControlMap::MaxAutoDrivetrainSpeed = 0.6;
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.4;
 const double ControlMap::MaxAutoTurnSpeed = 0.4;
 
 
