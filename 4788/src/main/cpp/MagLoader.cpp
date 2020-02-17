@@ -18,32 +18,28 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
 
 void MagLoader::TeleopOnUpdate(double dt) {
 
-  MagazinePower = 0;
-
   // Shifting Mag up
   if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {
-    MagazinePower = 1;
-    // if (MagOverride) {
-    //   MagazinePower = 1;
-    // } else {
-    //   if (_Position5.GetAverageValue() < ControlMap::MagazineBallThresh) {
-    //     MagazinePower = 0;
-    //   } else {
-    //     MagazinePower = 1;
-    //   }
-    // }
+    if (MagOverride) {
+      MagazinePower = 1;
+    } else {
+      if (_Position5.GetAverageValue() < ControlMap::MagazineBallThresh) {
+        MagazinePower = 0;
+      } else {
+        MagazinePower = 1;
+      }
+    }
   // Shifting Mag Down
   } else if (_contGroup.Get(ControlMap::ShiftDownMagazine)) {
-    // if (MagOverride) {
-    //   MagazinePower = -1;
-    // } else {
-    //   if (_Position5.GetAverageValue() < ControlMap::MagazineBallThresh) {
-    //     MagazinePower = 0;
-    //   } else {
-    //     MagazinePower = -1;
-    //   }
-    // }
-    MagazinePower = -1;
+    if (MagOverride) {
+      MagazinePower = -1;
+    } else {
+      if (_Position5.GetAverageValue() < ControlMap::MagazineBallThresh) {
+        MagazinePower = 0;
+      } else {
+        MagazinePower = -1;
+      }
+    }
   }
 
   // Fire Control
@@ -69,7 +65,7 @@ void MagLoader::AutoOnUpdate(double dt) {
 
 void MagLoader::TestOnUpdate(double dt) {
 
-  //@TODO add more test cases when you know what the mag will do
+  //@TODO add more test cases when you know what the  will do
   switch (testType) {
     case 1:
       if (_MagazineMotors.encoder->GetEncoderRotations() < ControlMap::MagTestCaseRotations) {

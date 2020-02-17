@@ -14,7 +14,15 @@ class Turret {
 					 wml::controllers::SmartControllerGroup &contGroup, 
 					 std::shared_ptr<nt::NetworkTable> &visionTable,
 					 std::shared_ptr<nt::NetworkTable> &rotationTable, 
-					 bool &TurretDissable);
+					 bool &FlyWheelToggle,
+					 bool &TurretToggle, 
+					 int &autoSelector, 
+					 bool &StartDoComplete,
+					 bool &strt,
+					 bool &p1,
+					 bool &p2,
+					 bool &p3,
+					 bool &end);
 
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
@@ -44,8 +52,18 @@ class Turret {
 		std::shared_ptr<nt::NetworkTable> &_visionTable;
 		std::shared_ptr<nt::NetworkTable> &_rotationTable;
 
+		bool &_FlyWheelToggle;
+		bool &_TurretToggle;
+		int &_autoSelector;
+		bool &_StartDoComplete;
+		bool &_strt;
+		bool &_p1;
+		bool &_p2;
+		bool &_p3;
+		bool &_end;
+
+		// Timeout Timer
 		frc::Timer ZeroTimer;
-		bool &_TurretDissable;
 
 		// Backend Functions
 		double SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput);
@@ -53,7 +71,11 @@ class Turret {
 		void TurretZeroRight(double Time);
 		void TurretZeroAngle(double Time);
 		void ContFlywheelFeedback();
+		void FlyWheelAutoSpinup();
+		void FlyWheelManualSpinup();
 		void PIDTuner();
+		void AutoAimToFire();
+		void TurretSearchForTarget();
 
 		// PID Calculations X axis (Rotation R)
 		double RkP = 0;
@@ -107,6 +129,13 @@ class Turret {
 		double AngularPower = 0;
 		double FlyWheelPower = 0;
 
-		//dissable for climber 
-
+		//auto 
+		int AutoTurretSwitcher = 1; // I didnt really know what to call it
+		int TurretAutoSelection = 0; //tells the turret which case selection it's in
+		int BallTime3Shoot = 1.5;
+		int BallTime5Shoot = 2.5;
+		int SpinUpTime = 1;
+		int Ball3Shoot = BallTime3Shoot + SpinUpTime; //time to shoot 3 balls
+		int Ball5Shoot = BallTime5Shoot + SpinUpTime; //shoots 5 balls 
+		frc::Timer timer;
 };

@@ -8,7 +8,8 @@ class BeltIntake {
     BeltIntake(wml::Gearbox &BeltIntakeMotors, 
                wml::actuators::DoubleSolenoid &IntakeDown, 
                wml::controllers::SmartControllerGroup &contGroup,
-               bool &TurretDissable);
+               bool &FlyWheelToggle,
+               bool &TurretToggle);
     
     void TeleopOnUpdate(double dt);
     void AutoOnUpdate(double dt);
@@ -18,7 +19,8 @@ class BeltIntake {
     wml::Gearbox &_BeltIntakeMotors;
     wml::actuators::DoubleSolenoid &_IntakeDown;
     wml::controllers::SmartControllerGroup &_contGroup;
-    bool &_TurretDissable;
+    bool &_FlyWheelToggle;
+    bool &_TurretToggle;
 
 
     frc::Timer timer;
@@ -26,6 +28,6 @@ class BeltIntake {
     int TestType = 1;
     int timeout = 3;
 
-    bool ToggleEnabled;
+    bool ToggleEnabled = false;
     bool ToggleIntakeOn = false;
 };

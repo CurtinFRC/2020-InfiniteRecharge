@@ -180,7 +180,7 @@ struct RobotMap {
     // Selection
     int AutoSelecter = 1;
 
-    // 6 Ball
+    // Public booleans for subsystems
     bool StartDoComplete = true;
     bool StartPointComplete = false;
     bool WayPoint1Complete = false;
@@ -204,10 +204,12 @@ struct RobotMap {
     uint8_t message = 73;
     // Climber
 
-   //Turret
-   std::shared_ptr<nt::NetworkTable> rotationTable = nt::NetworkTableInstance::GetDefault().GetTable("Sharing values");
+    //Turret
+    std::shared_ptr<nt::NetworkTable> rotationTable = nt::NetworkTableInstance::GetDefault().GetTable("Sharing values");
 
-   bool TurretDisable = false;
+    
+    bool TurretToggle = false;
+    bool FlyWheelToggle = false;
   };
   ControlSystem controlSystem;
 };

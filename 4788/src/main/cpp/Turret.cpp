@@ -12,9 +12,16 @@ Turret::Turret(Gearbox &Rotation,
 							 sensors::BinarySensor &AngleDownLimit, 
 							 SmartControllerGroup &contGroup, 
 							 std::shared_ptr<nt::NetworkTable> &visionTable,
-							 std::shared_ptr<nt::NetworkTable> &rotationTable, 
-							 bool &TurretDissable) : 
-
+							 std::shared_ptr<nt::NetworkTable> &rotationTable,
+							 bool &FlyWheelToggle, 
+							 bool &TurretToggle,
+							 int &autoSelector,
+							 bool &StartDoComplete,
+							 bool &strt,
+							 bool &p1,
+							 bool &p2,
+							 bool &p3,
+							 bool &end) : 
 							 
 							 _RotationalAxis(Rotation),
 						   _VerticalAxis(VerticalAxis), 
@@ -25,9 +32,18 @@ Turret::Turret(Gearbox &Rotation,
 							 _contGroup(contGroup), 
 							 _visionTable(visionTable),
 							 _rotationTable(rotationTable),
-							 _TurretDissable(TurretDissable) {
+							 _FlyWheelToggle(FlyWheelToggle),
+							 _TurretToggle(TurretToggle),
+							 _autoSelector(autoSelector),
+							 _StartDoComplete(StartDoComplete),
+							 _strt(strt),
+							 _p1(p1),
+							 _p2(p2),
+							 _p3(p3),
+							 _end(end) {
 	table = _visionTable->GetSubTable("Target");
 	table_2 =  _rotationTable->GetSubTable("turretRotation");
+	int nice = 69;
 
 	imageHeight = table->GetNumber("ImageHeight", 0); 
 	imageWidth = table->GetNumber("ImageWidth", 0);
@@ -61,48 +77,6 @@ void Turret::ZeroTurret() {
 	_FlyWheel.encoder->ZeroEncoder();
 }
 
-// Using Setpoints
-double Turret::YAutoAimCalc(double dt, double TargetInput) {
-
-	double targetEncoderValue;
-	int LowPoint = 10;
-	int MaxPoint = 50;
-	int PixleAmount = 2;
-
-	// Setpoint Selection.
-	targetEncoderValue = SetPointSelection(LowPoint, MaxPoint, PixleAmount, TargetInput);
-
-
-	// Calculate PID
-	double input = _RotationalAxis.encoder->GetEncoderRotations();
-	Aerror = targetEncoderValue - input;
-
-	double derror = (Aerror - ApreviousError) / dt;
-	Asum = Asum + Aerror * dt;
-
-	if (Asum > (imageHeight/2)) {
-		Asum = imageHeight;
-	} else if (Asum < -(imageHeight/2)) {
-		Asum = -imageHeight;
-	}
-
-	
-	double output = AkP * Aerror + AkI * Asum + AkD * derror;
-
-	// Convert to -1 - 1 for motor
-	output /= ControlMap::MaxAngleEncoderRotations;
-
-	// Temp Values
-	table->PutNumber("AngleDError", derror);
-	table->PutNumber("AngleError", Aerror);
-	table->PutNumber("AngleDelta Time", dt);
-	table->PutNumber("AngleOutput", output);
-
-	ApreviousError = Aerror;
-
-	return output;
-}
-
 void Turret::TeleopOnUpdate(double dt) {
 
 	targetX = table->GetNumber("Target_X", 0)/imageWidth;
@@ -122,7 +96,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	}
 
 
-	if (!_TurretDissable) {
+	if (!_TurretToggle) {
 		// Manual Angle Control
 		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
 
@@ -130,14 +104,18 @@ void Turret::TeleopOnUpdate(double dt) {
 		RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
 	} 
 
-	// FlyWheel Code
-	if ((_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) && (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone)) {
-		FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
-	} else if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
-		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-	} else {
-		FlyWheelPower = 0;
+	if (!_FlyWheelToggle) {
+		// FlyWheel Code
+		if ((_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) && (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone)) {
+			FlyWheelAutoSpinup();
+		} else if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
+			FlyWheelManualSpinup();
+		} else {
+			FlyWheelPower = 0;
+		}
 	}
+
+	
 
 	// Flywheel Feedback
 	ContFlywheelFeedback();
@@ -160,8 +138,129 @@ void Turret::TeleopOnUpdate(double dt) {
 }
 
 void Turret::AutoOnUpdate(double dt) {
+	// double targetY = table->GetNumber("Target_Y", 0);
+	// double targetX = table->GetNumber("Target_X", 0);
+	switch (TurretAutoSelection) {
+		case 1:
+			switch (_autoSelector) {
+				case 1: // 8 ball auto, shoots 3 balls then 5 balls 
+					if (!_StartDoComplete) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						_StartDoComplete = true;
+					} 
 
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball5Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						//the entire auto should stop after this
+					}
+				break;
+
+				// autoaimXCalc(dt, )
+				// autoaimYCalc()
+
+
+				case 2: // 6 ball auto, 2 lots of three balls 
+					if (!_StartDoComplete) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						_StartDoComplete = false;
+					}
+
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 *FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						//The entire auto should stop after this
+					}
+				break;
+
+
+				case 3: // 3 ball left auto , this is at the end 
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						_StartDoComplete = false;
+					}
+				break;
+
+				
+				case 4: // 3 ball mid auto
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						//end of auto
+					}
+				break;
+
+
+				case 5: // 3 ball right auto
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						_StartDoComplete = false;
+					}
+				break;
+
+
+				case 6: // make it go to case 2 automatically 
+					TurretAutoSelection++; // what??
+				break;
+			}
+		break;
+	}		
 }
+
+
 
 // @TODO Turret Test
 
