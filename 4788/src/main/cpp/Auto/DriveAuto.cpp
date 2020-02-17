@@ -58,9 +58,9 @@ void DrivetrainAuto::OnUpdate(double dt) {
     case 1: // Auto 1 (8 Ball)
       switch (AutoWaypointSwitcher) {
         case 1: // Start to Waypoint 1
-          if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet
+          if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet, fires 3 balls
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, -90, false, dt);
+            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
           } else {
             WayPointSwitch();
           }
@@ -83,14 +83,22 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;
 
         case 4: // Drive to endpoint (backwards)
-      
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
+          } else {
+            WayPointSwitch();
+          }
         break;  
+       
+        case 5: //shoot 5 balls 
+          _strt = true;
+        break;
       }
     break;
 
 
     case 2: // auto 2, 6 ball 
-      switch(AutoWaypointSwitcher) {
+      switch(AutoWaypointSwitcher) { // shoots 3 balls at the very beginning of the match 
         case 1:
           if (!_StartDoComplete) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
@@ -114,6 +122,27 @@ void DrivetrainAuto::OnUpdate(double dt) {
           } else {
             WayPointSwitch();
           }
+        break;
+
+        case 4:
+          _strt = true;
+        break;
+      }
+    break;
+
+
+    case 4: // Auto 4, 3 ball left posision 
+      switch(AutoWaypointSwitcher) {
+        case 1:
+          if (!_wayFinder.GetWayPointComplete()) {
+            _wayFinder.GotoWaypoint(3.2 , -2.4, 0, 4.1, -2.3, -180 ,  true, dt);
+          } else {
+             WayPointSwitch();
+          }
+        break;
+
+        case 2:
+          _strt = true;
         break;
       }
     break;
@@ -144,18 +173,9 @@ void DrivetrainAuto::OnUpdate(double dt) {
             WayPointSwitch();
           }
         break;
-      }
-    break;
 
-
-    case 4: // Auto 4, 3 ball left posision 
-      switch(AutoWaypointSwitcher) {
-        case 1:
-          if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(3.2 , -2.4, 0, 4.1, -2.3, -180 ,  true, dt);
-          } else {
-             WayPointSwitch();
-          }
+        case 4: 
+          _strt = true;
         break;
       }
     break;
@@ -186,9 +206,12 @@ void DrivetrainAuto::OnUpdate(double dt) {
             WayPointSwitch();
           }
         break;
+
+        case 4:
+          _strt = true;
+        break;
       }
     break;
-
   }
   _ChangeGears.Update(dt);
   _Shift2PTO.Update(dt);
