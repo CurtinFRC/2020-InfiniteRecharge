@@ -8,9 +8,9 @@ class Turret {
 		Turret(wml::Gearbox &RotationalAxis, 
 					 wml::Gearbox &VerticalAxis, 
 					 wml::Gearbox &FlyWheel, 
-					 wml::sensors::LimitSwitch &LeftLimit, 
-					 wml::sensors::LimitSwitch &RightLimit, 
-					 wml::sensors::LimitSwitch &AngleDownLimit, 
+					 wml::sensors::BinarySensor &LeftLimit, 
+					 wml::sensors::BinarySensor &RightLimit, 
+					 wml::sensors::BinarySensor &AngleDownLimit, 
 					 wml::controllers::SmartControllerGroup &contGroup, 
 					 std::shared_ptr<nt::NetworkTable> &visionTable,
 					 std::shared_ptr<nt::NetworkTable> &rotationTable, 
@@ -36,9 +36,9 @@ class Turret {
 		wml::Gearbox &_VerticalAxis;
 		wml::Gearbox &_FlyWheel;
 
-		wml::sensors::LimitSwitch &_LeftLimit;
-		wml::sensors::LimitSwitch &_RightLimit;
-		wml::sensors::LimitSwitch &_AngleDownLimit;
+		wml::sensors::BinarySensor &_LeftLimit;
+		wml::sensors::BinarySensor &_RightLimit;
+		wml::sensors::BinarySensor &_AngleDownLimit;
 
 		wml::controllers::SmartControllerGroup &_contGroup;
 		std::shared_ptr<nt::NetworkTable> &_visionTable;
@@ -46,6 +46,14 @@ class Turret {
 
 		frc::Timer ZeroTimer;
 		bool &_TurretDisable;
+
+		// Backend Functions
+		double SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput);
+		void TurretZeroLeft(double Time);
+		void TurretZeroRight(double Time);
+		void TurretZeroAngle(double Time);
+		void ContFlywheelFeedback();
+		void PIDTuner();
 
 		// PID Calculations X axis (Rotation R)
 		double RkP = 0;

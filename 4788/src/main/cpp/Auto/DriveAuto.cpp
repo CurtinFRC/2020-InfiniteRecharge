@@ -7,6 +7,8 @@ using namespace wml::controllers;
 DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain, 
                                WayFinder &wayFinder,
                                control::PIDGains gains,
+                               actuators::DoubleSolenoid &ChangeGears,
+                               actuators::DoubleSolenoid &Shift2PTO,
                                int &autoSelector,
                                bool &StartDoComplete,
                                bool &strt,
@@ -18,6 +20,8 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
                                _drivetrain(drivetrain), 
                                _wayFinder(wayFinder),
                                _pid(gains),
+                               _ChangeGears(ChangeGears),
+                               _Shift2PTO(Shift2PTO),
                                _autoSelector(autoSelector),
                                _StartDoComplete(StartDoComplete),
                                _strt(strt),
@@ -29,7 +33,12 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
   SetCanBeInterrupted(true);
   SetCanBeReused(false);
 
+  // Config For WayFinder
   _wayFinder.AutoConfig(ControlMap::MaxAutoDrivetrainSpeed, ControlMap::MaxAutoTurnSpeed);
+
+  // Default State for gearing
+  _ChangeGears.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+  _Shift2PTO.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
 }
 
 void DrivetrainAuto::WayPointSwitch() {
@@ -181,4 +190,6 @@ void DrivetrainAuto::OnUpdate(double dt) {
     break;
 
   }
+  _ChangeGears.Update(dt);
+  _Shift2PTO.Update(dt);
 }

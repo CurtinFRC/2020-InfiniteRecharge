@@ -82,6 +82,8 @@ void Robot::AutonomousInit() {
   Schedule(std::make_shared<DrivetrainAuto>(*drivetrain, 
                                             *wayFinder,
                                             wml::control::PIDGains{ "I am gains", 1, 0, 0 }, 
+                                            robotMap.driveSystem.ChangeGearing,
+                                            robotMap.driveSystem.Shift2PTO,
                                             robotMap.autonomous.AutoSelecter, 
                                             robotMap.autonomous.StartDoComplete,
                                             robotMap.autonomous.StartPointComplete, 

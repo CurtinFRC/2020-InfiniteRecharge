@@ -103,6 +103,10 @@ struct RobotMap {
     wml::sensors::LimitSwitch LeftLimit{ ControlMap::TurretLeftLimitPort, ControlMap::TurretLeftLimitInvert };
     wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
+
+    // wml::sensors::BinarySensor LeftLimit{ ControlMap::TurretLeftLimitPort };
+    // wml::sensors::BinarySensor RightLimit{ ControlMap::TurretRightLimitPort };
+    // wml::sensors::BinarySensor AngleDownLimit{ ControlMap::TurretAngleDownLimitPort };
     
 
     // Rotation
