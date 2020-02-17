@@ -235,7 +235,7 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
 #else
   const tButton ControlMap::ShiftUpMagazine{ CoDriver, __LINE__ + 30 };
   const tButton ControlMap::ShiftDownMagazine{ CoDriver, __LINE__ + 30 };
-  const tButton ControlMap::ManualMag{ CoDriver, XboxController::kBack};
+  const tButton ControlMap::ManualMag{ CoDriver, XboxController::kB};
 #endif
 
 //Climber 
