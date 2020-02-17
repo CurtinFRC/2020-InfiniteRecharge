@@ -35,10 +35,6 @@ DrivetrainAuto::DrivetrainAuto(Drivetrain &drivetrain,
 
   // Config For WayFinder
   _wayFinder.AutoConfig(ControlMap::MaxAutoDrivetrainSpeed, ControlMap::MaxAutoTurnSpeed);
-
-  // Default State for gearing
-  _ChangeGears.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
-  _Shift2PTO.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
 }
 
 void DrivetrainAuto::WayPointSwitch() {
@@ -53,6 +49,11 @@ void DrivetrainAuto::WayPointSwitch() {
 
 
 void DrivetrainAuto::OnUpdate(double dt) {
+
+  // Default State for gearing
+  _ChangeGears.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+  _Shift2PTO.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+
   std::cout << "Distance to target: " << _wayFinder.GetDistanceInRotations() << std::endl;
   switch (_autoSelector) {
     case 1: // Auto 1 (8 Ball)

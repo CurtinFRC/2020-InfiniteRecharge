@@ -22,6 +22,9 @@ class MagLoader {
     frc::AnalogInput &_Position5;
     wml::controllers::SmartControllerGroup &_contGroup;
 
+    // Auto Ball detection (Magazine control)
+    void AutoMag();
+
     bool ToggleEnabled;
     bool MagOverride = false;
     double MagazinePower = 0;
