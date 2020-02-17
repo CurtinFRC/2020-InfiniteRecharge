@@ -13,8 +13,14 @@ Turret::Turret(Gearbox &Rotation,
 							 SmartControllerGroup &contGroup, 
 							 std::shared_ptr<nt::NetworkTable> &visionTable,
 							 std::shared_ptr<nt::NetworkTable> &rotationTable, 
-							 bool &TurretDisable) : 
-
+							 bool &TurretDisable,
+							 int &autoSelector,
+							 bool &StartDoComplete,
+							 bool &strt,
+							 bool &p1,
+							 bool &p2,
+							 bool &p3,
+							 bool &end) : 
 							 
 							 _RotationalAxis(Rotation),
 						   _VerticalAxis(VerticalAxis), 
@@ -25,9 +31,17 @@ Turret::Turret(Gearbox &Rotation,
 							 _contGroup(contGroup), 
 							 _visionTable(visionTable),
 							 _rotationTable(rotationTable),
-							 _TurretDisable(TurretDisable){
+							 _TurretDisable(TurretDisable),
+							 _autoSelector(autoSelector),
+							 _StartDoComplete(StartDoComplete),
+							 _strt(strt),
+							 _p1(p1),
+							 _p2(p2),
+							 _p3(p3),
+							 _end(end){
 	table = _visionTable->GetSubTable("Target");
 	table_2 =  _rotationTable->GetSubTable("turretRotation");
+	int nice = 69;
 
 	imageHeight = table->GetNumber("ImageHeight", 0); 
 	imageWidth = table->GetNumber("ImageWidth", 0);
@@ -132,12 +146,14 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	// FlyWheel Code
 	if ((_contGroup.Get(ControlMap::TurretAutoAim) > ControlMap::triggerDeadzone) && (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone)) {
-		FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
+		FlyWheelAutoSpinup();
 	} else if (_contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > ControlMap::triggerDeadzone) {
-		FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+		FlyWheelManualSpinup();
 	} else {
 		FlyWheelPower = 0;
 	}
+
+	
 
 	// Flywheel Feedback
 	ContFlywheelFeedback();
@@ -160,7 +176,130 @@ void Turret::TeleopOnUpdate(double dt) {
 
 void Turret::AutoOnUpdate(double dt) {
 
+	ZeroTurret();
+	// double targetY = table->GetNumber("Target_Y", 0);
+	// double targetX = table->GetNumber("Target_X", 0);
+	switch (TurretStop) {
+		case 1:
+			switch (_autoSelector) {
+				case 1: // 8 ball auto, shoots 3 balls then 5 balls 
+					if (!_StartDoComplete) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						_StartDoComplete = false;
+					} 
+
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball5Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						//the entire auto should stop after this
+					}
+				break;
+
+				// autoaimXCalc(dt, )
+				// autoaimYCalc()
+
+
+				case 2: // 6 ball auto, 2 lots of three balls 
+					if (!_StartDoComplete) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						_StartDoComplete = false;
+					}
+
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 *FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						//The entire auto should stop after this
+					}
+				break;
+
+
+				case 3: // 3 ball left auto , this is at the end 
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						_StartDoComplete = false;
+					}
+				break;
+
+				
+				case 4: // 3 ball mid auto
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						//end of auto
+					}
+				break;
+
+
+				case 5: // 3 ball right auto
+					if (_strt) {
+						timer.Start();
+						if (timer.Get() <= Ball3Shoot) {
+							FlyWheelAutoSpinup();
+						} else {
+							FlyWheelPower = 0;
+						}
+						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+						timer.Stop();
+						timer.Reset();
+						_StartDoComplete = false;
+					}
+				break;
+
+
+				case 6: // make it go to case 2 automatically 
+					TurretStop ++;
+				break;
+			}
+		break;
+	}		
 }
+
+
 
 // @TODO Turret Test
 

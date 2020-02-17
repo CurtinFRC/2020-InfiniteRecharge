@@ -191,3 +191,12 @@ void Turret::PIDTuner() {
 		TuneAnglePID();
 	}
 }
+
+// FlyWheel Code
+void Turret::FlyWheelManualSpinup() {
+	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+}
+
+void Turret::FlyWheelAutoSpinup() {
+	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
+}
