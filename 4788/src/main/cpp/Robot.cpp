@@ -45,8 +45,8 @@ void Robot::RobotInit() {
                       robotMap.autonomous.EndComplete);
 
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
-  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.controlSystem.FlyWheelToggle, robotMap.controlSystem.TurretDisable);
-  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.intake.IntakeDown, robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.contGroup, robotMap.controlSystem.TurretDisable);
+  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.controlSystem.FlyWheelToggle, robotMap.controlSystem.TurretToggle);
+  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.intake.IntakeDown, robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.contGroup, robotMap.controlSystem.TurretToggle);
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup);
 
   // WayFinder (fake pathfinder basically)

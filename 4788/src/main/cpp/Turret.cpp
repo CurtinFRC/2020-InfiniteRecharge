@@ -43,7 +43,6 @@ Turret::Turret(Gearbox &Rotation,
 							 _end(end) {
 	table = _visionTable->GetSubTable("Target");
 	table_2 =  _rotationTable->GetSubTable("turretRotation");
-	int nice = 69;
 
 	imageHeight = table->GetNumber("ImageHeight", 0); 
 	imageWidth = table->GetNumber("ImageWidth", 0);
