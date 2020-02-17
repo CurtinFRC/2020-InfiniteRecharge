@@ -187,7 +187,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tAxis ControlMap::DrivetrainLeft{ Driver, XboxController::kLeftYAxis };
   const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
-  const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperLeft };
+  const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperRight };
 #endif
 
 // Turret
@@ -246,5 +246,5 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tAxis ControlMap::ClimberControlLeft{ CoDriver, XboxController::kLeftYAxis};
   const tAxis ControlMap::ClimberControlRight{ CoDriver, XboxController::kRightYAxis};
   const tButton ControlMap::ClimberToggle{ CoDriver, XboxController::kY};
-  const tButton ControlMap::Shift2PTO{ Driver, XboxController::kBumperRight };
+  const tButton ControlMap::Shift2PTO{ Driver, XboxController::kBumperLeft };
 #endif

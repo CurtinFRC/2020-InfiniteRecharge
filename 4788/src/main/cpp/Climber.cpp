@@ -22,11 +22,6 @@ Climber::Climber(actuators::DoubleSolenoid &ClimberActuator,
 void Climber::TeleopOnUpdate(double dt) {
   if (_contGroup.Get(ControlMap::ClimberToggle, Controller::ONRISE)) {
 
-    // Put Intake down if up
-    if (_BeltActuator.GetState() == wml::actuators::BinaryActuatorState::kReverse) {
-      _BeltActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
-    }
-
     if (ToggleEnabled) {
       ToggleEnabled = false;
       _TurretDisable = false;
@@ -37,6 +32,12 @@ void Climber::TeleopOnUpdate(double dt) {
   } 
  
   if (ToggleEnabled) {
+    
+    // Put Intake down if up
+    if (_BeltActuator.GetState() == wml::actuators::BinaryActuatorState::kReverse) {
+      _BeltActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+    }
+
     _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
 
     liftSpeedleft = abs(_contGroup.Get(ControlMap::ClimberControlLeft)) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
