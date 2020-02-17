@@ -158,7 +158,7 @@ struct ControlMap {
   #else
   static const wml::controllers::tAxis Intake;
   static const wml::controllers::tAxis Outake;
-  static const wml::controllers::tButton DownIntake;
+  static const std::vector<wml::controllers::tButton> DownIntake;
   #endif
 
   //Control Pannel

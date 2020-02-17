@@ -209,9 +209,9 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tButton ControlMap::Intake{ Driver, 11 };
   const tButton ControlMap::Intake{ Driver, 12 };
 #else 
-  const tAxis ControlMap::Intake{ CoDriver, XboxController::kRightThrottle};
-  const tAxis ControlMap::Outake{ CoDriver, XboxController::kLeftThrottle};
-  const tButton ControlMap::DownIntake{ CoDriver, XboxController::kX};
+  const tAxis ControlMap::Intake{ CoDriver, XboxController::kRightThrottle };
+  const tAxis ControlMap::Outake{ CoDriver, XboxController::kLeftThrottle };
+  const std::vector<tButton> ControlMap::DownIntake{ { CoDriver, XboxController::kX }, { Driver, XboxController::kY } }; // Allows both driver and co driver to access the button
 #endif
 
 //Control Pannel
