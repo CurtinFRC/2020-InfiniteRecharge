@@ -110,7 +110,7 @@ const double ControlMap::MagTestCaseRotations = 5;
 // Climber 
 const int ControlMap::ClimberActuatorPort1 = 2; // 2
 const int ControlMap::ClimberActuatorPort2 = 3; // 3
-const double ControlMap::ClimberActuationTime = 0.2;
+const double ControlMap::ClimberActuationTime = 0;
 
 const int ControlMap::ClimberMotor1Port = 27; // 27
 const int ControlMap::ClimberMotor2Port = 26; // 26

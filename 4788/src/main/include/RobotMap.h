@@ -104,11 +104,6 @@ struct RobotMap {
     wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
 
-    // wml::sensors::BinarySensor LeftLimit{ ControlMap::TurretLeftLimitPort };
-    // wml::sensors::BinarySensor RightLimit{ ControlMap::TurretRightLimitPort };
-    // wml::sensors::BinarySensor AngleDownLimit{ ControlMap::TurretAngleDownLimitPort };
-    
-
     // Rotation
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort, 2048 };
     wml::actuators::MotorVoltageController rotationMotors = wml::actuators::MotorVoltageController::Group(TurretRotation);
@@ -157,7 +152,7 @@ struct RobotMap {
    ControlPannel controlPannel;
 
   struct Climber {
-    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
+    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::PCModule, ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
 
     wml::TalonSrx Climber2Motor{ ControlMap::ClimberMotor2Port, 2048};
     wml::actuators::MotorVoltageController Climber2Motors = wml::actuators::MotorVoltageController::Group(Climber2Motor);

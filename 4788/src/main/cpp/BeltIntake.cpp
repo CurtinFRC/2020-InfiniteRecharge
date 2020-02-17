@@ -11,7 +11,6 @@ BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors,
 											 _BeltIntakeMotors(BeltIntakeMotors), 
 											 _IntakeDown(IntakeDown),  
 											 _contGroup(contGroup) {
-	_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse); // Default State
 }
 
 void BeltIntake::TeleopOnUpdate(double dt) {
@@ -19,13 +18,17 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 
 	if (_contGroup.Get(ControlMap::DownIntake, Controller::ONRISE)) {
 		if (ToggleEnabled) {
-			_IntakeDown.SetTarget(wml::actuators::kForward);
 			ToggleEnabled = false;
 		} else if (!ToggleEnabled) {
-			_IntakeDown.SetTarget(wml::actuators::kReverse);
 			ToggleEnabled = true;
 		}
 	} 
+
+	if (ToggleEnabled) {
+		_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+	} else {
+		_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+	}
 	
 
 	IntakePower = _contGroup.Get(ControlMap::Intake) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::Intake) :
