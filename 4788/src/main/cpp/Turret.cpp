@@ -78,8 +78,8 @@ void Turret::ZeroTurret() {
 
 void Turret::TeleopOnUpdate(double dt) {
 
-	targetX = table->GetNumber("Target_X", 0)/imageWidth;
-	targetY = table->GetNumber("Target_Y", 0)/imageHeight;
+	targetX = table->GetNumber("Target_X", 0);
+	targetY = table->GetNumber("Target_Y", 0);
 
 	// Tune Turret PID (If active)
 	PIDTuner();
