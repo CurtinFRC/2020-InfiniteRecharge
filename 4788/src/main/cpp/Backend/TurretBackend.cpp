@@ -44,8 +44,25 @@ void Turret::AutoAimToFire() {
 
 
 // Turret Search Program
+bool SearchSwitcher = false;
 void Turret::TurretSearchForTarget() {
 	//@TODO CJ
+	if (SearchSwitcher) {
+		if (_RotationalAxis.encoder->GetEncoderRotations() > Turret::MinRotation) {
+			RotationPower = -0.2;
+		} else {
+			RotationPower = 0;
+			SearchSwitcher = false;
+		}
+	}	else if (!SearchSwitcher) {
+		if (_RotationalAxis.encoder->GetEncoderRotations() < Turret::MaxAngleRotations) {
+			RotationPower = 0.2;
+		} else {
+			RotationPower = 0;
+			SearchSwitcher = true;
+		}
+	}
+
 }
 
 
