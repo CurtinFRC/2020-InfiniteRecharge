@@ -28,6 +28,7 @@ void Climber::TeleopOnUpdate(double dt) {
       ToggleEnabled = false;
       _TurretDisable = false;
     } else if (!ToggleEnabled) {
+      ClimberTimer.Start();
       ToggleEnabled = true;
       _TurretDisable = true;
     }
@@ -37,8 +38,12 @@ void Climber::TeleopOnUpdate(double dt) {
 
     // Put Intake down if up
     _BeltActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
-    
-    _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+
+    if (ClimberTimer.Get() > 1) {
+      _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+      ClimberTimer.Reset();
+      ClimberTimer.Stop();
+    }
 
     liftSpeedleft = abs(_contGroup.Get(ControlMap::ClimberControlLeft)) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
     liftSpeedright = abs(_contGroup.Get(ControlMap::ClimberControlRight)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::ClimberControlRight) : 0;
