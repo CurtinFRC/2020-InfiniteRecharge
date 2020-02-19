@@ -131,6 +131,7 @@ class Turret {
 
 		//auto 
 		int AutoTurretSwitcher = 1; // I didnt really know what to call it
+		bool TurretStop; //tells the turret when it is finished
 		int TurretAutoSelection = 0; //tells the turret which case selection it's in
 		int BallTime3Shoot = 1.5;
 		int BallTime5Shoot = 2.5;

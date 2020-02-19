@@ -144,6 +144,8 @@ void Turret::AutoOnUpdate(double dt) {
 			switch (_autoSelector) {
 				case 1: // 8 ball auto, shoots 3 balls then 5 balls 
 					if (!_StartDoComplete) {
+						YAutoAimCalc(dt, 650);
+						//autoaim
 						timer.Start();
 						if (timer.Get() <= Ball3Shoot) {
 							FlyWheelAutoSpinup();
@@ -252,7 +254,8 @@ void Turret::AutoOnUpdate(double dt) {
 
 
 				case 6: // make it go to case 2 automatically 
-					TurretAutoSelection++; // what??
+					TurretStop = true;
+					// TurretAutoSelection++; // what??
 				break;
 			}
 		break;

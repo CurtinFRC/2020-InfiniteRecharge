@@ -6,15 +6,29 @@ using namespace wml::controllers;
 BeltIntake::BeltIntake(Gearbox &BeltIntakeMotors, 
 											 actuators::DoubleSolenoid &IntakeDown, 
 											 SmartControllerGroup &contGroup,
+											 int &autoSelector,
+											 bool &StartDoComplete,
+											 bool &strt,
+											 bool &p1,
+											 bool &p2,
+											 bool &p3,
+											 bool &end,
 											 bool &FlyWheelToggle,
 											 bool &TurretToggle) : 
 											 
 											 _BeltIntakeMotors(BeltIntakeMotors), 
 											 _IntakeDown(IntakeDown),  
 											 _contGroup(contGroup),
+											 _autoSelector(autoSelector),
+											 _StartDoComplete(StartDoComplete),
+											 _strt(strt),
+											 _p1(p1),
+											 _p2(p2),
+											 _p3(p3),
+											 _end(end),
 											 _FlyWheelToggle(FlyWheelToggle),
-											 _TurretToggle(TurretToggle) {
-	_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse); // Default state
+											 _TurretToggle(TurretToggle){
+	_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse); // Default State
 }
 
 void BeltIntake::TeleopOnUpdate(double dt) {
@@ -43,7 +57,40 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 	_BeltIntakeMotors.transmission->SetVoltage(12 * IntakePower);
 }
 
-void BeltIntake::AutoOnUpdate(double dt) {}
+void BeltIntake::AutoOnUpdate(double dt) {
+
+	switch (IntakeStop) {
+		case 1:
+			switch (_autoSelector) {
+				case 1: // 8 ball auto, intake 5 balls
+					if (_p1) {
+						//solenoid down then set the motor spinning
+						_IntakeDown.SetTarget(wml::actuators::kForward);
+						IntakePower = 0.7;
+					} else if (!_p1){
+						//solenoid up and motor off
+						_IntakeDown.SetTarget(wml::actuators::kReverse);
+						IntakePower = 0;
+					}
+					_BeltIntakeMotors.transmission->SetVoltage(12 * IntakePower);
+				break;
+
+				case 2: // 6 ball auto 
+					if (_p1) {
+						//solenoid down then set the motor spinning 
+						_IntakeDown.SetTarget(wml::actuators::kForward);
+						IntakePower = 0.7;
+					} else if (!_p1) {
+						//solenoid up and motor off
+						_IntakeDown.SetTarget(wml::actuators::kReverse);
+						IntakePower = 0;
+					}
+				break;
+			}
+
+		break;
+	}
+}
 
 void BeltIntake::TestOnUpdate(double dt) {
 
@@ -74,3 +121,4 @@ void BeltIntake::TestOnUpdate(double dt) {
 	_BeltIntakeMotors.transmission->SetVoltage(12 * IntakePower);
 	_IntakeDown.Update(dt);
 }
+
