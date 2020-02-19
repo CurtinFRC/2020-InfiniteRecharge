@@ -126,7 +126,7 @@ class Turret {
 		bool &_p3;
 		bool &_end;
 		int AutoTurretSwitcher = 1; // I didnt really know what to call it
-		int TurretStop = 0; //tells the turret when it is finished
+		bool TurretStop; //tells the turret when it is finished
 		int BallTime3Shoot = 1.5;
 		int BallTime5Shoot = 2.5;
 		int SpinUpTime = 1;

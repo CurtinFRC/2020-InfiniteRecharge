@@ -61,12 +61,15 @@ void DrivetrainAuto::OnUpdate(double dt) {
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet, fires 3 balls
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
+            _p1 = true;
           } else {
             WayPointSwitch();
           }
+
         break;
 
         case 2: // Drive from waypoint 1 to 2
+          if(!_p1) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(5.4, -0.7, 0, 9.7, -0.7, 0, false, dt);
           } else {
@@ -74,7 +77,11 @@ void DrivetrainAuto::OnUpdate(double dt) {
           }
         break;
 
-        case 3: // Drive From waypoint 2 to 3 (Backwards)
+        case 3:
+          _p1 = false;
+        break;
+
+        case 4: // Drive From waypoint 2 to 3 (Backwards)
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(9.7, -0.7, 0, 8, -0.7, -21.801, true, dt);
           } else {
@@ -82,7 +89,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
           }
         break;
 
-        case 4: // Drive to endpoint (backwards)
+        case 5: // Drive to endpoint (backwards)
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
           } else {
@@ -90,7 +97,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
           }
         break;  
        
-        case 5: //shoot 5 balls 
+        case 6: //shoot 5 balls 
           _strt = true;
         break;
       }
@@ -103,12 +110,14 @@ void DrivetrainAuto::OnUpdate(double dt) {
           if (!_StartDoComplete) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
+            _p1 = true;
           } else {
             WayPointSwitch();
           }
         break;
           
         case 2:
+          if (!_p1) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
               _wayFinder.GotoWaypoint(5.4, -0.7, 0, 8, -0.7, -21, false, dt);
           } else {
@@ -117,6 +126,10 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;
 
         case 3:
+          _p1 = false;
+        break;
+
+        case 4:
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
           } else {
@@ -124,7 +137,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
           }
         break;
 
-        case 4:
+        case 5:
           _strt = true;
         break;
       }
