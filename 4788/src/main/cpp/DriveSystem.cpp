@@ -104,13 +104,15 @@ void DrivetrainManual::OnUpdate(double dt) {
     _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
   }
 
-  // Curve The speed
-  leftSpeed = pow(leftSpeed, 2.5);
-  rightSpeed = pow(rightSpeed, 2.5);
+  // Curve the speed
+  leftSpeed = (abs(leftSpeed) * leftSpeed);
+  rightSpeed = (abs(rightSpeed) * rightSpeed);
 
   // Restrict the speed of the drivetrain
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
+
+  std::cout << "Speed " << leftSpeed << "," << rightSpeed << std::endl;
 
   // Update pneumatics
   _ChangeGears.Update(dt);

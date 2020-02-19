@@ -61,7 +61,8 @@ void DrivetrainAuto::OnUpdate(double dt) {
         case 1: // Start to Waypoint 1
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet, fires 3 balls
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
+            _wayFinder.GotoWaypoint(3.2, -2.4, -43, 5.4, -0.7, 45, false, dt);
+            std::cout << "Distance to target: " << _wayFinder.GetDistanceInRotations() << std::endl;
           } else {
             WayPointSwitch();
           }

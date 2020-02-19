@@ -127,11 +127,11 @@ const int ControlMap::ControlPannelPort = 28; // 28
 const int ControlMap::ControlPannelUpPort = 29; // 29
 
 // Auto Values (In Meters)
-const double ControlMap::AutoGearRatio = 7; // AutoGearRatio:1/output roation (15 = Neo Drive)
+const double ControlMap::AutoGearRatio = 15; // AutoGearRatio:1/output roation (15 = Neo Drive)
 const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
-const double ControlMap::MaxAutoDrivetrainSpeed = 0.4;
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.3;
 const double ControlMap::MaxAutoTurnSpeed = 0.4;
 
 
@@ -198,7 +198,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tButton ControlMap::TurretAutoAim{ CoDriver, 30 };
 
   const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
-  const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kRightYAxis };
+  const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kLeftYAxis };
   const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
   
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };

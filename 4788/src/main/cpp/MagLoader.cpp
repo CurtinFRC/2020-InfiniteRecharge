@@ -14,7 +14,11 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
                      _StartMag(StartMag), 
                      _Position1(Position1), 
                      _Position5(Position5), 
-                     _contGroup(contGroup) {}
+                     _contGroup(contGroup) {
+  _StartMag.SetAverageBits(2);
+  _Position1.SetAverageBits(2);
+  _Position5.SetAverageBits(2);
+}
 
 
 void MagLoader::AutoMag() {
