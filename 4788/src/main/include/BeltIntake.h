@@ -14,7 +14,9 @@ class BeltIntake {
                bool &p1,
                bool &p2,
                bool &p3,
-               bool &end);
+               bool &end,
+               bool &FlyWheelToggle,
+               bool &TurretToggle);
     
     void TeleopOnUpdate(double dt);
     void AutoOnUpdate(double dt);
@@ -31,8 +33,10 @@ class BeltIntake {
     bool &_p2;
     bool &_p3;
     bool &_end;
-    bool IntakeStop;
+    bool IntakeStop = false;
 
+    bool &_FlyWheelToggle;
+    bool &_TurretToggle;
 
 
     frc::Timer timer;
@@ -40,5 +44,6 @@ class BeltIntake {
     int TestType = 1;
     int timeout = 3;
 
-    bool ToggleEnabled;
+    bool ToggleEnabled = false;
+    bool ToggleIntakeOn = false;
 };

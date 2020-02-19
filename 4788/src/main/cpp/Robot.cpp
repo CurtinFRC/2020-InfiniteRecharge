@@ -23,13 +23,33 @@ void Robot::RobotInit() {
 
   // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
-  turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.turret.LeftLimit, robotMap.turret.RightLimit, robotMap.turret.AngleDownLimit, robotMap.contGroup, robotMap.controlSystem.visionTable, robotMap.controlSystem.rotationTable, robotMap.controlSystem.TurretDisable, robotMap.autonomous.AutoSelecter, robotMap.autonomous.StartDoComplete, robotMap.autonomous.StartPointComplete, robotMap.autonomous.WayPoint1Complete, robotMap.autonomous.WayPoint2Complete, robotMap.autonomous.WayPoint3Complete, robotMap.autonomous.EndComplete);
+
+  // Turret FATBOI... ffs, not again
+  turret = new Turret(robotMap.turret.turretRotation, 
+                      robotMap.turret.turretAngle, 
+                      robotMap.turret.turretFlyWheel, 
+                      robotMap.turret.LeftLimit, 
+                      robotMap.turret.RightLimit, 
+                      robotMap.turret.AngleDownLimit, 
+                      robotMap.contGroup, 
+                      robotMap.controlSystem.visionTable, 
+                      robotMap.controlSystem.rotationTable, 
+                      robotMap.controlSystem.FlyWheelToggle,
+                      robotMap.controlSystem.TurretToggle, 
+                      robotMap.autonomous.AutoSelecter, 
+                      robotMap.autonomous.StartDoComplete, 
+                      robotMap.autonomous.StartPointComplete, 
+                      robotMap.autonomous.WayPoint1Complete, 
+                      robotMap.autonomous.WayPoint2Complete, 
+                      robotMap.autonomous.WayPoint3Complete, 
+                      robotMap.autonomous.EndComplete);
+
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
-  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.autonomous.AutoSelecter, robotMap.autonomous.StartDoComplete, robotMap.autonomous.StartPointComplete, robotMap.autonomous.WayPoint1Complete, robotMap.autonomous.WayPoint2Complete, robotMap.autonomous.WayPoint3Complete, robotMap.autonomous.EndComplete );
-  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.intake.IntakeDown, robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.contGroup, robotMap.controlSystem.TurretDisable);
+  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.autonomous.AutoSelecter, robotMap.autonomous.StartDoComplete, robotMap.autonomous.StartPointComplete, robotMap.autonomous.WayPoint1Complete, robotMap.autonomous.WayPoint2Complete, robotMap.autonomous.WayPoint3Complete, robotMap.autonomous.EndComplete, robotMap.controlSystem.FlyWheelToggle, robotMap.controlSystem.TurretToggle);
+  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.intake.IntakeDown, robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.contGroup, robotMap.controlSystem.TurretToggle);
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup);
 
-  // WayFinder
+  // WayFinder (fake pathfinder basically)
   wayFinder = new WayFinder(ControlMap::DriveKp, ControlMap::DriveKi, ControlMap::DriveKd, *drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
 
   // Zero All Encoders
@@ -44,10 +64,15 @@ void Robot::RobotInit() {
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(true);
   drivetrain->GetConfig().leftDrive.transmission->SetInverted(false);
 
-  // Inverts FlyWheel Motors
+  // Inverts Turret Motors
   robotMap.turret.turretFlyWheel.transmission->SetInverted(true);
+  robotMap.turret.turretRotation.transmission->SetInverted(true);
 
-  robotMap.turret.rotationMotors.SetInverted(true);
+  // Inverts Intake Motors
+  robotMap.intake.intakeMotor.transmission->SetInverted(false);
+
+  // Inverts Mag Motors
+  robotMap.magLoader.magLoaderMotor.transmission->SetInverted(false);
 
   // Arduino Controller
   robotMap.controlSystem.arduino.WriteBulk(&robotMap.controlSystem.message, 16);
@@ -66,8 +91,8 @@ void Robot::RobotPeriodic() {
   std::cout << "Encoder Left: " << robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
   std::cout << "Encoder Right: " << robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
-  robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
-  robotMap.controlSystem.compressor.Update(dt);
+  // robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+  // robotMap.controlSystem.compressor.Update(dt);
   StrategyController::Update(dt);
   NTProvider::Update();
 
@@ -78,6 +103,7 @@ void Robot::DisabledInit() {
   InterruptAll(true);
 }
 
+// Code called once when auto starts
 void Robot::AutonomousInit() {
   Schedule(std::make_shared<DrivetrainAuto>(*drivetrain, 
                                             *wayFinder,
@@ -91,26 +117,27 @@ void Robot::AutonomousInit() {
                                             robotMap.autonomous.WayPoint2Complete, 
                                             robotMap.autonomous.WayPoint3Complete, 
                                             robotMap.autonomous.EndComplete));
-
-
-
   // Zero Robot For Autonomous
   // turret->ZeroTurret();
   robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
   robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
   robotMap.driveSystem.drivetrain.GetConfig().gyro->Reset();
 }
+
+// Auto loops
 void Robot::AutonomousPeriodic() {
   turret->AutoOnUpdate(dt);
   magLoader->AutoOnUpdate(dt);
   beltIntake->AutoOnUpdate(dt);
-  climber->AutoOnUpdate(dt);
 }
 
+// Start of teleop
 void Robot::TeleopInit() { 
   Schedule(drivetrain->GetDefaultStrategy(), true);
   // turret->ZeroTurret();
 }
+
+// Teleop Loops
 void Robot::TeleopPeriodic() {
   turret->TeleopOnUpdate(dt);
   magLoader->TeleopOnUpdate(dt);
@@ -119,9 +146,13 @@ void Robot::TeleopPeriodic() {
   controlPannel->TeleopOnUpdate(dt);
 }
 
+
+// Start of test
 void Robot::TestInit() {
   Schedule(std::make_shared<DrivetrainTest>(*drivetrain, wml::control::PIDGains{ "I am gains 2: Electric Boogaloo", 1, 0, 0 }));
 }
+
+// Test loops
 void Robot::TestPeriodic() {
   turret->TestOnUpdate(dt);
   magLoader->TestOnUpdate(dt);

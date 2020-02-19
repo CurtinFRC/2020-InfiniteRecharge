@@ -92,6 +92,8 @@ struct RobotMap {
 
     wml::sensors::NavX navx{};
     wml::sensors::NavXGyro gyro{ navx.Angular(wml::sensors::AngularAxis::YAW) };
+    wml::sensors::NavXGyro gyro1{ navx.Angular(wml::sensors::AngularAxis::PITCH) };
+    wml::sensors::NavXGyro gyro2{ navx.Angular(wml::sensors::AngularAxis::ROLL) };
 
     wml::DrivetrainConfig driveTrainConfig{ LGearbox, RGearbox, &gyro, 0.56, 0.60, 0.0762, 50 };
     wml::Drivetrain drivetrain{ driveTrainConfig };
@@ -103,11 +105,6 @@ struct RobotMap {
     wml::sensors::LimitSwitch LeftLimit{ ControlMap::TurretLeftLimitPort, ControlMap::TurretLeftLimitInvert };
     wml::sensors::LimitSwitch RightLimit{ ControlMap::TurretRightLimitPort, ControlMap::TurretRightLimitInvert };
     wml::sensors::LimitSwitch AngleDownLimit{ ControlMap::TurretAngleDownLimitPort, ControlMap::TurretAngleDownLimitInvert };
-
-    // wml::sensors::BinarySensor LeftLimit{ ControlMap::TurretLeftLimitPort };
-    // wml::sensors::BinarySensor RightLimit{ ControlMap::TurretRightLimitPort };
-    // wml::sensors::BinarySensor AngleDownLimit{ ControlMap::TurretAngleDownLimitPort };
-    
 
     // Rotation
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort, 2048 };
@@ -157,7 +154,7 @@ struct RobotMap {
    ControlPannel controlPannel;
 
   struct Climber {
-    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
+    wml::actuators::DoubleSolenoid ClimberActuator{ ControlMap::PCModule, ControlMap::ClimberActuatorPort1, ControlMap::ClimberActuatorPort2, ControlMap::ClimberActuationTime };
 
     wml::TalonSrx Climber2Motor{ ControlMap::ClimberMotor2Port, 2048};
     wml::actuators::MotorVoltageController Climber2Motors = wml::actuators::MotorVoltageController::Group(Climber2Motor);
@@ -181,9 +178,9 @@ struct RobotMap {
     */ 
 
     // Selection
-    int AutoSelecter = 3;
+    int AutoSelecter = 1;
 
-    // 6 Ball
+    // Public booleans for subsystems
     bool StartDoComplete = true;
     bool StartPointComplete = false;
     bool WayPoint1Complete = false;
@@ -207,10 +204,12 @@ struct RobotMap {
     uint8_t message = 73;
     // Climber
 
-   //Turret
-   std::shared_ptr<nt::NetworkTable> rotationTable = nt::NetworkTableInstance::GetDefault().GetTable("Sharing values");
+    //Turret
+    std::shared_ptr<nt::NetworkTable> rotationTable = nt::NetworkTableInstance::GetDefault().GetTable("Sharing values");
 
-   bool TurretDisable = false;
+    
+    bool TurretToggle = false;
+    bool FlyWheelToggle = false;
   };
   ControlSystem controlSystem;
 };

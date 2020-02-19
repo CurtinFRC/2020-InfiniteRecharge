@@ -20,9 +20,6 @@ DrivetrainManual::DrivetrainManual(std::string name,
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
-
-  _ChangeGears.SetTarget(wml::actuators::BinaryActuatorState::kForward); // Default State High Gear
-  _Shift2PTO.SetTarget(wml::actuators::BinaryActuatorState::kReverse); // Default State Offline
 }
 
 // On Loop Update, this code runs (Just a drivebase)
@@ -78,35 +75,46 @@ void DrivetrainManual::OnUpdate(double dt) {
 
   #endif
 
+  // Invert Drivebase
   if (_contGroup.Get(ControlMap::ReverseDrivetrain, Controller::ONRISE)) {
     _drivetrain.SetInverted(!_drivetrain.GetInverted());
   }
 
+  // Shift Gear 
   if (_contGroup.Get(ControlMap::ShiftGears)) {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kForward);
   } else {
     _ChangeGears.SetTarget(actuators::BinaryActuatorState::kReverse);
   }
 
+
+  // PTO Toggle
   if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONRISE)) {
     if (!PTOactive) {
-      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
       PTOactive = true;
     } else if (PTOactive) {
-      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
       PTOactive = false;
     }
   }
 
-  _ChangeGears.Update(dt);
-  _Shift2PTO.Update(dt);
+  // PTO Shifter
+  if (!PTOactive) {
+    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
+  } else if (PTOactive) {
+    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+  }
 
+  // Curve The speed
+  leftSpeed = pow(leftSpeed, 2.5);
+  rightSpeed = pow(rightSpeed, 2.5);
+
+  // Restrict the speed of the drivetrain
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
-  
-  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+  // Update pneumatics
+  _ChangeGears.Update(dt);
+  _Shift2PTO.Update(dt);
 
   _drivetrain.Set(leftSpeed, rightSpeed);
 }

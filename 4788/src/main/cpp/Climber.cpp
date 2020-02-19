@@ -16,38 +16,45 @@ Climber::Climber(actuators::DoubleSolenoid &ClimberActuator,
                  _ClimberElevatorLeft(ClimberElevatorLeft), 
                  _ClimberElevatorRight(ClimberElevatorRight),
                  _contGroup(contGroup),
-                 _TurretDisable(TurretDisable) {}
+                 _TurretDisable(TurretDisable) {
+
+}
 
 
 void Climber::TeleopOnUpdate(double dt) {
   if (_contGroup.Get(ControlMap::ClimberToggle, Controller::ONRISE)) {
 
-    // Put Intake down if up
-    if (_BeltActuator.GetState() == wml::actuators::BinaryActuatorState::kReverse) {
-      _BeltActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
-    }
-
     if (ToggleEnabled) {
       ToggleEnabled = false;
       _TurretDisable = false;
     } else if (!ToggleEnabled) {
+      ClimberTimer.Start();
       ToggleEnabled = true;
       _TurretDisable = true;
     }
   } 
  
   if (ToggleEnabled) {
-    liftSpeedleft = _contGroup.Get(ControlMap::ClimberControlLeft) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
-    liftSpeedright = _contGroup.Get(ControlMap::ClimberControlRight) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::ClimberControlRight) : 0;
+
+    // Put Intake down if up
+    _BeltActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+
+    if (ClimberTimer.Get() > 1) {
+      _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+      ClimberTimer.Reset();
+      ClimberTimer.Stop();
+    }
+
+    liftSpeedleft = abs(_contGroup.Get(ControlMap::ClimberControlLeft)) > ControlMap::joyDeadzone ?  _contGroup.Get(ControlMap::ClimberControlLeft) : 0;
+    liftSpeedright = abs(_contGroup.Get(ControlMap::ClimberControlRight)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::ClimberControlRight) : 0;
     liftSpeedright *= ControlMap::LiftMaxSpeed;
     liftSpeedleft *= ControlMap::LiftMaxSpeed;
   } else {
-    // _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
-    _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+    _ClimberActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
   }
 
-  _ClimberElevatorLeft.transmission->SetVoltage(0);
-  _ClimberElevatorRight.transmission->SetVoltage(0);
+  _ClimberElevatorLeft.transmission->SetVoltage(12 * liftSpeedleft);
+  _ClimberElevatorRight.transmission->SetVoltage(12 * -liftSpeedright);
   _ClimberActuator.Update(dt);
   _BeltActuator.Update(dt);
 }

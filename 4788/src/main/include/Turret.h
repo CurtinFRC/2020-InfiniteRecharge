@@ -14,7 +14,8 @@ class Turret {
 					 wml::controllers::SmartControllerGroup &contGroup, 
 					 std::shared_ptr<nt::NetworkTable> &visionTable,
 					 std::shared_ptr<nt::NetworkTable> &rotationTable, 
-					 bool &TurretDisable, 
+					 bool &FlyWheelToggle,
+					 bool &TurretToggle, 
 					 int &autoSelector, 
 					 bool &StartDoComplete,
 					 bool &strt,
@@ -51,8 +52,18 @@ class Turret {
 		std::shared_ptr<nt::NetworkTable> &_visionTable;
 		std::shared_ptr<nt::NetworkTable> &_rotationTable;
 
+		bool &_FlyWheelToggle;
+		bool &_TurretToggle;
+		int &_autoSelector;
+		bool &_StartDoComplete;
+		bool &_strt;
+		bool &_p1;
+		bool &_p2;
+		bool &_p3;
+		bool &_end;
+
+		// Timeout Timer
 		frc::Timer ZeroTimer;
-		bool &_TurretDisable;
 
 		// Backend Functions
 		double SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput);
@@ -63,6 +74,8 @@ class Turret {
 		void FlyWheelAutoSpinup();
 		void FlyWheelManualSpinup();
 		void PIDTuner();
+		void AutoAimToFire();
+		void TurretSearchForTarget();
 
 		// PID Calculations X axis (Rotation R)
 		double RkP = 0;
@@ -117,16 +130,9 @@ class Turret {
 		double FlyWheelPower = 0;
 
 		//auto 
-
-		int &_autoSelector;
-		bool &_StartDoComplete;
-		bool &_strt;
-		bool &_p1;
-		bool &_p2;
-		bool &_p3;
-		bool &_end;
 		int AutoTurretSwitcher = 1; // I didnt really know what to call it
 		bool TurretStop; //tells the turret when it is finished
+		int TurretAutoSelection = 0; //tells the turret which case selection it's in
 		int BallTime3Shoot = 1.5;
 		int BallTime5Shoot = 2.5;
 		int SpinUpTime = 1;

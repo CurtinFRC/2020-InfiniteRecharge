@@ -110,10 +110,10 @@ const double ControlMap::MagTestCaseRotations = 5;
 // Climber 
 const int ControlMap::ClimberActuatorPort1 = 2; // 2
 const int ControlMap::ClimberActuatorPort2 = 3; // 3
-const double ControlMap::ClimberActuationTime = 0.2;
+const double ControlMap::ClimberActuationTime = 2;
 
-const int ControlMap::ClimberMotor1Port = 26; // 26
-const int ControlMap::ClimberMotor2Port = 27; // 27
+const int ControlMap::ClimberMotor1Port = 27; // 27
+const int ControlMap::ClimberMotor2Port = 26; // 26
 const double ControlMap::ShiftPTOActuationTime = 0.2;
 const double ControlMap::LiftMaxSpeed = 0.5;
 
@@ -127,11 +127,11 @@ const int ControlMap::ControlPannelPort = 28; // 28
 const int ControlMap::ControlPannelUpPort = 29; // 29
 
 // Auto Values (In Meters)
-const double ControlMap::AutoGearRatio = 15; // AutoGearRatio:1/output roation (15 = Neo Drive)
+const double ControlMap::AutoGearRatio = 7; // AutoGearRatio:1/output roation (15 = Neo Drive)
 const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
-const double ControlMap::MaxAutoDrivetrainSpeed = 0.6;
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.4;
 const double ControlMap::MaxAutoTurnSpeed = 0.4;
 
 
@@ -187,7 +187,7 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tAxis ControlMap::DrivetrainLeft{ Driver, XboxController::kLeftYAxis };
   const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
-  const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperLeft };
+  const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperRight };
 #endif
 
 // Turret
@@ -209,9 +209,9 @@ const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
   const tButton ControlMap::Intake{ Driver, 11 };
   const tButton ControlMap::Intake{ Driver, 12 };
 #else 
-  const tAxis ControlMap::Intake{ Driver, XboxController::kRightThrottle};
-  const tAxis ControlMap::Outake{ Driver, XboxController::kLeftThrottle};
-  const tButton ControlMap::DownIntake{ Driver, XboxController::kY};
+  const tAxis ControlMap::Intake{ CoDriver, XboxController::kRightThrottle };
+  const tAxis ControlMap::Outake{ CoDriver, XboxController::kLeftThrottle };
+  const std::vector<tButton> ControlMap::DownIntake{ { CoDriver, XboxController::kX }, { Driver, XboxController::kY } }; // Allows both driver and co driver to access the button
 #endif
 
 //Control Pannel
@@ -235,7 +235,7 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
 #else
   const tButton ControlMap::ShiftUpMagazine{ CoDriver, __LINE__ + 30 };
   const tButton ControlMap::ShiftDownMagazine{ CoDriver, __LINE__ + 30 };
-  const tButton ControlMap::ManualMag{ CoDriver, XboxController::kBack};
+  const tButton ControlMap::ManualMag{ CoDriver, XboxController::kB};
 #endif
 
 //Climber 
@@ -246,5 +246,5 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
   const tAxis ControlMap::ClimberControlLeft{ CoDriver, XboxController::kLeftYAxis};
   const tAxis ControlMap::ClimberControlRight{ CoDriver, XboxController::kRightYAxis};
   const tButton ControlMap::ClimberToggle{ CoDriver, XboxController::kY};
-  const tButton ControlMap::Shift2PTO{ Driver, XboxController::kBumperRight };
+  const tButton ControlMap::Shift2PTO{ Driver, XboxController::kBumperLeft };
 #endif

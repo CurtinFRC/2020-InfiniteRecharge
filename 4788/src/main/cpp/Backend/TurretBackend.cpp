@@ -37,6 +37,78 @@ double Turret::SetPointSelection(double LowPoint, double MaxPoint, double PixleA
 }
 
 
+// Function called in auto (Aims to fire)
+void Turret::AutoAimToFire() {
+ // @TODO (Anna)
+}
+
+
+// Turret Search Program
+bool SearchSwitcher = false;
+void Turret::TurretSearchForTarget() {
+	//@TODO CJ
+	if (SearchSwitcher) {
+		if (_RotationalAxis.encoder->GetEncoderRotations() > Turret::MinRotation) {
+			RotationPower = -0.2;
+		} else {
+			RotationPower = 0;
+			SearchSwitcher = false;
+		}
+	}	else if (!SearchSwitcher) {
+		if (_RotationalAxis.encoder->GetEncoderRotations() < Turret::MaxAngleRotations) {
+			RotationPower = 0.2;
+		} else {
+			RotationPower = 0;
+			SearchSwitcher = true;
+		}
+	}
+
+}
+
+
+// Using Setpoints
+double Turret::YAutoAimCalc(double dt, double TargetInput) {
+
+	double targetEncoderValue;
+	int LowPoint = 10;
+	int MaxPoint = 50;
+	int PixleAmount = 2;
+
+	// Setpoint Selection.
+	targetEncoderValue = SetPointSelection(LowPoint, MaxPoint, PixleAmount, TargetInput);
+
+
+	// Calculate PID
+	double input = _RotationalAxis.encoder->GetEncoderRotations();
+	Aerror = targetEncoderValue - input;
+
+	double derror = (Aerror - ApreviousError) / dt;
+	Asum = Asum + Aerror * dt;
+
+	if (Asum > (imageHeight/2)) {
+		Asum = imageHeight;
+	} else if (Asum < -(imageHeight/2)) {
+		Asum = -imageHeight;
+	}
+
+	
+	double output = AkP * Aerror + AkI * Asum + AkD * derror;
+
+	// Convert to -1 - 1 for motor
+	output /= ControlMap::MaxAngleEncoderRotations;
+
+	// Temp Values
+	table->PutNumber("AngleDError", derror);
+	table->PutNumber("AngleError", Aerror);
+	table->PutNumber("AngleDelta Time", dt);
+	table->PutNumber("AngleOutput", output);
+
+	ApreviousError = Aerror;
+
+	return output;
+}
+
+
 
 // X Auto Aim Algorithm
 double Turret::XAutoAimCalc(double dt, double targetx)  {
@@ -192,11 +264,12 @@ void Turret::PIDTuner() {
 	}
 }
 
-// FlyWheel Code
+// Fly wheel Manual Control
 void Turret::FlyWheelManualSpinup() {
 	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
 }
 
+// Fly wheel Auto Control
 void Turret::FlyWheelAutoSpinup() {
 	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
 }
