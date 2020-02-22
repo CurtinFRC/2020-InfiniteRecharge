@@ -146,11 +146,9 @@ void Turret::AutoOnUpdate(double dt) {
 					if (!_StartDoComplete) {
 						timer.Start();
 						if (timer.Get() <= Ball3Shoot){
-
 							AutoAimToFire(dt);
-							
 							if (ReadyToFire) {
-								_p1 = true;
+								_p3 = true;
 							} 
 
 							_StartDoComplete = true;
@@ -165,7 +163,7 @@ void Turret::AutoOnUpdate(double dt) {
 								AutoAimToFire(dt);
 
 								if (ReadyToFire) {
-									_p2 = true;
+									_end = true;
 								}
 							}
 							_StartDoComplete = true;

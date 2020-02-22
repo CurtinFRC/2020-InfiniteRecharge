@@ -46,7 +46,7 @@ void MagLoader::AutoMag() {
     case 1:
     switch (_autoSelector) {
       case 1: // 8 ball auto 3 then 5
-        if (_p1) { // shoot 3 balls, the flywheel has already spun up
+        if (_p3) { // shoot 3 balls, the flywheel has already spun up
           if (_Position5.GetAverageValue() <= ControlMap::MagazineBallThresh) {
             MagazinePower = 0.7;
             _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
@@ -56,7 +56,7 @@ void MagLoader::AutoMag() {
           }
         }
 
-        if (_p2) { // shoot 5 balls, the flywheel has already spun up
+        if (_end) { // shoot 5 balls, the flywheel has already spun up
           if (_Position5.GetAverageValue() <= ControlMap::MagazineBallThresh)
           MagazinePower = 0.7;
           _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);

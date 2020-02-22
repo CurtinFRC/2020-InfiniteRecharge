@@ -70,7 +70,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;
 
         case 2: // Drive from waypoint 1 to 2
-          if(!_p1) {break;}
+          //if(!_p1) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(5.4, -0.7, 0, 9.7, -0.7, 0, false, dt);
           } else {
@@ -118,7 +118,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;
           
         case 2:
-          if (!_p1) {break;}
+         // if (!_p1) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
               _wayFinder.GotoWaypoint(5.4, -0.7, 0, 8, -0.7, -21, false, dt);
           } else {

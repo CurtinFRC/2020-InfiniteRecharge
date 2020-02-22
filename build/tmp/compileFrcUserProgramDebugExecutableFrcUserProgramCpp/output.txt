@@ -1,5 +1,9 @@
 See file:///C:/Users/61412/Documents/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling ControlMap.cpp successful.
+compiling MagLoader.cpp successful.
+
+compiling TurretBackend.cpp successful.
+
+compiling DriveAuto.cpp successful.
 
 compiling Turret.cpp successful.
 C:\Users\61412\Documents\code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp: In member function 'void Turret::AutoOnUpdate(double)':
@@ -9,13 +13,5 @@ C:\Users\61412\Documents\code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp
 C:\Users\61412\Documents\code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:141:9: warning: unused variable 'targetY' [-Wunused-variable]
   double targetY = table->GetNumber("Target_Y", 0);
          ^~~~~~~
-
-compiling TurretBackend.cpp successful.
-
-compiling DriveAuto.cpp successful.
-
-compiling Robot.cpp successful.
-
-compiling Main.cpp successful.
 
 Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/61412/Documents/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
