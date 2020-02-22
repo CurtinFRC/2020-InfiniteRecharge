@@ -54,9 +54,9 @@ const double ControlMap::MaxDrivetrainSpeed = 1;
 const double ControlMap::DriveTestCaseRotations = 50;
 
 // Turret
-const int ControlMap::TurretFlyWheelPort = 20; // 20
+const int ControlMap::TurretFlyWheelPort = 22; // 20
 const int ControlMap::TurretFlyWheelPort2 = 21; // 21
-const int ControlMap::TurretAnglePort = 22; // 22
+const int ControlMap::TurretAnglePort = 20; // 22
 const int ControlMap::TurretRotationPort = 23; // 23
 const bool ControlMap::TuneTurretPID = false;
 const bool ControlMap::TuneAnglePID = true;

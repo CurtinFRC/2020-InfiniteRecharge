@@ -117,10 +117,12 @@ void Turret::TeleopOnUpdate(double dt) {
 		}
 	}
 
+	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+
 	
 
 	// Flywheel Feedback
-	ContFlywheelFeedback();
+	// ContFlywheelFeedback();
 	
 
 	// Limits Turret Speed
@@ -131,12 +133,11 @@ void Turret::TeleopOnUpdate(double dt) {
 	table_2->PutNumber("Turret_Max", MaxRotation);
 
 	// temp
-	// std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+	// std::cout << "Flywheel Speed " << FlyWheelPower << std::endl;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
-
 }
 
 void Turret::AutoOnUpdate(double dt) {
