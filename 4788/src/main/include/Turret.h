@@ -76,7 +76,7 @@ class Turret {
 		void FlyWheelAutoSpinup();
 		void FlyWheelManualSpinup();
 		void PIDTuner();
-		void AutoAimToFire();
+		void AutoAimToFire(double dt);
 		void TurretSearchForTarget();
 
 		// PID Calculations X axis (Rotation R)
@@ -131,8 +131,11 @@ class Turret {
 		double AngularPower = 0;
 		double FlyWheelPower = 0;
 
+		bool ReadyToFire = false;
+
 		//auto 
 		int AutoTurretSwitcher = 1; // I didnt really know what to call it
+		bool TurretStop; //tells the turret when it is finished
 		int TurretAutoSelection = 0; //tells the turret which case selection it's in
 		int BallTime3Shoot = 1.5;
 		int BallTime5Shoot = 2.5;

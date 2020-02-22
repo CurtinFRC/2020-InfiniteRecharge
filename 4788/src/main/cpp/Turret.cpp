@@ -141,68 +141,74 @@ void Turret::TeleopOnUpdate(double dt) {
 }
 
 void Turret::AutoOnUpdate(double dt) {
-	// double targetY = table->GetNumber("Target_Y", 0);
-	// double targetX = table->GetNumber("Target_X", 0);
+	double targetX = table->GetNumber("Target_X", 0);
+	double targetY = table->GetNumber("Target_Y", 0);
 	switch (TurretAutoSelection) {
 		case 1:
-			switch (_autoSelector) {
+			switch(_autoSelector){
 				case 1: // 8 ball auto, shoots 3 balls then 5 balls 
 					if (!_StartDoComplete) {
 						timer.Start();
-						if (timer.Get() <= Ball3Shoot) {
-							FlyWheelAutoSpinup();
-						} else {
-							FlyWheelPower = 0;
-						}
-						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
-						timer.Stop();
-						timer.Reset();
-						_StartDoComplete = true;
-					} 
+						if (timer.Get() <= Ball3Shoot){
+							AutoAimToFire(dt);
+							if (ReadyToFire) {
+								_p3 = true;
+							} 
 
-					if (_strt) {
-						timer.Start();
-						if (timer.Get() <= Ball5Shoot) {
-							FlyWheelAutoSpinup();
-						} else {
-							FlyWheelPower = 0;
+							_StartDoComplete = true;
+							timer.Stop();
+							timer.Reset();
+						}	
+
+						if (_strt) {
+							timer.Start();
+							if (timer.Get() <= Ball5Shoot){
+
+								AutoAimToFire(dt);
+
+								if (ReadyToFire) {
+									_end = true;
+								}
+							}
+							_StartDoComplete = true;
+							timer.Stop();
+							timer.Reset();
 						}
-						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
-						timer.Stop();
-						timer.Reset();
-						//the entire auto should stop after this
+
 					}
 				break;
-
-				// autoaimXCalc(dt, )
-				// autoaimYCalc()
 
 
 				case 2: // 6 ball auto, 2 lots of three balls 
 					if (!_StartDoComplete) {
 						timer.Start();
-						if (timer.Get() <= Ball3Shoot) {
-							FlyWheelAutoSpinup();
-						} else {
-							FlyWheelPower = 0;
-						}
-						_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
-						timer.Stop();
-						timer.Reset();
-						_StartDoComplete = false;
-					}
+						if (timer.Get() <= Ball3Shoot){
 
-					if (_strt) {
-						timer.Start();
-						if (timer.Get() <= Ball3Shoot) {
-							FlyWheelAutoSpinup();
-						} else {
-							FlyWheelPower = 0;
+							AutoAimToFire(dt);
+							
+							if (ReadyToFire) {
+								_p1 = true;
+							}
+							_StartDoComplete = true;
+							timer.Stop();
+							timer.Reset();
+						}	
+
+						if (_strt) {
+							timer.Start();
+							if (timer.Get() <= Ball3Shoot){
+
+							AutoAimToFire(dt);
+
+								if (ReadyToFire) {
+									_p2 = true;
+								}
+							}
+							_StartDoComplete = true;
+							timer.Stop();
+							timer.Reset();
 						}
-						_FlyWheel.transmission->SetVoltage(12 *FlyWheelPower);
-						timer.Stop();
-						timer.Reset();
-						//The entire auto should stop after this
+
 					}
 				break;
 
@@ -211,7 +217,7 @@ void Turret::AutoOnUpdate(double dt) {
 					if (_strt) {
 						timer.Start();
 						if (timer.Get() <= Ball3Shoot) {
-							FlyWheelAutoSpinup();
+							AutoAimToFire(dt);
 						} else {
 							FlyWheelPower = 0;
 						}
@@ -227,7 +233,7 @@ void Turret::AutoOnUpdate(double dt) {
 					if (_strt) {
 						timer.Start();
 						if (timer.Get() <= Ball3Shoot) {
-							FlyWheelAutoSpinup();
+							AutoAimToFire(dt);
 						} else {
 							FlyWheelPower = 0;
 						}
@@ -243,7 +249,7 @@ void Turret::AutoOnUpdate(double dt) {
 					if (_strt) {
 						timer.Start();
 						if (timer.Get() <= Ball3Shoot) {
-							FlyWheelAutoSpinup();
+							AutoAimToFire(dt);
 						} else {
 							FlyWheelPower = 0;
 						}
@@ -256,7 +262,8 @@ void Turret::AutoOnUpdate(double dt) {
 
 
 				case 6: // make it go to case 2 automatically 
-					TurretAutoSelection++; // what??
+					TurretStop = true;
+					// TurretAutoSelection++; // what??
 				break;
 			}
 		break;

@@ -8,7 +8,7 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
                      frc::AnalogInput &StartMag, 
                      frc::AnalogInput &Position1, 
                      frc::AnalogInput &Position5, 
-                     SmartControllerGroup &contGroup) : 
+                     SmartControllerGroup &contGroup): 
                      
                      _MagazineMotors(MagazineMotors), 
                      _StartMag(StartMag), 
@@ -22,6 +22,7 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
 
 
 void MagLoader::AutoMag() {
+
   // Auto Control
   if (_Position5.GetAverageValue() >= ControlMap::MagazineBallThreshFinal) {
     MagazinePower = 0;
@@ -86,7 +87,7 @@ void MagLoader::TeleopOnUpdate(double dt) {
 }
 void MagLoader::AutoOnUpdate(double dt) {
   AutoMag();
-  _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
+ // _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
 }
 
 void MagLoader::TestOnUpdate(double dt) {

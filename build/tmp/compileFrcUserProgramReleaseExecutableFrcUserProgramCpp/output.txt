@@ -1,2 +1,105 @@
 See file:///D:/Users/Conno/Desktop/Code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling DriveAuto.cpp successful.
+
+compiling TurretBackend.cpp successful.
+
+compiling BeltIntake.cpp successful.
+
+compiling Climber.cpp successful.
+
+compiling ControlMap.cpp successful.
+
+compiling DriveSystem.cpp successful.
+
+compiling MagLoader.cpp successful.
+
+compiling wayfinder.cpp successful.
+
+compiling Robot.cpp successful.
+
+compiling Main.cpp successful.
+
+compiling Turret.cpp successful.
+D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp: In member function 'void Turret::AutoOnUpdate(double)':
+D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:144:9: warning: unused variable 'targetX' [-Wunused-variable]
+  double targetX = table->GetNumber("Target_X", 0);
+         ^~~~~~~
+D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:145:9: warning: unused variable 'targetY' [-Wunused-variable]
+  double targetY = table->GetNumber("Target_Y", 0);
+         ^~~~~~~
+
+compiling BinaryEncoderMotor.cpp successful.
+
+compiling Filter.cpp successful.
+
+compiling BinaryServo.cpp successful.
+
+compiling Compressor.cpp successful.
+
+compiling DoubleSolenoid.cpp successful.
+
+compiling Controllers.cpp successful.
+
+compiling PIDController.cpp successful.
+
+compiling Inputs.cpp successful.
+
+compiling SmartController.cpp successful.
+
+compiling VoltageController.cpp successful.
+
+compiling PneumaticIntake.cpp successful.
+
+compiling WheeledIntake.cpp successful.
+
+compiling MotionProfiling.cpp successful.
+
+compiling Files.cpp successful.
+
+compiling MotorFilters.cpp successful.
+
+compiling RobotStartup.cpp successful.
+
+compiling Encoder.cpp successful.
+
+compiling DeployableDevice.cpp successful.
+
+compiling Drivetrain.cpp successful.
+
+compiling Elevator.cpp successful.
+
+compiling EncoderSwitch.cpp successful.
+
+compiling ControlPannel.cpp successful.
+
+compiling MPStrategy.cpp successful.
+
+compiling LimitSwitch.cpp successful.
+
+compiling LoopSystem.cpp successful.
+
+compiling Toggle.cpp successful.
+
+compiling PressureSensor.cpp successful.
+
+compiling NTProvider.cpp successful.
+
+compiling NavX.cpp successful.
+
+compiling NavX.robot.cpp successful.
+
+compiling StrategySystem.cpp successful.
+
+compiling StrategyController.cpp successful.
+
+compiling StrategyBuilder.cpp successful.
+
+compiling WMLRev.cpp successful.
+
+compiling WMLCtre.cpp successful.
+
+compiling WMLCtre.robot.cpp successful.
+
+compiling BinaryLimitMotor.cpp successful.
+
 Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///D:/Users/Conno/Desktop/Code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
