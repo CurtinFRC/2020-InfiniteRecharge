@@ -132,7 +132,7 @@ const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
 const double ControlMap::MaxAutoDrivetrainSpeed = 0.4;
-const double ControlMap::MaxAutoTurnSpeed = 0.4;
+const double ControlMap::MaxAutoTurnSpeed = 0.34;
 
 
 // LeftDrive

@@ -38,9 +38,50 @@ double Turret::SetPointSelection(double LowPoint, double MaxPoint, double PixleA
 
 
 // Function called in auto (Aims to fire)
-void Turret::AutoAimToFire() {
- // @TODO (Anna)
+void Turret::AutoAimToFire(double dt) {
+ 
+	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
+	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
+		ReadyToFire = true;
+	} else {
+		ReadyToFire = false;
+	}
+
+	FlyWheelPower = XAutoAimCalc(dt, targetX);
+	AngularPower = YAutoAimCalc(dt, targetY);
+
+	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
+
+
+
 }
+
+// // Fly wheel Auto Control
+// void Turret::FlyWheelAutoSpinup() {
+// 	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
+// 	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
+// 		ReadyToFire = true;
+// 	} else {
+// 		ReadyToFire = false;
+// 	}
+// }
+
+
+
+
+
+
+
+void Turret::FlyWheelAutoSpinup() {
+	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
+	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
+		ReadyToFire = true;
+	} else {
+		ReadyToFire = false;
+	}
+}
+
 
 
 // Turret Search Program
@@ -269,7 +310,3 @@ void Turret::FlyWheelManualSpinup() {
 	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
 }
 
-// Fly wheel Auto Control
-void Turret::FlyWheelAutoSpinup() {
-	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
-}
