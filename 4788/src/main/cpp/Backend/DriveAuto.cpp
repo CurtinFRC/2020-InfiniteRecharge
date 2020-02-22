@@ -61,8 +61,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
         case 1: // Start to Waypoint 1
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet, fires 3 balls
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(3.2, -2.4, -43, 5.4, -0.7, 45, false, dt);
-            std::cout << "Distance to target: " << _wayFinder.GetDistanceInRotations() << std::endl;
+            _wayFinder.GotoWaypoint(3.2, -2.4, -30, 5.4, -0.7, 30, false, dt);
           } else {
             WayPointSwitch();
           }
@@ -70,7 +69,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
 
         case 2: // Drive from waypoint 1 to 2
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(5.4, -0.7, 0, 9.7, -0.7, 0, false, dt);
+            _wayFinder.GotoWaypoint(5.4, -0.7, 0, 9, -0.7, 0, false, dt);
           } else {
             WayPointSwitch();
           }
@@ -78,7 +77,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
 
         case 3: // Drive From waypoint 2 to 3 (Backwards)
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(9.7, -0.7, 0, 8, -0.7, -21.801, true, dt);
+            _wayFinder.GotoWaypoint(9, -0.7, 0, 8, -0.7, -21, true, dt);
           } else {
             WayPointSwitch();
           }
@@ -86,7 +85,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
 
         case 4: // Drive to endpoint (backwards)
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
+            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 21, true, dt);
           } else {
             WayPointSwitch();
           }
@@ -104,7 +103,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
         case 1:
           if (!_StartDoComplete) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
+            _wayFinder.GotoWaypoint(3.2, -2.4, -35, 5.4, -0.7, 35, false, dt);
           } else {
             WayPointSwitch();
           }
@@ -120,7 +119,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
 
         case 3:
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 0, true, dt);
+            _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 21, true, dt);
           } else {
             WayPointSwitch();
           }

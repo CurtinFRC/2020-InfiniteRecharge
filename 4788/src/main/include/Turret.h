@@ -65,6 +65,8 @@ class Turret {
 		// Timeout Timer
 		frc::Timer ZeroTimer;
 
+		bool TuningTurret = false;
+
 		// Backend Functions
 		double SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput);
 		void TurretZeroLeft(double Time);

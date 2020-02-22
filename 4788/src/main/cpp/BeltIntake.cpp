@@ -22,22 +22,24 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 
 	if (_contGroup.Get(ControlMap::DownIntake, Controller::ONRISE)) {
 		if (ToggleEnabled) {
-			_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward);
-			_FlyWheelToggle = false;
+			_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+			// _FlyWheelToggle = false;
+			IntakePower = 0;
 			ToggleEnabled = false;
 		} else if (!ToggleEnabled) {
-			_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
-			_FlyWheelToggle = true;
+			_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+			// _FlyWheelToggle = true;
+			IntakePower = 0.7;
 			ToggleEnabled = true;
 		}
 	} 
 
-	if (_FlyWheelToggle) {
-		IntakePower = _contGroup.Get(ControlMap::Intake) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::Intake) :
-		_contGroup.Get(ControlMap::Outake) > ControlMap::triggerDeadzone ? -_contGroup.Get(ControlMap::Outake) : 0;
-	}	else {
-		IntakePower = 0;
-	}
+	// if (_FlyWheelToggle) {
+	// 	IntakePower = _contGroup.Get(ControlMap::Intake) > ControlMap::triggerDeadzone ? _contGroup.Get(ControlMap::Intake) :
+	// 	_contGroup.Get(ControlMap::Outake) > ControlMap::triggerDeadzone ? -_contGroup.Get(ControlMap::Outake) : 0;
+	// }	else {
+	// 	IntakePower = 0;
+	// }
 
 	_IntakeDown.Update(dt);
 	_BeltIntakeMotors.transmission->SetVoltage(12 * IntakePower);

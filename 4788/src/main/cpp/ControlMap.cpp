@@ -59,12 +59,11 @@ const int ControlMap::TurretFlyWheelPort2 = 21; // 21
 const int ControlMap::TurretAnglePort = 22; // 22
 const int ControlMap::TurretRotationPort = 23; // 23
 const bool ControlMap::TuneTurretPID = false;
-const bool ControlMap::TuneAnglePID = false;
+const bool ControlMap::TuneAnglePID = true;
 
 const int ControlMap::TurretLeftLimitPort = 99;
 const int ControlMap::TurretRightLimitPort = 99;
 const int ControlMap::TurretAngleDownLimitPort = 99;
-
 const bool ControlMap::TurretLeftLimitInvert = false;
 const bool ControlMap::TurretRightLimitInvert = false;
 const bool ControlMap::TurretAngleDownLimitInvert = false;
@@ -75,7 +74,7 @@ const double ControlMap::TurretEncoderRotations = 500;
 const double ControlMap::MaxAngleEncoderRotations = 500;
 const double ControlMap::TurretRatio = 7;
 const double ControlMap::MaxTurretSpeed = 0.3;
-const double ControlMap::MaxTurretAngularSpeed = 0.5;
+const double ControlMap::MaxTurretAngularSpeed = 0.3;
 const double ControlMap::FlyWheelVelocity = 500;
 
 // Angle Setpoints (Encoder Values)
@@ -102,9 +101,11 @@ const double ControlMap::IntakeTestCaseRotations = 30;
 // MagLoader
 const int ControlMap::MagLoaderMotorPort = 25; // 25
 const int ControlMap::StartMagLimitPort = 1;
-const int ControlMap::Position1LimitPort = 2;
-const int ControlMap::Position5LimitPort = 3;
-const double ControlMap::MagazineBallThresh = 3000;
+const int ControlMap::Position1LimitPort = 3;
+const int ControlMap::Position5LimitPort = 2;
+const double ControlMap::MagazineBallThreshStart = 620;
+const double ControlMap::MagazineBallThreshFinal = 1300; // 1300
+const double ControlMap::MagazineBallThreshIndex = 2000;
 const double ControlMap::MagTestCaseRotations = 5;
 
 // Climber 
@@ -127,12 +128,12 @@ const int ControlMap::ControlPannelPort = 28; // 28
 const int ControlMap::ControlPannelUpPort = 29; // 29
 
 // Auto Values (In Meters)
-const double ControlMap::AutoGearRatio = 15; // AutoGearRatio:1/output roation (15 = Neo Drive)
+const double ControlMap::AutoGearRatio = 7; // AutoGearRatio:1/output roation (15 = Neo Drive)
 const double ControlMap::WheelDiameter = 15.24; // CM
 
 // Auto Speed
-const double ControlMap::MaxAutoDrivetrainSpeed = 0.3;
-const double ControlMap::MaxAutoTurnSpeed = 0.4;
+const double ControlMap::MaxAutoDrivetrainSpeed = 0.4;
+const double ControlMap::MaxAutoTurnSpeed = 0.25;
 
 
 // LeftDrive
@@ -170,12 +171,12 @@ const double ControlMap::End6BallAngleDrift = 0;
 // -------------Defined Buttons-------------------
 
 // Turret PID Tuner
-const tButton ControlMap::kpUP{ CoDriver, XboxController::kB };
-const tButton ControlMap::kpDOWN{ CoDriver, XboxController::kA };
-const tButton ControlMap::kiUP{ CoDriver, XboxController::kY };
-const tButton ControlMap::kiDOWN{ CoDriver, XboxController::kX };
-const tButton ControlMap::kdUP{ CoDriver, XboxController::kStart };
-const tButton ControlMap::kdDOWN{ CoDriver, XboxController::kBack };
+const tButton ControlMap::kpUP{ DevController, XboxController::kB };
+const tButton ControlMap::kpDOWN{ DevController, XboxController::kA };
+const tButton ControlMap::kiUP{ DevController, XboxController::kY };
+const tButton ControlMap::kiDOWN{ DevController, XboxController::kX };
+const tButton ControlMap::kdUP{ DevController, XboxController::kStart };
+const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
 
 // Drive System
 #if __CONTROLMAP_USING_JOYSTICK__

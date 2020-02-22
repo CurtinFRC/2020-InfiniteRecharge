@@ -169,6 +169,10 @@ struct RobotMap {
   struct Auto {
 
     /**
+     * Start Position is (3.2, -2.4) or 1.96 meters from the wall to the wheel (straight)
+     */
+
+    /**
      * Auto Selection
      * 8 Ball = 1 (Default)
      * 6 Ball = 2

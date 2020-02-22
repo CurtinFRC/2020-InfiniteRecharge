@@ -91,6 +91,12 @@ void Robot::RobotPeriodic() {
   std::cout << "Encoder Left: " << robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
   std::cout << "Encoder Right: " << robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
 
+  // std::cout << "Sensor1: " << robotMap.magLoader.StartMagLimit.GetAverageValue() << std::endl;
+  // std::cout << "Sensor2: " << robotMap.magLoader.Position5Limit.GetAverageValue() << std::endl;
+  // std::cout << "Sensor3: " << robotMap.magLoader.Position5Limit.GetAverageValue() << std::endl;
+
+  // std::cout << "Encoder Value: " << robotMap.turret.turretAngle.encoder->GetEncoderRotations() << std::endl;;
+
   // robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
   // robotMap.controlSystem.compressor.Update(dt);
   StrategyController::Update(dt);

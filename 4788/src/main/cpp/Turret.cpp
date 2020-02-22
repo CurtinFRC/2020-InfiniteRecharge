@@ -81,6 +81,9 @@ void Turret::TeleopOnUpdate(double dt) {
 	targetX = table->GetNumber("Target_X", 0);
 	targetY = table->GetNumber("Target_Y", 0);
 
+	imageHeight = table->GetNumber("ImageHeight", 0); 
+	imageWidth = table->GetNumber("ImageWidth", 0);
+
 	// Tune Turret PID (If active)
 	PIDTuner();
 	
@@ -131,7 +134,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	// std::cout << "Flywheel Encoder Velocity " << _FlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
-	_VerticalAxis.transmission->SetVoltage(12 * 0);
+	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
 
 }

@@ -15,20 +15,22 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
                      _Position1(Position1), 
                      _Position5(Position5), 
                      _contGroup(contGroup) {
-  _StartMag.SetAverageBits(2);
-  _Position1.SetAverageBits(2);
-  _Position5.SetAverageBits(2);
+  // _StartMag.SetAverageBits(2);
+  // _Position1.SetAverageBits(2);
+  // _Position5.SetAverageBits(2);
 }
 
 
 void MagLoader::AutoMag() {
   // Auto Control
-  if (_Position5.GetAverageValue() <= ControlMap::MagazineBallThresh) {
+  if (_Position5.GetAverageValue() >= ControlMap::MagazineBallThreshFinal) {
     MagazinePower = 0;
-  } else if (_Position1.GetAverageValue() <= ControlMap::MagazineBallThresh) {
+  } else if (_Position1.GetAverageValue() >= ControlMap::MagazineBallThreshIndex) {
     MagazinePower = 0;
-  } else if (_StartMag.GetAverageValue() <= ControlMap::MagazineBallThresh) {
+  } else if (_StartMag.GetAverageValue() >= ControlMap::MagazineBallThreshStart) {
     MagazinePower = 0.7;
+  } else {
+    MagazinePower = 0;
   }
 }
 
@@ -43,16 +45,12 @@ void MagLoader::TeleopOnUpdate(double dt) {
     }
   }
 
-  if (!MagOverride) {
-    AutoMag();
-  }
-
   // Shifting Mag up
   if (_contGroup.Get(ControlMap::ShiftUpMagazine)) {
     if (MagOverride) {
       MagazinePower = 1;
     } else {
-      if (_Position5.GetAverageValue() <= ControlMap::MagazineBallThresh) {
+      if (_Position5.GetAverageValue() <= ControlMap::MagazineBallThreshFinal) {
         MagazinePower = 0;
       } else {
         MagazinePower = 0.7;
@@ -63,13 +61,21 @@ void MagLoader::TeleopOnUpdate(double dt) {
     if (MagOverride) {
       MagazinePower = -0.7;
     } else {
-      if (_Position5.GetAverageValue() < ControlMap::MagazineBallThresh) {
+      if (_Position5.GetAverageValue() < ControlMap::MagazineBallThreshFinal) {
         MagazinePower = 0;
       } else {
         MagazinePower = -0.7;
       }
     }
+  } else {
+    MagazinePower = 0;
   }
+
+  
+  if (!MagOverride) {
+    AutoMag();
+  }
+
 
   // Fire Control (Doesn't care about sensors or override)
   if (_contGroup.Get(ControlMap::TurretFire)) {

@@ -25,7 +25,8 @@ struct ControlMap {
 
   static const int Driver = 1;
   static const int CoDriver = 2;
-  static const int override = 3;
+  static const int DevController = 3;
+  static const int override = 4;
 
   static const double joyDeadzone;
   static const double xboxDeadzone;
@@ -80,7 +81,9 @@ struct ControlMap {
   // MagLoader
   static const int MagLoaderMotorPort;
   static const int StartMagLimitPort, Position1LimitPort, Position5LimitPort;
-  static const double MagazineBallThresh;
+  static const double MagazineBallThreshStart;
+  static const double MagazineBallThreshFinal;
+  static const double MagazineBallThreshIndex;
   static const double MagTestCaseRotations;
 
   //Control Pannel
