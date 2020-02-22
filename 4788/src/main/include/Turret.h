@@ -74,7 +74,7 @@ class Turret {
 		void FlyWheelAutoSpinup();
 		void FlyWheelManualSpinup();
 		void PIDTuner();
-		void AutoAimToFire();
+		void AutoAimToFire(double dt);
 		void TurretSearchForTarget();
 
 		// PID Calculations X axis (Rotation R)
@@ -128,6 +128,8 @@ class Turret {
 		double RotationPower = 0;
 		double AngularPower = 0;
 		double FlyWheelPower = 0;
+
+		bool ReadyToFire = false;
 
 		//auto 
 		int AutoTurretSwitcher = 1; // I didnt really know what to call it

@@ -61,7 +61,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
         case 1: // Start to Waypoint 1
           if (!_StartDoComplete) {break;} // If Something at the start of the match hasn't been completed yet, fires 3 balls
           if (!_wayFinder.GetWayPointComplete()) {
-            _wayFinder.GotoWaypoint(3.2, -2.4, 0, 5.4, -0.7, 54.462, false, dt);
+            _wayFinder.GotoWaypoint(3.2, -2.4, 30, 5.4, -0.7, 30, false, dt);
             _p1 = true;
           } else {
             WayPointSwitch();
@@ -70,7 +70,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;
 
         case 2: // Drive from waypoint 1 to 2
-          if(!_p1) {break;}
+          //if(!_p1) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(5.4, -0.7, 0, 9.7, -0.7, 0, false, dt);
           } else {
@@ -118,7 +118,7 @@ void DrivetrainAuto::OnUpdate(double dt) {
         break;
           
         case 2:
-          if (!_p1) {break;}
+         // if (!_p1) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
               _wayFinder.GotoWaypoint(5.4, -0.7, 0, 8, -0.7, -21, false, dt);
           } else {
