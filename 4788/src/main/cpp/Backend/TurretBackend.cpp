@@ -57,22 +57,6 @@ void Turret::AutoAimToFire(double dt) {
 
 }
 
-// // Fly wheel Auto Control
-// void Turret::FlyWheelAutoSpinup() {
-// 	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
-// 	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
-// 		ReadyToFire = true;
-// 	} else {
-// 		ReadyToFire = false;
-// 	}
-// }
-
-
-
-
-
-
-
 void Turret::FlyWheelAutoSpinup() {
 	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
 	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
