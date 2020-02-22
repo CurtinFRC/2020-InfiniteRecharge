@@ -40,12 +40,7 @@ double Turret::SetPointSelection(double LowPoint, double MaxPoint, double PixleA
 // Function called in auto (Aims to fire)
 void Turret::AutoAimToFire(double dt) {
  
-	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
-	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
-		ReadyToFire = true;
-	} else {
-		ReadyToFire = false;
-	}
+	FlyWheelAutoSpinup();
 
 	FlyWheelPower = XAutoAimCalc(dt, targetX);
 	AngularPower = YAutoAimCalc(dt, targetY);
