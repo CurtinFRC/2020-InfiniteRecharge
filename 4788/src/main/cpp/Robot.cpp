@@ -44,7 +44,7 @@ void Robot::RobotInit() {
                       robotMap.autonomous.WayPoint3Complete, 
                       robotMap.autonomous.EndComplete);
 
-  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup, robotMap.autonomous.AutoSelecter, robotMap.autonomous.StartDoComplete, robotMap.autonomous.StartPointComplete, robotMap.autonomous.WayPoint1Complete, robotMap.autonomous.WayPoint2Complete, robotMap.autonomous.WayPoint3Complete, robotMap.autonomous.EndComplete);
+  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.autonomous.AutoSelecter, robotMap.autonomous.StartDoComplete, robotMap.autonomous.StartPointComplete, robotMap.autonomous.WayPoint1Complete, robotMap.autonomous.WayPoint2Complete, robotMap.autonomous.WayPoint3Complete, robotMap.autonomous.EndComplete, robotMap.controlSystem.FlyWheelToggle, robotMap.controlSystem.TurretToggle);
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.intake.IntakeDown, robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.contGroup, robotMap.controlSystem.TurretToggle);
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup);
@@ -87,9 +87,20 @@ void Robot::RobotPeriodic() {
   CurrentTime = frc::Timer::GetFPGATimestamp();
   dt = CurrentTime - lastTimestamp;
 
-  std::cout << "Angle: " << robotMap.driveSystem.drivetrain.GetConfig().gyro->GetAngle() << std::endl;
-  std::cout << "Encoder Left: " << robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-  std::cout << "Encoder Right: " << robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "Angle: " << robotMap.driveSystem.drivetrain.GetConfig().gyro->GetAngle() << std::endl;
+  // std::cout << "Encoder Left: " << robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "Encoder Right: " << robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
+
+  // std::cout << "Sensor1: " << robotMap.magLoader.StartMagLimit.GetAverageValue() << std::endl;
+  // std::cout << "Sensor2: " << robotMap.magLoader.Position5Limit.GetAverageValue() << std::endl;
+  // std::cout << "Sensor3: " << robotMap.magLoader.Position5Limit.GetAverageValue() << std::endl;
+
+  std::cout << "TurretAngle: " << robotMap.turret.turretAngle.encoder->GetEncoderRotations() << std::endl;
+  std::cout << "TurretRotation: " << robotMap.turret.turretRotation.encoder->GetEncoderRotations() << std::endl;
+  std::cout << "TurretFlyWheel: " << robotMap.turret.turretFlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+
+  // std::cout << "Motor1: " << robotMap.turret.TurretFlyWheel.GetVoltage() << std::endl;
+  // std::cout << "Motor2: " << robotMap.turret.TurretFlyWheel2.GetVoltage() << std::endl;
 
   // robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
   // robotMap.controlSystem.compressor.Update(dt);
@@ -144,6 +155,13 @@ void Robot::TeleopPeriodic() {
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
   controlPannel->TeleopOnUpdate(dt);
+  //   if (robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > 0.1) {
+  //   robotMap.turret.TurretFlyWheel.Set(-robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp));
+  //   robotMap.turret.TurretFlyWheel2.Set(-robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp));
+  // } else {
+  //   robotMap.turret.TurretFlyWheel.Set(0);
+  //   robotMap.turret.TurretFlyWheel2.Set(0);
+  // }
 }
 
 

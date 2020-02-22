@@ -9,14 +9,7 @@ class MagLoader {
               frc::AnalogInput &StartMag, 
               frc::AnalogInput &Position1, 
               frc::AnalogInput &Position5, 
-              wml::controllers::SmartControllerGroup &contGroup,
-              int &autoSelector,
-              bool &StartDoComplete,
-              bool &strt,
-              bool &p1,
-              bool &p2,
-              bool &p3,
-              bool &end); // also need to add the limit switch & indexing math.
+              wml::controllers::SmartControllerGroup &contGroup);
 
     void TeleopOnUpdate(double dt);
     void AutoOnUpdate(double dt);
@@ -35,13 +28,6 @@ class MagLoader {
     bool ToggleEnabled;
     bool MagOverride = false;
     double MagazinePower = 0;
-    int &_autoSelector;
-    bool &_StartDoComplete;
-    bool &_strt;
-    bool &_p1;
-    bool &_p2;
-    bool &_p3;
-    bool &_end;
     int MagStop = 1;
     
     int testType = 1;
