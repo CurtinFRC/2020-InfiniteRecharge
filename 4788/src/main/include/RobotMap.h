@@ -117,10 +117,10 @@ struct RobotMap {
     wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
 
     // Fly Wheel
-    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
-    wml::TalonSrx TurretFlyWheel2{ ControlMap::TurretFlyWheelPort2, 2048 };
+    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort};
+    wml::TalonSrx TurretFlyWheel2{ ControlMap::TurretFlyWheelPort2};
     wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel, TurretFlyWheel2);
-    wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 8.45 };
+    wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 0 };
   };
   Turret turret;
 
@@ -167,6 +167,10 @@ struct RobotMap {
   Climber climber;
 
   struct Auto {
+
+    /**
+     * Start Position is (3.2, -2.4) or 1.96 meters from the wall to the wheel (straight)
+     */
 
     /**
      * Auto Selection

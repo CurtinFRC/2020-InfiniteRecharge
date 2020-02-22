@@ -1,3 +1,8 @@
 X,Y,Tangent X,Tangent Y,Fixed Theta,Name
+<<<<<<< HEAD
+3.2,-2.4,0.0,0.0,true,
+5.4,-0.7,0.0,0.0,true,
+=======
 0.0,0.0,3.048,0.0,true,
 3.048,-3.048,0.0,-3.048,true,
+>>>>>>> a931a090a9fb97399c108da2c90bb67c54c033cd

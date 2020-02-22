@@ -36,11 +36,11 @@ void BeltIntake::TeleopOnUpdate(double dt) {
 
 	if (_contGroup.Get(ControlMap::DownIntake, Controller::ONRISE)) {
 		if (ToggleEnabled) {
-			_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+			_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
 			_FlyWheelToggle = false;
 			ToggleEnabled = false;
 		} else if (!ToggleEnabled) {
-			_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+			_IntakeDown.SetTarget(wml::actuators::BinaryActuatorState::kForward);
 			_FlyWheelToggle = true;
 			ToggleEnabled = true;
 		}

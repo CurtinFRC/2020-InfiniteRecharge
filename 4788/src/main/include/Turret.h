@@ -65,6 +65,8 @@ class Turret {
 		// Timeout Timer
 		frc::Timer ZeroTimer;
 
+		bool TuningTurret = false;
+
 		// Backend Functions
 		double SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput);
 		void TurretZeroLeft(double Time);
@@ -78,7 +80,7 @@ class Turret {
 		void TurretSearchForTarget();
 
 		// PID Calculations X axis (Rotation R)
-		double RkP = 0;
+		double RkP = 1;
 		double RkI = 0;
 		double RkD = 0;
 
