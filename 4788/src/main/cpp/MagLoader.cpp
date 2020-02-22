@@ -15,20 +15,20 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
                      _Position1(Position1), 
                      _Position5(Position5), 
                      _contGroup(contGroup) {
-  // _StartMag.SetAverageBits(2);
-  // _Position1.SetAverageBits(2);
-  // _Position5.SetAverageBits(2);
+  _StartMag.SetAverageBits(1);
+  _Position1.SetAverageBits(1);
+  _Position5.SetAverageBits(1);
 }
 
 
 void MagLoader::AutoMag() {
 
   // Auto Control
-  if (_Position5.GetAverageValue() >= ControlMap::MagazineBallThreshFinal) {
+  if (_Position5.GetValue() >= ControlMap::MagazineBallThreshFinal) {
     MagazinePower = 0;
-  } else if (_Position1.GetAverageValue() >= ControlMap::MagazineBallThreshIndex) {
+  } else if (_Position1.GetValue() >= ControlMap::MagazineBallThreshIndex) {
     MagazinePower = 0;
-  } else if (_StartMag.GetAverageValue() >= ControlMap::MagazineBallThreshStart) {
+  } else if (_StartMag.GetValue() >= ControlMap::MagazineBallThreshStart) {
     MagazinePower = 0.7;
   } else {
     MagazinePower = 0;

@@ -80,9 +80,9 @@ class Turret {
 		void TurretSearchForTarget();
 
 		// PID Calculations X axis (Rotation R)
-		double RkP = 1;
-		double RkI = 0;
-		double RkD = 0;
+		double RkP = 0.899; // 0.899
+		double RkI = 0.107; // 0.1
+		double RkD = 0.036; // 0.036
 
 		double Rerror;
 

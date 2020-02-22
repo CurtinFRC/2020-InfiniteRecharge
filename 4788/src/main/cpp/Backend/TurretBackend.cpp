@@ -132,8 +132,8 @@ double Turret::YAutoAimCalc(double dt, double TargetInput) {
 
 // X Auto Aim Algorithm
 double Turret::XAutoAimCalc(double dt, double targetx)  {
-
-	double TurretFullRotation = (ControlMap::TurretEncoderRotations * ControlMap::TurretRatio);
+	dt = 0.1;
+	double TurretFullRotation = (ControlMap::TurretRatio * ControlMap::TurretGearBoxRatio);
 	double Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
 	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
 
@@ -146,16 +146,10 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 	double derror = (Rerror - RpreviousError) / dt;
 	Rsum = Rsum + Rerror * dt;
 
-	if (Rsum > (imageWidth/2)) {
-		Rsum = imageWidth;
-	} else if (Rsum < -(imageWidth/2)) {
-		Rsum = -imageWidth;
-	}
-
 	double output = RkP * Rerror + RkI * Rsum + RkD * derror;
 
 	// Convert to -1 - 1 for motor
-	output /= Rotations2FOV;
+	output = output/Rotations2FOV;
 
 	table->PutNumber("RoationDError", derror);
 	table->PutNumber("RotationError", Rerror);
@@ -163,7 +157,7 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 	table->PutNumber("RotationOutput", output);
 
 	RpreviousError = Rerror;
-	return -output;
+	return output;
 }
 
 

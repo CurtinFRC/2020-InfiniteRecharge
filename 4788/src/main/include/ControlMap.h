@@ -57,7 +57,7 @@ struct ControlMap {
   static const double MaxTurretSpeed, MaxTurretAngularSpeed, FlyWheelVelocity;
   static const double TurretEncoderRotations;
   static const double MaxAngleEncoderRotations;
-  static const double TurretRatio;
+  static const double TurretRatio, TurretGearBoxRatio;
 
   // Y Axis Setpoints
   static const double AngleSetpoint1;
@@ -146,7 +146,7 @@ struct ControlMap {
   //@TODO
   #else
   static const wml::controllers::tAxis TurretAutoAimAxis;
-  static const wml::controllers::tButton TurretAutoAim;
+  static const std::vector<wml::controllers::tButton> TurretAutoAim;
 
   static const wml::controllers::tAxis TurretManualRotate;
   static const wml::controllers::tAxis TurretManualAngle;

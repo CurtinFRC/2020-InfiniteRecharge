@@ -18,3 +18,6 @@ class curtin_frc_vision {
   nt::NetworkTableEntry ImageHeight;
   nt::NetworkTableEntry ImageWidth;
 };
+
+
+// REEEEEEEEEEE

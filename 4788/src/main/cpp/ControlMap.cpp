@@ -58,8 +58,8 @@ const int ControlMap::TurretFlyWheelPort = 22; // 20
 const int ControlMap::TurretFlyWheelPort2 = 21; // 21
 const int ControlMap::TurretAnglePort = 20; // 22
 const int ControlMap::TurretRotationPort = 23; // 23
-const bool ControlMap::TuneTurretPID = false;
-const bool ControlMap::TuneAnglePID = true;
+const bool ControlMap::TuneTurretPID = true;
+const bool ControlMap::TuneAnglePID = false;
 
 const int ControlMap::TurretLeftLimitPort = 99;
 const int ControlMap::TurretRightLimitPort = 99;
@@ -72,7 +72,9 @@ const double ControlMap::TurretZeroTimeoutSeconds = 5;
 const double ControlMap::TurretEncoderSafeZone = 5;
 const double ControlMap::TurretEncoderRotations = 500;
 const double ControlMap::MaxAngleEncoderRotations = 500;
-const double ControlMap::TurretRatio = 7;
+const double ControlMap::TurretRatio = 24; // 24:1
+const double ControlMap::TurretGearBoxRatio = 40; // 40:1
+
 const double ControlMap::MaxTurretSpeed = 0.3;
 const double ControlMap::MaxTurretAngularSpeed = 0.3;
 const double ControlMap::FlyWheelVelocity = 500;
@@ -104,7 +106,7 @@ const int ControlMap::StartMagLimitPort = 1;
 const int ControlMap::Position1LimitPort = 3;
 const int ControlMap::Position5LimitPort = 2;
 const double ControlMap::MagazineBallThreshStart = 620;
-const double ControlMap::MagazineBallThreshFinal = 1300; // 1300
+const double ControlMap::MagazineBallThreshFinal = 1100; // 1300
 const double ControlMap::MagazineBallThreshIndex = 2000;
 const double ControlMap::MagTestCaseRotations = 5;
 
@@ -196,7 +198,7 @@ const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
   //@todo
 #else
   const tAxis ControlMap::TurretAutoAimAxis{ CoDriver, XboxController::kLeftThrottle };
-  const tButton ControlMap::TurretAutoAim{ CoDriver, 30 };
+  const std::vector<tButton> ControlMap::TurretAutoAim{ {CoDriver, 30}, {DevController, 30} };
 
   const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
   const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kLeftYAxis };
@@ -204,6 +206,7 @@ const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
   
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
 #endif
+
 
 // Intake 
 #if __CONTROLMAP_USING_JOYSTICK__
@@ -236,13 +239,13 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
 #else
   const tButton ControlMap::ShiftUpMagazine{ CoDriver, __LINE__ + 30 };
   const tButton ControlMap::ShiftDownMagazine{ CoDriver, __LINE__ + 30 };
-  const tButton ControlMap::ManualMag{ CoDriver, XboxController::kB};
+  const tButton ControlMap::ManualMag{ CoDriver, XboxController::kB };
 #endif
 
 //Climber 
 #if __CONTROLMAP_USING_JOYSTICK__
 //please change
-  const tAxis ControlMap::ClimberControl{ CoDriver, 2};
+  const tAxis ControlMap::ClimberControl{ CoDriver, 2 };
 #else
   const tAxis ControlMap::ClimberControlLeft{ CoDriver, XboxController::kLeftYAxis};
   const tAxis ControlMap::ClimberControlRight{ CoDriver, XboxController::kRightYAxis};

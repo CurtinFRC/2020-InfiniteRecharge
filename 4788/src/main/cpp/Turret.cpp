@@ -116,13 +116,10 @@ void Turret::TeleopOnUpdate(double dt) {
 			FlyWheelPower = 0;
 		}
 	}
-
-	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-
 	
 
 	// Flywheel Feedback
-	// ContFlywheelFeedback();
+	ContFlywheelFeedback();
 	
 
 	// Limits Turret Speed
