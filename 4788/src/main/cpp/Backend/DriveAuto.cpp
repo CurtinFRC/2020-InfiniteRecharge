@@ -65,7 +65,6 @@ void DrivetrainAuto::OnUpdate(double dt) {
           } else {
             WayPointSwitch();
           }
-
         break;
 
         case 2: // Drive from waypoint 1 to 2
@@ -74,14 +73,11 @@ void DrivetrainAuto::OnUpdate(double dt) {
             _wayFinder.GotoWaypoint(5.4, -0.7, 0, 9, -0.7, 0, false, dt);
           } else {
             WayPointSwitch();
+            _p1 = false;
           }
         break;
 
         case 3:
-          _p1 = false;
-        break;
-
-        case 4: // Drive From waypoint 2 to 3 (Backwards)
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(9, -0.7, 0, 8, -0.7, -21, true, dt);
           } else {
@@ -89,13 +85,13 @@ void DrivetrainAuto::OnUpdate(double dt) {
           }
         break;
 
-        case 5: // Drive to endpoint (backwards)
+        case 4: // Drive From waypoint 2 to 3 (Backwards)
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(8, -0.7, 0, 4.2, -2.4, 21, true, dt);
           } else {
             WayPointSwitch();
           }
-        break;  
+        break;
        
         case 6: //shoot 5 balls 
           _strt = true;

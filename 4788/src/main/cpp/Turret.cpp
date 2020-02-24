@@ -88,17 +88,19 @@ void Turret::TeleopOnUpdate(double dt) {
 	PIDTuner();
 	
 
-	if (_contGroup.Get(ControlMap::TurretAutoAim)) {
-		if (targetX > imageWidth || targetY > imageHeight) {
-			std::cout << "Error: Target is artifacting" << std::endl;
-		} else {
-			RotationPower = XAutoAimCalc(dt, targetX);
-			AngularPower = YAutoAimCalc(dt, targetY);
-		}
-	}
-
-
 	if (!_TurretToggle) {
+		if (_contGroup.Get(ControlMap::TurretAutoAim)) {
+			if (targetX > imageWidth || targetY > imageHeight) {
+				std::cout << "Error: Target is artifacting" << std::endl;
+			} else {
+				RotationPower = XAutoAimCalc(dt, targetX);
+				AngularPower = YAutoAimCalc(dt, targetY);
+			}
+		} else {
+			Rsum = 0;
+		}
+
+
 		// Manual Angle Control
 		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
 
@@ -116,13 +118,10 @@ void Turret::TeleopOnUpdate(double dt) {
 			FlyWheelPower = 0;
 		}
 	}
-
-	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
-
 	
 
 	// Flywheel Feedback
-	// ContFlywheelFeedback();
+	ContFlywheelFeedback();
 	
 
 	// Limits Turret Speed
