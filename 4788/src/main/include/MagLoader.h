@@ -22,6 +22,14 @@ class MagLoader {
     frc::AnalogInput &_Position5;
     wml::controllers::SmartControllerGroup &_contGroup;
 
+    // Network table
+    nt::NetworkTableEntry MagPower;
+    nt::NetworkTableEntry MagEncoder;
+    nt::NetworkTableEntry StartSensor;
+    nt::NetworkTableEntry SecondSensor;
+    nt::NetworkTableEntry LastSensor;
+    nt::NetworkTableEntry Override;
+
     // Auto Ball detection (Magazine control)
     void AutoMag();
 

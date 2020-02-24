@@ -1,31 +1,8 @@
 See file:///D:/Users/Conno/Desktop/Code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling DriveAuto.cpp successful.
-
-compiling ControlMap.cpp successful.
-
-compiling TurretBackend.cpp successful.
-
-compiling Climber.cpp successful.
-
-compiling BeltIntake.cpp successful.
-
-compiling DriveSystem.cpp successful.
-
 compiling MagLoader.cpp successful.
 
-compiling ControlPannel.cpp successful.
-
-compiling Turret.cpp successful.
-D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp: In member function 'void Turret::AutoOnUpdate(double)':
-D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:143:9: warning: unused variable 'targetX' [-Wunused-variable]
-  double targetX = table->GetNumber("Target_X", 0);
-         ^~~~~~~
-D:\Users\Conno\Desktop\Code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:144:9: warning: unused variable 'targetY' [-Wunused-variable]
-  double targetY = table->GetNumber("Target_Y", 0);
-         ^~~~~~~
+compiling Robot.cpp successful.
 
 compiling Main.cpp successful.
-
-compiling Robot.cpp successful.
 
 Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///D:/Users/Conno/Desktop/Code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
