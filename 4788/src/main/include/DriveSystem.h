@@ -15,6 +15,8 @@ class DrivetrainManual : public wml::Strategy {
                      wml::Drivetrain &drivetrain,
                      wml::actuators::DoubleSolenoid &ChangeGears, 
                      wml::actuators::DoubleSolenoid &Shift2PTO, 
+                     frc::Servo &PTORatchetLeft,
+                     frc::Servo &PTORatchetRight,
                      wml::controllers::SmartControllerGroup &contGroup);
 
     void OnUpdate(double dt) override;
@@ -23,6 +25,8 @@ class DrivetrainManual : public wml::Strategy {
     wml::Drivetrain &_drivetrain;
     wml::actuators::BinaryActuator &_ChangeGears;
     wml::actuators::BinaryActuator &_Shift2PTO;
+    frc::Servo &_PTORatchetLeft;
+    frc::Servo &_PTORatchetRight;
     wml::controllers::SmartControllerGroup &_contGroup;
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;

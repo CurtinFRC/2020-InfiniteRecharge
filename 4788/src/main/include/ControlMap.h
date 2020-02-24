@@ -41,6 +41,8 @@ struct ControlMap {
   static const int ChangeGearPort1, ChangeGearPort2;
   static const int Shift2PTOPort1, Shift2PTOPort2;
   static const double ChangeGearTime;
+  static const int PTORatchetLeftPort, PTORatchetRightPort;
+  static const double PTORatchetLeftPosition, PTORatchetRightPosition;
   static const double MaxDrivetrainSpeed;
   static const double MaxDrivetrainAcceleration;
   static const double DriveTestCaseRotations;
@@ -117,12 +119,6 @@ struct ControlMap {
   
   // Drive PID
   static const double DriveKp, DriveKi, DriveKd;
-
-  // 6 Ball
-  static const double Strt6Ballx, Strt6Bally, Strt6BallAngle, Strt6BallEncoderDrift, Strt6BallAngleDrift;
-  static const double wypt1Ball6x, wypt1Ball6y, wypt1Ball6Angle, wypt1Ball6EncoderDrift, wypt1Ball6AngleDrift;
-  static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
-  static const double End6Ballx, End6Bally, End6BallAngle, End6BallEncoderDrift, End6BallAngleDrift;
 
   // --------------- Defined Buttons -----------------
 

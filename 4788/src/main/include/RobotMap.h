@@ -17,6 +17,7 @@
 #include <frc/Spark.h>
 #include <frc/PowerDistributionPanel.h>
 #include <frc/PWMSparkMax.h>
+#include <frc/Servo.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/AnalogInput.h>
 
@@ -72,6 +73,7 @@ struct RobotMap {
 
   // Drive System
   struct DriveSystem {
+
     // Front
     wml::SparkMax FLmax{ ControlMap::DriveMAXportFL, wml::SparkMax::MotorType::kNEO, 42 };
     wml::SparkMax FRmax{ ControlMap::DriveMAXportFR, wml::SparkMax::MotorType::kNEO, 42 };
@@ -87,8 +89,13 @@ struct RobotMap {
     wml::Gearbox LGearbox{ &leftMotors, &FLmax, 8.45 };
     wml::Gearbox RGearbox{ &rightMotors, &FRmax, 8.45 };
 
+    // Gear Changing
     wml::actuators::DoubleSolenoid ChangeGearing{ ControlMap::PCModule, ControlMap::ChangeGearPort1, ControlMap::ChangeGearPort2, ControlMap::ChangeGearTime };
     wml::actuators::DoubleSolenoid Shift2PTO{ ControlMap::PCModule, ControlMap::Shift2PTOPort1, ControlMap::Shift2PTOPort2, ControlMap::ShiftPTOActuationTime };
+
+    // Ratchet Control
+    frc::Servo PTORatchetLeft{ ControlMap::PTORatchetLeftPort };
+    frc::Servo PTORatchetRight{ ControlMap::PTORatchetRightPort };
 
     wml::sensors::NavX navx{};
     wml::sensors::NavXGyro gyro{ navx.Angular(wml::sensors::AngularAxis::YAW) };

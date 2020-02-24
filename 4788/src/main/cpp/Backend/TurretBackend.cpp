@@ -132,7 +132,7 @@ double Turret::YAutoAimCalc(double dt, double TargetInput) {
 
 // X Auto Aim Algorithm
 double Turret::XAutoAimCalc(double dt, double targetx)  {
-	dt = 0.1;
+	// dt = 1;
 	double TurretFullRotation = (ControlMap::TurretRatio * ControlMap::TurretGearBoxRatio);
 	double Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
 	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);

@@ -57,7 +57,7 @@ void Robot::RobotInit() {
   robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
 
   // Strategy controllers
-  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain,  robotMap.driveSystem.ChangeGearing, robotMap.driveSystem.Shift2PTO, robotMap.contGroup));
+  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain,  robotMap.driveSystem.ChangeGearing, robotMap.driveSystem.Shift2PTO, robotMap.driveSystem.PTORatchetLeft, robotMap.driveSystem.PTORatchetRight, robotMap.contGroup));
   drivetrain->StartLoop(100);
 
   // Inverts one side of our drivetrain
@@ -155,13 +155,6 @@ void Robot::TeleopPeriodic() {
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
   controlPannel->TeleopOnUpdate(dt);
-  //   if (robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > 0.1) {
-  //   robotMap.turret.TurretFlyWheel.Set(-robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp));
-  //   robotMap.turret.TurretFlyWheel2.Set(-robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp));
-  // } else {
-  //   robotMap.turret.TurretFlyWheel.Set(0);
-  //   robotMap.turret.TurretFlyWheel2.Set(0);
-  // }
 }
 
 
