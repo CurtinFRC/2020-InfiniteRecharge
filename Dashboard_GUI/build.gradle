@@ -6,7 +6,7 @@ toolchainsPlugin.withRaspbian()
 
 model {
   components {
-    guiCore(NativeExecutableSpec) {
+    dashGUI(NativeExecutableSpec) {
       targetPlatform wpi.platforms.desktop
       targetPlatform wpi.platforms.raspbian
       //targetPlatform TinkerboardPlugin.tinkerboardPlatform
@@ -14,6 +14,7 @@ model {
       sources.cpp {
         source {
           srcDir 'src/main/cpp'
+          include '**/*.cpp', '**/*.cc'
         }
         exportedHeaders {
           srcDir 'src/main/include'
@@ -36,4 +37,4 @@ model {
   }
 }
 
-task GUI(dependsOn: "simulateGuiCore${wpi.platforms.desktop.capitalize()}DebugExecutable")
+task GUI(dependsOn: "simulateDashGUI${wpi.platforms.desktop.capitalize()}DebugExecutable")

@@ -1,7 +1,7 @@
 # Created by https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
 
 # Track this file for gui
-!DASH_GUI.png
+!DASH_GUI.jpg
 
 ### C++ ###
 # Prerequisites

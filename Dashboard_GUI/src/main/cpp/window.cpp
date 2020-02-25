@@ -1,7 +1,9 @@
 #include "GUI.h"
 #include "Dashboard/Orientation.h"
 
-cv::Mat GUI_Core::CreateWindow() {
+
+cv::Mat GUI_Core::CreateWindow(cv::Mat image, int argc, char** argv) {
+
   std::cout << "Select Auto" << std::endl;
   std::cout << "1 = 8 Ball" << std::endl;
   std::cout << "2 = 6 Ball" << std::endl;
@@ -9,25 +11,11 @@ cv::Mat GUI_Core::CreateWindow() {
   std::cout << "4 = 3 Ball Mid" << std::endl;
   std::cout << "5 = 3 Ball Right" << std::endl;
   std::cout << "Auto: ";
-  std::cin >> Auto; 
+  std::cin >> Auto;
   std::cout << std::endl << std::endl;
 
-  std::cout << "Specify Width and Height of window. If Zero (Default is 1440x1000)" << std::endl;
-
-  std::cout << "Width: ";
-  std::cin >> Width;
-  std::cout << std::endl;
-  if (Width <= 0) {
-    Width = Default_Width;
-    Height = Default_Height;
-  } else {
-    std::cout << "Height: ";
-    std::cin >> Height;
-    std::cout << std::endl;
-    if (Height <= 0) {
-      Height = Default_Height;
-    }
-  }
+  Width = Default_Width;
+  Height = Default_Height;
 
   WidthHalf = (Width/2);
   HeightHalf = (Height/2);
@@ -50,7 +38,21 @@ cv::Mat GUI_Core::CreateWindow() {
   RightLowerQuarterX = WidthTwoThird;
   RightLowerQuarterY = HeightTwoThird;
 
-  cv::Mat image(Height, Width, CV_8UC3, cv::Scalar(0,0,0));
+
+  #ifdef __DESKTOP__
+  cv::String imageName( "C:\\Users\\Public\\DASH_GUI.png" ); // by default
+  #else 
+  std::cout << "This program is not compatable with other operating systems yet. Please use windows" << std::endl;
+  exit(EXIT_FAILURE);
+  #endif
+  
+  if (argc > 1) {
+    imageName = argv[1];
+  }
+  image = cv::imread( cv::samples::findFile(imageName), cv::IMREAD_COLOR ); // Read the file
+  if (image.empty()) {
+    std::cout <<  "Could not open or find the image" << std::endl;
+  }
 
   if (!image.data) {
     std::cout << "Could Not Create Window" << std::endl;
@@ -61,6 +63,7 @@ cv::Mat GUI_Core::CreateWindow() {
 }
 
 void GUI_Core::DisplayWindow(cv::Mat image) {
-  cv::imshow("GUI", image);
+  cv::namedWindow("Curtin GUI", CV_WINDOW_AUTOSIZE);
+  cv::imshow("Curtin GUI", image);
   cv::waitKey(30);
 }

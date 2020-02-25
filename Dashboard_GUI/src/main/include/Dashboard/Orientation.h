@@ -5,6 +5,9 @@
 #include "networktables/NetworkTableEntry.h"
 #include "networktables/NetworkTableInstance.h"
 
+// frc
+#include <frc/timer.h>
+
 // Opencv files
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>

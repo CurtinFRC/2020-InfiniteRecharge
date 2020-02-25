@@ -13,4 +13,7 @@ class Mag {
     nt::NetworkTableEntry SecondSensor;
     nt::NetworkTableEntry LastSensor;
     nt::NetworkTableEntry Override;
+
+    frc::Timer timer;
+    frc::Timer testTimer;
 };

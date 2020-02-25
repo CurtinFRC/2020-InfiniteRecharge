@@ -71,4 +71,5 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
 
     // nt
     nt::NetworkTableEntry AutoSelector;
+    nt::NetworkTableEntry RobotActive;
 };
