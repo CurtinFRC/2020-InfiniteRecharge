@@ -2,8 +2,17 @@
 #include "Dashboard/Orientation.h"
 
 cv::Mat GUI_Core::CreateWindow() {
+  std::cout << "Select Auto" << std::endl;
+  std::cout << "1 = 8 Ball" << std::endl;
+  std::cout << "2 = 6 Ball" << std::endl;
+  std::cout << "3 = 3 Ball Left" << std::endl;
+  std::cout << "4 = 3 Ball Mid" << std::endl;
+  std::cout << "5 = 3 Ball Right" << std::endl;
+  std::cout << "Auto: ";
+  std::cin >> Auto; 
+  std::cout << std::endl << std::endl;
 
-  std::cout << "Specify Width and Height of window. If Zero (Default is 500x500)" << std::endl;
+  std::cout << "Specify Width and Height of window. If Zero (Default is 1440x1000)" << std::endl;
 
   std::cout << "Width: ";
   std::cin >> Width;
@@ -40,24 +49,8 @@ cv::Mat GUI_Core::CreateWindow() {
 
   RightLowerQuarterX = WidthTwoThird;
   RightLowerQuarterY = HeightTwoThird;
-  // Quarters Points
-  // LeftUpperQuarter(WidthQuarter, HeightQuarter);
-  // RightUpperQuarter(WidthTwoThird, HeightQuarter);
-  // LeftLowerQuarter(WidthQuarter, HeightTwoThird);
-  // RightLowerQuarter(WidthTwoThird, HeightTwoThird);
 
-  // MidPoint(WidthHalf, HeightHalf);
-
-  // // Quarters Points
-  // LeftUpperQuarter = new cv::Point(WidthQuarter, HeightQuarter);
-  // RightUpperQuarter = new cv::Point(WidthTwoThird, HeightQuarter);
-  // LeftLowerQuarter = new cv::Point(WidthQuarter, HeightTwoThird);
-  // RightLowerQuarter = new cv::Point(WidthTwoThird, HeightTwoThird);
-
-  // MidPoint = new cv::Point(WidthHalf, HeightHalf);
-
-
-  cv::Mat image(Width, Height, CV_8UC3, cv::Scalar(0,0,0));
+  cv::Mat image(Height, Width, CV_8UC3, cv::Scalar(0,0,0));
 
   if (!image.data) {
     std::cout << "Could Not Create Window" << std::endl;

@@ -68,4 +68,7 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     Climber *climber;
     ControlPannel *controlPannel;
     WayFinder *wayFinder;
+
+    // nt
+    nt::NetworkTableEntry AutoSelector;
 };

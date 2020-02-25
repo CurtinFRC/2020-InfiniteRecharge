@@ -4,7 +4,7 @@
 
 class Mag {
   public:
-    void MagLoader(cv::Mat *Window, int posX, int posY);
+    void MagLoader(cv::Mat *Window, nt::NetworkTableInstance *inst, int posX, int posY);
   private:
     // Network table
     nt::NetworkTableEntry MagPower;

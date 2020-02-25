@@ -4,7 +4,7 @@
 
 class Turret {
   public:
-    void TurretImage(cv::Mat *Window, int posX, int posY);
+    void TurretImage(cv::Mat *Window, nt::NetworkTableInstance *inst, int posX, int posY);
   private:
     // Network table
 };

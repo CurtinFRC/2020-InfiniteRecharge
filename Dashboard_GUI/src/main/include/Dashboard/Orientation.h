@@ -23,7 +23,7 @@ class Orientation {
   public:
     // Window Size
     int Width, Height; // deafult is 500x500
-    int Default_Width = 500, Default_Height = 500;
+    int Default_Width = 1440, Default_Height = 1000;
 
     int WidthHalf;
     int HeightHalf;

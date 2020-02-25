@@ -1,6 +1,6 @@
 #include "Dashboard/Drive.h"
 
-void Drive::DriveImage(cv::Mat *window, int posX, int posY) {
+void Drive::DriveImage(cv::Mat *window, nt::NetworkTableInstance *inst, int posX, int posY) {
 
   cv::Point RightLowerQuarter(posX, posY);
 

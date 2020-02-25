@@ -33,4 +33,7 @@ class GUI_Core : public Orientation {
     Climber climber;
 
     Orientation orientation;
+
+    double Auto;
+    nt::NetworkTableEntry AutoSelector;
 };

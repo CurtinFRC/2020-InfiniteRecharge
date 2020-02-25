@@ -4,7 +4,7 @@
 
 class Drive {
   public:
-    void DriveImage(cv::Mat *Window, int posX, int posY);
+    void DriveImage(cv::Mat *Window, nt::NetworkTableInstance *inst, int posX, int posY);
   private:
     // Network table
 };

@@ -80,9 +80,15 @@ class Turret {
 		void TurretSearchForTarget();
 
 		// PID Calculations X axis (Rotation R)
+		bool GainsSchedule2 = false;
+		// Schedule 1 (Get to location)
 		double RkP = 0.899; // 0.899
 		double RkI = 0.107; // 0.107
 		double RkD = 0.036; // 0.036
+		// Schedule 2 (Precise locate target)
+		double RkP2 = 0;
+		double RkI2 = 0;
+		double RkD2 = 0;
 
 		double Rerror;
 

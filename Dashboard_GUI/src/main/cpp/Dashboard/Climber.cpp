@@ -1,6 +1,6 @@
 #include "Dashboard/Climber.h"
 
-void Climber::ClimberImage(cv::Mat *window, int posX, int posY) {
+void Climber::ClimberImage(cv::Mat *window, nt::NetworkTableInstance *inst, int posX, int posY) {
 
   cv::Point LeftLowerQuarter(posX, posY);
 

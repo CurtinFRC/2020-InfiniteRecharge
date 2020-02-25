@@ -1,6 +1,6 @@
 #include "Dashboard/Turret.h"
 
-void Turret::TurretImage(cv::Mat *window, int posX, int posY) {
+void Turret::TurretImage(cv::Mat *window, nt::NetworkTableInstance *inst, int posX, int posY) {
 
   cv::Point RightUpperQuarter(posX, posY);
 

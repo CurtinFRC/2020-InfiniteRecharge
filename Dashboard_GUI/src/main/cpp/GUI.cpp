@@ -3,13 +3,22 @@
 
 void GUI_Core::GUI () {
 
+  // Create Window/ Select Automode
   window = CreateWindow();
 
+  // Initalize connection
+  auto inst = nt::NetworkTableInstance::GetDefault();
+  auto table = inst.GetTable("Autonomous");
+  AutoSelector = table->GetEntry("AutoSelector");
+  inst.StartClientTeam(4788);
+
+
   while (true) {
-    mag.MagLoader(&window, LeftUpperQuarterX, LeftUpperQuarterY);
-    turret.TurretImage(&window, RightUpperQuarterX, RightUpperQuarterY);
-    drive.DriveImage(&window, RightLowerQuarterX, RightLowerQuarterY);
-    climber.ClimberImage(&window, LeftLowerQuarterX, LeftLowerQuarterY);
+    AutoSelector.SetDouble(Auto);
+    mag.MagLoader(&window, &inst, LeftUpperQuarterX, LeftUpperQuarterY);
+    turret.TurretImage(&window, &inst, RightUpperQuarterX, RightUpperQuarterY);
+    drive.DriveImage(&window, &inst, RightLowerQuarterX, RightLowerQuarterY);
+    climber.ClimberImage(&window, &inst, LeftLowerQuarterX, LeftLowerQuarterY);
 
     DisplayWindow(window);
   }
