@@ -1,0 +1,5 @@
+/*
+ * GUI Core for c++ applications
+*/
+
+rootProject.name = 'Dashboard_GUI'

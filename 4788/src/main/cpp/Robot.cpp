@@ -78,6 +78,14 @@ void Robot::RobotInit() {
   robotMap.controlSystem.arduino.WriteBulk(&robotMap.controlSystem.message, 16);
   robotMap.controlSystem.message = 78;
 
+  // Network tables
+  auto inst = nt::NetworkTableInstance::GetDefault();
+  auto table = inst.GetTable("Autonomous");
+  auto activeTable = inst.GetTable("Activity");
+
+  AutoSelector = table->GetEntry("AutoSelector");
+  RobotActive = activeTable->GetEntry("ActiveRobot");
+
   // Registering our systems to be called via strategy
   StrategyController::Register(drivetrain);
   NTProvider::Register(drivetrain); // Registers system to networktables
@@ -87,6 +95,9 @@ void Robot::RobotPeriodic() {
   CurrentTime = frc::Timer::GetFPGATimestamp();
   dt = CurrentTime - lastTimestamp;
 
+  robotMap.autonomous.AutoSelecter = AutoSelector.GetDouble(1);
+  RobotActive.SetBoolean(true);
+  
   // std::cout << "Angle: " << robotMap.driveSystem.drivetrain.GetConfig().gyro->GetAngle() << std::endl;
   // std::cout << "Encoder Left: " << robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
   // std::cout << "Encoder Right: " << robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
