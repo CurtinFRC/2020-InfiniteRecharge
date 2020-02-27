@@ -1,0 +1,40 @@
+apply plugin: 'cpp'
+apply plugin: 'google-test-test-suite'
+apply plugin: 'edu.wpi.first.GradleRIO'
+
+toolchainsPlugin.withRaspbian()
+
+model {
+  components {
+    dashGUI(NativeExecutableSpec) {
+      targetPlatform wpi.platforms.desktop
+      targetPlatform wpi.platforms.raspbian
+      //targetPlatform TinkerboardPlugin.tinkerboardPlatform
+
+      sources.cpp {
+        source {
+          srcDir 'src/main/cpp'
+          include '**/*.cpp', '**/*.cc'
+        }
+        exportedHeaders {
+          srcDir 'src/main/include'
+        }
+      }
+
+      binaries.all {
+        if (targetPlatform.name == wpi.platforms.desktop) {
+          cppCompiler.define '__DESKTOP__'
+          if (targetPlatform.operatingSystem.isLinux()) {
+            linker.args << '-lusb-1.0'
+          }
+        }
+      }
+
+      wpi.deps.wpilib(it)
+      wpi.deps.googleTest(it)
+      wpi.deps.vendor.cpp(it)
+    }
+  }
+}
+
+task GUI(dependsOn: "simulateDashGUI${wpi.platforms.desktop.capitalize()}DebugExecutable")

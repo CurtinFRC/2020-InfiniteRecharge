@@ -73,6 +73,17 @@ void MagLoader::AutoMag() {
 
 void MagLoader::TeleopOnUpdate(double dt) {
 
+  // nt
+  auto inst = nt::NetworkTableInstance::GetDefault();
+  auto MagTable = inst.GetTable("MagTable");
+  // nt entry
+  MagPower = MagTable->GetEntry("MagPower");
+  MagEncoder = MagTable->GetEntry("MagEncoder");
+  StartSensor = MagTable->GetEntry("StartSensor");
+  SecondSensor = MagTable->GetEntry("SecondSensor");
+  LastSensor = MagTable->GetEntry("LastSensor");
+  Override = MagTable->GetEntry("Override");
+
   // mag override from auto to manual
   if (_contGroup.Get(ControlMap::ManualMag, Controller::ONRISE)) {
     if (MagOverride) {
@@ -118,6 +129,15 @@ void MagLoader::TeleopOnUpdate(double dt) {
   if (_contGroup.Get(ControlMap::TurretFire)) {
     MagazinePower = 1;
   }
+
+  // Nt setting
+  MagPower.SetDouble(MagazinePower);
+  MagEncoder.SetDouble(_MagazineMotors.encoder->GetEncoderRotations());
+  StartSensor.SetDouble(_StartMag.GetAverageValue());
+  SecondSensor.SetDouble(_Position1.GetAverageValue());
+  LastSensor.SetDouble(_Position5.GetAverageValue());
+  Override.SetBoolean(MagOverride);
+
 
   _MagazineMotors.transmission->SetVoltage(12 * MagazinePower);
 }

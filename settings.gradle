@@ -27,4 +27,4 @@ pluginManagement {
 }
 
 rootProject.name = 'CurtinFRC2020'
-include '4788', '4788:src:coprocessor'//, 'Testbot'
+include '4788', '4788:src:coprocessor', 'Dashboard_GUI'//, 'Testbot'

@@ -57,7 +57,7 @@ void Robot::RobotInit() {
   robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->ZeroEncoder();
 
   // Strategy controllers
-  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain,  robotMap.driveSystem.ChangeGearing, robotMap.driveSystem.Shift2PTO, robotMap.contGroup));
+  drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain,  robotMap.driveSystem.ChangeGearing, robotMap.driveSystem.Shift2PTO, robotMap.driveSystem.PTORatchetLeft, robotMap.driveSystem.PTORatchetRight, robotMap.contGroup));
   drivetrain->StartLoop(100);
 
   // Inverts one side of our drivetrain
@@ -78,6 +78,14 @@ void Robot::RobotInit() {
   robotMap.controlSystem.arduino.WriteBulk(&robotMap.controlSystem.message, 16);
   robotMap.controlSystem.message = 78;
 
+  // Network tables
+  auto inst = nt::NetworkTableInstance::GetDefault();
+  auto table = inst.GetTable("Autonomous");
+  auto activeTable = inst.GetTable("Activity");
+
+  AutoSelector = table->GetEntry("AutoSelector");
+  RobotActive = activeTable->GetEntry("ActiveRobot");
+
   // Registering our systems to be called via strategy
   StrategyController::Register(drivetrain);
   NTProvider::Register(drivetrain); // Registers system to networktables
@@ -87,6 +95,9 @@ void Robot::RobotPeriodic() {
   CurrentTime = frc::Timer::GetFPGATimestamp();
   dt = CurrentTime - lastTimestamp;
 
+  robotMap.autonomous.AutoSelecter = AutoSelector.GetDouble(1);
+  RobotActive.SetBoolean(true);
+  
   // std::cout << "Angle: " << robotMap.driveSystem.drivetrain.GetConfig().gyro->GetAngle() << std::endl;
   // std::cout << "Encoder Left: " << robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
   // std::cout << "Encoder Right: " << robotMap.driveSystem.drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
@@ -155,13 +166,6 @@ void Robot::TeleopPeriodic() {
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
   controlPannel->TeleopOnUpdate(dt);
-  //   if (robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp) > 0.1) {
-  //   robotMap.turret.TurretFlyWheel.Set(-robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp));
-  //   robotMap.turret.TurretFlyWheel2.Set(-robotMap.contGroup.Get(ControlMap::TurretFlyWheelSpinUp));
-  // } else {
-  //   robotMap.turret.TurretFlyWheel.Set(0);
-  //   robotMap.turret.TurretFlyWheel2.Set(0);
-  // }
 }
 
 

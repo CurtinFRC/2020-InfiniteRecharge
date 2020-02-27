@@ -144,16 +144,18 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 	double derror = (Rerror - RpreviousError) / dt;
 	Rsum = Rsum + Rerror * dt;
 
-	if (Rsum > (imageWidth/2)) {
-		Rsum = imageWidth;
-	} else if (Rsum < -(imageWidth/2)) {
-		Rsum = -imageWidth;
+	// Schedule Different Gains if in general location
+	double output;
+	if (abs(Rgoal) <= (Rotations2FOV/2)) {
+		output = RkP2 * Rerror + RkI2 * Rsum + RkD2 * derror;
+		GainsSchedule2 = true;
+	} else {
+		output = RkP * Rerror + RkI * Rsum + RkD * derror;
+		GainsSchedule2 = false;
 	}
 
-	double output = RkP * Rerror + RkI * Rsum + RkD * derror;
-
-	// Convert to -1 - 1 for motor
-	output /= Rotations2FOV;
+	// Convert to -1 - 1 for motor (Don't have to do this. Just makes my life easier)
+	output = output/Rotations2FOV;
 
 	table->PutNumber("RoationDError", derror);
 	table->PutNumber("RotationError", Rerror);
@@ -161,7 +163,7 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 	table->PutNumber("RotationOutput", output);
 
 	RpreviousError = Rerror;
-	return -output;
+	return output;
 }
 
 
@@ -192,20 +194,35 @@ void Turret::TuneAnglePID() {
 // Turret PID Tuning
 void Turret::TuneTurretPID() {
 
-	if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
-		RkP += 0.01;
-	} else if (_contGroup.Get(ControlMap::kpDOWN, Controller::ONRISE)) {
-		RkP -= 0.001;
-	} else if (_contGroup.Get(ControlMap::kiUP, Controller::ONRISE)) {
-		RkI += 0.001;
-	} else if (_contGroup.Get(ControlMap::kiDOWN, Controller::ONRISE)) {
-		RkI -= 0.001;
-	} else if (_contGroup.Get(ControlMap::kdUP, Controller::ONRISE)) {
-		RkD += 0.001;
-	}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
-		RkD -= 0.001;
+	if (GainsSchedule2) {
+		if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
+			RkP2 += 0.01;
+		} else if (_contGroup.Get(ControlMap::kpDOWN, Controller::ONRISE)) {
+			RkP2 -= 0.01;
+		} else if (_contGroup.Get(ControlMap::kiUP, Controller::ONRISE)) {
+			RkI2 += 0.001;
+		} else if (_contGroup.Get(ControlMap::kiDOWN, Controller::ONRISE)) {
+			RkI2 -= 0.001;
+		} else if (_contGroup.Get(ControlMap::kdUP, Controller::ONRISE)) {
+			RkD2 += 0.001;
+		}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
+			RkD2 -= 0.001;
+		}
+	} else {
+		if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
+			RkP += 0.01;
+		} else if (_contGroup.Get(ControlMap::kpDOWN, Controller::ONRISE)) {
+			RkP -= 0.01;
+		} else if (_contGroup.Get(ControlMap::kiUP, Controller::ONRISE)) {
+			RkI += 0.001;
+		} else if (_contGroup.Get(ControlMap::kiDOWN, Controller::ONRISE)) {
+			RkI -= 0.001;
+		} else if (_contGroup.Get(ControlMap::kdUP, Controller::ONRISE)) {
+			RkD += 0.001;
+		}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
+			RkD -= 0.001;
+		}
 	}
-
 	table->PutNumber("kP", RkP);
 	table->PutNumber("kI", RkI);
 	table->PutNumber("kD", RkD);
