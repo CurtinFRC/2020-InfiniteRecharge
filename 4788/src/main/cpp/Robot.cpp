@@ -44,7 +44,7 @@ void Robot::RobotInit() {
                       robotMap.autonomous.WayPoint3Complete, 
                       robotMap.autonomous.EndComplete);
 
-  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
+  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup, robotMap.autonomous.AutoSelecter, robotMap.autonomous.StartDoComplete, robotMap.autonomous.StartPointComplete, robotMap.autonomous.WayPoint1Complete, robotMap.autonomous.WayPoint2Complete, robotMap.autonomous.WayPoint3Complete, robotMap.autonomous.EndComplete);
   beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.autonomous.AutoSelecter, robotMap.autonomous.StartDoComplete, robotMap.autonomous.StartPointComplete, robotMap.autonomous.WayPoint1Complete, robotMap.autonomous.WayPoint2Complete, robotMap.autonomous.WayPoint3Complete, robotMap.autonomous.EndComplete, robotMap.controlSystem.FlyWheelToggle, robotMap.controlSystem.TurretToggle);
   climber = new Climber(robotMap.climber.ClimberActuator, robotMap.intake.IntakeDown, robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.contGroup, robotMap.controlSystem.TurretToggle);
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup);

@@ -8,13 +8,27 @@ MagLoader::MagLoader(Gearbox &MagazineMotors,
                      frc::AnalogInput &StartMag, 
                      frc::AnalogInput &Position1, 
                      frc::AnalogInput &Position5, 
-                     SmartControllerGroup &contGroup): 
+                     SmartControllerGroup &contGroup,
+                     int &autoSelector,
+                     bool &StartDoComplete,
+                     bool &strt,
+                     bool &p1,
+                     bool &p2,
+                     bool &p3,
+                     bool &end): 
                      
                      _MagazineMotors(MagazineMotors), 
                      _StartMag(StartMag), 
                      _Position1(Position1), 
                      _Position5(Position5), 
-                     _contGroup(contGroup) {
+                     _contGroup(contGroup),
+                     _autoSelector(autoSelector),
+                     _StartDoComplete(StartDoComplete),
+                     _strt(strt),
+                     _p1(p1),
+                     _p2(p2),
+                     _p3(p3),
+                     _end(end) {
   // _StartMag.SetAverageBits(2);
   // _Position1.SetAverageBits(2);
   // _Position5.SetAverageBits(2);
@@ -32,6 +46,28 @@ void MagLoader::AutoMag() {
     MagazinePower = 0.7;
   } else {
     MagazinePower = 0;
+  }
+
+  if (_p2) {
+    timer.Start();
+    if (timer.Get() <= BallTime3Shoot) {
+      MagazinePower = 1;
+    } else {
+      MagazinePower = 0;
+    }
+    timer.Stop();
+    timer.Reset();
+  }
+
+  if (_p3) {
+    timer.Start();
+    if (timer.Get() <= Ball5Shoot) {
+      MagazinePower = 1;
+    } else {
+      MagazinePower = 0;
+    }
+    timer.Stop();
+    timer.Reset();
   }
 }
 

@@ -80,9 +80,9 @@ class Turret {
 		void TurretSearchForTarget();
 
 		// PID Calculations X axis (Rotation R)
-		double RkP = 1;
-		double RkI = 0;
-		double RkD = 0;
+		double RkP = 1.009;
+		double RkI = 0.051;
+		double RkD = 0.036;
 
 		double Rerror;
 
@@ -137,10 +137,13 @@ class Turret {
 		int AutoTurretSwitcher = 1; // I didnt really know what to call it
 		bool TurretStop; //tells the turret when it is finished
 		int TurretAutoSelection = 0; //tells the turret which case selection it's in
+
 		int BallTime3Shoot = 1.5;
 		int BallTime5Shoot = 2.5;
 		int SpinUpTime = 1;
-		int Ball3Shoot = BallTime3Shoot + SpinUpTime; //time to shoot 3 balls
-		int Ball5Shoot = BallTime5Shoot + SpinUpTime; //shoots 5 balls 
+		int autoAimTime = 2;
+		int Ball3Shoot = BallTime3Shoot + SpinUpTime + autoAimTime; //time to shoot 3 balls
+		int Ball5Shoot = BallTime5Shoot + SpinUpTime + autoAimTime; //shoots 5 balls 
+
 		frc::Timer timer;
 };

@@ -58,8 +58,8 @@ const int ControlMap::TurretFlyWheelPort = 22; // 20
 const int ControlMap::TurretFlyWheelPort2 = 21; // 21
 const int ControlMap::TurretAnglePort = 20; // 22
 const int ControlMap::TurretRotationPort = 23; // 23
-const bool ControlMap::TuneTurretPID = false;
-const bool ControlMap::TuneAnglePID = true;
+const bool ControlMap::TuneTurretPID = true;
+const bool ControlMap::TuneAnglePID = false;
 
 const int ControlMap::TurretLeftLimitPort = 99;
 const int ControlMap::TurretRightLimitPort = 99;
@@ -72,7 +72,9 @@ const double ControlMap::TurretZeroTimeoutSeconds = 5;
 const double ControlMap::TurretEncoderSafeZone = 5;
 const double ControlMap::TurretEncoderRotations = 500;
 const double ControlMap::MaxAngleEncoderRotations = 500;
-const double ControlMap::TurretRatio = 7;
+const double ControlMap::TurretRatio = 24;
+const double ControlMap::TurretGearBoxRatio = 40;
+
 const double ControlMap::MaxTurretSpeed = 0.3;
 const double ControlMap::MaxTurretAngularSpeed = 0.3;
 const double ControlMap::FlyWheelVelocity = 500;
@@ -196,7 +198,7 @@ const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
   //@todo
 #else
   const tAxis ControlMap::TurretAutoAimAxis{ CoDriver, XboxController::kLeftThrottle };
-  const tButton ControlMap::TurretAutoAim{ CoDriver, 30 };
+  const std::vector<tButton> ControlMap::TurretAutoAim{ {CoDriver, __LINE__ + 30}, {DevController, __LINE__ + 31}};
 
   const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
   const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kLeftYAxis };

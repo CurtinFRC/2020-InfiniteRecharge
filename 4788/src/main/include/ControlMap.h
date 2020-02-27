@@ -57,8 +57,8 @@ struct ControlMap {
   static const double MaxTurretSpeed, MaxTurretAngularSpeed, FlyWheelVelocity;
   static const double TurretEncoderRotations;
   static const double MaxAngleEncoderRotations;
-  static const double TurretRatio;
-
+  static const double TurretRatio, TurretGearBoxRatio;
+  
   // Y Axis Setpoints
   static const double AngleSetpoint1;
   static const double AngleSetpoint2;
@@ -115,6 +115,8 @@ struct ControlMap {
 
   static const double MaxAutoDrivetrainSpeed, MaxAutoTurnSpeed;
   
+
+
   // Drive PID
   static const double DriveKp, DriveKi, DriveKd;
 
@@ -124,6 +126,7 @@ struct ControlMap {
   static const double wypt2Ball6x, wypt2Ball6y, wypt2Ball6Angle, wypt2Ball6EncoderDrift, wypt2Ball6AngleDrift;
   static const double End6Ballx, End6Bally, End6BallAngle, End6BallEncoderDrift, End6BallAngleDrift;
 
+ 
   // --------------- Defined Buttons -----------------
 
   // Turret PID Tuner
@@ -146,7 +149,7 @@ struct ControlMap {
   //@TODO
   #else
   static const wml::controllers::tAxis TurretAutoAimAxis;
-  static const wml::controllers::tButton TurretAutoAim;
+  static const std::vector<wml::controllers::tButton> TurretAutoAim;
 
   static const wml::controllers::tAxis TurretManualRotate;
   static const wml::controllers::tAxis TurretManualAngle;

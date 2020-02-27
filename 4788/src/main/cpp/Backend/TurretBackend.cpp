@@ -42,13 +42,11 @@ void Turret::AutoAimToFire(double dt) {
  
 	FlyWheelAutoSpinup();
 
-	FlyWheelPower = XAutoAimCalc(dt, targetX);
+	RotationPower = XAutoAimCalc(dt, targetX);
 	AngularPower = YAutoAimCalc(dt, targetY);
 
-	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+	_RotationalAxis.transmission->SetVoltage(12 * FlyWheelPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
-
-
 
 }
 
@@ -133,7 +131,7 @@ double Turret::YAutoAimCalc(double dt, double TargetInput) {
 // X Auto Aim Algorithm
 double Turret::XAutoAimCalc(double dt, double targetx)  {
 
-	double TurretFullRotation = (ControlMap::TurretEncoderRotations * ControlMap::TurretRatio);
+	double TurretFullRotation = (ControlMap::TurretRatio * ControlMap::TurretGearBoxRatio);
 	double Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
 	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
 

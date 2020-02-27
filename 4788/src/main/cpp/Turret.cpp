@@ -21,7 +21,7 @@ Turret::Turret(Gearbox &Rotation,
 							 bool &p1,
 							 bool &p2,
 							 bool &p3,
-							 bool &end) : 
+							 bool &end): 
 							 
 							 _RotationalAxis(Rotation),
 						   _VerticalAxis(VerticalAxis), 
@@ -40,7 +40,7 @@ Turret::Turret(Gearbox &Rotation,
 							 _p1(p1),
 							 _p2(p2),
 							 _p3(p3),
-							 _end(end) {
+							 _end(end){
 	table = _visionTable->GetSubTable("Target");
 	table_2 =  _rotationTable->GetSubTable("turretRotation");
 
@@ -117,7 +117,7 @@ void Turret::TeleopOnUpdate(double dt) {
 		}
 	}
 
-	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+	// FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
 
 	
 
@@ -147,45 +147,39 @@ void Turret::AutoOnUpdate(double dt) {
 		case 1:
 			switch(_autoSelector){
 				case 1: // 8 ball auto, shoots 3 balls then 5 balls 
-					if (!_StartDoComplete) {
-						timer.Start();
-						if (timer.Get() <= Ball3Shoot){
-							AutoAimToFire(dt);
-							if (ReadyToFire) {
-								_p3 = true;
-							} 
-
-							_StartDoComplete = true;
-							timer.Stop();
-							timer.Reset();
+						if (!_StartDoComplete) {	
+							timer.Start();
+							if (timer.Get() <= Ball3Shoot){
+								AutoAimToFire(dt);
+								if (ReadyToFire) {
+									_p2 = true;
+								}
+								_StartDoComplete = true;
+								timer.Stop();
+								timer.Reset();
 						}	
 
 						if (_strt) {
 							timer.Start();
 							if (timer.Get() <= Ball5Shoot){
-
-								AutoAimToFire(dt);
-
+							AutoAimToFire(dt);
 								if (ReadyToFire) {
-									_end = true;
+									_p3 = true;
 								}
 							}
 							_StartDoComplete = true;
 							timer.Stop();
 							timer.Reset();
 						}
-
 					}
 				break;
 
 
 				case 2: // 6 ball auto, 2 lots of three balls 
-					if (!_StartDoComplete) {
+					if (!_StartDoComplete) {	
 						timer.Start();
 						if (timer.Get() <= Ball3Shoot){
-
 							AutoAimToFire(dt);
-							
 							if (ReadyToFire) {
 								_p1 = true;
 							}
@@ -197,9 +191,7 @@ void Turret::AutoOnUpdate(double dt) {
 						if (_strt) {
 							timer.Start();
 							if (timer.Get() <= Ball3Shoot){
-
 							AutoAimToFire(dt);
-
 								if (ReadyToFire) {
 									_p2 = true;
 								}
