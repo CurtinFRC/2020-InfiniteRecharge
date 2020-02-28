@@ -1,6 +1,6 @@
 #include "vision.h"
 #include <iostream>
-#include <windows.h>
+// #include <windows.h>
 
 double offsetX, offsetY;
 int ResWidth = 640, ResHeight = 480;
