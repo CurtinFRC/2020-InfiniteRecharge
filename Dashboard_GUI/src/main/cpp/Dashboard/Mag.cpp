@@ -38,7 +38,7 @@ void Mag::MagLoader(cv::Mat *window, nt::NetworkTableInstance *inst, int posX, i
   LastSensor = MagTable->GetEntry("LastSensor");
   Override = MagTable->GetEntry("Override");
 
-  int CaseNumber = 3; // Default = Loading
+  int CaseNumber = 4; // Default = Loading
   bool Test = false;
 
   // Control Statement

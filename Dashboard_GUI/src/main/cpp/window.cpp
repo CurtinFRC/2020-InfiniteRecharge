@@ -62,6 +62,25 @@ cv::Mat GUI_Core::CreateWindow(cv::Mat image, int argc, char** argv) {
   return image;
 }
 
+cv::Mat GUI_Core::RefreshWindow(cv::Mat image, int argc, char** argv) {
+  cv::String imageName( "C:\\Users\\Public\\DASH_GUI.png" ); // by default
+  if (argc > 1) {
+    imageName = argv[1];
+  }
+  image = cv::imread( cv::samples::findFile(imageName), cv::IMREAD_COLOR ); // Read the file
+  if (image.empty()) {
+    std::cout <<  "Could not open or find the image" << std::endl;
+  }
+
+  if (!image.data) {
+    std::cout << "Error Getting Window Data" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  return image;
+}
+
+
 void GUI_Core::DisplayWindow(cv::Mat image) {
   cv::namedWindow("Curtin GUI", CV_WINDOW_AUTOSIZE);
   cv::imshow("Curtin GUI", image);

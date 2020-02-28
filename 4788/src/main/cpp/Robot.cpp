@@ -78,6 +78,8 @@ void Robot::RobotInit() {
   robotMap.controlSystem.arduino.WriteBulk(&robotMap.controlSystem.message, 16);
   robotMap.controlSystem.message = 78;
 
+  turret->InitializeSetPoints();
+
   // Network tables
   auto inst = nt::NetworkTableInstance::GetDefault();
   auto table = inst.GetTable("Autonomous");

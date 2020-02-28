@@ -34,6 +34,8 @@ class Turret {
 		double XAutoAimCalc(double dt, double input);
 		double YAutoAimCalc(double dt, double TargetInput);
 
+		void InitializeSetPoints();
+
 		void ZeroTurret();
 		std::shared_ptr<nt::NetworkTable> table;
 		std::shared_ptr<nt::NetworkTable> table_2;
@@ -78,17 +80,24 @@ class Turret {
 		void PIDTuner();
 		void AutoAimToFire(double dt);
 		void TurretSearchForTarget();
+		void TurretQuery();
+		double ScheduleGains(double dt);
 
 		// PID Calculations X axis (Rotation R)
 		bool GainsSchedule2 = false;
 		// Schedule 1 (Get to location)
-		double RkP = 0.899; // 0.899
+		double RkP = 1; // 0.899
 		double RkI = 0.107; // 0.107
 		double RkD = 0.036; // 0.036
 		// Schedule 2 (Precise locate target)
-		double RkP2 = 0;
-		double RkI2 = 0;
-		double RkD2 = 0;
+		double RkP2 = 2;
+		double RkI2 = 0.107;
+		double RkD2 = 0.036;
+
+		// Pointed Gains I AM GAINS
+		double *kP;
+		double *kI;
+		double *kD;
 
 		double Rerror;
 
@@ -97,6 +106,7 @@ class Turret {
 		double Rgoal = 0;
 
 		// PID Calculation Y axis (Angle A)
+		double AngleSetPoint[480];
 		double AkP = 0;
 		double AkI = 0;
 		double AkD = 0;
@@ -137,6 +147,8 @@ class Turret {
 		double AngularPower = 0;
 		double FlyWheelPower = 0;
 
+		double Rotations2FOV;
+
 		bool ReadyToFire = false;
 
 		//auto 
@@ -149,4 +161,5 @@ class Turret {
 		int Ball3Shoot = BallTime3Shoot + SpinUpTime; //time to shoot 3 balls
 		int Ball5Shoot = BallTime5Shoot + SpinUpTime; //shoots 5 balls 
 		frc::Timer timer;
+		frc::Timer cameraSyncTimer;
 };

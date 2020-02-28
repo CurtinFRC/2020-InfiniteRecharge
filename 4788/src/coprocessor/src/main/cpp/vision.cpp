@@ -33,6 +33,7 @@ void curtin_frc_vision::run() {
 	system("v4l2-ctl -d /dev/video0 --set-ctrl=exposure_absolute=1");
 	#endif
 	std::cout << "Vision Tracking Process Running" << std::endl;
+	std::cout << "This thing is working" << std::endl;
 	while (true) {
 		if (vision.Camera.cam.sink.GrabFrame(Image) != 0) {
 
@@ -41,7 +42,7 @@ void curtin_frc_vision::run() {
 
 			//Calc offset
 			offsetX = cx-(ResWidth/2);
-			offsetY = cy-(ResHeight/2);
+			offsetY = cy; // Don't need offset. We're using setpoints
 
 			visionTable->PutBoolean("Vision Active", true);
 

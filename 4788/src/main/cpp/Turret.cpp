@@ -77,6 +77,7 @@ void Turret::ZeroTurret() {
 }
 
 void Turret::TeleopOnUpdate(double dt) {
+	cameraSyncTimer.Start();
 
 	targetX = table->GetNumber("Target_X", 0);
 	targetY = table->GetNumber("Target_Y", 0);

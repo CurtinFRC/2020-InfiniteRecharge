@@ -62,6 +62,7 @@ struct ControlMap {
   static const double TurretRatio, TurretGearBoxRatio;
 
   // Y Axis Setpoints
+  static const double AngleSetPoint[100];
   static const double AngleSetpoint1;
   static const double AngleSetpoint2;
   static const double AngleSetpoint3;

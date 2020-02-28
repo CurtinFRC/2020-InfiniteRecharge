@@ -15,6 +15,10 @@ void GUI_Core::GUI(int argc, char** argv) {
 
   while (true) {
     AutoSelector.SetDouble(Auto);
+  
+    // Zero image to get rid of old lines
+    window = cv::Mat::zeros(window.size(), window.type());
+    window = RefreshWindow(image,  argc, argv);
 
     centerInfo.CentralInfoImage(&window, &inst, WidthHalf, HeightHalf);
     mag.MagLoader(&window, &inst, LeftUpperQuarterX, LeftUpperQuarterY);
