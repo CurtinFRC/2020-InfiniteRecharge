@@ -10,6 +10,7 @@ cv::Point RotationLineEnd(320, 480);
 
 double cx, cy;
 double Lastcx = 0, Lastcy = 0;
+double SecondLastcx = 0, SecondLastcy = 0;
 
 cv::Mat Image; // Origin Image
 cv::Mat TrackingImage; // Imaged after it has been filtered
@@ -29,7 +30,7 @@ void curtin_frc_vision::run() {
 
 
 	vision.SetupVision(&Image, 0, 60, ResHeight, ResWidth, 1, "Turret Cam", true);
-	vision.CustomTrack(&TrackingImage, &Image, 50, 70, 245, 255, 30, 255, 1 ,1);
+	vision.CustomTrack(&TrackingImage, &Image, 50, 70, 250, 255, 30, 255, 1 ,1);
 	vision.Processing.visionHullGeneration.BoundingBox(&TrackingImage, &ProcessingOutput, &cx, &cy, 10);
 	#ifdef __DESKTOP__ 
 	std::cout << "Exposure Might be dissabled on local machine" << std::endl;
@@ -40,9 +41,11 @@ void curtin_frc_vision::run() {
 	std::cout << "This thing is working" << std::endl;
 	while (true) {
 		if (vision.Camera.cam.sink.GrabFrame(Image) != 0) {
-			//Calc offset
+		
 			offsetX = cx-(ResWidth/2);
 			offsetY = cy; // Don't need offset. We're using setpoints
+
+
 
 			double AverageCX = (offsetX + Lastcx)/2;
 

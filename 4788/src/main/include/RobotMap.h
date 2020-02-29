@@ -125,9 +125,9 @@ struct RobotMap {
 
     // Fly Wheel
     wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort, 2048 };
-    wml::TalonSrx TurretFlyWheel2{ ControlMap::TurretFlyWheelPort, 2048 };
+    wml::TalonSrx TurretFlyWheel2{ ControlMap::TurretFlyWheelPort };
     wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel, TurretFlyWheel2);
-    wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel2, 0 };
+    wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 0 };
   };
   Turret turret;
 

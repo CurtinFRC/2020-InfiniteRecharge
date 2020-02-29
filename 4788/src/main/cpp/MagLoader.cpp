@@ -91,7 +91,7 @@ void MagLoader::TeleopOnUpdate(double dt) {
 
   // Fire Control (Doesn't care about sensors or override)
   if (_contGroup.Get(ControlMap::TurretFire)) {
-    MagazinePower = 1;
+    MagazinePower = 0.3;
   }
 
   // Nt setting

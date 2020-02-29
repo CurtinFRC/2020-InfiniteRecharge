@@ -1,13 +1,11 @@
 See file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling ControlMap.cpp successful.
-
 compiling Climber.cpp successful.
+
+compiling MagLoader.cpp successful.
 
 compiling BeltIntake.cpp successful.
 
-compiling DriveSystem.cpp successful.
-
-compiling MagLoader.cpp successful.
+compiling Robot.cpp successful.
 
 compiling ControlPannel.cpp successful.
 
@@ -24,84 +22,8 @@ compiling DriveAuto.cpp successful.
 
 compiling TurretBackend.cpp successful.
 
-compiling MPStrategy.cpp successful.
-
-compiling StrategySystem.cpp successful.
-
-compiling wayfinder.cpp successful.
-
-compiling MotionProfiling.cpp successful.
-
-compiling Encoder.cpp successful.
-
-compiling StrategyController.cpp successful.
-
-compiling PressureSensor.cpp successful.
-
-compiling LimitSwitch.cpp successful.
+compiling DriveSystem.cpp successful.
 
 compiling Main.cpp successful.
-
-compiling EncoderSwitch.cpp successful.
-
-compiling StrategyBuilder.cpp successful.
-
-compiling NavX.cpp successful.
-
-compiling NavX.robot.cpp successful.
-
-compiling Compressor.cpp successful.
-
-compiling BinaryServo.cpp successful.
-
-compiling DoubleSolenoid.cpp successful.
-
-compiling BinaryLimitMotor.cpp successful.
-
-compiling BinaryEncoderMotor.cpp successful.
-
-compiling VoltageController.cpp successful.
-
-compiling Elevator.cpp successful.
-
-compiling DeployableDevice.cpp successful.
-
-compiling Inputs.cpp successful.
-
-compiling SmartController.cpp successful.
-
-compiling WheeledIntake.cpp successful.
-
-compiling Controllers.cpp successful.
-
-compiling PneumaticIntake.cpp successful.
-
-compiling Toggle.cpp successful.
-
-compiling NTProvider.cpp successful.
-
-compiling RobotStartup.cpp successful.
-
-compiling WMLCtre.cpp successful.
-
-compiling Files.cpp successful.
-
-compiling LoopSystem.cpp successful.
-
-compiling UpdateGroup.cpp successful.
-
-compiling WMLCtre.robot.cpp successful.
-
-compiling MotorFilters.cpp successful.
-
-compiling Filter.cpp successful.
-
-compiling PIDController.cpp successful.
-
-compiling Drivetrain.cpp successful.
-
-compiling WMLRev.cpp successful.
-
-compiling Robot.cpp successful.
 
 Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
