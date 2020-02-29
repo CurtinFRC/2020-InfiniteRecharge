@@ -110,8 +110,8 @@ const int ControlMap::MagLoaderMotorPort = 25; // 25
 const int ControlMap::StartMagLimitPort = 1;
 const int ControlMap::Position1LimitPort = 3;
 const int ControlMap::Position5LimitPort = 2;
-const double ControlMap::MagazineBallThreshStart = 700;
-const double ControlMap::MagazineBallThreshFinal = 1100; // 1300
+const double ControlMap::MagazineBallThreshStart = 650;
+const double ControlMap::MagazineBallThreshFinal = 1000; // 1300
 const double ControlMap::MagazineBallThreshIndex = 2000;
 const double ControlMap::MagTestCaseRotations = 5;
 

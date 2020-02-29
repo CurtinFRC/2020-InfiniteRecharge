@@ -156,7 +156,14 @@ double Turret::ScheduleGains(double dt) {
 
 // X Auto Aim Algorithm
 double Turret::XAutoAimCalc(double dt, double targetx)  {
-	TurretQuery();
+	double TurretFullRotation = (ControlMap::TurretRatio * ControlMap::TurretGearBoxRatio);
+	Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
+	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
+
+	Rgoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
+	cameraSyncTimer.Reset();
+
+	// TurretQuery();
 	dt = ScheduleGains(dt);
 	double input = _RotationalAxis.encoder->GetEncoderRotations();
 

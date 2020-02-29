@@ -103,7 +103,7 @@ void Turret::TeleopOnUpdate(double dt) {
 
 
 		// Manual Angle Control
-		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
+		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? -_contGroup.Get(ControlMap::TurretManualAngle) : 0;
 
 		// Manual Rotation Control
 		RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
