@@ -126,15 +126,17 @@ double Turret::YAutoAimCalc(double dt, double TargetInput) {
 }
 
 // Query The camera
-void Turret::TurretQuery() {
+double Turret::TurretQuery(double Rgoal) {
 	double TurretFullRotation = (ControlMap::TurretRatio * ControlMap::TurretGearBoxRatio);
 	Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
 	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
 
-	if (cameraSyncTimer.Get() > 0) {
+	if (cameraSyncTimer.Get() > 2) {
 		Rgoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
 		cameraSyncTimer.Reset();
 	}
+
+	return Rgoal;
 }
 
 // Schedule Gains
@@ -144,7 +146,7 @@ double Turret::ScheduleGains(double dt) {
 		kI = &RkI2;
 		kD = &RkD2;
 		GainsSchedule2 = true;
-		dt = 1;
+		// dt = 1;
 	} else {
 		kP = &RkP;
 		kI = &RkI;
@@ -154,21 +156,22 @@ double Turret::ScheduleGains(double dt) {
 	return dt;
 }
 
+double RotGoal = 0;
 // X Auto Aim Algorithm
 double Turret::XAutoAimCalc(double dt, double targetx)  {
 	double TurretFullRotation = (ControlMap::TurretRatio * ControlMap::TurretGearBoxRatio);
 	Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
 	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
 
-	Rgoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
-	cameraSyncTimer.Reset();
+	RotGoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
 
-	// TurretQuery();
+	// RotGoal = TurretQuery(RotGoal);
+	std::cout << "RGoal: " << RotGoal << std::endl;
 	dt = ScheduleGains(dt);
 	double input = _RotationalAxis.encoder->GetEncoderRotations();
 
 	// Calculate PID
-	Rerror = Rgoal - input;
+	Rerror = RotGoal - input;
 
 	double derror = (Rerror - RpreviousError) / dt;
 	Rsum = Rsum + Rerror * dt;
@@ -180,7 +183,7 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 
 
 	// Convert to -1 - 1 for motor (Don't have to do this. Just makes my life easier)
-	output = output/Rotations2FOV;
+	// output = output/Rotations2FOV;
 
 	table->PutNumber("RoationDError", derror);
 	table->PutNumber("RotationError", Rerror);

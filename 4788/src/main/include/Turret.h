@@ -67,6 +67,9 @@ class Turret {
 		// Timeout Timer
 		frc::Timer ZeroTimer;
 
+		//nt
+		nt::NetworkTableEntry RevFlywheelEntry;
+
 		bool TuningTurret = false;
 
 		// Backend Functions
@@ -80,19 +83,19 @@ class Turret {
 		void PIDTuner();
 		void AutoAimToFire(double dt);
 		void TurretSearchForTarget();
-		void TurretQuery();
+		double TurretQuery(double Rgoal);
 		double ScheduleGains(double dt);
 
 		// PID Calculations X axis (Rotation R)
 		bool GainsSchedule2 = false;
 		// Schedule 1 (Get to location)
-		double RkP = 0.899; // 0.899
-		double RkI = 0.107; // 0.107
-		double RkD = 0.036; // 0.036
+		double RkP = 0.05; // 0.899
+		double RkI = 0; // 0.107
+		double RkD = 0.01; // 0.036
 		// Schedule 2 (Precise locate target)
-		double RkP2 = 2; // N/A
-		double RkI2 = 0.2; // N/A
-		double RkD2 = 0.02; // N/A
+		double RkP2 = 0.07; // N/A
+		double RkI2 = 0.001; // N/A
+		double RkD2 = 0.001; // N/A
 
 		// Pointed Gains I AM GAINS
 		double *kP;
@@ -103,7 +106,7 @@ class Turret {
 
 		double Rsum = 0;
 		double RpreviousError = 0;
-		double Rgoal = 0;
+		// double Rotgoal = 0;
 
 		// PID Calculation Y axis (Angle A)
 		double AngleSetPoint[480];

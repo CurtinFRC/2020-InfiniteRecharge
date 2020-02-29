@@ -110,7 +110,7 @@ void Robot::RobotPeriodic() {
 
   // std::cout << "TurretAngle: " << robotMap.turret.turretAngle.encoder->GetEncoderRotations() << std::endl;
   // std::cout << "TurretRotation: " << robotMap.turret.turretRotation.encoder->GetEncoderRotations() << std::endl;
-  std::cout << "TurretFlyWheel: " << robotMap.turret.turretFlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+  // std::cout << "TurretFlyWheel: " << robotMap.turret.turretFlyWheel.encoder->GetEncoderRotations() << std::endl;
 
   // std::cout << "Motor1: " << robotMap.turret.TurretFlyWheel.GetVoltage() << std::endl;
   // std::cout << "Motor2: " << robotMap.turret.TurretFlyWheel2.GetVoltage() << std::endl;

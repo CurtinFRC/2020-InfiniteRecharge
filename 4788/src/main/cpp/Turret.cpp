@@ -87,6 +87,13 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	// Tune Turret PID (If active)
 	PIDTuner();
+
+	if (_contGroup.Get(ControlMap::RevFlyWheel, Controller::ONRISE)) {
+		bool GetFlyWheel = _FlyWheel.transmission->GetInverted();
+		RevFlywheelEntry = table->GetEntry("RevFlywheel");
+		RevFlywheelEntry.SetBoolean(GetFlyWheel);
+		_FlyWheel.transmission->SetInverted(!GetFlyWheel);
+	}
 	
 
 	if (!_TurretToggle) {
@@ -131,9 +138,6 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	table_2->PutNumber("Turret_Min", MinRotation);
 	table_2->PutNumber("Turret_Max", MaxRotation);
-
-	// temp
-	// std::cout << "Flywheel Speed " << FlyWheelPower << std::endl;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);

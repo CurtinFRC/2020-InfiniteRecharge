@@ -82,7 +82,7 @@ const double ControlMap::TurretGearBoxRatio = 40; // 40:1
 
 const double ControlMap::MaxTurretSpeed = 0.3;
 const double ControlMap::MaxTurretAngularSpeed = 0.3;
-const double ControlMap::FlyWheelVelocity = 500;
+const double ControlMap::FlyWheelVelocity = 50;
 
 // Angle Setpoints (Encoder Values)
 const double ControlMap::AngleSetpoint1 = 0;
@@ -182,7 +182,8 @@ const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
   const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
   const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kLeftYAxis };
   const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
-  
+
+  const tButton ControlMap::RevFlyWheel{ CoDriver, XboxController::kBack };
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
 #endif
 
