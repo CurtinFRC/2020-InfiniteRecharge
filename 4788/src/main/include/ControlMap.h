@@ -51,6 +51,7 @@ struct ControlMap {
   static const bool TuneTurretPID;
   static const bool TuneAnglePID;
   static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort, TurretFlyWheelPort2;
+  static const int AngleEncoderChannelA, AngleEncoderChannelB;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
   static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;

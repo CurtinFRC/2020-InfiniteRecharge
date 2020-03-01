@@ -145,8 +145,8 @@ void Turret::TeleopOnUpdate(double dt) {
 }
 
 void Turret::AutoOnUpdate(double dt) {
-	double targetX = table->GetNumber("Target_X", 0);
-	double targetY = table->GetNumber("Target_Y", 0);
+	// double targetX = table->GetNumber("Target_X", 0);
+	// double targetY = table->GetNumber("Target_Y", 0);
 	switch (TurretAutoSelection) {
 		case 1:
 			switch(_autoSelector){
