@@ -57,6 +57,7 @@ void MagLoader::AutoMag() {
     }
     timer.Stop();
     timer.Reset();
+    _p2 = false;
   }
 
   if (_p3) {
@@ -68,7 +69,9 @@ void MagLoader::AutoMag() {
     }
     timer.Stop();
     timer.Reset();
+  _p2 = false;
   }
+
 }
 
 void MagLoader::TeleopOnUpdate(double dt) {

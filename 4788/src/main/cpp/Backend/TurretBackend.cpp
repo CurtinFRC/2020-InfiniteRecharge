@@ -246,19 +246,19 @@ void Turret::TurretZeroLeft(double Time) {
 }
 
 // Zeroing To Right
-void Turret::TurretZeroRight(double Time) {
-  while (_RightLimit.Get() < 1) {
-		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
-			_RotationalAxis.transmission->SetVoltage(12 * 0.3);
-		} else {
-			std::cout << "Turret Zero Timed Out" << std::endl;
-			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
-			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
-			_RotationalAxis.transmission->SetVoltage(0);
-			break;
-		}
-	}
-}
+// void Turret::TurretZeroRight(double Time) {
+//   while (_RightLimit.Get() < 1) {
+// 		if (ZeroTimer.Get() < ControlMap::TurretZeroTimeoutSeconds) {
+// 			_RotationalAxis.transmission->SetVoltage(12 * 0.3);
+// 		} else {
+// 			std::cout << "Turret Zero Timed Out" << std::endl;
+// 			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
+// 			_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
+// 			_RotationalAxis.transmission->SetVoltage(0);
+// 			break;
+// 		}
+// 	}
+// }
 
 // Zero Angle
 void Turret::TurretZeroAngle(double Time) {

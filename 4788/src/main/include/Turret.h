@@ -8,8 +8,7 @@ class Turret {
 		Turret(wml::Gearbox &RotationalAxis, 
 					 wml::Gearbox &VerticalAxis, 
 					 wml::Gearbox &FlyWheel, 
-					 wml::sensors::BinarySensor &LeftLimit, 
-					 wml::sensors::BinarySensor &RightLimit, 
+					 wml::sensors::BinarySensor &LeftLimit,  
 					 wml::sensors::BinarySensor &AngleDownLimit, 
 					 wml::controllers::SmartControllerGroup &contGroup, 
 					 std::shared_ptr<nt::NetworkTable> &visionTable,
@@ -45,7 +44,6 @@ class Turret {
 		wml::Gearbox &_FlyWheel;
 
 		wml::sensors::BinarySensor &_LeftLimit;
-		wml::sensors::BinarySensor &_RightLimit;
 		wml::sensors::BinarySensor &_AngleDownLimit;
 
 		wml::controllers::SmartControllerGroup &_contGroup;
@@ -150,6 +148,7 @@ class Turret {
 		int autoAimTime = 2;
 		int Ball3Shoot = BallTime3Shoot + SpinUpTime + autoAimTime; //time to shoot 3 balls
 		int Ball5Shoot = BallTime5Shoot + SpinUpTime + autoAimTime; //shoots 5 balls 
+
 
 		frc::Timer timer;
 };

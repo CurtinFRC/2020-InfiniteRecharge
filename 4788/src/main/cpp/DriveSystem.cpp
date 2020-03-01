@@ -13,14 +13,13 @@ DrivetrainManual::DrivetrainManual(std::string name,
                                    frc::Servo &PTORatchetRight,
                                    SmartControllerGroup &contGroup) : 
                                    
-                                   Strategy(name), 
+                                   Strategy(name),
                                    _drivetrain(drivetrain),
                                    _ChangeGears(ChangeGears), 
                                    _Shift2PTO(Shift2PTO), 
                                    _PTORatchetLeft(PTORatchetLeft),
                                    _PTORatchetRight(PTORatchetRight),
                                    _contGroup(contGroup) {
-                                   
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);

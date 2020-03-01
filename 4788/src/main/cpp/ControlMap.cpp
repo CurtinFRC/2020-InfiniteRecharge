@@ -184,6 +184,9 @@ const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
   const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
   
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
+  const tButton ControlMap::RevFlyWheel{CoDriver, XboxController::kBack};
+
+  const tButton ControlMap::Ball3Fire{ CoDriver, XboxController::kBumperRight}; // just for auto testing 
 #endif
 
 
@@ -218,6 +221,7 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
 #else
   const tButton ControlMap::ShiftUpMagazine{ CoDriver, __LINE__ + 30 };
   const tButton ControlMap::ShiftDownMagazine{ CoDriver, __LINE__ + 30 };
+
   const tButton ControlMap::ManualMag{ CoDriver, XboxController::kB };
 #endif
 

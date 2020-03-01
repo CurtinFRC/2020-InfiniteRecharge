@@ -8,7 +8,6 @@ Turret::Turret(Gearbox &Rotation,
  							 Gearbox &VerticalAxis, 
 							 Gearbox &FlyWheel, 
 							 sensors::BinarySensor &LeftLimit, 
-							 sensors::BinarySensor &RightLimit, 
 							 sensors::BinarySensor &AngleDownLimit, 
 							 SmartControllerGroup &contGroup, 
 							 std::shared_ptr<nt::NetworkTable> &visionTable,
@@ -27,7 +26,6 @@ Turret::Turret(Gearbox &Rotation,
 						   _VerticalAxis(VerticalAxis), 
 							 _FlyWheel(FlyWheel), 
 							 _LeftLimit(LeftLimit), 
-							 _RightLimit(RightLimit), 
 							 _AngleDownLimit(AngleDownLimit), 
 							 _contGroup(contGroup), 
 							 _visionTable(visionTable),
@@ -59,7 +57,7 @@ void Turret::ZeroTurret() {
 	MinRotation = (_RotationalAxis.encoder->GetEncoderRotations() + ControlMap::TurretEncoderSafeZone);
 	
 	// Get Right Limit
-	Turret::TurretZeroRight(ZeroTimer.Get());
+//	Turret::TurretZeroRight(ZeroTimer.Get());
 
 	// Get Max Rotations
 	MaxRotation = (_RotationalAxis.encoder->GetEncoderTicks() - ControlMap::TurretEncoderSafeZone);
@@ -86,6 +84,26 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	// Tune Turret PID (If active)
 	PIDTuner();
+
+
+	//annas stuff dont touch 
+	if (_contGroup.Get(ControlMap::Ball3Fire)) {	
+		// while (true) {
+		// timer.Start();
+		// if (timer.Get() <= Ball3Shoot){
+		// 	AutoAimToFire(dt);
+		// 	if (ReadyToFire) {
+		// 		_p2 = true;
+		// 	}
+		// _StartDoComplete = true;
+		// timer.Stop();
+		// timer.Reset();
+		// }
+		//}
+
+		std::cout << "autoooooooooo" << std::endl;
+	}	
+	//annas stuff dont touch ^
 	
 
 	if (!_TurretToggle) {
@@ -102,10 +120,12 @@ void Turret::TeleopOnUpdate(double dt) {
 
 
 		// Manual Angle Control
-		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
+		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? - _contGroup.Get(ControlMap::TurretManualAngle) : 0;
+
 
 		// Manual Rotation Control
 		RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
+		RotationPower = -(fabs(RotationPower) * RotationPower);
 	} 
 
 	if (!_FlyWheelToggle) {
@@ -125,7 +145,7 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	// Flywheel Feedback
 	ContFlywheelFeedback();
-	
+
 
 	// Limits Turret Speed
 	RotationPower *= ControlMap::MaxTurretSpeed; 
@@ -134,8 +154,14 @@ void Turret::TeleopOnUpdate(double dt) {
 	table_2->PutNumber("Turret_Min", MinRotation);
 	table_2->PutNumber("Turret_Max", MaxRotation);
 
+	if (_contGroup.Get(ControlMap::RevFlyWheel, Controller::ONRISE)) {
+		_FlyWheel.transmission->SetInverted(true);
+	} else {
+		_FlyWheel.transmission->SetInverted(false);
+	}
+
 	// temp
-	// std::cout << "Flywheel Speed " << FlyWheelPower << std::endl;
+
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
@@ -265,12 +291,11 @@ void Turret::AutoOnUpdate(double dt) {
 }
 
 
-
 // @TODO Turret Test
-
 void Turret::TestOnUpdate(double dt) {
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
 	_FlyWheel.transmission->SetVoltage(12 * FlyWheelPower);
+
 }
