@@ -23,6 +23,15 @@ DrivetrainManual::DrivetrainManual(std::string name,
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
+
+  // nt
+  auto inst = nt::NetworkTableInstance::GetDefault();
+  auto DriveTable = inst.GetTable("DriveTable");
+  // nt entry
+  LPower = DriveTable->GetEntry("LPower");
+  RPower = DriveTable->GetEntry("RPower");
+  LEC = DriveTable->GetEntry("LEC");
+  REC = DriveTable->GetEntry("REC");
 }
 
 // On Loop Update, this code runs (Just a drivebase)
@@ -92,6 +101,11 @@ void DrivetrainManual::OnUpdate(double dt) {
   rightSpeed *= ControlMap::MaxDrivetrainSpeed;
 
   // std::cout << "Speed " << leftSpeed << "," << rightSpeed << std::endl;
+
+  LPower.SetDouble(leftSpeed);
+  RPower.SetDouble(rightSpeed);
+  LEC.SetDouble(_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations());
+  REC.SetDouble(_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations());
 
   // Update pneumatics
   _ChangeGears.Update(dt);

@@ -60,7 +60,11 @@ struct ControlMap {
   static const double TurretEncoderRotations;
   static const double MaxAngleEncoderRotations;
   static const double TurretRatio, TurretGearBoxRatio;
+  static const int FlyWheelEncoderPort1, FlyWheelEncoderPort2;
+  static const int AngleEncoderPort1, AngleEncoderPort2;
+
   // Y Axis Setpoints
+  static const double AngleSetPoint[100];
   static const double AngleSetpoint1;
   static const double AngleSetpoint2;
   static const double AngleSetpoint3;
@@ -108,6 +112,7 @@ struct ControlMap {
   static const int PressureSensorPort;
   static const int CompressorPort;
   static const int CamFOV;
+
 
   // Auto Values
   static const double AutoGearRatio; // 1:AutoGearRatio

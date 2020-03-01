@@ -21,6 +21,7 @@ class GUI_Core : public Orientation {
 
     // functions
     cv::Mat CreateWindow(cv::Mat image, int argc, char** argv);
+    cv::Mat RefreshWindow(cv::Mat image, int argc, char** argv);
     void DisplayWindow(cv::Mat image);
 
     // Images

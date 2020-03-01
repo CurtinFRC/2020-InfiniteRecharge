@@ -76,6 +76,12 @@ void MagLoader::AutoMag() {
 
 void MagLoader::TeleopOnUpdate(double dt) {
 
+  if (_p2) {
+    MagazinePower = 0.7;
+  } else {
+    MagazinePower = 0;
+  }
+
   // nt
   auto inst = nt::NetworkTableInstance::GetDefault();
   auto MagTable = inst.GetTable("MagTable");
@@ -130,7 +136,7 @@ void MagLoader::TeleopOnUpdate(double dt) {
 
   // Fire Control (Doesn't care about sensors or override)
   if (_contGroup.Get(ControlMap::TurretFire)) {
-    MagazinePower = 1;
+    MagazinePower = 0.3;
   }
 
   // Nt setting

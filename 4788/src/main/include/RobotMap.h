@@ -116,18 +116,24 @@ struct RobotMap {
     // Rotation
     wml::TalonSrx TurretRotation{ ControlMap::TurretRotationPort, 2048 };
     wml::actuators::MotorVoltageController rotationMotors = wml::actuators::MotorVoltageController::Group(TurretRotation);
-    wml::Gearbox turretRotation{ &rotationMotors, &TurretRotation, 8.45 };
+    wml::Gearbox turretRotation{ &rotationMotors, &TurretRotation, 0 };
 
     // Angle
-    wml::TalonSrx TurretAngle{ ControlMap::TurretAnglePort, 2048 };
+    wml::TalonSrx TurretAngle{ ControlMap::TurretAnglePort};
+    wml::sensors::DigitalEncoder angleEncoder{ ControlMap::AngleEncoderPort1, ControlMap::AngleEncoderPort2, 2048 };
     wml::actuators::MotorVoltageController turretAngleMotors = wml::actuators::MotorVoltageController::Group(TurretAngle);
-    wml::Gearbox turretAngle{ &turretAngleMotors, &TurretAngle, 8.45 };
+    wml::Gearbox turretAngle{ &turretAngleMotors, &angleEncoder, 0 };
+
 
     // Fly Wheel
-    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort};
-    wml::TalonSrx TurretFlyWheel2{ ControlMap::TurretFlyWheelPort2};
+    wml::TalonSrx TurretFlyWheel{ ControlMap::TurretFlyWheelPort };
+    wml::sensors::DigitalEncoder flywheelEncoder{ ControlMap::FlyWheelEncoderPort1, ControlMap::FlyWheelEncoderPort2, 2048 };
+    wml::TalonSrx TurretFlyWheel2{ ControlMap::TurretFlyWheelPort2 };
     wml::actuators::MotorVoltageController flywheelMotors = wml::actuators::MotorVoltageController::Group(TurretFlyWheel, TurretFlyWheel2);
-    wml::Gearbox turretFlyWheel{ &flywheelMotors, &TurretFlyWheel, 0 };
+    wml::Gearbox turretFlyWheel{ &flywheelMotors, &flywheelEncoder, 0 };
+    
+
+
   };
   Turret turret;
 
@@ -213,7 +219,7 @@ struct RobotMap {
     // Extra Controller
     frc::I2C arduino{ frc::I2C::kOnboard, 8 };
     uint8_t message = 73;
-    // Climber
+    // Climbe 
 
     //Turret
     std::shared_ptr<nt::NetworkTable> rotationTable = nt::NetworkTableInstance::GetDefault().GetTable("Sharing values");
@@ -221,6 +227,9 @@ struct RobotMap {
     
     bool TurretToggle = false;
     bool FlyWheelToggle = false;
+
+    // wml::DigitalEncoder encoderl { ControlMap::encoderPort1, ControlMap::encoderPort2, 2048};
+    
   };
   ControlSystem controlSystem;
 };

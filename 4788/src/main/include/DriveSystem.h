@@ -31,6 +31,12 @@ class DrivetrainManual : public wml::Strategy {
     double leftSpeed = 0, rightSpeed = 0;
     double currentSpeed;
     bool PTOactive = false;
+
+    // NT
+    nt::NetworkTableEntry LPower;
+    nt::NetworkTableEntry RPower;
+    nt::NetworkTableEntry LEC;
+    nt::NetworkTableEntry REC;
 };
 
 // Class that Runs in Autonomous

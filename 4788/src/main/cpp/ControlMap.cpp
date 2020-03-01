@@ -82,19 +82,24 @@ const double ControlMap::TurretGearBoxRatio = 40; // 40:1
 
 const double ControlMap::MaxTurretSpeed = 0.3;
 const double ControlMap::MaxTurretAngularSpeed = 0.3;
-const double ControlMap::FlyWheelVelocity = 500;
+const double ControlMap::FlyWheelVelocity = 50;
+
+const int ControlMap::FlyWheelEncoderPort1 = 1;
+const int ControlMap::FlyWheelEncoderPort2 = 2;
+const int ControlMap::AngleEncoderPort1 = 3;
+const int ControlMap::AngleEncoderPort2 = 4;
 
 // Angle Setpoints (Encoder Values)
-const double ControlMap::AngleSetpoint1 = 100;
-const double ControlMap::AngleSetpoint2 = 110;
-const double ControlMap::AngleSetpoint3 = 120;
-const double ControlMap::AngleSetpoint4 = 130;
-const double ControlMap::AngleSetpoint5 = 140;
-const double ControlMap::AngleSetpoint6 = 150;
-const double ControlMap::AngleSetpoint7 = 160;
-const double ControlMap::AngleSetpoint8 = 170;
-const double ControlMap::AngleSetpoint9 = 180;
-const double ControlMap::AngleSetpoint10 = 190;
+const double ControlMap::AngleSetpoint1 = 0;
+const double ControlMap::AngleSetpoint2 = 0.1;
+const double ControlMap::AngleSetpoint3 = 0.2;
+const double ControlMap::AngleSetpoint4 = 0.3;
+const double ControlMap::AngleSetpoint5 = 0.4;
+const double ControlMap::AngleSetpoint6 = 0.5;
+const double ControlMap::AngleSetpoint7 = 0.6;
+const double ControlMap::AngleSetpoint8 = 0.7;
+const double ControlMap::AngleSetpoint9 = 0.8;
+const double ControlMap::AngleSetpoint10 = 0.9;
 
 // Intake
 const int ControlMap::IntakeMotorPort = 24; // 24
@@ -110,8 +115,8 @@ const int ControlMap::MagLoaderMotorPort = 25; // 25
 const int ControlMap::StartMagLimitPort = 1;
 const int ControlMap::Position1LimitPort = 3;
 const int ControlMap::Position5LimitPort = 2;
-const double ControlMap::MagazineBallThreshStart = 700;
-const double ControlMap::MagazineBallThreshFinal = 1100; // 1300
+const double ControlMap::MagazineBallThreshStart = 650;
+const double ControlMap::MagazineBallThreshFinal = 1000; // 1300
 const double ControlMap::MagazineBallThreshIndex = 2000;
 const double ControlMap::MagTestCaseRotations = 5;
 
@@ -129,6 +134,7 @@ const double ControlMap::LiftMaxSpeed = 0.5;
 const int ControlMap::PressureSensorPort = 99;
 const int ControlMap::CompressorPort = 0;
 const int ControlMap::CamFOV = 60;
+
 
 //Control Pannel
 const int ControlMap::ControlPannelPort = 28; // 28
@@ -182,7 +188,7 @@ const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
   const tAxis ControlMap::TurretManualRotate{ CoDriver, XboxController::kRightXAxis };
   const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kLeftYAxis };
   const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
-  
+
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
   const tButton ControlMap::RevFlyWheel{CoDriver, XboxController::kBack};
 

@@ -33,6 +33,8 @@ class Turret {
 		double XAutoAimCalc(double dt, double input);
 		double YAutoAimCalc(double dt, double TargetInput);
 
+		void InitializeSetPoints();
+
 		void ZeroTurret();
 		std::shared_ptr<nt::NetworkTable> table;
 		std::shared_ptr<nt::NetworkTable> table_2;
@@ -60,8 +62,13 @@ class Turret {
 		bool &_p3;
 		bool &_end;
 
+		bool something = true;
+
 		// Timeout Timer
 		frc::Timer ZeroTimer;
+
+		//nt
+		nt::NetworkTableEntry RevFlywheelEntry;
 
 		bool TuningTurret = false;
 
@@ -76,25 +83,33 @@ class Turret {
 		void PIDTuner();
 		void AutoAimToFire(double dt);
 		void TurretSearchForTarget();
+		double TurretQuery(double Rgoal);
+		double ScheduleGains(double dt);
 
 		// PID Calculations X axis (Rotation R)
 		bool GainsSchedule2 = false;
 		// Schedule 1 (Get to location)
-		double RkP = 0.899; // 0.899
-		double RkI = 0.107; // 0.107
-		double RkD = 0.036; // 0.036
+		double RkP = 0.05; // 0.899
+		double RkI = 0; // 0.107
+		double RkD = 0.01; // 0.036
 		// Schedule 2 (Precise locate target)
-		double RkP2 = 0;
-		double RkI2 = 0;
-		double RkD2 = 0;
+		double RkP2 = 0.07; // N/A
+		double RkI2 = 0.001; // N/A
+		double RkD2 = 0.001; // N/A
+
+		// Pointed Gains I AM GAINS
+		double *kP;
+		double *kI;
+		double *kD;
 
 		double Rerror;
 
 		double Rsum = 0;
 		double RpreviousError = 0;
-		double Rgoal = 0;
+		// double Rotgoal = 0;
 
 		// PID Calculation Y axis (Angle A)
+		double AngleSetPoint[480];
 		double AkP = 0;
 		double AkI = 0;
 		double AkD = 0;
@@ -135,6 +150,8 @@ class Turret {
 		double AngularPower = 0;
 		double FlyWheelPower = 0;
 
+		double Rotations2FOV;
+
 		bool ReadyToFire = false;
 
 		//auto 
@@ -151,4 +168,5 @@ class Turret {
 
 
 		frc::Timer timer;
+		frc::Timer cameraSyncTimer;
 };
