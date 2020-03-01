@@ -1,22 +1,4 @@
 See file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling Climber.cpp successful.
-
-compiling DriveSystem.cpp successful.
-
-compiling BeltIntake.cpp successful.
-
-compiling Robot.cpp successful.
-
-compiling ControlPannel.cpp successful.
-
 compiling Turret.cpp successful.
-
-compiling DriveAuto.cpp successful.
-
-compiling TurretBackend.cpp successful.
-
-compiling MagLoader.cpp successful.
-
-compiling Main.cpp successful.
 
 Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

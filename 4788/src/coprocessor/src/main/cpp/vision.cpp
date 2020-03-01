@@ -10,10 +10,15 @@ cv::Point RotationLineEnd(320, 480);
 
 double cx, cy;
 double AverageCX;
+double AverageCY;
 
-double SampleX[50];
+double SampleX[10];
+double SampleY[10];
 double SampleXAcumulator = 0;
+double SampleYAcumulator = 0;
 int sampleCounter = 0;
+
+double lastCX = 0;
 
 cv::Mat Image; // Origin Image
 cv::Mat TrackingImage; // Imaged after it has been filtered
@@ -47,16 +52,20 @@ void curtin_frc_vision::run() {
 			offsetX = cx-(ResWidth/2);
 			offsetY = cy; // Don't need offset. We're using setpoints
 
-			SampleX[sampleCounter] = offsetX;
-			SampleXAcumulator = SampleX[sampleCounter];
-			sampleCounter++;
+			// SampleX[sampleCounter] = offsetX;
+			// SampleY[sampleCounter] = offsetY;
+			// SampleXAcumulator += SampleX[sampleCounter];
+			// SampleYAcumulator += SampleY[sampleCounter];
+			// sampleCounter++;
 
 
-			if (sampleCounter > 50) {
-				SampleXAcumulator /= 51;
-				AverageCX = SampleXAcumulator;
-				sampleCounter = 0;
-			}
+			// if (sampleCounter > 10) {
+			// 	SampleXAcumulator /= 10;
+			// 	SampleYAcumulator /= 10;
+			// 	AverageCX = SampleXAcumulator;
+			// 	AverageCY = SampleYAcumulator;
+			// 	sampleCounter = 0;
+			// }
 
 			// Display Image
 			cv::line(ProcessingOutput, RotationLineStrt, RotationLineEnd, cv::Scalar(255,0,255), 2);
@@ -64,7 +73,7 @@ void curtin_frc_vision::run() {
 
 			visionTable->PutBoolean("Vision Active", true);
 
-			TargetX.SetDouble(AverageCX);
+			TargetX.SetDouble(offsetX);
 			TargetY.SetDouble(offsetY);
 			ImageHeight.SetDouble(ResHeight);
 			ImageWidth.SetDouble(ResWidth);

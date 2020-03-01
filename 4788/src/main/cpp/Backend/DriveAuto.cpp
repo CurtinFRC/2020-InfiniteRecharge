@@ -64,11 +64,12 @@ void DrivetrainAuto::OnUpdate(double dt) {
             _wayFinder.GotoWaypoint(3.2, -2.4, -30, 5.4, -0.7, 30, false, dt);
           } else {
             WayPointSwitch();
+            _p1 = true;
           }
         break;
 
         case 2: // Drive from waypoint 1 to 2
-          //if(!_p1) {break;}
+          if(!_p1) {break;}
           _wayFinder.AutoConfig(0.25, 0.25); // Adjust Speed for intaking
           if (!_wayFinder.GetWayPointComplete()) {
             _wayFinder.GotoWaypoint(5.4, -0.7, 0, 9, -0.7, 0, false, dt);
@@ -110,11 +111,12 @@ void DrivetrainAuto::OnUpdate(double dt) {
             _wayFinder.GotoWaypoint(3.2, -2.4, -35, 5.4, -0.7, 35, false, dt);
           } else {
             WayPointSwitch();
+            _p1 = true;
           }
         break;
           
         case 2:
-         // if (!_p1) {break;}
+          if (!_p1) {break;}
           if (!_wayFinder.GetWayPointComplete()) {
               _wayFinder.GotoWaypoint(5.4, -0.7, 0, 8, -0.7, -21, false, dt);
           } else {

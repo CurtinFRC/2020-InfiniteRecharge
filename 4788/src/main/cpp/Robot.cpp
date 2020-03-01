@@ -29,7 +29,6 @@ void Robot::RobotInit() {
                       robotMap.turret.turretAngle, 
                       robotMap.turret.turretFlyWheel, 
                       robotMap.turret.LeftLimit, 
-                      robotMap.turret.RightLimit, 
                       robotMap.turret.AngleDownLimit, 
                       robotMap.contGroup, 
                       robotMap.controlSystem.visionTable, 
@@ -44,9 +43,39 @@ void Robot::RobotInit() {
                       robotMap.autonomous.WayPoint3Complete, 
                       robotMap.autonomous.EndComplete);
 
-  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagLimit,robotMap.magLoader.Position1Limit, robotMap.magLoader.Position5Limit, robotMap.contGroup);
-  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown, robotMap.contGroup, robotMap.autonomous.AutoSelecter, robotMap.autonomous.StartDoComplete, robotMap.autonomous.StartPointComplete, robotMap.autonomous.WayPoint1Complete, robotMap.autonomous.WayPoint2Complete, robotMap.autonomous.WayPoint3Complete, robotMap.autonomous.EndComplete, robotMap.controlSystem.FlyWheelToggle, robotMap.controlSystem.TurretToggle);
-  climber = new Climber(robotMap.climber.ClimberActuator, robotMap.intake.IntakeDown, robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.contGroup, robotMap.controlSystem.TurretToggle);
+  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor,
+                            robotMap.magLoader.StartMagLimit,
+                            robotMap.magLoader.Position1Limit, 
+                            robotMap.magLoader.Position5Limit, 
+                            robotMap.contGroup, 
+                            robotMap.autonomous.AutoSelecter, 
+                            robotMap.autonomous.StartDoComplete, 
+                            robotMap.autonomous.StartPointComplete, 
+                            robotMap.autonomous.WayPoint1Complete, 
+                            robotMap.autonomous.WayPoint2Complete, 
+                            robotMap.autonomous.WayPoint3Complete, 
+                            robotMap.autonomous.EndComplete);
+                  
+  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, 
+                              robotMap.intake.IntakeDown, 
+                              robotMap.contGroup, 
+                              robotMap.autonomous.AutoSelecter, 
+                              robotMap.autonomous.StartDoComplete, 
+                              robotMap.autonomous.StartPointComplete, 
+                              robotMap.autonomous.WayPoint1Complete, 
+                              robotMap.autonomous.WayPoint2Complete, 
+                              robotMap.autonomous.WayPoint3Complete, 
+                              robotMap.autonomous.EndComplete, 
+                              robotMap.controlSystem.FlyWheelToggle, 
+                              robotMap.controlSystem.TurretToggle);
+
+  climber = new Climber(robotMap.climber.ClimberActuator, 
+                        robotMap.intake.IntakeDown, 
+                        robotMap.climber.ClimberElevatorLeft, 
+                        robotMap.climber.ClimberElevatorRight, 
+                        robotMap.contGroup, 
+                        robotMap.controlSystem.TurretToggle);
+
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup);
 
   // WayFinder (fake pathfinder basically)
@@ -168,6 +197,13 @@ void Robot::TeleopPeriodic() {
   beltIntake->TeleopOnUpdate(dt);
   climber->TeleopOnUpdate(dt);
   controlPannel->TeleopOnUpdate(dt);
+
+  //std::cout << "TurretAngle: " << robotMap.turret.turretAngle.encoder->GetEncoderRotations() << std::endl;
+  std::cout << "TurretRotation: " << robotMap.turret.turretRotation.encoder->GetEncoderRotations() << std::endl;
+  //std::cout << "TurretFlyWheel: " << robotMap.turret.turretFlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+
+  std::cout << "Flywheel encoder: " << robotMap.turret.flywheelEncoder.GetEncoderAngularVelocity() << std::endl;
+  std::cout << "Angle encoder" << robotMap.turret.angleEncoder.GetEncoderRotations() << std::endl;
 }
 
 
