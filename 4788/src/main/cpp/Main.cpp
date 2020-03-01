@@ -4,4 +4,4 @@
 #include "Robot.h"
 #include "startup.h"
 
-CURTINFRC_ROBOT_MAIN(Robot)
+WML_ROBOT_MAIN(Robot)

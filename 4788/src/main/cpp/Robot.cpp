@@ -78,6 +78,8 @@ void Robot::RobotInit() {
   robotMap.controlSystem.arduino.WriteBulk(&robotMap.controlSystem.message, 16);
   robotMap.controlSystem.message = 78;
 
+  turret->InitializeSetPoints();
+
   // Network tables
   auto inst = nt::NetworkTableInstance::GetDefault();
   auto table = inst.GetTable("Autonomous");
@@ -106,9 +108,9 @@ void Robot::RobotPeriodic() {
   // std::cout << "Sensor2: " << robotMap.magLoader.Position5Limit.GetAverageValue() << std::endl;
   // std::cout << "Sensor3: " << robotMap.magLoader.Position5Limit.GetAverageValue() << std::endl;
 
-  std::cout << "TurretAngle: " << robotMap.turret.turretAngle.encoder->GetEncoderRotations() << std::endl;
-  std::cout << "TurretRotation: " << robotMap.turret.turretRotation.encoder->GetEncoderRotations() << std::endl;
-  std::cout << "TurretFlyWheel: " << robotMap.turret.turretFlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+  // std::cout << "TurretAngle: " << robotMap.turret.turretAngle.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "TurretRotation: " << robotMap.turret.turretRotation.encoder->GetEncoderRotations() << std::endl;
+  // std::cout << "TurretFlyWheel: " << robotMap.turret.turretFlyWheel.encoder->GetEncoderRotations() << std::endl;
 
   // std::cout << "Motor1: " << robotMap.turret.TurretFlyWheel.GetVoltage() << std::endl;
   // std::cout << "Motor2: " << robotMap.turret.TurretFlyWheel2.GetVoltage() << std::endl;

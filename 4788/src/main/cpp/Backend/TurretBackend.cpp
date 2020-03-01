@@ -6,32 +6,32 @@ using namespace wml::controllers;
 
 // Bulk of the code that is used but never looked at... unless you look at it
 
+void Turret::InitializeSetPoints() {
+	// I'm going top to bottom
+	AngleSetPoint[400] = ControlMap::AngleSetpoint1;
+	AngleSetPoint[390] = ControlMap::AngleSetpoint2;
+	AngleSetPoint[380] = ControlMap::AngleSetpoint3;
+	AngleSetPoint[370] = ControlMap::AngleSetpoint4;
+	AngleSetPoint[360] = ControlMap::AngleSetpoint5;
+	AngleSetPoint[350] = ControlMap::AngleSetpoint6;
+	AngleSetPoint[340] = ControlMap::AngleSetpoint7;
+	AngleSetPoint[330] = ControlMap::AngleSetpoint8;
+	AngleSetPoint[320] = ControlMap::AngleSetpoint9;
+	AngleSetPoint[310] = ControlMap::AngleSetpoint10;
+
+}
 
 // Distance Setpoints for Turret Angle
 double Turret::SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput) {
   double targetEncoderValue;
-
-  // Setpoint Selection.
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint1 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint2 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint3 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint4 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint5 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint6 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint7 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint8 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint9 : MaxPoint;
-	LowPoint += PixleAmount;
-	targetEncoderValue = (TargetInput < LowPoint) && (TargetInput > LowPoint + PixleAmount) ? ControlMap::AngleSetpoint10 : MaxPoint;
-	LowPoint += PixleAmount;
+	int multiple = 10; // How many pixels to skip
+	// Skip a few pixels to make it easier
+	if ((int)targetY % multiple == 0) {
+		targetEncoderValue = AngleSetPoint[(int)targetY];
+	} else {
+		int nearestSetpoint = ((targetY+multiple/2)/multiple) * multiple;
+		targetEncoderValue = AngleSetPoint[nearestSetpoint];
+	}
 
   return targetEncoderValue;
 }
@@ -86,7 +86,6 @@ void Turret::TurretSearchForTarget() {
 
 // Using Setpoints
 double Turret::YAutoAimCalc(double dt, double TargetInput) {
-
 	double targetEncoderValue;
 	int LowPoint = 10;
 	int MaxPoint = 50;
@@ -126,36 +125,65 @@ double Turret::YAutoAimCalc(double dt, double TargetInput) {
 	return output;
 }
 
-
-
-// X Auto Aim Algorithm
-double Turret::XAutoAimCalc(double dt, double targetx)  {
-
+// Query The camera
+double Turret::TurretQuery(double Rgoal) {
 	double TurretFullRotation = (ControlMap::TurretRatio * ControlMap::TurretGearBoxRatio);
-	double Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
+	Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
 	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
 
-	Rgoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
+	if (cameraSyncTimer.Get() > 2) {
+		Rgoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
+		cameraSyncTimer.Reset();
+	}
+
+	return Rgoal;
+}
+
+// Schedule Gains
+double Turret::ScheduleGains(double dt) {
+	if (abs(targetX) < (abs(imageWidth)/6)) {
+		kP = &RkP2;
+		kI = &RkI2;
+		kD = &RkD2;
+		GainsSchedule2 = true;
+		// dt = 1;
+	} else {
+		kP = &RkP;
+		kI = &RkI;
+		kD = &RkD;
+		GainsSchedule2 = false;
+	}
+	return dt;
+}
+
+double RotGoal = 0;
+// X Auto Aim Algorithm
+double Turret::XAutoAimCalc(double dt, double targetx)  {
+	double TurretFullRotation = (ControlMap::TurretRatio * ControlMap::TurretGearBoxRatio);
+	Rotations2FOV = (TurretFullRotation/ControlMap::CamFOV);
+	double targetXinRotations = targetX * (Rotations2FOV/imageWidth);
+
+	RotGoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
+
+	// RotGoal = TurretQuery(RotGoal);
+	std::cout << "RGoal: " << RotGoal << std::endl;
+	dt = ScheduleGains(dt);
 	double input = _RotationalAxis.encoder->GetEncoderRotations();
 
 	// Calculate PID
-	Rerror = Rgoal - input;
+	Rerror = RotGoal - input;
 
 	double derror = (Rerror - RpreviousError) / dt;
 	Rsum = Rsum + Rerror * dt;
 
-	// Schedule Different Gains if in general location
 	double output;
-	if (abs(Rgoal) <= (Rotations2FOV/2)) {
-		output = RkP2 * Rerror + RkI2 * Rsum + RkD2 * derror;
-		GainsSchedule2 = true;
-	} else {
-		output = RkP * Rerror + RkI * Rsum + RkD * derror;
-		GainsSchedule2 = false;
-	}
+	output = *kP * Rerror + *kI * Rsum + *kD * derror;
+
+	table->PutBoolean("Schedule 2 electric boogaloo", GainsSchedule2);
+
 
 	// Convert to -1 - 1 for motor (Don't have to do this. Just makes my life easier)
-	output = output/Rotations2FOV;
+	// output = output/Rotations2FOV;
 
 	table->PutNumber("RoationDError", derror);
 	table->PutNumber("RotationError", Rerror);
@@ -193,7 +221,6 @@ void Turret::TuneAnglePID() {
 
 // Turret PID Tuning
 void Turret::TuneTurretPID() {
-
 	if (GainsSchedule2) {
 		if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
 			RkP2 += 0.01;
@@ -208,6 +235,12 @@ void Turret::TuneTurretPID() {
 		}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
 			RkD2 -= 0.001;
 		}
+
+		table->PutNumber("kP", RkP2);
+		table->PutNumber("kI", RkI2);
+		table->PutNumber("kD", RkD2);
+		table->PutNumber("Sum", Rsum);
+
 	} else {
 		if (_contGroup.Get(ControlMap::kpUP, Controller::ONRISE)) {
 			RkP += 0.01;
@@ -222,11 +255,12 @@ void Turret::TuneTurretPID() {
 		}	else if (_contGroup.Get(ControlMap::kdDOWN, Controller::ONRISE)) {
 			RkD -= 0.001;
 		}
+
+		table->PutNumber("kP", RkP);
+		table->PutNumber("kI", RkI);
+		table->PutNumber("kD", RkD);
+		table->PutNumber("Sum", Rsum);
 	}
-	table->PutNumber("kP", RkP);
-	table->PutNumber("kI", RkI);
-	table->PutNumber("kD", RkD);
-	table->PutNumber("Sum", Rsum);
 }
 
 // Zeroing To Left

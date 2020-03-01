@@ -77,6 +77,7 @@ void Turret::ZeroTurret() {
 }
 
 void Turret::TeleopOnUpdate(double dt) {
+	cameraSyncTimer.Start();
 
 	targetX = table->GetNumber("Target_X", 0);
 	targetY = table->GetNumber("Target_Y", 0);
@@ -86,6 +87,13 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	// Tune Turret PID (If active)
 	PIDTuner();
+
+	if (_contGroup.Get(ControlMap::RevFlyWheel, Controller::ONRISE)) {
+		bool GetFlyWheel = _FlyWheel.transmission->GetInverted();
+		RevFlywheelEntry = table->GetEntry("RevFlywheel");
+		RevFlywheelEntry.SetBoolean(GetFlyWheel);
+		_FlyWheel.transmission->SetInverted(!GetFlyWheel);
+	}
 	
 
 	if (!_TurretToggle) {
@@ -102,7 +110,7 @@ void Turret::TeleopOnUpdate(double dt) {
 
 
 		// Manual Angle Control
-		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualAngle) : 0;
+		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? -_contGroup.Get(ControlMap::TurretManualAngle) : 0;
 
 		// Manual Rotation Control
 		RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
@@ -130,9 +138,6 @@ void Turret::TeleopOnUpdate(double dt) {
 
 	table_2->PutNumber("Turret_Min", MinRotation);
 	table_2->PutNumber("Turret_Max", MaxRotation);
-
-	// temp
-	// std::cout << "Flywheel Speed " << FlyWheelPower << std::endl;
 
 	_RotationalAxis.transmission->SetVoltage(12 * RotationPower);
 	_VerticalAxis.transmission->SetVoltage(12 * AngularPower);
