@@ -60,6 +60,8 @@ struct ControlMap {
   static const double TurretEncoderRotations;
   static const double MaxAngleEncoderRotations;
   static const double TurretRatio, TurretGearBoxRatio;
+  static const int FlyWheelEncoderPort1, FlyWheelEncoderPort2;
+  static const int AngleEncoderPort1, AngleEncoderPort2;
 
   // Y Axis Setpoints
   static const double AngleSetPoint[100];
@@ -111,6 +113,7 @@ struct ControlMap {
   static const int CompressorPort;
   static const int CamFOV;
 
+
   // Auto Values
   static const double AutoGearRatio; // 1:AutoGearRatio
   static const double WheelDiameter; // CM
@@ -118,6 +121,8 @@ struct ControlMap {
 
   static const double MaxAutoDrivetrainSpeed, MaxAutoTurnSpeed;
   
+
+
   // Drive PID
   static const double DriveKp, DriveKi, DriveKd;
 
@@ -149,6 +154,7 @@ struct ControlMap {
   static const wml::controllers::tAxis TurretManualAngle;
   static const wml::controllers::tAxis TurretFlyWheelSpinUp;
   static const wml::controllers::tButton TurretFire; // Might get rid of, if i automate Max speed of flywheel to fire.
+  static const wml::controllers::tButton Ball3Fire; // just for auto testing 
   static const wml::controllers::tButton RevFlyWheel;
   #endif
 

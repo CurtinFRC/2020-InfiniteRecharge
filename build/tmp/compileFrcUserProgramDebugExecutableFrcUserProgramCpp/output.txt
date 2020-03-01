@@ -1,31 +1,107 @@
-See file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
+See file:///C:/Users/61412/Documents/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
 compiling ControlMap.cpp successful.
 
 compiling BeltIntake.cpp successful.
 
-compiling DriveSystem.cpp successful.
+compiling Climber.cpp successful.
 
-compiling Robot.cpp successful.
-
-compiling MagLoader.cpp successful.
+compiling TurretBackend.cpp successful.
 
 compiling ControlPannel.cpp successful.
 
 compiling DriveAuto.cpp successful.
 
+compiling DriveSystem.cpp successful.
+
+compiling Robot.cpp successful.
+
+compiling BinaryEncoderMotor.cpp successful.
+
+compiling BinaryServo.cpp successful.
+
+compiling Compressor.cpp successful.
+
+compiling wayfinder.cpp successful.
+
+compiling BinaryLimitMotor.cpp successful.
+
 compiling Turret.cpp successful.
-/home/cj/Desktop/code/2020-InfiniteRecharge/4788/src/main/cpp/Turret.cpp: In member function 'void Turret::AutoOnUpdate(double)':
-/home/cj/Desktop/code/2020-InfiniteRecharge/4788/src/main/cpp/Turret.cpp:147:9: warning: unused variable 'targetX' [-Wunused-variable]
+C:\Users\61412\Documents\code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp: In member function 'void Turret::AutoOnUpdate(double)':
+C:\Users\61412\Documents\code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:168:9: warning: unused variable 'targetX' [-Wunused-variable]
   double targetX = table->GetNumber("Target_X", 0);
          ^~~~~~~
-/home/cj/Desktop/code/2020-InfiniteRecharge/4788/src/main/cpp/Turret.cpp:148:9: warning: unused variable 'targetY' [-Wunused-variable]
+C:\Users\61412\Documents\code\2020-InfiniteRecharge\4788\src\main\cpp\Turret.cpp:169:9: warning: unused variable 'targetY' [-Wunused-variable]
   double targetY = table->GetNumber("Target_Y", 0);
          ^~~~~~~
 
-compiling TurretBackend.cpp successful.
+compiling Filter.cpp successful.
 
-compiling Climber.cpp successful.
+compiling Controllers.cpp successful.
+
+compiling PIDController.cpp successful.
+
+compiling DoubleSolenoid.cpp successful.
+
+compiling Inputs.cpp successful.
+
+compiling SmartController.cpp successful.
+
+compiling PneumaticIntake.cpp successful.
+
+compiling WheeledIntake.cpp successful.
+
+compiling VoltageController.cpp successful.
+
+compiling MotorFilters.cpp successful.
+
+compiling MotionProfiling.cpp successful.
+
+compiling Files.cpp successful.
+
+compiling RobotStartup.cpp successful.
+
+compiling DeployableDevice.cpp successful.
+
+compiling Drivetrain.cpp successful.
+
+compiling Elevator.cpp successful.
+
+compiling Encoder.cpp successful.
+
+compiling LoopSystem.cpp successful.
+
+compiling EncoderSwitch.cpp successful.
+
+compiling MPStrategy.cpp successful.
+
+compiling UpdateGroup.cpp successful.
+
+compiling LimitSwitch.cpp successful.
+
+compiling PressureSensor.cpp successful.
+
+compiling NTProvider.cpp successful.
+
+compiling Toggle.cpp successful.
+
+compiling NavX.cpp successful.
+
+compiling NavX.robot.cpp successful.
+
+compiling StrategyBuilder.cpp successful.
+
+compiling StrategySystem.cpp successful.
+
+compiling StrategyController.cpp successful.
+
+compiling WMLCtre.cpp successful.
+
+compiling WMLCtre.robot.cpp successful.
+
+compiling WMLRev.cpp successful.
+
+compiling MagLoader.cpp successful.
 
 compiling Main.cpp successful.
 
-Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/61412/Documents/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.

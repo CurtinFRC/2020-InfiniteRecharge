@@ -84,6 +84,11 @@ const double ControlMap::MaxTurretSpeed = 0.3;
 const double ControlMap::MaxTurretAngularSpeed = 0.3;
 const double ControlMap::FlyWheelVelocity = 50;
 
+const int ControlMap::FlyWheelEncoderPort1 = 1;
+const int ControlMap::FlyWheelEncoderPort2 = 2;
+const int ControlMap::AngleEncoderPort1 = 3;
+const int ControlMap::AngleEncoderPort2 = 4;
+
 // Angle Setpoints (Encoder Values)
 const double ControlMap::AngleSetpoint1 = 0;
 const double ControlMap::AngleSetpoint2 = 0.1;
@@ -129,6 +134,7 @@ const double ControlMap::LiftMaxSpeed = 0.5;
 const int ControlMap::PressureSensorPort = 99;
 const int ControlMap::CompressorPort = 0;
 const int ControlMap::CamFOV = 60;
+
 
 //Control Pannel
 const int ControlMap::ControlPannelPort = 28; // 28
@@ -183,8 +189,10 @@ const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
   const tAxis ControlMap::TurretManualAngle{ CoDriver, XboxController::kLeftYAxis };
   const tAxis ControlMap::TurretFlyWheelSpinUp{ CoDriver, XboxController::kRightThrottle };
 
-  const tButton ControlMap::RevFlyWheel{ CoDriver, XboxController::kBack };
   const tButton ControlMap::TurretFire{ CoDriver, XboxController::kA };
+  const tButton ControlMap::RevFlyWheel{CoDriver, XboxController::kBack};
+
+  const tButton ControlMap::Ball3Fire{ CoDriver, XboxController::kBumperRight}; // just for auto testing 
 #endif
 
 
@@ -219,6 +227,7 @@ const tPOV ControlMap::ShiftMagazinePOV{ CoDriver, 0 };
 #else
   const tButton ControlMap::ShiftUpMagazine{ CoDriver, __LINE__ + 30 };
   const tButton ControlMap::ShiftDownMagazine{ CoDriver, __LINE__ + 30 };
+
   const tButton ControlMap::ManualMag{ CoDriver, XboxController::kB };
 #endif
 

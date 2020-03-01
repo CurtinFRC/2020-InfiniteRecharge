@@ -8,8 +8,7 @@ class Turret {
 		Turret(wml::Gearbox &RotationalAxis, 
 					 wml::Gearbox &VerticalAxis, 
 					 wml::Gearbox &FlyWheel, 
-					 wml::sensors::BinarySensor &LeftLimit, 
-					 wml::sensors::BinarySensor &RightLimit, 
+					 wml::sensors::BinarySensor &LeftLimit,  
 					 wml::sensors::BinarySensor &AngleDownLimit, 
 					 wml::controllers::SmartControllerGroup &contGroup, 
 					 std::shared_ptr<nt::NetworkTable> &visionTable,
@@ -47,7 +46,6 @@ class Turret {
 		wml::Gearbox &_FlyWheel;
 
 		wml::sensors::BinarySensor &_LeftLimit;
-		wml::sensors::BinarySensor &_RightLimit;
 		wml::sensors::BinarySensor &_AngleDownLimit;
 
 		wml::controllers::SmartControllerGroup &_contGroup;
@@ -63,6 +61,8 @@ class Turret {
 		bool &_p2;
 		bool &_p3;
 		bool &_end;
+
+		bool something = true;
 
 		// Timeout Timer
 		frc::Timer ZeroTimer;
@@ -158,11 +158,15 @@ class Turret {
 		int AutoTurretSwitcher = 1; // I didnt really know what to call it
 		bool TurretStop; //tells the turret when it is finished
 		int TurretAutoSelection = 0; //tells the turret which case selection it's in
+
 		int BallTime3Shoot = 1.5;
 		int BallTime5Shoot = 2.5;
 		int SpinUpTime = 1;
-		int Ball3Shoot = BallTime3Shoot + SpinUpTime; //time to shoot 3 balls
-		int Ball5Shoot = BallTime5Shoot + SpinUpTime; //shoots 5 balls 
+		int autoAimTime = 2;
+		int Ball3Shoot = BallTime3Shoot + SpinUpTime + autoAimTime; //time to shoot 3 balls
+		int Ball5Shoot = BallTime5Shoot + SpinUpTime + autoAimTime; //shoots 5 balls 
+
+
 		frc::Timer timer;
 		frc::Timer cameraSyncTimer;
 };
