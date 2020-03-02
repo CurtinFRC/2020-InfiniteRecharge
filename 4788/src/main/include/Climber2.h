@@ -19,6 +19,10 @@ class Climber : public wml::StrategySystem {
           wml::Gearbox &climberRightGearbox,
           wml::actuators::DoubleSolenoid &climberActuator);
 
+  void SetClimberActuator(const ClimberActuatorState st) {
+    _climberActuatorState = st;
+  }
+
   void SetClimber(const ClimberState st, double setpointL, double setpointR) {
     _climberState = st;
     _climberLsetpoint = setpointL;
@@ -36,6 +40,7 @@ class Climber : public wml::StrategySystem {
         _climberActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
        break;
     }
+    _climberActuator.Update(dt);
   }
 
   UpdateClimber(double dt) {
@@ -60,11 +65,14 @@ class Climber : public wml::StrategySystem {
   }
  
  private:
+  // Gearboxes
   wml::Gearbox &_climberLeftGearbox, &_climberRightGearbox;
   wml::actuators::DoubleSolenoid &_climberActuator;
 
+  // States
   ClimberState _climberState{ClimberState::IDLE};
   ClimberActuatorState _climberActuatorState{ClimberActuatorState::DOWN};
 
+  // Setpoints
   double _climberLsetpoint = 0, _climberRsetpoint = 0;
 }
