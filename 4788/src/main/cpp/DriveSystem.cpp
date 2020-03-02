@@ -80,21 +80,24 @@ void DrivetrainManual::OnUpdate(double dt) {
   if (_contGroup.Get(ControlMap::Shift2PTO, Controller::ONRISE)) {
     if (!PTOactive) {
       PTOactive = true;
-    } else if (PTOactive) {
+    } else {
       PTOactive = false;
     }
   }
 
   // PTO Shifter
   if (!PTOactive) {
-    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
-    _PTORatchetLeft.Set(0);
-    _PTORatchetRight.Set(0);
-  } else if (PTOactive) {
+    if (_contGroup.Get(ControlMap::Servo)) {
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
+      _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPositionInit);
+      _PTORatchetRight.Set(ControlMap::PTORatchetRightPositionInit);
+    }
+  } else {
     _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPosition);
     _PTORatchetRight.Set(ControlMap::PTORatchetRightPosition);
     _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
   }
+
 
   // Restrict the speed of the drivetrain
   leftSpeed *= ControlMap::MaxDrivetrainSpeed;

@@ -48,11 +48,15 @@ const int ControlMap::ChangeGearPort2 = 1; // 1
 const int ControlMap::Shift2PTOPort1 = 4; // 4
 const int ControlMap::Shift2PTOPort2 = 5; // 5
 const double ControlMap::ChangeGearTime = 0;
+
 // Ratchet
-const int ControlMap::PTORatchetLeftPort = 99;
-const int ControlMap::PTORatchetRightPort = 99;
-const double ControlMap::PTORatchetLeftPosition = 0.5;
-const double ControlMap::PTORatchetRightPosition = 0.5;
+const int ControlMap::PTORatchetLeftPort = 1 ;
+const int ControlMap::PTORatchetRightPort = 0;
+const double ControlMap::PTORatchetLeftPosition = 0.8;
+const double ControlMap::PTORatchetRightPosition = 0.8;
+const double ControlMap::PTORatchetLeftPositionInit = 0.1;
+const double ControlMap::PTORatchetRightPositionInit = 0.1;
+
 // Drive General Values
 const double ControlMap::MaxDrivetrainAcceleration = 0.015; // 0.015
 const double ControlMap::MaxDrivetrainSpeed = 1;
@@ -171,11 +175,13 @@ const tButton ControlMap::kdDOWN{ DevController, XboxController::kBack };
   const tAxis ControlMap::DrivetrainTurn{ Driver, Joystick::kZAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, 2 };
   const tButton ControlMap::ShiftGears{ Driver, 99 };
+  const tButton ControlMap::Servo{ Driver, 99};
 #else
   const tAxis ControlMap::DrivetrainLeft{ Driver, XboxController::kLeftYAxis };
   const tAxis ControlMap::DrivetrainRight{ Driver, XboxController::kRightYAxis };
   const tButton ControlMap::ReverseDrivetrain{ Driver, XboxController::kStart };
   const tButton ControlMap::ShiftGears{ Driver, XboxController::kBumperRight };
+  const tButton ControlMap::Servo{ Driver, XboxController::kB};
 #endif
 
 // Turret

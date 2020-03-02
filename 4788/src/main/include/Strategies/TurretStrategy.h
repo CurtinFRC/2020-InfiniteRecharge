@@ -17,6 +17,8 @@ class TurretDriverControl : wml::Strategy {
     SetCanBeReused(true);
   }
 
+
+
   void OnUpdate(double dt) override {
     double angular_power = ControlMap::doJoyDeadzone(-_controllers.Get(ControlMap::TurretManualAngle));
     double rotational_power = ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::TurretManualRotate));
@@ -29,6 +31,9 @@ class TurretDriverControl : wml::Strategy {
       turret.SetRotation(TurretRotationState::MANUAL, rotational_power);
     turret.SetFlywheel(TurretFlywheelState::MANUAL, flywheel_power);
   }
+
+
+
  private:
   const Turret &_turret;
   const wml::controllers::SmartControllerGroup &_controllers;
