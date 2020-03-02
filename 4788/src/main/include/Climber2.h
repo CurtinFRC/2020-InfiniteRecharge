@@ -8,6 +8,11 @@ enum class ClimberState {
   MANUAL
 };
 
+enum class ClimberActuatorState {
+  DOWN,
+  UP
+};
+
 class Climber : public wml::StrategySystem {
  public:
   Climber(wml::Gearbox &climberLeftGearbox, 
@@ -16,8 +21,21 @@ class Climber : public wml::StrategySystem {
 
   void SetClimber(const ClimberState st, double setpointL, double setpointR) {
     _climberState = st;
-    _climberLSetpoint = setpointL;
-    _climberRSetpoint = setpointR;
+    _climberLsetpoint = setpointL;
+    _climberRsetpoint = setpointR;
+  }
+
+  /* When this goes down. Intake needs to come up first */
+  UpdateClimberActuator(double dt) {
+    switch (_climberActuatorState) {
+      case ClimberActuatorState::DOWN:
+        _climberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+       break;
+      
+      case ClimberActuatorState::UP:
+        _climberActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+       break;
+    }
   }
 
   UpdateClimber(double dt) {
@@ -27,18 +45,18 @@ class Climber : public wml::StrategySystem {
       case ClimberState::IDLE:
         voltageL = 0;
         voltageR = 0;
-        _climberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
        break;
 
       case ClimberState::MANUAL:
         voltageL = 12 * _climberLsetpoint;
         voltageR = 12 * _climberRsetpoint;
-        _climberActuator.Settarget(wml::actuators::BinaryActuatorState::kForward);
+       break;
     }
   }
 
   void Update(double dt) {
     UpdateClimber(dt);
+    UpdateClimberActuator(dt);
   }
  
  private:
@@ -46,6 +64,7 @@ class Climber : public wml::StrategySystem {
   wml::actuators::DoubleSolenoid &_climberActuator;
 
   ClimberState _climberState{ClimberState::IDLE};
+  ClimberActuatorState _climberActuatorState{ClimberActuatorState::DOWN};
 
   double _climberLsetpoint = 0, _climberRsetpoint = 0;
 }

@@ -4,7 +4,7 @@
 #include "strategy/Strategy.h"
 #include "Climber.h"
 
-class CimberManualStrategy : wml::Strategy {
+class ClimberManualStrategy : wml::Strategy {
  public:
   ClimberManualStrategy(
     const Climber &climber,
@@ -16,14 +16,19 @@ class CimberManualStrategy : wml::Strategy {
   }
 
   void OnUpdate(double dt) override {
-    double leftClimber_power = ControlMap::doJoydeadzone(-_controllers.Get(ControlMap::ClimberControlLeft));
-    double rightClimber_power = Controlmap::doJoydeadzone(-_controllers.Get(ControlMap::ClimberControlRight));
+    double leftClimber_power = ControlMap::doJoyDeadzone(-_controllers.Get(ControlMap::ClimberControlLeft));
+    double rightClimber_power = ControlMap::doJoyDeadzone(-_controllers.Get(ControlMap::ClimberControlRight));
 
     if (_controllers.Get(ControlMap::ClimberToggle)) {
-      
+      if (ClimberToggled) {
+        
+        ClimberToggled = false;
+      }
     }
   }
  private:
   const Climber &_climber;
   const wml::controllers::SmartControllerGroup &_controllers;
-}
+
+  bool ClimberToggled = false;
+};
