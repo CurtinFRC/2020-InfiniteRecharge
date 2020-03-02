@@ -3,12 +3,14 @@
 #include "controllers/Controllers.h"
 #include "RobotMap.h"
 
+#include "strategy/StrategySystem.h"
+
 enum class TurretState {
 	AUTO_AIM,
 	MANUAL_AIM
 };
 
-class Turret {
+class Turret : public wml::StrategySystem {
 	public:
 		Turret(wml::Gearbox &RotationalAxis, 
 					 wml::Gearbox &VerticalAxis, 

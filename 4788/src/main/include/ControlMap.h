@@ -9,7 +9,6 @@
 struct ControlMap {
   static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup);
 
-
   /**
    * CAN Port Number System We are using (PWM Not Included)
    * - 0-9 (Control System, e.g Pneumatics, PDP...)
@@ -31,6 +30,11 @@ struct ControlMap {
   static const double joyDeadzone;
   static const double xboxDeadzone;
   static const double triggerDeadzone;
+
+  static inline double doJoyDeadzone(double val) {
+    return std::fabs(val) > joyDeadzone ? val : 0;
+  }
+
 
   // PCM1
   static const int PCModule;

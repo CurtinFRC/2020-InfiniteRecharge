@@ -1,4 +1,16 @@
 See file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling Robot.cpp successful.
+
+compiling MagStrategy.cpp successful.
+
+compiling intakeStrategy.cpp successful.
+
+compiling TurretStrategy.cpp successful.
+
 compiling Turret.cpp successful.
+
+compiling TurretBackend.cpp successful.
+
+compiling Main.cpp successful.
 
 Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
