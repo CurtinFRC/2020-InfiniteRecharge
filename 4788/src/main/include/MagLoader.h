@@ -1,9 +1,10 @@
 #pragma once
 
 #include "controllers/Controllers.h"
+#include "strategy/StrategySystem.h"
 #include "RobotMap.h"
 
-class MagLoader {
+class MagLoader : wml::StrategySystem {
   public:
     MagLoader(wml::Gearbox &MagazineMotors, 
               frc::AnalogInput &StartMag, 

@@ -67,8 +67,8 @@ const int ControlMap::TurretFlyWheelPort = 22; // 20
 const int ControlMap::TurretFlyWheelPort2 = 21; // 21
 const int ControlMap::TurretAnglePort = 20; // 22
 const int ControlMap::TurretRotationPort = 23; // 23
-const bool ControlMap::TuneTurretPID = true;
-const bool ControlMap::TuneAnglePID = false;
+const bool ControlMap::TuneTurretPID = false;
+const bool ControlMap::TuneAnglePID = true;
 
 const int ControlMap::TurretLeftLimitPort = 99;
 const int ControlMap::TurretRightLimitPort = 99;
@@ -86,7 +86,7 @@ const double ControlMap::TurretGearBoxRatio = 40; // 40:1
 
 const double ControlMap::MaxTurretSpeed = 0.3;
 const double ControlMap::MaxTurretAngularSpeed = 0.3;
-const double ControlMap::FlyWheelVelocity = 50;
+const double ControlMap::FlyWheelVelocity = -580;
 
 const int ControlMap::FlyWheelEncoderPort1 = 1;
 const int ControlMap::FlyWheelEncoderPort2 = 2;
@@ -95,14 +95,14 @@ const int ControlMap::AngleEncoderPort2 = 4;
 
 // Angle Setpoints (Encoder Values)
 const double ControlMap::AngleSetpoint1 = 0;
-const double ControlMap::AngleSetpoint2 = 0.1;
-const double ControlMap::AngleSetpoint3 = 0.2;
-const double ControlMap::AngleSetpoint4 = 0.3;
-const double ControlMap::AngleSetpoint5 = 0.4;
-const double ControlMap::AngleSetpoint6 = 0.5;
-const double ControlMap::AngleSetpoint7 = 0.6;
-const double ControlMap::AngleSetpoint8 = 0.7;
-const double ControlMap::AngleSetpoint9 = 0.8;
+const double ControlMap::AngleSetpoint2 = 0.01;
+const double ControlMap::AngleSetpoint3 = 0.02;
+const double ControlMap::AngleSetpoint4 = 0.03;
+const double ControlMap::AngleSetpoint5 = 0.04;
+const double ControlMap::AngleSetpoint6 = 0.05;
+const double ControlMap::AngleSetpoint7 = 0.06;
+const double ControlMap::AngleSetpoint8 = 0.07;
+const double ControlMap::AngleSetpoint9 = 0.08;
 const double ControlMap::AngleSetpoint10 = 0.9;
 
 // Intake
@@ -120,7 +120,7 @@ const int ControlMap::StartMagLimitPort = 1;
 const int ControlMap::Position1LimitPort = 3;
 const int ControlMap::Position5LimitPort = 2;
 const double ControlMap::MagazineBallThreshStart = 650;
-const double ControlMap::MagazineBallThreshFinal = 1000; // 1300
+const double ControlMap::MagazineBallThreshFinal = 800; // 1300
 const double ControlMap::MagazineBallThreshIndex = 2000;
 const double ControlMap::MagTestCaseRotations = 5;
 

@@ -8,23 +8,22 @@ using namespace wml::controllers;
 
 void Turret::InitializeSetPoints() {
 	// I'm going top to bottom
-	AngleSetPoint[400] = ControlMap::AngleSetpoint1;
-	AngleSetPoint[390] = ControlMap::AngleSetpoint2;
-	AngleSetPoint[380] = ControlMap::AngleSetpoint3;
-	AngleSetPoint[370] = ControlMap::AngleSetpoint4;
-	AngleSetPoint[360] = ControlMap::AngleSetpoint5;
-	AngleSetPoint[350] = ControlMap::AngleSetpoint6;
-	AngleSetPoint[340] = ControlMap::AngleSetpoint7;
-	AngleSetPoint[330] = ControlMap::AngleSetpoint8;
-	AngleSetPoint[320] = ControlMap::AngleSetpoint9;
-	AngleSetPoint[310] = ControlMap::AngleSetpoint10;
-
+	AngleSetPoint[0] = ControlMap::AngleSetpoint1;
+	AngleSetPoint[50] = ControlMap::AngleSetpoint2;
+	AngleSetPoint[100] = ControlMap::AngleSetpoint3;
+	AngleSetPoint[150] = ControlMap::AngleSetpoint4;
+	AngleSetPoint[200] = ControlMap::AngleSetpoint5;
+	AngleSetPoint[250] = ControlMap::AngleSetpoint6;
+	AngleSetPoint[300] = ControlMap::AngleSetpoint7;
+	AngleSetPoint[350] = ControlMap::AngleSetpoint8;
+	AngleSetPoint[400] = ControlMap::AngleSetpoint9;
+	AngleSetPoint[450] = ControlMap::AngleSetpoint10;
 }
 
 // Distance Setpoints for Turret Angle
 double Turret::SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput) {
   double targetEncoderValue;
-	int multiple = 10; // How many pixels to skip
+	int multiple = 50; // How many pixels to skip
 	// Skip a few pixels to make it easier
 	if ((int)targetY % multiple == 0) {
 		targetEncoderValue = AngleSetPoint[(int)targetY];
@@ -32,7 +31,7 @@ double Turret::SetPointSelection(double LowPoint, double MaxPoint, double PixleA
 		int nearestSetpoint = ((targetY+multiple/2)/multiple) * multiple;
 		targetEncoderValue = AngleSetPoint[nearestSetpoint];
 	}
-
+	std::cout << "Target Encoder Value: " << targetEncoderValue << std::endl;
   return targetEncoderValue;
 }
 
@@ -51,8 +50,8 @@ void Turret::AutoAimToFire(double dt) {
 }
 
 void Turret::FlyWheelAutoSpinup() {
-	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.01 : 0;
-	if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
+	FlyWheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.05 : 0;
+	if (_FlyWheel.encoder->GetEncoderAngularVelocity() <= ControlMap::FlyWheelVelocity) {
 		ReadyToFire = true;
 	} else {
 		ReadyToFire = false;
@@ -96,7 +95,7 @@ double Turret::YAutoAimCalc(double dt, double TargetInput) {
 
 
 	// Calculate PID
-	double input = _RotationalAxis.encoder->GetEncoderRotations();
+	double input = _VerticalAxis.encoder->GetEncoderRotations();
 	Aerror = targetEncoderValue - input;
 
 	double derror = (Aerror - ApreviousError) / dt;
@@ -110,9 +109,6 @@ double Turret::YAutoAimCalc(double dt, double TargetInput) {
 
 	
 	double output = AkP * Aerror + AkI * Asum + AkD * derror;
-
-	// Convert to -1 - 1 for motor
-	output /= ControlMap::MaxAngleEncoderRotations;
 
 	// Temp Values
 	table->PutNumber("AngleDError", derror);
@@ -141,12 +137,17 @@ double Turret::TurretQuery(double Rgoal) {
 
 // Schedule Gains
 double Turret::ScheduleGains(double dt) {
-	if (abs(targetX) < (abs(imageWidth)/6)) {
+	if (abs(targetX) < (abs(imageWidth)/8)) {
+		dt = 0.5; // Make accumulator awesome baby
+		kP = &RkP3;
+		kI = &RkI3;
+		kD = &RkD3;
+		GainsSchedule2 = true;
+	} else if (abs(targetX) < (abs(imageWidth)/6)) {
 		kP = &RkP2;
 		kI = &RkI2;
 		kD = &RkD2;
 		GainsSchedule2 = true;
-		// dt = 1;
 	} else {
 		kP = &RkP;
 		kI = &RkI;
@@ -166,7 +167,6 @@ double Turret::XAutoAimCalc(double dt, double targetx)  {
 	RotGoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
 
 	// RotGoal = TurretQuery(RotGoal);
-	std::cout << "RGoal: " << RotGoal << std::endl;
 	dt = ScheduleGains(dt);
 	double input = _RotationalAxis.encoder->GetEncoderRotations();
 
@@ -313,7 +313,7 @@ void Turret::TurretZeroAngle(double Time) {
 
 // Feedback for correct flywheel speeds
 void Turret::ContFlywheelFeedback() {
-  if (_FlyWheel.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
+  if (_FlyWheel.encoder->GetEncoderAngularVelocity() <= ControlMap::FlyWheelVelocity) {
 		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
 		_contGroup.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
 	} else {

@@ -46,6 +46,33 @@ Turret::Turret(Gearbox &Rotation,
 	imageWidth = table->GetNumber("ImageWidth", 0);
 }
 
+
+void Turret::_Update(double dt) {
+	switch(_current_state) {
+		case TurretState::MANUAL_AIM:
+			// Manual Angle Control
+			AngularPower = std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? -_contGroup.Get(ControlMap::TurretManualAngle) : 0;
+
+			// Manual Rotation Control
+			RotationPower = std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
+			RotationPower = (fabs(RotationPower) * RotationPower);
+		break;
+		case TurretState::AUTO_AIM:
+			if (!_TurretToggle) {
+				if (targetX > imageWidth || targetY > imageHeight) {
+					std::cout << "Error: Target is artifacting" << std::endl;
+				} else {
+					RotationPower = XAutoAimCalc(dt, targetX);
+					// AngularPower = YAutoAimCalc(dt, targetY);
+				}
+			} 
+			// Limits Turret Speed
+			RotationPower *= ControlMap::MaxTurretSpeed; 
+			AngularPower *= ControlMap::MaxTurretAngularSpeed;
+		break;
+	}
+}
+
 void Turret::ZeroTurret() {
 	// Zero Encoder on left limit
 	ZeroTimer.Start();
@@ -88,21 +115,29 @@ void Turret::TeleopOnUpdate(double dt) {
 
 
 	//annas stuff dont touch 
-	if (_contGroup.Get(ControlMap::Ball3Fire)) {	
-		while (something) {
-			AutoAimToFire(dt);
-			timer.Start();
-			if (ReadyToFire && timer.Get() <= Ball3Shoot) {
-				_p2 = true;
-			} else {
-				_p2 = false;
-			}
-		}
-		std::cout << "autoooooooooo" << std::endl;
-	}	
+	// if (_contGroup.Get(ControlMap::Ball3Fire)) {	
+	// 	while (something) {
+	// 		AutoAimToFire(dt);
+	// 		timer.Start();
+	// 		if (ReadyToFire && timer.Get() <= Ball3Shoot) {
+	// 			_p2 = true;
+	// 		} else {
+	// 			_p2 = false;
+	// 		}
+	// 	}
+	// 	std::cout << "autoooooooooo" << std::endl;
+	// }	
 	//annas stuff dont touch ^
 
 
+	// Switch Turret State
+	if (_contGroup.Get(ControlMap::TurretAutoAimAxis) > ControlMap::triggerDeadzone) {
+		_current_state = TurretState::AUTO_AIM;
+	} else {
+		_current_state = TurretState::MANUAL_AIM;
+	}
+	// _current_state = TurretState::AUTO_AIM;
+	_Update(dt);
 
 	if (_contGroup.Get(ControlMap::RevFlyWheel, Controller::ONRISE)) {
 		bool GetFlyWheel = _FlyWheel.transmission->GetInverted();
@@ -110,28 +145,6 @@ void Turret::TeleopOnUpdate(double dt) {
 		RevFlywheelEntry.SetBoolean(GetFlyWheel);
 		_FlyWheel.transmission->SetInverted(!GetFlyWheel);
 	}
-	
-
-	if (!_TurretToggle) {
-		if (_contGroup.Get(ControlMap::TurretAutoAim)) {
-			if (targetX > imageWidth || targetY > imageHeight) {
-				std::cout << "Error: Target is artifacting" << std::endl;
-			} else {
-				RotationPower = XAutoAimCalc(dt, targetX);
-				AngularPower = YAutoAimCalc(dt, targetY);
-			}
-		} else {
-			Rsum = 0;
-		}
-
-
-		// Manual Angle Control
-		AngularPower += std::fabs(_contGroup.Get(ControlMap::TurretManualAngle)) > ControlMap::joyDeadzone ? -_contGroup.Get(ControlMap::TurretManualAngle) : 0;
-
-		// Manual Rotation Control
-		RotationPower += std::fabs(_contGroup.Get(ControlMap::TurretManualRotate)) > ControlMap::joyDeadzone ? _contGroup.Get(ControlMap::TurretManualRotate) : 0;
-		RotationPower = -(fabs(RotationPower) * RotationPower);
-	} 
 
 	if (!_FlyWheelToggle) {
 		// FlyWheel Code
@@ -144,17 +157,12 @@ void Turret::TeleopOnUpdate(double dt) {
 		}
 	}
 
-	// FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
+	FlyWheelPower = _contGroup.Get(ControlMap::TurretFlyWheelSpinUp);
 
 	
 
 	// Flywheel Feedback
 	ContFlywheelFeedback();
-
-
-	// Limits Turret Speed
-	RotationPower *= ControlMap::MaxTurretSpeed; 
-	AngularPower *= ControlMap::MaxTurretAngularSpeed;
 
 	table_2->PutNumber("Turret_Min", MinRotation);
 	table_2->PutNumber("Turret_Max", MaxRotation);
@@ -165,8 +173,9 @@ void Turret::TeleopOnUpdate(double dt) {
 }
 
 void Turret::AutoOnUpdate(double dt) {
-	double targetX = table->GetNumber("Target_X", 0);
-	double targetY = table->GetNumber("Target_Y", 0);
+
+	// double targetX = table->GetNumber("Target_X", 0);
+	// double targetY = table->GetNumber("Target_Y", 0);
 	switch (TurretAutoSelection) {
 		case 1:
 			switch(_autoSelector){

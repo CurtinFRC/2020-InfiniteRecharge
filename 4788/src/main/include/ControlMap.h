@@ -9,7 +9,6 @@
 struct ControlMap {
   static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup);
 
-
   /**
    * CAN Port Number System We are using (PWM Not Included)
    * - 0-9 (Control System, e.g Pneumatics, PDP...)
@@ -32,6 +31,11 @@ struct ControlMap {
   static const double xboxDeadzone;
   static const double triggerDeadzone;
 
+  static inline double doJoyDeadzone(double val) {
+    return std::fabs(val) > joyDeadzone ? val : 0;
+  }
+
+
   // PCM1
   static const int PCModule;
 
@@ -52,6 +56,7 @@ struct ControlMap {
   static const bool TuneTurretPID;
   static const bool TuneAnglePID;
   static const int TurretFlyWheelPort, TurretRotationPort, TurretAnglePort, TurretFlyWheelPort2;
+  static const int AngleEncoderChannelA, AngleEncoderChannelB;
   static const int TurretLeftLimitPort, TurretRightLimitPort, TurretAngleDownLimitPort;
   static const bool TurretLeftLimitInvert, TurretRightLimitInvert, TurretAngleDownLimitInvert;
   static const double TurretDistanceSetpoint1, TurretDistanceSetpoint2, TurretDistanceSetpoint3;
@@ -192,8 +197,6 @@ struct ControlMap {
 
   #else
   static const wml::controllers::tAxis ClimberControlRight;
-  static const wml::controllers::tButton ClimberUp;
-  static const wml::controllers::tButton ClimberDown;
   static const wml::controllers::tButton Shift2PTO; // Toggle
   static const wml::controllers::tAxis ClimberControlLeft;
   static const wml::controllers::tButton ClimberToggle;
