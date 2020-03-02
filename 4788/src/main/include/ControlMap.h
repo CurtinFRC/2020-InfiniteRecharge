@@ -46,6 +46,7 @@ struct ControlMap {
   static const double MaxDrivetrainSpeed;
   static const double MaxDrivetrainAcceleration;
   static const double DriveTestCaseRotations;
+  static const double PTORatchetLeftPositionInit, PTORatchetRightPositionInit;
 
   // Turret
   static const bool TuneTurretPID;
@@ -142,6 +143,7 @@ struct ControlMap {
   static const wml::controllers::tButton ReverseDrivetrain;
   static const wml::controllers::tButton ShiftGears;
   static const wml::controllers::tButton Defence;
+  static const wml::controllers::tButton Servo;
 
   // Turret
   #if __CONTROLMAP_USING_JOYSTICK__
