@@ -91,7 +91,6 @@ void DrivetrainManual::OnUpdate(double dt) {
       _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
       _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPositionInit);
       _PTORatchetRight.Set(ControlMap::PTORatchetRightPositionInit);
-
     }
   } else {
     _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPosition);
