@@ -1,7 +1,6 @@
 #pragma once
 
 #include "strategy/StrategySystem.h"
-
 #include "RobotMap.h"
 
 enum class TurretRotationState {
@@ -24,8 +23,7 @@ class Turret : public wml::StrategySystem {
          wml::Gearbox &flywheelGearbox,
          wml::sensors::BinarySensor &leftLimit,
          wml::sensors::BinarySensor &angleDownLimit,
-         std::shared_ptr<nt::NetworkTable> &visionTable,
-         std::shared_ptr<nt::NetworkTable> &rotationTable);
+         std::shared_ptr<nt::NetworkTable> &visionTable);
 
   void SetRotation(const TurretRotationState st, double setpoint) {
     _rotState = st;

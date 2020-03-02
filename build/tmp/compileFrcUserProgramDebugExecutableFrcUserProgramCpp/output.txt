@@ -1,13 +1,7 @@
 See file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
 compiling ControlMap.cpp successful.
 
-compiling MagStrategy.cpp successful.
-
-compiling intakeStrategy.cpp successful.
-
-compiling TurretStrategy.cpp successful.
-
-compiling Climber.cpp successful.
+compiling BeltIntake.cpp successful.
 
 compiling DriveSystem.cpp successful.
 
@@ -21,11 +15,9 @@ compiling DriveAuto.cpp successful.
 
 compiling TurretBackend.cpp successful.
 
-compiling wayfinder.cpp successful.
-
 compiling Main.cpp successful.
 
-compiling BeltIntake.cpp successful.
+compiling Climber.cpp successful.
 
 compiling Robot.cpp successful.
 

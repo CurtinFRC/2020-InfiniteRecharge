@@ -195,8 +195,6 @@ struct ControlMap {
 
   #else
   static const wml::controllers::tAxis ClimberControlRight;
-  static const wml::controllers::tButton ClimberUp;
-  static const wml::controllers::tButton ClimberDown;
   static const wml::controllers::tButton Shift2PTO; // Toggle
   static const wml::controllers::tAxis ClimberControlLeft;
   static const wml::controllers::tButton ClimberToggle;

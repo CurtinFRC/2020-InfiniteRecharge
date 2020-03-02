@@ -6,7 +6,7 @@ class BeltIntakeManualStrategy : wml::Strategy {
  public:
   BeltIntakeManualStrategy(
     const BeltIntake &beltIntake,
-    const wml::controllers::SmartControllerGroup &controllers,ke
+    const wml::controllers::SmartControllerGroup &controllers,
   ) : wml::Strategy("Manual"), _beltIntake(beltIntake), _controllers(controllers) {
     Requires(&beltIntake);
     SetCanBeInterrupted(true);
@@ -46,7 +46,7 @@ class BeltIntakeManualStrategy : wml::Strategy {
 class BeltIntakeManualStrategy : wml::Strategy {
  public:
   BeltIntakeManualStrategy(
-    const BeltIntake &intak
+    const BeltIntake &intake
     const wml::controllers::SmartControllerGroup &controllers,ke
   ) : wml::Strategy("Manual"), _beltIntake(beltIntake), _controllers(controllers) {
     Requires(&beltIntake);

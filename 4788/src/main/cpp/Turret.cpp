@@ -63,7 +63,7 @@ void Turret::_Update(double dt) {
 					std::cout << "Error: Target is artifacting" << std::endl;
 				} else {
 					RotationPower = XAutoAimCalc(dt, targetX);
-					AngularPower = YAutoAimCalc(dt, targetY);
+					// AngularPower = YAutoAimCalc(dt, targetY);
 				}
 			} 
 			// Limits Turret Speed

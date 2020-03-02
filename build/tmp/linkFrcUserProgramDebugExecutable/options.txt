@@ -24,7 +24,6 @@
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/9fntb59r3b9472pm070cirgta/TurretBackend.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/3czxi3wzc34tqyvqfy52ap19x/Drivetrain.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/66pszvk9modhitoj39uei583t/BinaryEncoderMotor.o
-/home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/cpgr4tye2vv2a9gurtzpc1yhr/intakeStrategy.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/9760xtgdau9jsoxxi90ozrpww/Robot.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/eeuswhsckiv4et8lckuwkc29w/LimitSwitch.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/69b0udel3rp60tyisebmlggma/Toggle.o
@@ -34,7 +33,6 @@
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/bxjl1oopezcpx9w9bjnlapj5e/VoltageController.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/8b4n60hevbzxwvhunucb4mhn5/StrategySystem.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/1d6b7gvvyea5doqjzs727i9a0/Controllers.o
-/home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/ergpwv43ci3inlyvgrihdd6zq/MagStrategy.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/423u0i9ed6zahyzcm5e43papl/Compressor.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/14yj4eewelyf99uphl9qryqwv/PIDController.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/6c4mebpk191jqu00aa7adtwws/DeployableDevice.o
@@ -47,7 +45,6 @@
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/eqqypbdvxagza3prto0i4zvqc/Turret.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/2zv5rbwfa04e8rv8gif2vhd6l/Inputs.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/5bc3kidk29i26yy8m0t0lni9e/RobotStartup.o
-/home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/a4k6qpjnum1jt8dym2dt9av3s/TurretStrategy.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/adtc28jqufux8ig06ix3xpevx/DriveAuto.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/5gi8c0rn2n1afha389wzlpmtl/Filter.o
 /home/cj/Desktop/code/2020-InfiniteRecharge/build/objs/frcUserProgram/debug/frcUserProgramCpp/awo0jgnufg5l0p0vfgghp9dvb/Main.o
