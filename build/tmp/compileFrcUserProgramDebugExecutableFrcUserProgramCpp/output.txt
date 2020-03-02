@@ -5,8 +5,8 @@ compiling Turret.cpp successful.
 
 compiling Robot.cpp successful.
 
-compiling TurretBackend.cpp successful.
-
 compiling Main.cpp successful.
+
+compiling TurretBackend.cpp successful.
 
 Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
