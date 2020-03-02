@@ -3,6 +3,8 @@
 #include "strategy/StrategySystem.h"
 #include "RobotMap.h"
 
+using actState = wml::actuators::BinaryActuatorState;
+
 enum class ClimberState {
   IDLE,
   MANUAL
@@ -30,20 +32,20 @@ class Climber : public wml::StrategySystem {
   }
 
   /* When this goes down. Intake needs to come up first */
-  UpdateClimberActuator(double dt) {
+  void UpdateClimberActuator(double dt) {
     switch (_climberActuatorState) {
       case ClimberActuatorState::DOWN:
-        _climberActuator.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+        _climberActuator.SetTarget(actState::kReverse);
        break;
       
       case ClimberActuatorState::UP:
-        _climberActuator.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+        _climberActuator.SetTarget(actState::kForward);
        break;
     }
     _climberActuator.Update(dt);
   }
 
-  UpdateClimber(double dt) {
+  void UpdateClimber(double dt) {
     double voltageL = 0;
     double voltageR = 0;
     switch (_climberState) {
@@ -57,6 +59,8 @@ class Climber : public wml::StrategySystem {
         voltageR = 12 * _climberRsetpoint;
        break;
     }
+    _climberLeftGearbox.transmission->SetVoltage(voltageL);
+    _climberRightGearbox.transmission->SetVoltage(voltageR);
   }
 
   void Update(double dt) {
@@ -75,4 +79,4 @@ class Climber : public wml::StrategySystem {
 
   // Setpoints
   double _climberLsetpoint = 0, _climberRsetpoint = 0;
-}
+};

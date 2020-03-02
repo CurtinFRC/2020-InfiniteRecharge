@@ -7,7 +7,8 @@ using actState = wml::actuators::BinaryActuatorState;
 
 enum class IntakeState {
   IDLE,
-  MANUAL
+  MANUAL,
+  AUTO
 };
 
 enum class IntakeActuatorState {
@@ -24,7 +25,7 @@ class Intake : public wml::StrategySystem {
     _intakeActuatorState = st;
   }
 
-  void SetIntake (const IntakeState st, double setpoint) {
+  void SetIntake(const IntakeState st, double setpoint) {
     _intakeState = st;
     _intakeSetpoint = setpoint;
   }
@@ -39,6 +40,7 @@ class Intake : public wml::StrategySystem {
         _intakeActuator.SetTarget(actState::kForward);
        break;
     }
+    _intakeActuator.Update(dt);
   }
 
   void UpdateIntake(double dt) {
@@ -51,7 +53,11 @@ class Intake : public wml::StrategySystem {
       case IntakeState::MANUAL:
         voltage = 12 * _intakeSetpoint;
        break;
+
+      case IntakeState::AUTO:
+        voltage = 12 * _intakeSetpoint;
     }
+    _intakeGearbox.transmission->SetVoltage(voltage);
   }
 
   void Update(double dt) {

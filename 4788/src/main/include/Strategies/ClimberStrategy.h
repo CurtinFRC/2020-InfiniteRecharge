@@ -4,6 +4,8 @@
 #include "strategy/Strategy.h"
 #include "Climber.h"
 
+using ButtonState = wml::controllers::Controller;
+
 frc::Timer climbTime;
 
 class ClimberManualStrategy : wml::Strategy {
@@ -23,16 +25,11 @@ class ClimberManualStrategy : wml::Strategy {
     double rightClimber_power = ControlMap::doJoyDeadzone(-_controllers.Get(ControlMap::ClimberControlRight));
     rightClimber_power *= ControlMap::LiftMaxSpeed;
 
-    if (_controllers.Get(ControlMap::ClimberToggle, wml::controllers::Controller::ONRISE)) {
-      if (ClimberToggled) {
-        _climber.SetClimber(ClimberState::MANUAL, leftClimber_power, rightClimber_power);
-        _climber.SetClimberActuator(ClimberActuatorState::UP);
+    if (_controllers.Get(ControlMap::ClimberToggle, ButtonState::ONRISE)) {
+      if (ClimberToggled)
         ClimberToggled = false;
-      } else {
-        _climber.SetClimber(ClimberState::IDLE, leftClimber_power, rightClimber_power);
-        _climber.SetClimberActuator(ClimberActuatorState::DOWN);
+      else
         ClimberToggled = true;
-      }
     }
 
     if (ClimberToggled) {
