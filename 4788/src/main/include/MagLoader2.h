@@ -4,12 +4,10 @@
 #include "RobotMap.h"
 
 enum class MagLoaderState {
-  IDLE,
+  AUTO,
+  SHIFT_IN,
   MANUAL,
-  SHIFTUP,
-  SHIFTDOWN,
-  FIRE,
-  AUTO
+  FIRE
 };
 
 class MagLoader : public wml::StrategySystem {
@@ -27,23 +25,19 @@ class MagLoader : public wml::StrategySystem {
   void UpdateMagLoader(double dt) {
     double voltage = 0;
     switch (_magLoaderState) {
-      case MagLoaderState::IDLE:
-        voltage = 0;
+      case MagLoaderState::AUTO:
+        voltage = 12 * _magLoaderSetpoint;
        break;
       
+      case MagLoaderState::SHIFT_IN:
+        voltage = 12 * _magLoaderSetpoint;
+       break;
+
       case MagLoaderState::MANUAL:
         voltage = 12 * _magLoaderSetpoint;
        break;
 
-      case MagLoaderState::SHIFTUP:
-        voltage = 12 * _magLoaderSetpoint;
-       break;
-
-      case MagLoaderState::SHIFTDOWN:
-        voltage = 12 * _magLoaderSetpoint;
-       break;
-
-      case MagLoaderState::AUTO:
+      case MagLoaderState::FIRE:
         voltage = 12 * _magLoaderSetpoint;
        break;
     }
@@ -62,7 +56,7 @@ class MagLoader : public wml::StrategySystem {
   frc::AnalogInput &_stopSensor;
 
   // States
-  MagLoaderState _magLoaderState{MagLoaderState::IDLE};
+  MagLoaderState _magLoaderState{MagLoaderState::AUTO};
 
   // Setpoints
   double _magLoaderSetpoint = 0;

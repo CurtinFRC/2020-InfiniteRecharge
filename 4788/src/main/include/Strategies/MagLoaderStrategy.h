@@ -20,11 +20,12 @@ class MagLoaderManualStrategy : wml::Strategy {
   void OnUpdate(double dt) override {
     double magLoader_power = 0.7;
 
-    if (_controllers.Get(ControlMap::ManualMag, ButtonState::ONRISE))
+    if (_controllers.Get(ControlMap::ManualMag, ButtonState::ONRISE)) {
       if (MagLoaderOverride)
         MagLoaderOverride = false;
       else 
         MagLoaderOverride = true;
+    }
 
     /**
      * MAIN MAG CONTROL
@@ -33,12 +34,12 @@ class MagLoaderManualStrategy : wml::Strategy {
       // Shift mag up (Stop mag if last sensor hit)
       if (_controllers.Get(ControlMap::ShiftUpMagazine)) 
         if (_stopSensor.GetAverageValue() <= ControlMap::MagazineBallThreshFinal)
-          _magLoader.SetMagLoader(MagladerState::SHIFTUP, magLoader_power);
+          _magLoader.SetMagLoader(MagladerState::MANUAL, magLoader_power);
 
       // Shift mag down (Stop mag if index sensor hit)
       else if (_controllers.Get(ControlMap::ShiftDownMagazine))
         if (_indexSensor.GetAverageValue() <= ControlMap::MagazineBallThreshIndex)
-          _magLoader.SetMagLoader(MagLoaderState::SHIFTDOWN, -magLoader_power);
+          _magLoader.SetMagLoader(MagLoaderState::MANUAL, -magLoader_power);
 
       // If last sensor hit
       else if (_stopSensor.GetAverageValue() >= ControlMap::MagazineBallThreshFinal)
@@ -50,11 +51,11 @@ class MagLoaderManualStrategy : wml::Strategy {
 
       // If start sensor hit
       else if (_startSensor.GetAverageValue() >= ControlMap::MagazineBallThreshStart)
-        _magLoader.SetMagLoader(MagLoaderState::AUTO, magLoader_power);
+        _magLoader.SetMagLoader(MagLoaderState::SHIFT_IN, magLoader_power);
 
       // Set to IDLE
       else 
-        _magLoader.SetMagLoader(MagLoaderState::IDLE, magLoader_power);
+        _magLoader.SetMagLoader(MagLoaderState::AUTO, magLoader_power);
       
     /**
      * OVERRIDE CONTROL
@@ -70,7 +71,7 @@ class MagLoaderManualStrategy : wml::Strategy {
 
       // Set to IDLE
       else 
-        _magLoader.SetMagLoader(MagLoaderState::IDLE, magLoader_power);
+        _magLoader.SetMagLoader(MagLoaderState::MANUAL, 0);
     }
 
 
