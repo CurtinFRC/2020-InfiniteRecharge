@@ -1,6 +1,6 @@
 #include "controllers/Controllers.h"
 #include "strategy/Strategy.h"
-#include "MagLoader.h"
+#include "MagLoader.h" // meant to be magloader2.h
 
 using ButtonState = wml::controllers::Controller;
 

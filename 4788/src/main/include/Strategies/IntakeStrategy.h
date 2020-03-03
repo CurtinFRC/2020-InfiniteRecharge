@@ -2,7 +2,7 @@
 
 #include "controllers/Controller.h"
 #include "strategy/Strategy.h"
-#include "BeltIntake.h"
+#include "BeltIntake.h" // Meant to be intake2.h
 
 using ButtonState = wml::controllers::Controller;
 
@@ -19,16 +19,16 @@ class IntakeManualStrategy : wml::Strategy {
 
   void OnUpdate(double dt) override {
     double intake_power;
-    if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::Intake)));
+    if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::Intake)))
       intake_power = _controllers.Get(ControlMap::Intake);
     else
-      intake_power = ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::Intake));
+      intake_power = ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::Outake));
 
     // Detect If climber is deployed
     if (_controllers.Get(ControlMap::ClimberToggle, ButtonState::ONRISE)) {
       if (ClimberToggled)
         ClimberToggled = false;
-      else 
+      else
         ClimberToggled = true;
     }
 
@@ -43,14 +43,12 @@ class IntakeManualStrategy : wml::Strategy {
     // Intake controll, Override if Climber is deployed
     if (!ClimberToggled) {
       if (IntakeToggled) {
-        _intake.SetIntake(IntakeState::MANUAL, intake_power);
-        _intake.SetIntakeActuator(IntakeActuatorState::DEPLOYED);
+        _intake.SetIntake(IntakeState::INTAKING, intake_power);
       } else {
-        _intake.SetIntake(IntakeState::IDLE, intake_power);
-        _intake.SetIntakeActuator(IntakeActuatorState::STOWED);
+        _intake.SetIntake(IntakeState::STOWED, intake_power);
       }
     } else {
-      _intake.SetIntakeActuator(IntakeActuatorState::DEPLOYED);
+      _intake.SetIntake(IntakeState::DEPLOYED);
     }
   }
 

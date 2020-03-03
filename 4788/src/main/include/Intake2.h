@@ -6,14 +6,10 @@
 using actState = wml::actuators::BinaryActuatorState;
 
 enum class IntakeState {
-  IDLE,
-  MANUAL,
-  AUTO
-};
-
-enum class IntakeActuatorState {
-  DEPLOYED,
-  STOWED
+  STOWED, // Up, motor off
+  DEPLOYED, // Down, motor on
+  INTAKING, // Down, motor intake
+  EJECTING // Down, motor ejecting
 };
 
 class Intake : public wml::StrategySystem {
@@ -21,48 +17,39 @@ class Intake : public wml::StrategySystem {
   Intake(wml::Gearbox &intakeGearbox,
           wml::actuators::DoubleSolenoid &intakeActuator);
 
-  void SetIntakeActuator(const IntakeActuatorState st) {
-    _intakeActuatorState = st;
-  }
-
   void SetIntake(const IntakeState st, double setpoint) {
     _intakeState = st;
     _intakeSetpoint = setpoint;
   }
 
-  void UpdateIntakeActuator(double dt) {
-    switch (_intakeActuatorState) {
-      case IntakeActuatorState::STOWED:
-        _intakeActuator.SetTarget(actState::kReverse);
-       break;
-
-      case IntakeActuatorState::DEPLOYED:
-        _intakeActuator.SetTarget(actState::kForward);
-       break;
-    }
-    _intakeActuator.Update(dt);
-  }
-
   void UpdateIntake(double dt) {
     double voltage = 0;
     switch (_intakeState) {
-      case IntakeState::IDLE:
+      case IntakeState::STOWED:
         voltage = 0;
+        _intakeActuator.SetTarget(actState::kReverse);
        break;
       
-      case IntakeState::MANUAL:
-        voltage = 12 * _intakeSetpoint;
+      case IntakeState::DEPLOYED:
+        voltage = 12 * 0;
+        _intakeActuator.SetTarget(actState::kForward);
        break;
 
-      case IntakeState::AUTO:
+      case IntakeState::INTAKING:
         voltage = 12 * _intakeSetpoint;
+        _intakeActuator.SetTarget(actState::kForward);
+       break;
+
+      case IntakeState::EJECTING:
+        voltage = 12 * _intakeSetpoint;
+        _intakeActuator.SetTarget(actState::kForward);
+       break;
     }
     _intakeGearbox.transmission->SetVoltage(voltage);
   }
 
   void Update(double dt) {
     UpdateIntake(dt);
-    UpdateIntakeActuator(dt);
   }
 
  private:
@@ -71,8 +58,7 @@ class Intake : public wml::StrategySystem {
   wml::actuators::DoubleSolenoid &_intakeActuator;
 
   // States
-  IntakeState _intakeState{IntakeState::IDLE};
-  IntakeActuatorState _intakeActuatorState{IntakeActuatorState::STOWED};
+  IntakeState _intakeState{IntakeState::STOWED};
 
   // Setpoints
   double _intakeSetpoint;
