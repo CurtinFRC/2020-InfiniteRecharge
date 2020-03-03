@@ -5,7 +5,7 @@
 
 enum class MagLoaderState {
   AUTO,
-  SHIFT_IN,
+  SHIFT,
   MANUAL,
   FIRE
 };
@@ -26,11 +26,21 @@ class MagLoader : public wml::StrategySystem {
     double voltage = 0;
     switch (_magLoaderState) {
       case MagLoaderState::AUTO:
-        voltage = 12 * _magLoaderSetpoint;
+        if (_stopSensor.GetAverageValue() >= ControlMap::MagazineBallThreshFinal) 
+          voltage = 0;
+        else if (_indexSensor.GetAverageValue() >= ControlMap::MagazineBallThreshIndex)
+          voltage = 0;
+        else if (_startSensor.GetAverageValue() >= ControlMap::MagazineBallThreshStart)
+          voltage = 12 * _magLoaderSetpoint;
+        else 
+          voltage = 0;
        break;
       
-      case MagLoaderState::SHIFT_IN:
-        voltage = 12 * _magLoaderSetpoint;
+      case MagLoaderState::SHIFT:
+        if((_stopSensor.GetAverageValue() <= ControlMap::MagazineBallThreshFinal) && (_indexSensor.GetAverageValue() <= ControlMap::MagazineBallThreshIndex))
+          voltage = 12 * _magLoaderSetpoint;
+        else 
+          voltage = 0;
        break;
 
       case MagLoaderState::MANUAL:

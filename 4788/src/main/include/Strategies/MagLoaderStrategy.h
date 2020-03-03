@@ -35,26 +35,12 @@ class MagLoaderManualStrategy : wml::Strategy {
     if (!MagLoaderOverride) {
       // Shift mag up (Stop mag if last sensor hit)
       if (_controllers.Get(ControlMap::ShiftUpMagazine)) 
-        if (_stopSensor.GetAverageValue() <= ControlMap::MagazineBallThreshFinal)
-          _magLoader.SetMagLoader(MagladerState::MANUAL, magLoader_power);
+        _magLoader.SetMagLoader(MagLoaderState::SHIFT, magLoader_power);
 
       // Shift mag down (Stop mag if index sensor hit)
       else if (_controllers.Get(ControlMap::ShiftDownMagazine))
-        if (_indexSensor.GetAverageValue() <= ControlMap::MagazineBallThreshIndex)
-          _magLoader.SetMagLoader(MagLoaderState::MANUAL, -magLoader_power);
-
-      // If last sensor hit
-      else if (_stopSensor.GetAverageValue() >= ControlMap::MagazineBallThreshFinal)
-        _magLoader.SetMagLoader(MagLoaderState::AUTO, 0);
-
-      // If index sensor hit
-      else if (_indexSensor.GetAverageValue() >= ControlMap::MagazineBallThreshIndex)
-        _magLoader.SetMagLoader(MagLoaderState::AUTO, 0);
-
-      // If start sensor hit
-      else if (_startSensor.GetAverageValue() >= ControlMap::MagazineBallThreshStart)
-        _magLoader.SetMagLoader(MagLoaderState::SHIFT_IN, magLoader_power);
-
+        _magLoader.SetMagLoader(MagLoaderState::SHIFT, -magLoader_power);
+      
       // Set to IDLE
       else 
         _magLoader.SetMagLoader(MagLoaderState::AUTO, magLoader_power);

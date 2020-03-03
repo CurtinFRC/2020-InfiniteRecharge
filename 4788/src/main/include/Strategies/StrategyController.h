@@ -15,5 +15,8 @@ class StrategyCaller : wml::StrategyBuilder {
 
 
  private:
+  Turret &_turret;
+  MagLoader &_magLoader;
+  Intake &_intake;
 };
 

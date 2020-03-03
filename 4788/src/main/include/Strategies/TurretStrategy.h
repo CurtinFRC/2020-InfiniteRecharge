@@ -61,7 +61,6 @@ class TurretManualStrategy : wml::Strategy {
 
     RotGoal = _RotationalAxis.encoder->GetEncoderRotations() + targetXinRotations;
 
-    // RotGoal = TurretQuery(RotGoal);
     dt = ScheduleGains(dt);
     double input = _RotationalAxis.encoder->GetEncoderRotations();
 
