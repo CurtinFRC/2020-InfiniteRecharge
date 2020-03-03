@@ -114,7 +114,7 @@ void Turret::TeleopOnUpdate(double dt) {
 	PIDTuner();
 
 
-	//annas stuff dont touch 
+	//annas stuff dont touch ... I touch da stuff
 	// if (_contGroup.Get(ControlMap::Ball3Fire)) {	
 	// 	while (something) {
 	// 		AutoAimToFire(dt);

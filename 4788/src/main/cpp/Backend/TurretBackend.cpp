@@ -21,7 +21,7 @@ void Turret::InitializeSetPoints() {
 }
 
 // Distance Setpoints for Turret Angle
-double Turret::SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput) {
+double Turret::SetPointSelection(double TargetInput) {
   double targetEncoderValue;
 	int multiple = 50; // How many pixels to skip
 	// Skip a few pixels to make it easier
@@ -86,12 +86,9 @@ void Turret::TurretSearchForTarget() {
 // Using Setpoints
 double Turret::YAutoAimCalc(double dt, double TargetInput) {
 	double targetEncoderValue;
-	int LowPoint = 10;
-	int MaxPoint = 50;
-	int PixleAmount = 2;
 
 	// Setpoint Selection.
-	targetEncoderValue = SetPointSelection(LowPoint, MaxPoint, PixleAmount, TargetInput);
+	targetEncoderValue = SetPointSelection(TargetInput);
 
 
 	// Calculate PID

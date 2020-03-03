@@ -83,7 +83,7 @@ class Turret : public wml::StrategySystem {
 		bool TuningTurret = false;
 
 		// Backend Functions
-		double SetPointSelection(double LowPoint, double MaxPoint, double PixleAmount, double TargetInput);
+		double SetPointSelection(double TargetInput);
 		void TurretZeroLeft(double Time);
 		void TurretZeroRight(double Time);
 		void TurretZeroAngle(double Time);

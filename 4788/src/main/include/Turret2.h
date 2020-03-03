@@ -10,71 +10,117 @@ enum class TurretRotationState {
   PID
 };
 
+enum class TurretAngleState {
+  IDLE,
+  ZEROING,
+  MANUAL,
+  PID
+};
+
 enum class TurretFlywheelState {
   IDLE,
   MANUAL,
-  PID,
+  AUTO
 };
+
 
 class Turret : public wml::StrategySystem {
  public:
-  Turret(wml::Gearbox &rotationGearbox,
-         wml::Gearbox &hoodGearbox,
+  Turret(wml::Gearbox &turretRotationGearbox,
+         wml::Gearbox &turretAngleGearbox,
          wml::Gearbox &flywheelGearbox,
-         wml::sensors::BinarySensor &leftLimit,
-         wml::sensors::BinarySensor &angleDownLimit,
-         std::shared_ptr<nt::NetworkTable> &visionTable);
-
-  void SetRotation(const TurretRotationState st, double setpoint) {
-    _rotState = st;
-    _rotSetpoint = setpoint;
+         wml::sensors::LimitSwitch &rotZeroSensor,
+         wml::sensors::LimitSwitch &angleZeroSensor);
+  
+  // Set the Turrets Subsystems
+  void SetTurretRotation(const TurretRotationState st, double setpoint) {
+    _turretRotationState = st;
+    _rotationSetpoint = setpoint;
   }
 
-  void SetFlywheel(const TurretFlywheelState st, double setpoint) {
-    _flywheelState = st;
+  void SetTurretAngle(const TurretAngleState st, double setpoint) {
+    _turretAngleState = st;
+    _angleSetpoint = setpoint;
+  }
+
+  void SetTurretFlywheel(const TurretFlywheelState st, double setpoint) {
+    _turretFlywheelState = st;
     _flywheelSetpoint = setpoint;
   }
 
-  void UpdateRotation(double dt) {
+
+  void UpdateTurretRotation(double dt) {
     double voltage = 0;
-    switch(_rotState) {
+    switch (_turretRotationState) {
       case TurretRotationState::IDLE:
         voltage = 0;
-        break;
-      case TurretRotationState::ZEROING:
-        /* ... */
-        break;
+       break;
+
       case TurretRotationState::MANUAL:
-        voltage = 12 * _rotSetpoint;
-        break;
+        voltage = 12 * _rotationSetpoint;
+       break;
+      
       case TurretRotationState::PID:
-        voltage = /* PID LOGIC */;
-        break;
-      /* .. */
+        voltage = 12 * _rotationSetpoint;
+       break;
+      
+      case TurretRotationState::ZEROING:
+        voltage = 12 * _rotationSetpoint;
+       break;
     }
-    _rotationGearbox.transmission->SetVoltage(voltage);
   }
 
-  void UpdateFlywheel(double dt) {
+
+  void UpdateTurretAngle(double dt) {
     double voltage = 0;
-    switch(_flywheelState) {
-      /* .. */
+    switch (_turretAngleState) {
+      case TurretAngleState::IDLE:
+        voltage = 0;
+       break;
+
+      case TurretAngleState::MANUAL:
+        voltage = 12 * _angleSetpoint;
+       break;
+
+      case TurretAngleState::PID:
+        voltage = 12 * _angleSetpoint;
+       break;
+
+      case TurretAngleState::ZEROING:
+        voltage = 12 * _angleSetpoint;
+       break;
     }
-    _flywheelGearbox.transmission->SetVoltage(voltage);
   }
 
-  void Update(double dt) {
-    UpdateRotation(dt);
-    UpdateFlywheel(dt);
+  void UpdateTurretFlywheel(double dt) {
+    double voltage = 0;
+    switch (_turretFlywheelState) {
+      case TurretFlywheelState::IDLE:
+        voltage = 0;
+       break;
+
+      case TurretFlywheelState::MANUAL:
+        voltage = _flywheelSetpoint;
+       break;
+
+      case TurretFlywheelState::AUTO:
+        voltage = _flywheelSetpoint;
+       break;
+    }
   }
 
  private:
-  wml::Gearbox &_rotationGearbox, &_hoodGearbox, &_flywheelGearbox;
-  wml::sensors::BinarySensor &_leftLimit, &_rightLimit;
-  std::shared_ptr<nt::NetworkTable> &_visionTable, &_rotationTable;
+  // Gearboxes
+  wml::Gearbox &_turretRotationGearbox, &_turretAngleGearbox, &_flywheelGearbox;
 
-  TurretRotationState _rotState{TurretRotationState::MANUAL};
-  TurretFlywheelState _flywheelState{TurretFlywheelState::MANUAL};
+  // Sensors
+  wml::sensors::LimitSwitch &_rotZeroSensor, &_angleZeroSensor;
 
-  double _rotSetpoint = 0, _flywheelSetpoint = 0;
+  // States
+  TurretRotationState _turretRotationState{TurretRotationState::IDLE};
+  TurretAngleState _turretAngleState{TurretAngleState::IDLE};
+  TurretFlywheelState _turretFlywheelState{TurretFlywheelState::IDLE};
+
+  // Setpoints
+  double _rotationSetpoint = 0, _angleSetpoint = 0, _flywheelSetpoint = 0;
 };
