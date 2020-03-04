@@ -56,18 +56,18 @@ void Robot::RobotInit() {
                             robotMap.autonomous.WayPoint3Complete, 
                             robotMap.autonomous.EndComplete);
                   
-  beltIntake = new BeltIntake(robotMap.intake.intakeMotor, 
-                              robotMap.intake.IntakeDown, 
-                              robotMap.contGroup, 
-                              robotMap.autonomous.AutoSelecter, 
-                              robotMap.autonomous.StartDoComplete, 
-                              robotMap.autonomous.StartPointComplete, 
-                              robotMap.autonomous.WayPoint1Complete, 
-                              robotMap.autonomous.WayPoint2Complete, 
-                              robotMap.autonomous.WayPoint3Complete, 
-                              robotMap.autonomous.EndComplete, 
-                              robotMap.controlSystem.FlyWheelToggle, 
-                              robotMap.controlSystem.TurretToggle);
+  // beltIntake = new BeltIntake(robotMap.intake.intakeMotor, 
+  //                             robotMap.intake.IntakeDown, 
+  //                             robotMap.contGroup, 
+  //                             robotMap.autonomous.AutoSelecter, 
+  //                             robotMap.autonomous.StartDoComplete, 
+  //                             robotMap.autonomous.StartPointComplete, 
+  //                             robotMap.autonomous.WayPoint1Complete, 
+  //                             robotMap.autonomous.WayPoint2Complete, 
+  //                             robotMap.autonomous.WayPoint3Complete, 
+  //                             robotMap.autonomous.EndComplete, 
+  //                             robotMap.controlSystem.FlyWheelToggle, 
+  //                             robotMap.controlSystem.TurretToggle);
 
   climber = new Climber(robotMap.climber.ClimberActuator, 
                         robotMap.intake.IntakeDown, 
@@ -77,6 +77,8 @@ void Robot::RobotInit() {
                         robotMap.controlSystem.TurretToggle);
 
   controlPannel = new ControlPannel(robotMap.controlPannel.ControlPannelMotor, robotMap.controlPannel.ExtendControlPannelMotor, robotMap.contGroup);
+
+  intakeStrat = new IntakeManualStrategy(intake, robotMap.contGroup);
 
   // WayFinder (fake pathfinder basically)
   wayFinder = new WayFinder(ControlMap::DriveKp, ControlMap::DriveKi, ControlMap::DriveKd, *drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
