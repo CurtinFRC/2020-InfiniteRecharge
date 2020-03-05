@@ -19,7 +19,10 @@ class Climber : public wml::StrategySystem {
  public:
   Climber(wml::Gearbox &climberLeftGearbox, 
           wml::Gearbox &climberRightGearbox,
-          wml::actuators::DoubleSolenoid &climberActuator);
+          wml::actuators::DoubleSolenoid &climberActuator) :
+          _climberLeftGearbox(climberLeftGearbox),
+          _climberRightGearbox(climberRightGearbox),
+          _climberActuator(climberActuator) {}
 
   void SetClimberActuator(const ClimberActuatorState st) {
     _climberActuatorState = st;

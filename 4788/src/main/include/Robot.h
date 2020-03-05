@@ -42,7 +42,7 @@
 #include "MagLoader2.h"
 
 // Strategy Files
-// #include "Strategies/ClimberStrategy.h"
+#include "Strategies/ClimberStrategy.h"
 #include "Strategies/IntakeStrategy.h"
 #include "Strategies/MagLoaderStrategy.h"
 // #include "Strategies/StrategyController.h"

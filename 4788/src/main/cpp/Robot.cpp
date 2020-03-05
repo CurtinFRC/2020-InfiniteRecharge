@@ -27,6 +27,7 @@ void Robot::RobotInit() {
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
   intake = new Intake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagSensor, robotMap.magLoader.IndexSensor, robotMap.magLoader.StopSensor);
+  climber = new Climber(robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.climber.ClimberActuator);
 
   // Zero All Encoders
   robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
@@ -38,6 +39,7 @@ void Robot::RobotInit() {
 
   intake->SetDefault(std::make_shared<IntakeManualStrategy>(*intake, robotMap.contGroup));
   magLoader->SetDefault(std::make_shared<MagLoaderManualStrategy>(*magLoader, robotMap.contGroup));
+  climber->SetDefault(std::make_shared<ClimberManualStrategy>(*climber, robotMap.contGroup));
 
   // Inverts one side of our drivetrain
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(true);
@@ -55,6 +57,7 @@ void Robot::RobotInit() {
   StrategyController::Register(drivetrain);
   StrategyController::Register(intake);
   StrategyController::Register(magLoader);
+  StrategyController::Register(climber);
 
   NTProvider::Register(drivetrain); // Registers system to networktables
 }
@@ -90,6 +93,7 @@ void Robot::TeleopInit() {
   Schedule(drivetrain->GetDefaultStrategy(), true);
   Schedule(intake->GetDefaultStrategy(), true);
   Schedule(magLoader->GetDefaultStrategy(), true);
+  Schedule(climber->GetDefaultStrategy(), true);
 }
 
 // Teleop Loops

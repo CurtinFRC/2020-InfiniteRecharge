@@ -6,11 +6,11 @@
 
 using ButtonState = wml::controllers::Controller;
 
-class ClimberManualStrategy : wml::Strategy {
+class ClimberManualStrategy : public wml::Strategy {
  public:
   ClimberManualStrategy(
-    const Climber &climber,
-    const wml::controllers::SmartControllerGroup &controllers
+    Climber &climber,
+    wml::controllers::SmartControllerGroup &controllers
   ) : wml::Strategy("Manual"), _climber(climber), _controllers(controllers) {
     Requires(&climber);
     SetCanBeInterrupted(true);
@@ -44,8 +44,8 @@ class ClimberManualStrategy : wml::Strategy {
     }
   }
  private:
-  const Climber &_climber;
-  const wml::controllers::SmartControllerGroup &_controllers;
+  Climber &_climber;
+  wml::controllers::SmartControllerGroup &_controllers;
   frc::Timer climbTime;
 
   bool ClimberToggled = false;
