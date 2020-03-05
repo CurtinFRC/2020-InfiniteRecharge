@@ -2,21 +2,20 @@
 
 #include "controllers/Controller.h"
 #include "strategy/Strategy.h"
-#include "BeltIntake2.h" // Meant to be intake2.h
+#include "Intake2.h" // Meant to be intake2.h
 
 using ButtonState = wml::controllers::Controller;
 
 class IntakeManualStrategy : wml::Strategy {
  public:
   IntakeManualStrategy(
-    const Intake &intake,
-    const wml::controllers::SmartControllerGroup &controllers
-  ) : wml::Strategy("Manual"), _intake(intake), _controllers(controllers) {
-    Requires(&intake);
-    SetCanBeInterrupted(true);
-    SetCanBeReused(true);
-  }
-
+    Intake &intake,
+    wml::controllers::SmartControllerGroup &controllers
+    ) : wml::Strategy("Manual"), _intake(intake), _controllers(controllers) {
+      Requires(&intake);
+      SetCanBeInterrupted(true);
+      SetCanBeReused(true);
+    }
   void OnUpdate(double dt) override {
     double intake_power;
     if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::Intake)))
@@ -48,13 +47,13 @@ class IntakeManualStrategy : wml::Strategy {
         _intake.SetIntake(IntakeState::STOWED, intake_power);
       }
     } else {
-      _intake.SetIntake(IntakeState::DEPLOYED);
+      _intake.SetIntake(IntakeState::DEPLOYED, intake_power);
     }
   }
 
  private:
-  const Intake &_intake;
-  const wml::controllers::SmartControllerGroup &_controllers;
+  Intake &_intake;
+  wml::controllers::SmartControllerGroup &_controllers;
 
   bool IntakeToggled = false;
   bool ClimberToggled = false;

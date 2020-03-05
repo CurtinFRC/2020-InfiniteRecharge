@@ -11,8 +11,8 @@ frc::Timer magTime;
 class MagLoaderManualStrategy : wml::Strategy {
  public:
   MagLoaderManualStrategy(
-    const MagLoader &magLoader,
-    const wml::controllers::SmartControllerGroup &controllers
+    MagLoader &magLoader,
+    wml::controllers::SmartControllerGroup &controllers
   ) : wml::Strategy("Manual"), _magLoader(magLoader), _controllers(controllers) {
     Requires(&magLoader);
     SetCanBeInterrupted(true);
