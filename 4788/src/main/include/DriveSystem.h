@@ -43,7 +43,6 @@ class DrivetrainManual : public wml::Strategy {
 class DrivetrainAuto : public wml::Strategy {
   public:
     DrivetrainAuto(wml::Drivetrain &drivetrain, 
-                   WayFinder &wayFinder,
                    wml::control::PIDGains gains,
                    wml::actuators::DoubleSolenoid &ChangeGears, 
                    wml::actuators::DoubleSolenoid &Shift2PTO, 
