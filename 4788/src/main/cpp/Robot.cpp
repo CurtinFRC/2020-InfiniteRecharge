@@ -7,6 +7,8 @@ double CurrentTime;
 double lastTimestamp;
 double dt;
 
+StrategyBuilder builder;
+
 void Robot::RobotInit() {
 
   // Initializes The smart controllers assigned in robotmap
@@ -23,7 +25,8 @@ void Robot::RobotInit() {
 
   // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
-  // intake = new Intake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown);
+  intake = new Intake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown);
+  magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagSensor, robotMap.magLoader.IndexSensor, robotMap.magLoader.StopSensor);
 
   // Zero All Encoders
   robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
@@ -32,6 +35,9 @@ void Robot::RobotInit() {
   // Strategy controllers
   drivetrain->SetDefault(std::make_shared<DrivetrainManual>("Drivetrain Manual", *drivetrain,  robotMap.driveSystem.ChangeGearing, robotMap.driveSystem.Shift2PTO, robotMap.driveSystem.PTORatchetLeft, robotMap.driveSystem.PTORatchetRight, robotMap.contGroup));
   drivetrain->StartLoop(100);
+
+  intake->SetDefault(std::make_shared<IntakeManualStrategy>(*intake, robotMap.contGroup));
+  magLoader->SetDefault(std::make_shared<MagLoaderManualStrategy>(*magLoader, robotMap.contGroup));
 
   // Inverts one side of our drivetrain
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(true);
@@ -47,6 +53,9 @@ void Robot::RobotInit() {
 
   // Registering our systems to be called via strategy
   StrategyController::Register(drivetrain);
+  StrategyController::Register(intake);
+  StrategyController::Register(magLoader);
+
   NTProvider::Register(drivetrain); // Registers system to networktables
 }
 
@@ -79,7 +88,8 @@ void Robot::AutonomousPeriodic() {
 // Start of teleop
 void Robot::TeleopInit() { 
   Schedule(drivetrain->GetDefaultStrategy(), true);
-  
+  Schedule(intake->GetDefaultStrategy(), true);
+  Schedule(magLoader->GetDefaultStrategy(), true);
 }
 
 // Teleop Loops

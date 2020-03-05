@@ -15,7 +15,8 @@ enum class IntakeState {
 class Intake : public wml::StrategySystem {
  public:
   Intake(wml::Gearbox &intakeGearbox,
-         wml::actuators::DoubleSolenoid &intakeActuator);
+         wml::actuators::DoubleSolenoid &intakeActuator) :
+         _intakeGearbox(intakeGearbox), _intakeActuator(intakeActuator) {}
 
   void SetIntake(const IntakeState st, double setpoint) {
     _intakeState = st;

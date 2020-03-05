@@ -6,12 +6,12 @@
 
 using ButtonState = wml::controllers::Controller;
 
-class IntakeManualStrategy : wml::Strategy {
+class IntakeManualStrategy : public wml::Strategy {
  public:
   IntakeManualStrategy(
     Intake &intake,
     wml::controllers::SmartControllerGroup &controllers
-    ) : wml::Strategy("Manual"), _intake(intake), _controllers(controllers) {
+    ) : _intake(intake), _controllers(controllers) {
       Requires(&intake);
       SetCanBeInterrupted(true);
       SetCanBeReused(true);

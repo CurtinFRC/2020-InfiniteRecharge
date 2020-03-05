@@ -6,14 +6,12 @@
 
 using ButtonState = wml::controllers::Controller;
 
-frc::Timer turretTime;
-
-class TurretManualStrategy : wml::Strategy {
+class TurretManualStrategy : public wml::Strategy {
  public:
   TurretManualStrategy(
-    const Turret &turret,
-    const wml::controllers::SmartControllerGroup &controllers
-  ) : wml::Strategy("Manual"), _climber(climber), _controllers(controllers) {
+    Turret &turret,
+    wml::controllers::SmartControllerGroup &controllers
+  ) : _turret(turret), _controllers(controllers) {
     Requires(&turret);
     SetCanBeInterupted(true);
     SetCanBeReused(true);
@@ -139,6 +137,7 @@ class TurretManualStrategy : wml::Strategy {
  private:
   const Turret &_turret;
   const wml::controllers::SmartControllerGroup &_controllers;
+  frc::Timer turretTime;
 
   bool ClimberToggled = false;
 }

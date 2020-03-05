@@ -15,7 +15,11 @@ class MagLoader : public wml::StrategySystem {
   MagLoader(wml::Gearbox &magLoaderGearbox,
             frc::AnalogInput &startSensor,
             frc::AnalogInput &indexSensor,
-            frc::AnalogInput &stopSensor);
+            frc::AnalogInput &stopSensor) : 
+            _magLoaderGearbox(magLoaderGearbox), 
+            _startSensor(startSensor),
+            _indexSensor(indexSensor),
+            _stopSensor(stopSensor) {}
 
   void SetMagLoader(const MagLoaderState st, double setpoint) {
     _magLoaderState = st;

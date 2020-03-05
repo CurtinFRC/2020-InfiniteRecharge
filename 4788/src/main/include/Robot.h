@@ -44,9 +44,10 @@
 // Strategy Files
 // #include "Strategies/ClimberStrategy.h"
 #include "Strategies/IntakeStrategy.h"
-// #include "Strategies/MagLoaderStrategy.h"
+#include "Strategies/MagLoaderStrategy.h"
 // #include "Strategies/StrategyController.h"
 // #include "Strategies/TurretStrategy.h"
+#include "strategy/StrategyBuilder.h"
 
 
 

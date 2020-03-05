@@ -6,8 +6,6 @@
 
 using ButtonState = wml::controllers::Controller;
 
-frc::Timer climbTime;
-
 class ClimberManualStrategy : wml::Strategy {
  public:
   ClimberManualStrategy(
@@ -48,6 +46,7 @@ class ClimberManualStrategy : wml::Strategy {
  private:
   const Climber &_climber;
   const wml::controllers::SmartControllerGroup &_controllers;
+  frc::Timer climbTime;
 
   bool ClimberToggled = false;
 };
