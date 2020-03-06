@@ -28,6 +28,7 @@ void Robot::RobotInit() {
   intake = new Intake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagSensor, robotMap.magLoader.IndexSensor, robotMap.magLoader.StopSensor);
   climber = new Climber(robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.climber.ClimberActuator);
+  turret = new Turret(robotMap.turret.turretRotation, robotMap.turret.turretAngle, robotMap.turret.turretFlyWheel, robotMap.turret.LeftLimit, robotMap.turret.AngleDownLimit);
 
   // Zero All Encoders
   robotMap.driveSystem.drivetrain.GetConfig().leftDrive.encoder->ZeroEncoder();
@@ -40,6 +41,7 @@ void Robot::RobotInit() {
   intake->SetDefault(std::make_shared<IntakeManualStrategy>(*intake, robotMap.contGroup));
   magLoader->SetDefault(std::make_shared<MagLoaderManualStrategy>(*magLoader, robotMap.contGroup));
   climber->SetDefault(std::make_shared<ClimberManualStrategy>(*climber, robotMap.contGroup));
+  turret->SetDefault(std::make_shared<TurretManualStrategy>(*turret, robotMap.contGroup));
 
   // Inverts one side of our drivetrain
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(true);
@@ -58,6 +60,7 @@ void Robot::RobotInit() {
   StrategyController::Register(intake);
   StrategyController::Register(magLoader);
   StrategyController::Register(climber);
+  StrategyController::Register(turret);
 
   NTProvider::Register(drivetrain); // Registers system to networktables
 }
@@ -70,6 +73,10 @@ void Robot::RobotPeriodic() {
   RobotActive.SetBoolean(true);
   
   StrategyController::Update(dt);
+  intake->Update(dt);
+  magLoader->Update(dt);
+  climber->Update(dt);
+  turret->Update(dt);
   NTProvider::Update();
 
   lastTimestamp = CurrentTime;

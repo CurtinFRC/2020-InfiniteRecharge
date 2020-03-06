@@ -47,6 +47,7 @@ class Intake : public wml::StrategySystem {
        break;
     }
     _intakeGearbox.transmission->SetVoltage(voltage);
+    _intakeActuator.Update(dt);
   }
 
   void Update(double dt) {

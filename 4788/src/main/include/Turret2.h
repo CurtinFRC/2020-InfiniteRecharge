@@ -75,6 +75,7 @@ class Turret : public wml::StrategySystem {
         voltage = 12 * _rotationSetpoint;
        break;
     }
+    _turretRotationGearbox.transmission->SetVoltage(voltage);
   }
 
 
@@ -97,6 +98,7 @@ class Turret : public wml::StrategySystem {
         voltage = 12 * _angleSetpoint;
        break;
     }
+    _turretAngleGearbox.transmission->SetVoltage(voltage);
   }
 
   void UpdateTurretFlywheel(double dt) {
@@ -114,6 +116,13 @@ class Turret : public wml::StrategySystem {
         voltage = _flywheelSetpoint;
        break;
     }
+    _flywheelGearbox.transmission->SetVoltage(voltage);
+  }
+
+  void Update(double dt) {
+    UpdateTurretRotation(dt);
+    UpdateTurretAngle(dt);
+    UpdateTurretFlywheel(dt);
   }
 
   // Gearboxes

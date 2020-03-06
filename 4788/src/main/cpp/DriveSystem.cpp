@@ -86,16 +86,16 @@ void DrivetrainManual::OnUpdate(double dt) {
   }
 
   // PTO Shifter
-  if (!PTOactive) {
+  if (PTOactive) {
     if (_contGroup.Get(ControlMap::Servo)) {
-      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
-      _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPositionInit);
-      _PTORatchetRight.Set(ControlMap::PTORatchetRightPositionInit);
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+      _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPosition);
+      _PTORatchetRight.Set(ControlMap::PTORatchetRightPosition);
     }
   } else {
-    _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPosition);
-    _PTORatchetRight.Set(ControlMap::PTORatchetRightPosition);
-    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
+    _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPositionInit);
+    _PTORatchetRight.Set(ControlMap::PTORatchetRightPositionInit);
   }
 
 

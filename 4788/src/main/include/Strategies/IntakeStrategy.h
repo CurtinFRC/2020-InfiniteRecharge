@@ -43,10 +43,13 @@ class IntakeManualStrategy : public wml::Strategy {
     if (!ClimberToggled) {
       if (IntakeToggled) {
         _intake.SetIntake(IntakeState::INTAKING, intake_power);
+        std::cout << "intaking working" << std::endl;
       } else {
         _intake.SetIntake(IntakeState::STOWED, intake_power);
+        std::cout << "Stowed working" << std::endl;
       }
     } else {
+      std::cout << "deploy working" << std::endl;
       _intake.SetIntake(IntakeState::DEPLOYED, intake_power);
     }
   }
