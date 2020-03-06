@@ -11,22 +11,23 @@ class TurretManualStrategy : public wml::Strategy {
   TurretManualStrategy(
     Turret &turret,
     wml::controllers::SmartControllerGroup &controllers
-  ) : _turret(turret), _controllers(controllers) {
+  ) : wml::Strategy("Manual"), _turret(turret), _controllers(controllers) {
     Requires(&turret);
-    SetCanBeInterupted(true);
+    SetCanBeInterrupted(true);
     SetCanBeReused(true);
 
-    table = _visionTable->GetSubTable("Target");
-    table_2 =  _rotationTable->GetSubTable("turretRotation");
+    auto inst = nt::NetworkTableInstance::GetDefault();
+    _visionTable = inst.GetTable("VisionTracking");
+    _table = _visionTable->GetSubTable("Target");
 
-    imageHeight = table->GetNumber("ImageHeight", 0); 
-    imageWidth = table->GetNumber("ImageWidth", 0);
+    imageHeight = _table->GetNumber("ImageHeight", 0); 
+    imageWidth = _table->GetNumber("ImageWidth", 0); 
   }
 
 
   // Feedback for correct flywheel speeds
   void ContFlywheelFeedback() {
-    if (_FlyWheel.encoder->GetEncoderAngularVelocity() <= ControlMap::FlyWheelVelocity) {
+    if (_turret._flywheelGearbox.encoder->GetEncoderAngularVelocity() <= ControlMap::FlyWheelVelocity) {
       _controllers.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
       _controllers.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
     } else {
@@ -37,8 +38,8 @@ class TurretManualStrategy : public wml::Strategy {
 
   // Flywheel Auto Spinup to velocity
   double FlyWheelAutoSpinup(double FlywheelPower) {
-    if (_FlyWheel.encoder->GetEncoderAngularVelocity() <= ControlMap::FlyWheelVelocity) {
-      FlywheelPower += _FlyWheel.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.05 : 0;
+    if (_turret._flywheelGearbox.encoder->GetEncoderAngularVelocity() <= ControlMap::FlyWheelVelocity) {
+      FlywheelPower += _turret._flywheelGearbox.encoder->GetEncoderAngularVelocity() < ControlMap::FlyWheelVelocity ? 0.05 : 0;
     }
     return FlywheelPower;
   }
@@ -119,25 +120,38 @@ class TurretManualStrategy : public wml::Strategy {
           _turret.SetTurretFlywheel(TurretFlywheelState::IDLE, turretFlywheel_power);
       // Manual Control
       } else {
-        if (ControlMap::doJoyDeadzone(_controller.Get(ControlMap::TurretManualRotate)))
-          _turret.SetTurretRotation(TurretState::MANUAL, turretRotation_power);
-        if (ControlMap::doJoyDeadzone(_controller.Get(ControlMap::TurretManualAngle)))
-          _turret.SetTurretAngle(TurretState::MANUAL, turretAngle_power);
-        if (ControlMap::doJoyDeadzone(_controller.Get(ControlMap::TurretFlyWheelSpinUp)))
-          _turret.SetTurretFlywheel(TurretState::MANUAL, turretFlywheel_power);
+        if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::TurretManualRotate)))
+          _turret.SetTurretRotation(TurretRotationState::MANUAL, turretRotation_power);
+        if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::TurretManualAngle)))
+          _turret.SetTurretAngle(TurretAngleState::MANUAL, turretAngle_power);
+        if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::TurretFlyWheelSpinUp)))
+          _turret.SetTurretFlywheel(TurretFlywheelState::MANUAL, turretFlywheel_power);
       }
     } else {
-      _turret.SetTurretRotation(TurretState::IDLE, turretRotation_power);
-      _turret.SetTurretAngle(TurretState::IDLE, turretAngle_power);
-      _turret.SetTurretAngle(TurretState::IDLE, turretFlywheel_power);
+      _turret.SetTurretRotation(TurretRotationState::IDLE, turretRotation_power);
+      _turret.SetTurretAngle(TurretAngleState::IDLE, turretAngle_power);
+      _turret.SetTurretFlywheel(TurretFlywheelState::IDLE, turretFlywheel_power);
     }
   }
 
 
  private:
-  const Turret &_turret;
-  const wml::controllers::SmartControllerGroup &_controllers;
+  Turret &_turret;
+  wml::controllers::SmartControllerGroup &_controllers;
   frc::Timer turretTime;
 
+  // NT
+  std::shared_ptr<nt::NetworkTable>_visionTable;
+  std::shared_ptr<nt::NetworkTable>_table;
+
+  // NT values
+  double targetX;
+  double targetY;
+  double imageHeight;
+  double imageWidth;
+
+  // Calculated values
+  double Rotations2FOV;
+
   bool ClimberToggled = false;
-}
+};

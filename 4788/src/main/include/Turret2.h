@@ -3,6 +3,8 @@
 #include "strategy/StrategySystem.h"
 #include "RobotMap.h"
 
+using actState = wml::actuators::BinaryActuatorState;
+
 enum class TurretRotationState {
   IDLE,
   ZEROING,
@@ -30,7 +32,12 @@ class Turret : public wml::StrategySystem {
          wml::Gearbox &turretAngleGearbox,
          wml::Gearbox &flywheelGearbox,
          wml::sensors::LimitSwitch &rotZeroSensor,
-         wml::sensors::LimitSwitch &angleZeroSensor);
+         wml::sensors::LimitSwitch &angleZeroSensor) :
+         _turretRotationGearbox(turretRotationGearbox),
+         _turretAngleGearbox(turretAngleGearbox),
+         _flywheelGearbox(flywheelGearbox),
+         _rotZeroSensor(rotZeroSensor),
+         _angleZeroSensor(angleZeroSensor) {}
   
   // Set the Turrets Subsystems
   void SetTurretRotation(const TurretRotationState st, double setpoint) {
@@ -109,13 +116,14 @@ class Turret : public wml::StrategySystem {
     }
   }
 
- private:
   // Gearboxes
   wml::Gearbox &_turretRotationGearbox, &_turretAngleGearbox, &_flywheelGearbox;
 
   // Sensors
   wml::sensors::LimitSwitch &_rotZeroSensor, &_angleZeroSensor;
 
+
+ private:
   // States
   TurretRotationState _turretRotationState{TurretRotationState::IDLE};
   TurretAngleState _turretAngleState{TurretAngleState::IDLE};
