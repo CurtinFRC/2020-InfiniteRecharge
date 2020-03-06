@@ -47,6 +47,8 @@
 #include "Strategies/MagLoaderStrategy.h"
 #include "Strategies/TurretStrategy.h"
 #include "strategy/StrategyBuilder.h"
+// Auto Controller
+#include "Strategies/AutoController.h"
 
 
 
@@ -74,6 +76,9 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     MagLoader *magLoader;
     Intake *intake;
     Climber *climber;
+
+    // Auto only
+    AutoController *autoController;
     WayFinder *wayFinder;
 
     // nt

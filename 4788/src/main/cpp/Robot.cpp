@@ -25,6 +25,7 @@ void Robot::RobotInit() {
 
   // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
+  wayFinder = new WayFinder(ControlMap::DriveKp, ControlMap::DriveKi, ControlMap::DriveKd, *drivetrain, ControlMap::AutoGearRatio, ControlMap::WheelDiameter);
   intake = new Intake(robotMap.intake.intakeMotor, robotMap.intake.IntakeDown);
   magLoader = new MagLoader(robotMap.magLoader.magLoaderMotor, robotMap.magLoader.StartMagSensor, robotMap.magLoader.IndexSensor, robotMap.magLoader.StopSensor);
   climber = new Climber(robotMap.climber.ClimberElevatorLeft, robotMap.climber.ClimberElevatorRight, robotMap.climber.ClimberActuator);

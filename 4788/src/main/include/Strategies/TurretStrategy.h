@@ -23,13 +23,20 @@ class TurretManualStrategy : public wml::Strategy {
     imageHeight = _table->GetNumber("ImageHeight", 0); 
     imageWidth = _table->GetNumber("ImageWidth", 0); 
   }
+  
 
+  // Zero turret
   void ZeroTurret() {
-    if (_turret._rotZeroSensor.Get()) {
-      _turret.SetTurretRotation(TurretRotationState::ZEROING, 0.12);
-    } else {
-      _turret._turretRotationGearbox.encoder->ZeroEncoder();
-      TurretZeroed = true;
+    turretTime.Start();
+    if (turretTime.Get() < ControlMap::TurretZeroTimeoutSeconds) {
+       if (_turret._rotZeroSensor.Get()) {
+        _turret.SetTurretRotation(TurretRotationState::ZEROING, 0.12);
+      } else {
+        _turret._turretRotationGearbox.encoder->ZeroEncoder();
+        TurretZeroed = true;
+        turretTime.Stop();
+        turretTime.Reset();
+      }
     }
   }
 
@@ -55,7 +62,7 @@ class TurretManualStrategy : public wml::Strategy {
 
   // Feedback for correct flywheel speeds
   void ContFlywheelFeedback() {
-    if (_turret._flywheelGearbox.encoder->GetEncoderAngularVelocity() <= ControlMap::FlyWheelVelocity) {
+    if (_turret._flywheelGearbox.encoder->GetEncoderAngularVelocity() >= ControlMap::FlyWheelVelocity) {
       _controllers.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kLeftRumble, 1);
       _controllers.GetController(ControlMap::CoDriver).SetRumble(wml::controllers::RumbleType::kRightRumble, 1);
     } else {
@@ -100,7 +107,7 @@ class TurretManualStrategy : public wml::Strategy {
     _table->PutNumber("AngleDelta Time", dt);
     _table->PutNumber("AngleOutput", output);
 
-    ApreviousError = Aerror;
+    ApreviousError = error;
 
 
     return output;
@@ -195,16 +202,20 @@ class TurretManualStrategy : public wml::Strategy {
       _turret.SetTurretFlywheel(TurretFlywheelState::IDLE, turretFlywheel_power);
     }
 
+
+    // Flywheel Controller feedback
+    ContFlywheelFeedback();
+
     // Detect If turret has been zeroed
     if (!TurretZeroed) {
       ZeroTurret();
     }
 
 
-    // Safty Values
+    // Safe zone limit
     if (TurretZeroed) 
-      if (_turret._turretAngleGearbox.encoder->GetEncoderRotations() < TurretRotMin || _turret._turretAngleGearbox.encoder->GetEncoderRotations() > TurretRotMax )
-        _turret.SetTurretAngle(TurretAngleState::IDLE, turretAngle_power); 
+      if (_turret._turretRotationGearbox.encoder->GetEncoderRotations() < TurretRotMin || _turret._turretRotationGearbox.encoder->GetEncoderRotations() > TurretRotMax )
+        _turret.SetTurretRotation(TurretRotationState::IDLE, turretAngle_power); 
   }
 
 
@@ -251,11 +262,9 @@ class TurretManualStrategy : public wml::Strategy {
 
 
   // Angle Cals
-  double AkP = 20;
-  double AkI = 0;
+  double AkP = 10;
+  double AkI = 5;
   double AkD = 0;
-
-  double Aerror;
 
   double Asum = 0;
   double ApreviousError = 0;
@@ -271,7 +280,7 @@ class TurretManualStrategy : public wml::Strategy {
 
   // Safety Vals
   double TurretRotMin = -30;
-  double TurretRotMax = 30;
+  double TurretRotMax = 60;
   bool TurretZeroed = false;
   
 

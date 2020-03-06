@@ -42,38 +42,40 @@ class DrivetrainManual : public wml::Strategy {
 // Class that Runs in Autonomous
 class DrivetrainAuto : public wml::Strategy {
   public:
-    DrivetrainAuto(wml::Drivetrain &drivetrain, 
-                   wml::control::PIDGains gains,
-                   wml::actuators::DoubleSolenoid &ChangeGears, 
-                   wml::actuators::DoubleSolenoid &Shift2PTO, 
-                   int &autoSelector,
-                   bool &StartDoComplete,
-                   bool &strt,
-                   bool &p1,
-                   bool &p2,
-                   bool &p3,
-                   bool &end);
+    DrivetrainAuto(
+      wml::Drivetrain &drivetrain, 
+      wml::actuators::DoubleSolenoid &ChangeGears, 
+      wml::actuators::DoubleSolenoid &Shift2PTO, 
+      WayFinder &wayFinder,
+      WayFinder::Waypoint &waypoint
+      ) : _drivetrain(drivetrain),
+          _ChangeGears(ChangeGears),
+          _Shift2PTO(Shift2PTO),
+          _wayFinder(wayFinder),
+          _waypoint(waypoint) {
+        Requires(&drivetrain);
+        SetCanBeInterrupted(true);
+        SetCanBeReused(true);
+        _wayFinder.AutoConfig(ControlMap::MaxAutoDrivetrainSpeed, ControlMap::MaxAutoTurnSpeed);
+      }
 
-    void OnUpdate(double dt) override;
-    void WayPointSwitch();
+
+    void OnUpdate(double dt) override {
+      if (_wayFinder.GetWayPointComplete()) {
+        IsFinished();
+      } else {
+        _wayFinder.GotoWaypoint(_waypoint, dt);
+      }
+    }
 
   private:
     wml::Drivetrain &_drivetrain;
     WayFinder &_wayFinder;
-    wml::control::PIDController _pid;
+    WayFinder::Waypoint &_waypoint;
     wml::actuators::DoubleSolenoid &_ChangeGears;
     wml::actuators::DoubleSolenoid &_Shift2PTO;
     double LeftPower = 0, RightPower = 0;
     double currentSpeed;
-
-    int &_autoSelector;
-    int AutoWaypointSwitcher = 1;
-    bool &_StartDoComplete;
-    bool &_strt;
-    bool &_p1;
-    bool &_p2;
-    bool &_p3;
-    bool &_end;
 
     double DistanceInRotations;
     double TurnPreviousError;
