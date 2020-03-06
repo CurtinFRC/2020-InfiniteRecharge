@@ -38,11 +38,11 @@ class Climber : public wml::StrategySystem {
   void UpdateClimberActuator(double dt) {
     switch (_climberActuatorState) {
       case ClimberActuatorState::DOWN:
-        _climberActuator.SetTarget(actState::kReverse);
+        _climberActuator.SetTarget(actState::kForward);
        break;
       
       case ClimberActuatorState::UP:
-        _climberActuator.SetTarget(actState::kForward);
+        _climberActuator.SetTarget(actState::kReverse);
        break;
     }
     _climberActuator.Update(dt);

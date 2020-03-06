@@ -24,6 +24,15 @@ class TurretManualStrategy : public wml::Strategy {
     imageWidth = _table->GetNumber("ImageWidth", 0); 
   }
 
+  void ZeroTurret() {
+    if (_turret._rotZeroSensor.Get()) {
+      _turret.SetTurretRotation(TurretRotationState::ZEROING, 0.12);
+    } else {
+      _turret._turretRotationGearbox.encoder->ZeroEncoder();
+      TurretZeroed = true;
+    }
+  }
+
   // Schedule Gains
   double ScheduleGains(double dt) {
     if (abs(targetX) < (abs(imageWidth)/8)) {
@@ -63,11 +72,6 @@ class TurretManualStrategy : public wml::Strategy {
     return FlywheelPower;
   }
 
-  // y=mx+b (y in this case is encoder value)
-  // double m =  0.0002214286;
-  // double b = 0.0951786;
-  // double yIntercept = -429.839;
-  // double xIntercept = 0.0951786;
 
   double YAutoAimCalc(double dt, double targetY) {
 
@@ -146,6 +150,7 @@ class TurretManualStrategy : public wml::Strategy {
     turretAngle_power *= ControlMap::MaxTurretAngularSpeed;
     double turretFlywheel_power = ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::TurretFlyWheelSpinUp));
 
+  
     // Detect if climber is toggled
     if (_controllers.Get(ControlMap::ClimberToggle, ButtonState::ONRISE)) {
       if (ClimberToggled) 
@@ -160,26 +165,46 @@ class TurretManualStrategy : public wml::Strategy {
     if (!ClimberToggled) {
       // PID Control
       if (_controllers.Get(ControlMap::TurretAutoAim)) {
-        _turret.SetTurretRotation(TurretRotationState::PID, turretRotation_power = XAutoAimCalc(dt, targetX));
-        _turret.SetTurretAngle(TurretAngleState::PID, turretAngle_power = YAutoAimCalc(dt, targetY));
+        _turret.SetTurretRotation(TurretRotationState::PID, (turretRotation_power = XAutoAimCalc(dt, targetX)) *= ControlMap::MaxTurretSpeed);
+        _turret.SetTurretAngle(TurretAngleState::PID, (turretAngle_power = YAutoAimCalc(dt, targetY)) *= ControlMap::MaxTurretAngularSpeed);
         if (_controllers.Get(ControlMap::TurretFlyWheelSpinUp))
           _turret.SetTurretFlywheel(TurretFlywheelState::AUTO, turretFlywheel_power = FlyWheelAutoSpinup(turretFlywheel_power));
         else 
           _turret.SetTurretFlywheel(TurretFlywheelState::IDLE, turretFlywheel_power);
       // Manual Control
       } else {
+        // Turret Rotation Control
         if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::TurretManualRotate)))
           _turret.SetTurretRotation(TurretRotationState::MANUAL, turretRotation_power);
+        else
+          _turret.SetTurretRotation(TurretRotationState::IDLE, turretRotation_power);
+        // Turet Angle Control
         if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::TurretManualAngle)))
           _turret.SetTurretAngle(TurretAngleState::MANUAL, turretAngle_power);
+        else
+          _turret.SetTurretAngle(TurretAngleState::IDLE, turretAngle_power);
+        // Turet Flywheel Control
         if (ControlMap::doJoyDeadzone(_controllers.Get(ControlMap::TurretFlyWheelSpinUp)))
           _turret.SetTurretFlywheel(TurretFlywheelState::MANUAL, turretFlywheel_power);
+        else 
+          _turret.SetTurretFlywheel(TurretFlywheelState::IDLE, turretFlywheel_power);
       }
     } else {
       _turret.SetTurretRotation(TurretRotationState::IDLE, turretRotation_power);
       _turret.SetTurretAngle(TurretAngleState::IDLE, turretAngle_power);
       _turret.SetTurretFlywheel(TurretFlywheelState::IDLE, turretFlywheel_power);
     }
+
+    // Detect If turret has been zeroed
+    if (!TurretZeroed) {
+      ZeroTurret();
+    }
+
+
+    // Safty Values
+    if (TurretZeroed) 
+      if (_turret._turretAngleGearbox.encoder->GetEncoderRotations() < TurretRotMin || _turret._turretAngleGearbox.encoder->GetEncoderRotations() > TurretRotMax )
+        _turret.SetTurretAngle(TurretAngleState::IDLE, turretAngle_power); 
   }
 
 
@@ -236,12 +261,18 @@ class TurretManualStrategy : public wml::Strategy {
   double ApreviousError = 0;
   double AGoal = 0;
 
+  // Lower ECvals mean higher shoot
   // Setpoint 1
   double Yvalue1 = 85;
-  double ECvalue1 = 0.114;
+  double ECvalue1 = 0.09;
   // Setpoint 2
   double Yvalue2 = 225;
-  double ECvalue2 = 0.145;
+  double ECvalue2 = 0.121;
+
+  // Safety Vals
+  double TurretRotMin = -30;
+  double TurretRotMax = 30;
+  bool TurretZeroed = false;
   
 
   bool ClimberToggled = false;

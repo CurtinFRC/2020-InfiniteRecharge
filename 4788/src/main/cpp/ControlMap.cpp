@@ -70,7 +70,7 @@ const int ControlMap::TurretRotationPort = 23; // 23
 const bool ControlMap::TuneTurretPID = false;
 const bool ControlMap::TuneAnglePID = true;
 
-const int ControlMap::TurretLeftLimitPort = 99;
+const int ControlMap::TurretLeftLimitPort = 0;
 const int ControlMap::TurretRightLimitPort = 99;
 const int ControlMap::TurretAngleDownLimitPort = 99;
 const bool ControlMap::TurretLeftLimitInvert = false;

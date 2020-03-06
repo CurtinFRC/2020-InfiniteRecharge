@@ -14,14 +14,14 @@ void Robot::RobotInit() {
   // Initializes The smart controllers assigned in robotmap
   ControlMap::InitSmartControllerGroup(robotMap.contGroup);
 
-  auto cameraFront = CameraServer::GetInstance()->StartAutomaticCapture(0);
-  auto cameraBack = CameraServer::GetInstance()->StartAutomaticCapture(1);
+  // auto cameraFront = CameraServer::GetInstance()->StartAutomaticCapture(0);
+  // auto cameraBack = CameraServer::GetInstance()->StartAutomaticCapture(1);
 
-  cameraFront.SetFPS(30);
-  cameraBack.SetFPS(30);
+  // cameraFront.SetFPS(30);
+  // cameraBack.SetFPS(30);
 
-  cameraFront.SetResolution(160, 120);
-  cameraBack.SetResolution(160, 120);
+  // cameraFront.SetResolution(160, 120);
+  // cameraBack.SetResolution(160, 120);
 
   // Initializers
   drivetrain = new Drivetrain(robotMap.driveSystem.driveTrainConfig, robotMap.driveSystem.gainsVelocity);
@@ -78,6 +78,15 @@ void Robot::RobotPeriodic() {
   climber->Update(dt);
   turret->Update(dt);
   NTProvider::Update();
+
+  std::cout << "Rotation Sensor: " << robotMap.turret.LeftLimit.Get() << std::endl;
+
+  // //std::cout << "TurretAngle: " << robotMap.turret.turretAngle.encoder->GetEncoderRotations() << std::endl;
+  std::cout << "TurretRotation: " << robotMap.turret.turretRotation.encoder->GetEncoderRotations() << std::endl;
+  // //std::cout << "TurretFlyWheel: " << robotMap.turret.turretFlyWheel.encoder->GetEncoderAngularVelocity() << std::endl;
+
+  // std::cout << "Flywheel encoder: " << robotMap.turret.flywheelEncoder.GetEncoderAngularVelocity() << std::endl;
+  // std::cout << "Angle encoder" << robotMap.turret.angleEncoder.GetEncoderRotations() << std::endl;
 
   lastTimestamp = CurrentTime;
 }

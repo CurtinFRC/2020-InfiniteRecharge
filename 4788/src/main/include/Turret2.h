@@ -55,6 +55,10 @@ class Turret : public wml::StrategySystem {
     _flywheelSetpoint = setpoint;
   }
 
+  void ZeroTurret() {
+    
+  }
+
 
   void UpdateTurretRotation(double dt) {
     double voltage = 0;
