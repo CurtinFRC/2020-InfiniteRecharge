@@ -2,6 +2,7 @@
 
 #include "strategy/StrategySystem.h"
 #include "RobotMap.h"
+#include "PIDScheduledController.h"
 
 using actState = wml::actuators::BinaryActuatorState;
 
@@ -33,19 +34,28 @@ class Turret : public wml::StrategySystem {
          wml::Gearbox &flywheelGearbox,
          wml::sensors::LimitSwitch &rotZeroSensor,
          wml::sensors::LimitSwitch &angleZeroSensor) :
+         /* TODO(CJ): Add your PIDGains here to construct the PIDScheduledControllers */
          _turretRotationGearbox(turretRotationGearbox),
          _turretAngleGearbox(turretAngleGearbox),
          _flywheelGearbox(flywheelGearbox),
          _rotZeroSensor(rotZeroSensor),
-         _angleZeroSensor(angleZeroSensor) {}
+         _angleZeroSensor(angleZeroSensor) {
+           RotationPID.SetWrap(360.0);
+         }
   
   // Set the Turrets Subsystems
   void SetTurretRotation(const TurretRotationState st, double setpoint) {
+    // Only reset on a state change (updates to setpoint are continuous for the turret)
+    if (st == TurretRotationState::PID)
+      RotationPID.SetSetpoint(setpoint, _turretRotationState != TurretRotationState::PID);
     _turretRotationState = st;
     _rotationSetpoint = setpoint;
   }
 
   void SetTurretAngle(const TurretAngleState st, double setpoint) {
+    // Only reset on a state change (updates to setpoint are continuous for the turret)
+    if (st == TurretAngleState::PID)
+      AnglePID.SetSetpoint(setpoint, _turretAngleState != TurretAngleState::PID);
     _turretAngleState = st;
     _angleSetpoint = setpoint;
   }
@@ -67,7 +77,7 @@ class Turret : public wml::StrategySystem {
        break;
       
       case TurretRotationState::PID:
-        voltage = 12 * _rotationSetpoint;
+        voltage = RotationPID.Calculate(_turretRotationGearbox.encoder->GetEncoderRotations());
        break;
       
       case TurretRotationState::ZEROING:
@@ -96,7 +106,7 @@ class Turret : public wml::StrategySystem {
        break;
 
       case TurretAngleState::PID:
-        voltage = 12 * _angleSetpoint;
+        voltage = AnglePID.Calculate(_turretAngleGearbox.encoder->GetEncoderRotations());
        break;
 
       case TurretAngleState::ZEROING:
@@ -144,6 +154,10 @@ class Turret : public wml::StrategySystem {
 
   bool TurretZeroed = false;
   bool AngleZeroed = false;
+
+  // PID
+  PIDScheduledController AnglePID;
+  PIDScheduledController RotationPID;
 
  private:
   // States
