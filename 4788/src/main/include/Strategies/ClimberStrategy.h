@@ -23,31 +23,19 @@ class ClimberManualStrategy : public wml::Strategy {
     double rightClimber_power = ControlMap::doJoyDeadzone(-_controllers.Get(ControlMap::ClimberControlRight));
     rightClimber_power *= ControlMap::LiftMaxSpeed;
 
-    if (_controllers.Get(ControlMap::ClimberToggle, ButtonState::ONRISE)) {
-      if (ClimberToggled)
-        ClimberToggled = false;
-      else
-        ClimberToggled = true;
-    }
+    if (_controllers.Get(ControlMap::ClimberToggle, ButtonState::ONRISE))
+      ClimberToggled = !ClimberToggled;
 
     // Detect if climber is toggled
     if (ClimberToggled) {
-      climbTime.Start();
-      if (climbTime.Get() > 0.6) {
-        _climber.SetClimber(ClimberState::MANUAL, leftClimber_power, rightClimber_power);
-      } else {
-        _climber.SetClimber(ClimberState::DOWN, 0, 0);
-      }
+      _climber.SetClimber(ClimberState::MANUAL, leftClimber_power, rightClimber_power);
     } else {
-      climbTime.Stop();
-      climbTime.Reset();
       _climber.SetClimber(ClimberState::DOWN, 0, 0);
     }
   }
  private:
   Climber &_climber;
   wml::controllers::SmartControllerGroup &_controllers;
-  frc::Timer climbTime;
 
   bool ClimberToggled = false;
 };

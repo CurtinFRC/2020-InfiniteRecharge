@@ -39,7 +39,7 @@ void Robot::RobotInit() {
 
   intake->SetDefault(std::make_shared<IntakeManualStrategy>(*intake, *climber, robotMap.contGroup));
   // magLoader->SetDefault(std::make_shared<MagLoaderManualStrategy>(*magLoader, robotMap.contGroup));
-  // climber->SetDefault(std::make_shared<ClimberManualStrategy>(*climber, robotMap.contGroup));
+  climber->SetDefault(std::make_shared<ClimberManualStrategy>(*climber, robotMap.contGroup));
   // turret->SetDefault(std::make_shared<TurretManualStrategy>(*turret, robotMap.contGroup));
 
   // Inverts one side of our drivetrain
@@ -108,7 +108,7 @@ void Robot::TeleopInit() {
   Schedule(drivetrain->GetDefaultStrategy(), true);
   Schedule(intake->GetDefaultStrategy(), true);
   // Schedule(magLoader->GetDefaultStrategy(), true);
-  // Schedule(climber->GetDefaultStrategy(), true);
+  Schedule(climber->GetDefaultStrategy(), true);
 }
 
 // Teleop Loops
