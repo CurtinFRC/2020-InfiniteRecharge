@@ -195,6 +195,10 @@ class TurretManualStrategy : public wml::Strategy {
       _turret.SetTurretRotation(TurretRotationState::ZEROING, 0);
     }
 
+    if (!_turret.AngleZeroed) {
+      _turret.SetTurretAngle(TurretAngleState::ZEROING, 0);
+    }
+
 
     // Safe zone limit
     if (_turret.TurretZeroed && _turret.AngleZeroed)  {

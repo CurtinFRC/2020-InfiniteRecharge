@@ -25,6 +25,10 @@ class Climber : public wml::StrategySystem {
     _climberRsetpoint = setpointR;
   }
 
+  ClimberState GetClimberState() {
+    return _climberState;
+  }
+
   void UpdateClimber(double dt) {
     double voltageL = 0;
     double voltageR = 0;
