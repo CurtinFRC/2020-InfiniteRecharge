@@ -86,16 +86,16 @@ void DrivetrainManual::OnUpdate(double dt) {
   }
 
   // PTO Shifter
-  if (!PTOactive) {
+  if (PTOactive) {
     if (_contGroup.Get(ControlMap::Servo)) {
-      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
-      _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPositionInit);
-      _PTORatchetRight.Set(ControlMap::PTORatchetRightPositionInit);
+      _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+      _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPosition);
+      _PTORatchetRight.Set(ControlMap::PTORatchetRightPosition);
     }
   } else {
-    _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPosition);
-    _PTORatchetRight.Set(ControlMap::PTORatchetRightPosition);
-    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kForward);
+    _Shift2PTO.SetTarget(actuators::BinaryActuatorState::kReverse);
+    _PTORatchetLeft.Set(ControlMap::PTORatchetLeftPositionInit);
+    _PTORatchetRight.Set(ControlMap::PTORatchetRightPositionInit);
   }
 
 
@@ -125,50 +125,4 @@ DrivetrainTest::DrivetrainTest(Drivetrain &drivetrain, control::PIDGains gains) 
   SetCanBeReused(false);
 }
 
-void DrivetrainTest::OnUpdate(double dt) {
-
-  switch (testSelect) {
-    case 1:
-      if (_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() < ControlMap::DriveTestCaseRotations) {
-        leftSpeed = 0.25;
-      } else {
-        leftSpeed = 0;
-        testSelect++;
-      }
-    break;
-
-    case 2:
-      if (_drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() > 0) {
-        leftSpeed = -0.25;
-      } else {
-        leftSpeed = 0;
-        std::cout << "LeftDrive Return Successful" << std::endl;
-        testSelect++;
-      }
-    break;
-
-    case 3:
-      if (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() > -ControlMap::DriveTestCaseRotations) {
-        rightSpeed = 0.25;
-      } else {
-        rightSpeed = 0;
-        testSelect++;
-      }
-    break;
-
-    case 4:
-      if (_drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() < 0) {
-        rightSpeed = -0.25;
-      } else {
-        rightSpeed = 0;
-        std::cout << "RightDrive Return Successful" << std::endl;
-        testSelect++;
-      }
-    break;
-  }
-
-  // std::cout << "LeftDrive Encoder " << _drivetrain.GetConfig().leftDrive.encoder->GetEncoderRotations() << std::endl;
-  // std::cout << "RightDrive Encoder " << _drivetrain.GetConfig().rightDrive.encoder->GetEncoderRotations() << std::endl;
-
-  _drivetrain.Set(leftSpeed, rightSpeed);
-}
+void DrivetrainTest::OnUpdate(double dt) {}

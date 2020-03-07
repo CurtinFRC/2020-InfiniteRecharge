@@ -73,7 +73,7 @@ void curtin_frc_vision::run() {
 
 			visionTable->PutBoolean("Vision Active", true);
 
-			TargetX.SetDouble(offsetX);
+			TargetX.SetDouble(offsetX-5);
 			TargetY.SetDouble(offsetY);
 			ImageHeight.SetDouble(ResHeight);
 			ImageWidth.SetDouble(ResWidth);

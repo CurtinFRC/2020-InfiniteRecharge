@@ -160,7 +160,7 @@ struct ControlMap {
   static const wml::controllers::tAxis TurretManualRotate;
   static const wml::controllers::tAxis TurretManualAngle;
   static const wml::controllers::tAxis TurretFlyWheelSpinUp;
-  static const wml::controllers::tButton TurretFire; // Might get rid of, if i automate Max speed of flywheel to fire.
+  static const wml::controllers::tButton TurretFire;
   static const wml::controllers::tButton Ball3Fire; // just for auto testing 
   static const wml::controllers::tButton RevFlyWheel;
   #endif
