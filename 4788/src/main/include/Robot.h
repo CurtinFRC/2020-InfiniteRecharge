@@ -36,10 +36,10 @@
 #include "ControlMap.h"
 #include "RobotMap.h"
 #include "DriveSystem.h"
-#include "Turret2.h"
-#include "Climber2.h"
-#include "Intake2.h"
-#include "MagLoader2.h"
+#include "Turret.h"
+#include "Climber.h"
+#include "Intake.h"
+#include "MagLoader.h"
 
 // Strategy Files
 #include "Strategies/ClimberStrategy.h"

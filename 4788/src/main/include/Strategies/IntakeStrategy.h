@@ -2,7 +2,7 @@
 
 #include "controllers/Controller.h"
 #include "strategy/Strategy.h"
-#include "Intake2.h" // Meant to be intake2.h
+#include "Intake.h"
 
 using ButtonState = wml::controllers::Controller;
 
@@ -42,12 +42,12 @@ class IntakeManualStrategy : public wml::Strategy {
     // Intake controll, Override if Climber is deployed
     if (!ClimberToggled) {
       if (IntakeToggled) {
-        _intake.SetIntake(IntakeState::INTAKING, intake_power);
+        _intake.SetIntake(IntakeState::DEPLOYED, intake_power);
       } else {
-        _intake.SetIntake(IntakeState::STOWED, intake_power);
+        _intake.SetIntake(IntakeState::STOWED, 0);
       }
     } else {
-      _intake.SetIntake(IntakeState::DEPLOYED, intake_power);
+      _intake.SetIntake(IntakeState::DEPLOYED, 0);
     }
   }
 

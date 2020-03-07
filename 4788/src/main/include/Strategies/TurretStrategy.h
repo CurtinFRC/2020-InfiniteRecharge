@@ -2,7 +2,7 @@
 
 #include "controllers/Controllers.h"
 #include "strategy/Strategy.h"
-#include "Turret2.h" // meant to be turret2.h
+#include "Turret.h"
 
 using ButtonState = wml::controllers::Controller;
 
@@ -35,7 +35,7 @@ class TurretManualStrategy : public wml::Strategy {
     }
 
     if (!_turret._angleZeroSensor.Get()) {
-      _turret.SetTurretAngle(TurretAngleState::ZEROING, 0.12);
+      _turret.SetTurretAngle(TurretAngleState::ZEROING, -0.2);
     } else {
       _turret._turretAngleGearbox.encoder->ZeroEncoder();
       AngleZeroed = true;
@@ -209,17 +209,23 @@ class TurretManualStrategy : public wml::Strategy {
     ContFlywheelFeedback();
 
     // Detect If turret has been zeroed
-    if (!TurretZeroed && !AngleZeroed) {
+    if (!TurretZeroed || !AngleZeroed) {
       ZeroTurret();
     }
 
 
     // Safe zone limit
     if (TurretZeroed && AngleZeroed)  {
-      if (_turret._turretRotationGearbox.encoder->GetEncoderRotations() < TurretRotMin || _turret._turretRotationGearbox.encoder->GetEncoderRotations() > TurretRotMax) {
-        _turret.SetTurretRotation(TurretRotationState::IDLE, turretRotation_power); 
-      } else {
-        _turret.SetTurretAngle(TurretAngleState::IDLE, turretAngle_power);
+      if (_turret._turretRotationGearbox.encoder->GetEncoderRotations() <= TurretRotMin) {
+        _turret.SetTurretRotation(TurretRotationState::MANUAL, -0.12); 
+      } else if (_turret._turretRotationGearbox.encoder->GetEncoderRotations() >= TurretRotMax) {
+        _turret.SetTurretRotation(TurretRotationState::MANUAL, 0.12); 
+      }
+
+      if (_turret._turretAngleGearbox.encoder->GetEncoderRotations() <= TurretAngleMin) {
+        _turret.SetTurretAngle(TurretAngleState::MANUAL, 0.2);
+      } else if ( _turret._turretAngleGearbox.encoder->GetEncoderRotations() >= TurretAngleMax) {
+        _turret.SetTurretAngle(TurretAngleState::MANUAL, -0.2);
       }
     }    
   }
@@ -287,6 +293,8 @@ class TurretManualStrategy : public wml::Strategy {
   // Safety Vals
   double TurretRotMin = -30;
   double TurretRotMax = 60;
+  double TurretAngleMin = 0;
+  double TurretAngleMax = 0.2;
   bool TurretZeroed = false;
   bool AngleZeroed = false;
   

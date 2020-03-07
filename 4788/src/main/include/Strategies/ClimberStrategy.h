@@ -2,7 +2,7 @@
 
 #include "controllers/Controller.h"
 #include "strategy/Strategy.h"
-#include "Climber2.h" // Meant to be climber2.h
+#include "Climber.h"
 
 using ButtonState = wml::controllers::Controller;
 
@@ -32,15 +32,16 @@ class ClimberManualStrategy : public wml::Strategy {
 
     // Detect if climber is toggled
     if (ClimberToggled) {
-      if (climbTime.Get() > 1) {
+      climbTime.Start();
+      if (climbTime.Get() > 0.6) {
         _climber.SetClimber(ClimberState::MANUAL, leftClimber_power, rightClimber_power);
-        _climber.SetClimberActuator(ClimberActuatorState::DOWN);
-        climbTime.Reset();
-        climbTime.Stop();
       } else {
-        _climber.SetClimber(ClimberState::IDLE, leftClimber_power, rightClimber_power);
-        _climber.SetClimberActuator(ClimberActuatorState::UP);
+        _climber.SetClimber(ClimberState::DOWN, 0, 0);
       }
+    } else {
+      climbTime.Stop();
+      climbTime.Reset();
+      _climber.SetClimber(ClimberState::DOWN, 0, 0);
     }
   }
  private:
