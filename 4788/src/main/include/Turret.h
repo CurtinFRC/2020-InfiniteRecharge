@@ -55,11 +55,6 @@ class Turret : public wml::StrategySystem {
     _flywheelSetpoint = setpoint;
   }
 
-  void ZeroTurret() {
-    
-  }
-
-
   void UpdateTurretRotation(double dt) {
     double voltage = 0;
     switch (_turretRotationState) {
@@ -76,7 +71,13 @@ class Turret : public wml::StrategySystem {
        break;
       
       case TurretRotationState::ZEROING:
-        voltage = 12 * _rotationSetpoint;
+        if (!_rotZeroSensor.Get()) {
+          voltage = 12 * 0.12;
+        } else {
+          _turretRotationGearbox.encoder->ZeroEncoder();
+          TurretZeroed = true;
+          SetTurretRotation(TurretRotationState::IDLE, 0);
+        }
        break;
     }
     _turretRotationGearbox.transmission->SetVoltage(voltage);
@@ -99,7 +100,13 @@ class Turret : public wml::StrategySystem {
        break;
 
       case TurretAngleState::ZEROING:
-        voltage = 12 * _angleSetpoint;
+        if (!_angleZeroSensor.Get()) {
+          voltage = 12 * -0.2;
+        } else {
+          _turretAngleGearbox.encoder->ZeroEncoder();
+          AngleZeroed = true;
+          SetTurretAngle(TurretAngleState::IDLE, 0);
+        }
        break;
     }
     _turretAngleGearbox.transmission->SetVoltage(voltage);
@@ -135,6 +142,8 @@ class Turret : public wml::StrategySystem {
   // Sensors
   wml::sensors::LimitSwitch &_rotZeroSensor, &_angleZeroSensor;
 
+  bool TurretZeroed = false;
+  bool AngleZeroed = false;
 
  private:
   // States

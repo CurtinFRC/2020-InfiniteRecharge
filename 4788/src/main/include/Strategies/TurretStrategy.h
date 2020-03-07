@@ -24,24 +24,6 @@ class TurretManualStrategy : public wml::Strategy {
     imageWidth = _table->GetNumber("ImageWidth", 0); 
   }
   
-
-  // Zero turret
-  void ZeroTurret() {
-    if (_turret._rotZeroSensor.Get()) {
-      _turret.SetTurretRotation(TurretRotationState::ZEROING, 0.12);
-    } else {
-      _turret._turretRotationGearbox.encoder->ZeroEncoder();
-      TurretZeroed = true;
-    }
-
-    if (!_turret._angleZeroSensor.Get()) {
-      _turret.SetTurretAngle(TurretAngleState::ZEROING, -0.2);
-    } else {
-      _turret._turretAngleGearbox.encoder->ZeroEncoder();
-      AngleZeroed = true;
-    }
-  }
-
   // Schedule Gains
   double ScheduleGains(double dt) {
     if (abs(targetX) < (abs(imageWidth)/8)) {
@@ -209,13 +191,13 @@ class TurretManualStrategy : public wml::Strategy {
     ContFlywheelFeedback();
 
     // Detect If turret has been zeroed
-    if (!TurretZeroed || !AngleZeroed) {
-      ZeroTurret();
+    if (!_turret.TurretZeroed) {
+      _turret.SetTurretRotation(TurretRotationState::ZEROING, 0);
     }
 
 
     // Safe zone limit
-    if (TurretZeroed && AngleZeroed)  {
+    if (_turret.TurretZeroed && _turret.AngleZeroed)  {
       if (_turret._turretRotationGearbox.encoder->GetEncoderRotations() <= TurretRotMin) {
         _turret.SetTurretRotation(TurretRotationState::MANUAL, -0.12); 
       } else if (_turret._turretRotationGearbox.encoder->GetEncoderRotations() >= TurretRotMax) {
@@ -227,7 +209,7 @@ class TurretManualStrategy : public wml::Strategy {
       } else if ( _turret._turretAngleGearbox.encoder->GetEncoderRotations() >= TurretAngleMax) {
         _turret.SetTurretAngle(TurretAngleState::MANUAL, -0.2);
       }
-    }    
+    }
   }
 
 
@@ -295,8 +277,6 @@ class TurretManualStrategy : public wml::Strategy {
   double TurretRotMax = 60;
   double TurretAngleMin = 0;
   double TurretAngleMax = 0.2;
-  bool TurretZeroed = false;
-  bool AngleZeroed = false;
   
 
   bool ClimberToggled = false;
