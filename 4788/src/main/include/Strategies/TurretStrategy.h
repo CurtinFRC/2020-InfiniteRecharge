@@ -27,16 +27,18 @@ class TurretManualStrategy : public wml::Strategy {
 
   // Zero turret
   void ZeroTurret() {
-    turretTime.Start();
-    if (turretTime.Get() < ControlMap::TurretZeroTimeoutSeconds) {
-       if (_turret._rotZeroSensor.Get()) {
-        _turret.SetTurretRotation(TurretRotationState::ZEROING, 0.12);
-      } else {
-        _turret._turretRotationGearbox.encoder->ZeroEncoder();
-        TurretZeroed = true;
-        turretTime.Stop();
-        turretTime.Reset();
-      }
+    if (_turret._rotZeroSensor.Get()) {
+      _turret.SetTurretRotation(TurretRotationState::ZEROING, 0.12);
+    } else {
+      _turret._turretRotationGearbox.encoder->ZeroEncoder();
+      TurretZeroed = true;
+    }
+
+    if (!_turret._angleZeroSensor.Get()) {
+      _turret.SetTurretAngle(TurretAngleState::ZEROING, 0.12);
+    } else {
+      _turret._turretAngleGearbox.encoder->ZeroEncoder();
+      AngleZeroed = true;
     }
   }
 
@@ -207,15 +209,19 @@ class TurretManualStrategy : public wml::Strategy {
     ContFlywheelFeedback();
 
     // Detect If turret has been zeroed
-    if (!TurretZeroed) {
+    if (!TurretZeroed && !AngleZeroed) {
       ZeroTurret();
     }
 
 
     // Safe zone limit
-    if (TurretZeroed) 
-      if (_turret._turretRotationGearbox.encoder->GetEncoderRotations() < TurretRotMin || _turret._turretRotationGearbox.encoder->GetEncoderRotations() > TurretRotMax )
-        _turret.SetTurretRotation(TurretRotationState::IDLE, turretAngle_power); 
+    if (TurretZeroed && AngleZeroed)  {
+      if (_turret._turretRotationGearbox.encoder->GetEncoderRotations() < TurretRotMin || _turret._turretRotationGearbox.encoder->GetEncoderRotations() > TurretRotMax) {
+        _turret.SetTurretRotation(TurretRotationState::IDLE, turretRotation_power); 
+      } else {
+        _turret.SetTurretAngle(TurretAngleState::IDLE, turretAngle_power);
+      }
+    }    
   }
 
 
@@ -282,6 +288,7 @@ class TurretManualStrategy : public wml::Strategy {
   double TurretRotMin = -30;
   double TurretRotMax = 60;
   bool TurretZeroed = false;
+  bool AngleZeroed = false;
   
 
   bool ClimberToggled = false;

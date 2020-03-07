@@ -78,7 +78,7 @@ class Robot : public frc::TimedRobot, protected wml::StrategyController, protect
     Climber *climber;
 
     // Auto only
-    AutoController *autoController;
+    // AutoController *autoController;
     WayFinder *wayFinder;
 
     // nt

@@ -72,7 +72,7 @@ const bool ControlMap::TuneAnglePID = true;
 
 const int ControlMap::TurretLeftLimitPort = 0;
 const int ControlMap::TurretRightLimitPort = 99;
-const int ControlMap::TurretAngleDownLimitPort = 99;
+const int ControlMap::TurretAngleDownLimitPort = 5;
 const bool ControlMap::TurretLeftLimitInvert = false;
 const bool ControlMap::TurretRightLimitInvert = false;
 const bool ControlMap::TurretAngleDownLimitInvert = false;

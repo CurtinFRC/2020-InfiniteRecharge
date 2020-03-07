@@ -58,13 +58,13 @@ class DrivetrainAuto : public wml::Strategy {
       }
 
 
-    void OnUpdate(double dt) override {
-      if (_wayFinder.GetWayPointComplete()) {
-        IsFinished();
-      } else {
-        _wayFinder.GotoWaypoint(1, 1, 0, 1, 1, 0, false, dt);
-      }
-    }
+    // void OnUpdate(double dt) override {
+    //   if (_wayFinder.GetWayPointComplete()) {
+    //     IsFinished();
+    //   } else {
+    //     // _wayFinder.GotoWaypoint(1, 1, 0, 1, 1, 0, false, dt);
+    //   }
+    // }
 
   private:
     wml::Drivetrain &_drivetrain;
