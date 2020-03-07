@@ -7,8 +7,6 @@ double CurrentTime;
 double lastTimestamp;
 double dt;
 
-StrategyBuilder builder;
-
 void Robot::RobotInit() {
 
   // Initializes The smart controllers assigned in robotmap

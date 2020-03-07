@@ -32,9 +32,8 @@ class AutoController {
 
 
   void Update(double dt) {
-    builder.Start();
-    builder.Add(std::make_shared<DrivetrainAuto>(_drivetrain, _robotMap.driveSystem.ChangeGearing, _robotMap.driveSystem.Shift2PTO, _wayFinder, WayFinder::Waypoint{3.2, -2.4, -30, 5.4, -0.7, 30, false}));
-
+    // builder.Start();
+    // builder.Add(std::make_shared<DrivetrainAuto>(_drivetrain, _robotMap.driveSystem.ChangeGearing, _robotMap.driveSystem.Shift2PTO, _wayFinder, WayFinder::Waypoint{3.2, -2.4, -30, 5.4, -0.7, 30, false}));
   }
 
  private:

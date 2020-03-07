@@ -46,13 +46,11 @@ class DrivetrainAuto : public wml::Strategy {
       wml::Drivetrain &drivetrain, 
       wml::actuators::DoubleSolenoid &ChangeGears, 
       wml::actuators::DoubleSolenoid &Shift2PTO, 
-      WayFinder &wayFinder,
-      WayFinder::Waypoint &waypoint
+      WayFinder &wayFinder
       ) : _drivetrain(drivetrain),
           _ChangeGears(ChangeGears),
           _Shift2PTO(Shift2PTO),
-          _wayFinder(wayFinder),
-          _waypoint(waypoint) {
+          _wayFinder(wayFinder){
         Requires(&drivetrain);
         SetCanBeInterrupted(true);
         SetCanBeReused(true);
@@ -64,14 +62,14 @@ class DrivetrainAuto : public wml::Strategy {
       if (_wayFinder.GetWayPointComplete()) {
         IsFinished();
       } else {
-        _wayFinder.GotoWaypoint(_waypoint, dt);
+        _wayFinder.GotoWaypoint(1, 1, 0, 1, 1, 0, false, dt);
       }
     }
 
   private:
     wml::Drivetrain &_drivetrain;
     WayFinder &_wayFinder;
-    WayFinder::Waypoint &_waypoint;
+    // WayFinder::Waypoint &_waypoint;
     wml::actuators::DoubleSolenoid &_ChangeGears;
     wml::actuators::DoubleSolenoid &_Shift2PTO;
     double LeftPower = 0, RightPower = 0;
