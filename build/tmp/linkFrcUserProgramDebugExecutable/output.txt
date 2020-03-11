@@ -1,4 +1,4 @@
-See file:///C:/Users/61412/Documents/code/2020-InfiniteRecharge/build/tmp/linkFrcUserProgramDebugExecutable/output.txt for all output for linkFrcUserProgramDebugExecutable.
+See file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/linkFrcUserProgramDebugExecutable/output.txt for all output for linkFrcUserProgramDebugExecutable.
 linking frcUserProgram successful.
 
-Finished linkFrcUserProgramDebugExecutable, see full log file:///C:/Users/61412/Documents/code/2020-InfiniteRecharge/build/tmp/linkFrcUserProgramDebugExecutable/output.txt.
+Finished linkFrcUserProgramDebugExecutable, see full log file:///home/cj/Desktop/code/2020-InfiniteRecharge/build/tmp/linkFrcUserProgramDebugExecutable/output.txt.

@@ -3,6 +3,11 @@
 #include "controllers/Controllers.h"
 #include "RobotMap.h"
 
+enum class TurretState {
+	AUTO_AIM,
+	MANUAL_AIM
+};
+
 class Turret {
 	public:
 		Turret(wml::Gearbox &RotationalAxis, 
@@ -23,6 +28,7 @@ class Turret {
 					 bool &p3,
 					 bool &end);
 
+		void _Update(double dt);
 		void TeleopOnUpdate(double dt);
 		void AutoOnUpdate(double dt);
 		void TestOnUpdate(double dt);
@@ -41,10 +47,12 @@ class Turret {
 
 
 	private:
+		// Gearboxes
 		wml::Gearbox &_RotationalAxis;
 		wml::Gearbox &_VerticalAxis;
 		wml::Gearbox &_FlyWheel;
 
+		// Rotation Sensors
 		wml::sensors::BinarySensor &_LeftLimit;
 		wml::sensors::BinarySensor &_AngleDownLimit;
 
@@ -62,7 +70,7 @@ class Turret {
 		bool &_p3;
 		bool &_end;
 
-		bool something = true;
+		TurretState _current_state{ TurretState::MANUAL_AIM };
 
 		// Timeout Timer
 		frc::Timer ZeroTimer;
@@ -77,10 +85,15 @@ class Turret {
 		void TurretZeroLeft(double Time);
 		void TurretZeroRight(double Time);
 		void TurretZeroAngle(double Time);
+
+		void TurretManualState(double dt);
+		void TurretAutoState(double dt);
+
 		void ContFlywheelFeedback();
 		void FlyWheelAutoSpinup();
 		void FlyWheelManualSpinup();
 		void PIDTuner();
+
 		void AutoAimToFire(double dt);
 		void TurretSearchForTarget();
 		double TurretQuery(double Rgoal);
@@ -91,11 +104,15 @@ class Turret {
 		// Schedule 1 (Get to location)
 		double RkP = 0.05; // 0.899
 		double RkI = 0; // 0.107
-		double RkD = 0.01; // 0.036
+		double RkD = 0.001; // 0.036
 		// Schedule 2 (Precise locate target)
 		double RkP2 = 0.07; // N/A
 		double RkI2 = 0.001; // N/A
 		double RkD2 = 0.001; // N/A
+		// Schedule 3 (Lock on target)
+		double RkP3 = 0.1; // N/A
+		double RkI3 = 0.003; // N/A
+		double RkD3 = 0.001; // N/A
 
 		// Pointed Gains I AM GAINS
 		double *kP;
@@ -110,7 +127,7 @@ class Turret {
 
 		// PID Calculation Y axis (Angle A)
 		double AngleSetPoint[480];
-		double AkP = 0;
+		double AkP = 20;
 		double AkI = 0;
 		double AkD = 0;
 
